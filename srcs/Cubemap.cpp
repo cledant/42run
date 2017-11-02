@@ -40,6 +40,7 @@ Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 
 Cubemap::~Cubemap(void)
 {
+    delete this->_tex;
 	oGL_module::oGL_delete_vao(this->_vao);
 	oGL_module::oGL_delete_vbo(this->_vbo);
 }

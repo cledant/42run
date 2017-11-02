@@ -32,7 +32,7 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 
 Texture::~Texture(void)
 {
-    glDeleteTextures(1, this->_tex_id);
+    glDeleteTextures(1, &(this->_tex_id));
 }
 
 Texture		&Texture::operator=(Texture const &rhs)
@@ -95,7 +95,6 @@ GLuint			Texture::_load_cubemap(std::vector<std::string> const &files)
 GLuint         Texture::_load_flat(std::vector<std::string> const &files)
 {
     GLuint			tex_id;
-    size_t			i = 0;
     int				tex_w;
     int				tex_h;
     int				tex_nb_chan;
