@@ -54,11 +54,7 @@ class oGL_module
 								std::string const &fs_path);
 		Shader const		&getShader(std::string const &name);
 		void				delete_all_shaders(void);
-		void				add_texture(std::string const &name,
-								std::vector<std::string> const &files,
-								Texture::t_tex_type type);
-		Texture const		&getTexture(std::string const &name);
-		void				delete_all_textures(void);
+
         void				add_model(std::string const &name,
                                 std::string const &path);
         Model const		    &getModel(std::string const &name);
@@ -71,15 +67,6 @@ class oGL_module
 			explicit ShaderNotFoundException(void);
 			explicit ShaderNotFoundException(std::string const &name);
 			virtual ~ShaderNotFoundException(void) throw();
-	};
-
-	class TextureNotFoundException : public GeneralException
-	{
-		public :
-
-			explicit TextureNotFoundException(void);
-			explicit TextureNotFoundException(std::string const &name);
-			virtual ~TextureNotFoundException(void) throw();
 	};
 
     class ModelNotFoundException : public GeneralException
@@ -102,7 +89,6 @@ class oGL_module
 	private :
 
 		std::vector<Shader>			_shader_list;
-		std::vector<Texture>		_texture_list;
         std::vector<Model>          _model_list;
 
 		oGL_module(oGL_module const &src);

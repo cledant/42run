@@ -25,7 +25,8 @@ class Cubemap : public IEntity
 	public :
 
 		Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-			Texture const *texture, glm::vec3 const &pos, glm::vec3 const &scale);
+			std::vector<std::string> const &files, glm::vec3 const &pos,
+            glm::vec3 const &scale);
 		virtual ~Cubemap(void);
 
 		void				update(float time);
@@ -46,7 +47,7 @@ class Cubemap : public IEntity
 
 		Shader const		*_shader;
 		glm::mat4 const		*_perspec_mult_view;
-		Texture const		*_tex;
+		Texture             *_tex;
 		GLuint				_vbo;
 		GLuint				_vao;
 		glm::vec3			_pos;

@@ -13,8 +13,9 @@
 #include "Cubemap.hpp"
 
 Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-	Texture const *texture, glm::vec3 const &pos, glm::vec3 const &scale) :
-	_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(texture),
+	std::vector<std::string> const &files, glm::vec3 const &pos,
+	glm::vec3 const &scale) :
+	_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(nullptr),
 	_vbo(0), _vao(0), _pos(pos), _scale(scale)
 {
 	try
@@ -24,11 +25,14 @@ Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		this->_vao = oGL_module::oGL_create_vao();
 		oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
 			sizeof(GLfloat) * 3, 0);
+        this->_tex = new Texture("tex_cubemap", files, Texture::TEX_CUBE);
 	}
 	catch (std::exception &e)
 	{
+        std::cout << e.what() << std::endl;
 		oGL_module::oGL_delete_vao(this->_vao);
 		oGL_module::oGL_delete_vbo(this->_vbo);
+        delete _tex;
 		throw Cubemap::InitException();
 	}
 	this->update(0.0f);

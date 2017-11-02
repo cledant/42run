@@ -93,12 +93,13 @@ IEntity		*World::add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 	return (ptr);
 }
 
-IEntity		*World::add_Cubemap(Shader const *shader, Texture const *texture,
+IEntity		*World::add_Cubemap(Shader const *shader,
+				std::vector<std::string> const &files,
 				glm::vec3 const &pos, glm::vec3 const &scale)
 {
 	IEntity		*ptr;
 
-	ptr = new Cubemap(shader, &(this->_perspec_mult_view), texture, pos, scale);
+	ptr = new Cubemap(shader, &(this->_perspec_mult_view), files, pos, scale);
 	this->_entity_list.push_back(ptr);
 	return (ptr);
 }

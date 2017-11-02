@@ -37,34 +37,33 @@ static void				main_loop(World &world, Glfw_manager &manager)
 
 static void				init_oGL(oGL_module &oGL)
 {
-	std::vector<std::string> const				tex_files
+	oGL_module::oGL_enable_depth();
+	oGL.add_shader("simple_box", "./shaders/simple_box/simple_box.vs",
+		"./shaders/simple_box/simple_box.fs");
+	oGL.add_shader("cubemap", "./shaders/cubemap/cubemap.vs",
+		"./shaders/cubemap/cubemap.fs");
+}
+
+static void				init_program(World **world, oGL_module &oGL,
+							Glfw_manager &manager)
+{
+	std::vector<std::string> const				skybox_files
 	{
-		"./textures/skybox/right.jpg",
-		"./textures/skybox/left.jpg",
+    	"./textures/skybox/right.jpg",
+	    "./textures/skybox/left.jpg",
 		"./textures/skybox/top.jpg",
 		"./textures/skybox/bottom.jpg",
 		"./textures/skybox/back.jpg",
 		"./textures/skybox/front.jpg",
 	};
 
-	oGL_module::oGL_enable_depth();
-	oGL.add_shader("simple_box", "./shaders/simple_box/simple_box.vs",
-		"./shaders/simple_box/simple_box.fs");
-	oGL.add_shader("cubemap", "./shaders/cubemap/cubemap.vs",
-		"./shaders/cubemap/cubemap.fs");
-	oGL.add_texture("skybox", tex_files, Texture::TEX_CUBE);
-}
-
-static void				init_program(World **world, oGL_module &oGL,
-							Glfw_manager &manager)
-{
 	Glfw_manager::run_manager();
 	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
 	manager.init_input_callback();
 	init_oGL(oGL);
 	(*world) = new World(manager.getInput(), manager.getWindow(),
 			glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
-	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), &(oGL.getTexture("skybox")),
+	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
 			glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
     (*world)->add_Simple_box(&(oGL.getShader("simple_box")),
             glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -85,7 +84,6 @@ static void				run_program(void)
 		std::cout << e.what() << std::endl;
 		delete world;
 		oGL.delete_all_shaders();
-		oGL.delete_all_textures();
 		Glfw_manager::close_manager();
 		return ;
 	}
@@ -97,8 +95,8 @@ static void				run_program(void)
 	delete world;
 	std::cout << "Delete shaders" << std::endl;
 	oGL.delete_all_shaders();
-	std::cout << "Delete textures" << std::endl;
-	oGL.delete_all_textures();
+	std::cout << "Delete models" << std::endl;
+	oGL.delete_all_models();
 	std::cout << "Close manager" << std::endl;
 	Glfw_manager::close_manager();
 }

@@ -32,18 +32,11 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 
 Texture::~Texture(void)
 {
-}
-
-Texture::Texture(Texture const &src)
-{
-	this->_name = src.getName();
-	this->_tex_id = src.getTextureID();
+    glDeleteTextures(1, this->_tex_id);
 }
 
 Texture		&Texture::operator=(Texture const &rhs)
 {
-	this->_name = rhs.getName();
-	this->_tex_id = rhs.getTextureID();
 	return (*this);
 }
 

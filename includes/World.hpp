@@ -41,7 +41,8 @@ class World
 		void		render(void);
 		IEntity		*add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 						glm::vec3 const &scale);
-		IEntity		*add_Cubemap(Shader const *shader, Texture const *texture,
+		IEntity		*add_Cubemap(Shader const *shader,
+						std::vector<std::string> const &files,
 						glm::vec3 const &pos, glm::vec3 const &scale);
 		void		setActiveInteractive(IInteractive *ptr);
 		void		updatePerspective(float fov);

@@ -34,8 +34,6 @@ class Texture
 
 		Texture(std::string const &name, std::vector<std::string> const &files,
 			Texture::t_tex_type type);
-		Texture(Texture const &src);
-		Texture		&operator=(Texture const &rhs);
 		virtual ~Texture(void);
 
 		std::string const		&getName(void) const;
@@ -89,6 +87,8 @@ class Texture
 
 		static GLuint		_load_cubemap(std::vector<std::string> const &files);
         static GLuint		_load_flat(std::vector<std::string> const &files);
+
+        Texture		&operator=(Texture const &rhs);
 };
 
 #endif

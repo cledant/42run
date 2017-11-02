@@ -195,46 +195,10 @@ void			oGL_module::delete_all_shaders(void)
 		glDeleteShader(it->getShaderProgram());
 }
 
-void			oGL_module::add_texture(std::string const &name,
-					std::vector<std::string> const &files, 
-					Texture::t_tex_type type)
-{
-	this->_texture_list.push_back({name, files, type});
-}
-
-Texture const	&oGL_module::getTexture(std::string const &name)
-{
-	std::vector<Texture>::iterator		it;
-
-	for (it = this->_texture_list.begin(); it != this->_texture_list.end(); ++it)
-	{
-		if (it->getName().compare(name) == 0)
-			return (*it);
-	}
-	throw oGL_module::TextureNotFoundException(name);
-}
-
-void			oGL_module::delete_all_textures(void)
-{
-	std::vector<Texture>::iterator		it;
-	GLuint								tex;
-
-	for (it = this->_texture_list.begin(); it != this->_texture_list.end(); ++it)
-	{
-		tex = it->getTextureID();
-		glDeleteTextures(1, &tex);
-	}
-}
-
 void			oGL_module::add_model(std::string const &name,
                                       std::string const &path)
 {
-    Model   to_add(name, path);
-
-    this->_model_list.push_back(to_add);
-    this->_texture_list.insert(this->_texture_list.end(),
-                               to_add.getTextureList().begin(),
-                               to_add.getTextureList().end());
+    this->_model_list.push_back({name, path});
 }
 
 Model const	    &oGL_module::getModel(std::string const &name)
@@ -272,21 +236,6 @@ oGL_module::ShaderNotFoundException::ShaderNotFoundException(std::string const &
 }
 
 oGL_module::ShaderNotFoundException::~ShaderNotFoundException(void) throw()
-{
-}
-
-oGL_module::TextureNotFoundException::TextureNotFoundException(void)
-{
-	this->_msg = "OpenGL : Failed to find requested texture";
-}
-
-oGL_module::TextureNotFoundException::TextureNotFoundException(std::string const &name)
-{
-	this->_msg = "OpenGL : Failed to find texture : ";
-	this->_msg += name.c_str();
-}
-
-oGL_module::TextureNotFoundException::~TextureNotFoundException(void) throw()
 {
 }
 
