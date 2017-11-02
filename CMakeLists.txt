@@ -36,7 +36,7 @@ set(SOURCE_FILES
         srcs/Simple_box.cpp
         srcs/Texture.cpp
         srcs/Window.cpp
-        srcs/World.cpp)
+        srcs/World.cpp includes/Model.hpp includes/Mesh.hpp)
 
 #OS specific libs
 if(APPLE)

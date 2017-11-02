@@ -15,6 +15,7 @@
 
 #include "IEntity.hpp"
 #include "oGL_module.hpp"
+#include "Texture.hpp"
 #include "Camera.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"

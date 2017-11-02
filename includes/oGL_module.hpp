@@ -17,6 +17,7 @@
 # include "glfw3.h"
 # include "Shader.hpp"
 # include "Texture.hpp"
+# include "Model.hpp"
 # include "GeneralException.hpp"
 # include <iostream>
 # include <vector>
@@ -58,6 +59,10 @@ class oGL_module
 								Texture::t_tex_type type);
 		Texture const		&getTexture(std::string const &name);
 		void				delete_all_textures(void);
+        void				add_model(std::string const &name,
+                                std::string const &path);
+        Model const		    &getModel(std::string const &name);
+        void				delete_all_models(void);
 
 	class ShaderNotFoundException : public GeneralException
 	{
@@ -77,7 +82,16 @@ class oGL_module
 			virtual ~TextureNotFoundException(void) throw();
 	};
 
-	class oGLFailException : public GeneralException
+    class ModelNotFoundException : public GeneralException
+    {
+        public :
+
+            explicit ModelNotFoundException(void);
+            explicit ModelNotFoundException(std::string const &name);
+            virtual ~ModelNotFoundException(void) throw();
+    };
+
+    class oGLFailException : public GeneralException
 	{
 		public :
 
@@ -89,6 +103,7 @@ class oGL_module
 
 		std::vector<Shader>			_shader_list;
 		std::vector<Texture>		_texture_list;
+        std::vector<Model>          _model_list;
 
 		oGL_module(oGL_module const &src);
 		oGL_module		&operator=(oGL_module const &rhs);

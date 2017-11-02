@@ -74,12 +74,21 @@ class Texture
 			virtual ~NumberException(void) throw();
 	};
 
-	private :
+    class ChannelNumberException : public GeneralException
+    {
+        public :
+
+        explicit ChannelNumberException(void);
+        virtual ~ChannelNumberException(void) throw();
+    };
+
+    private :
 
 		std::string			_name;
 		GLuint				_tex_id;
 
 		static GLuint		_load_cubemap(std::vector<std::string> const &files);
+        static GLuint		_load_flat(std::vector<std::string> const &files);
 };
 
 #endif

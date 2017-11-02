@@ -21,6 +21,9 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 		case TEX_CUBE :
 			this->_tex_id = Texture::_load_cubemap(files);
 			break;
+        case TEX_FLAT :
+            this->_tex_id = Texture::_load_flat(files);
+            break;
 		default :
 			throw TypeException();
 			break;
@@ -96,6 +99,54 @@ GLuint			Texture::_load_cubemap(std::vector<std::string> const &files)
 	return (tex_id);
 }
 
+GLuint         Texture::_load_flat(std::vector<std::string> const &files)
+{
+    GLuint			tex_id;
+    size_t			i = 0;
+    int				tex_w;
+    int				tex_h;
+    int				tex_nb_chan;
+	GLenum 			format;
+    unsigned char	*data;
+
+    if (files.size() != 1)
+        throw Texture::NumberException();
+    glGenTextures(1, &tex_id);
+    if (glGetError() != GL_NO_ERROR)
+        throw Texture::AllocationException();
+    glBindTexture(GL_TEXTURE_2D, tex_id);
+    if ((data = stbi_load(files[0].c_str(), &tex_w, &tex_h,
+                          &tex_nb_chan, 0)) != NULL)
+    {
+        std::cout << "Loading : " << files[0] << std::endl;
+		if (tex_nb_chan == 3)
+			format = GL_RGB;
+		else if (tex_nb_chan == 4)
+			format = GL_RGBA;
+		else
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glDeleteTextures(1, &tex_id);
+			stbi_image_free(data);
+			throw ChannelNumberException();
+		}
+        glTexImage2D(GL_TEXTURE_2D, 0, format,
+                     tex_w, tex_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        stbi_image_free(data);
+    }
+    else
+    {
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glDeleteTextures(1, &tex_id);
+        throw FileOpenException(files[0]);
+    }
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    return (tex_id);
+}
+
 Texture::FileOpenException::FileOpenException(std::string const &path)
 {
 	this->_msg = "Texture : Failed to find to open file : ";
@@ -135,5 +186,14 @@ Texture::NumberException::NumberException(void)
 }
 
 Texture::NumberException::~NumberException(void) throw()
+{
+}
+
+Texture::ChannelNumberException::ChannelNumberException(void)
+{
+	this->_msg = "Texture : Invalid number of color channel";
+}
+
+Texture::ChannelNumberException::~ChannelNumberException(void) throw()
 {
 }

@@ -226,6 +226,40 @@ void			oGL_module::delete_all_textures(void)
 	}
 }
 
+void			oGL_module::add_model(std::string const &name,
+                                      std::string const &path)
+{
+    Model   to_add(name, path);
+
+    this->_model_list.push_back(to_add);
+    this->_texture_list.insert(this->_texture_list.end(),
+                               to_add.getTextureList().begin(),
+                               to_add.getTextureList().end());
+}
+
+Model const	    &oGL_module::getModel(std::string const &name)
+{
+    std::vector<Model>::iterator		it;
+
+    for (it = this->_model_list.begin(); it != this->_model_list.end(); ++it)
+    {
+        if (it->getName().compare(name) == 0)
+            return (*it);
+    }
+    throw oGL_module::ModelNotFoundException(name);
+}
+
+void			oGL_module::delete_all_models(void)
+{
+    std::vector<Model>::iterator		it;
+
+    for (it = this->_model_list.begin(); it != this->_model_list.end(); ++it)
+    {
+        //todo
+        static_cast<void>(it);
+    }
+}
+
 oGL_module::ShaderNotFoundException::ShaderNotFoundException(void)
 {
 	this->_msg = "OpenGL : Failed to find requested shader";
@@ -253,6 +287,21 @@ oGL_module::TextureNotFoundException::TextureNotFoundException(std::string const
 }
 
 oGL_module::TextureNotFoundException::~TextureNotFoundException(void) throw()
+{
+}
+
+oGL_module::ModelNotFoundException::ModelNotFoundException(void)
+{
+    this->_msg = "OpenGL : Failed to find requested model";
+}
+
+oGL_module::ModelNotFoundException::ModelNotFoundException(std::string const &name)
+{
+    this->_msg = "OpenGL : Failed to find model : ";
+    this->_msg += name.c_str();
+}
+
+oGL_module::ModelNotFoundException::~ModelNotFoundException(void) throw()
 {
 }
 
