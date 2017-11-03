@@ -29,25 +29,42 @@ class Model
 {
     public :
 
+        Model(void);
         Model(std::string const &name, std::string const &path);
-        Model(Model const &src);
-        Model		&operator=(Model const &rhs);
+        Model(Model const &src) = delete;
+        Model   &operator=(Model const &rhs) = delete;
+        Model(Model &&src);
+        Model   &operator=(Model &&rhs);
         virtual ~Model(void);
 
-        std::string const		        &getName(void) const;
-        std::vector<Texture> const      &getTextureList(void);
-        std::vector<Mesh> const         &getMeshList(void);
+        std::string const           &getName(void) const;
+        std::vector<Mesh> const     &getMeshList(void) const;
+        void                        draw(void) const;
+
+    class FileOpenException : public GeneralException
+    {
+        public :
+
+            explicit FileOpenException(void);
+            explicit FileOpenException(std::string const &path);
+            virtual ~FileOpenException(void) throw();
+    };
+
+    class InvalidNodeException : public GeneralException
+    {
+        public :
+
+            explicit InvalidNodeException(void);
+            virtual ~InvalidNodeException(void) throw();
+    };
 
     private :
 
         std::string             _name;
         std::vector<Mesh>       _mesh_list;
-        std::vector<Texture>    _texture_list;
 
         void    _load_model(std::string const &path);
         void    _load_node(aiNode *node, const aiScene *scene);
-        void    _load_mesh(aiMesh *mesh, const aiScene *scene);
-        void    _load_material();
 };
 
 #endif
