@@ -57,7 +57,6 @@ static void				init_program(World **world, oGL_module &oGL,
 		"./textures/skybox/front.jpg",
 	};
 
-	Glfw_manager::run_manager();
 	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
 	manager.init_input_callback();
 	init_oGL(oGL);
@@ -69,9 +68,9 @@ static void				init_program(World **world, oGL_module &oGL,
             glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
-static void				run_program(void)
+static void				run_program(Glfw_manager &manager)
 {
-	Glfw_manager								manager;
+
 	oGL_module									oGL;
 	World										*world = nullptr;
 
@@ -83,8 +82,6 @@ static void				run_program(void)
 	{
 		std::cout << e.what() << std::endl;
 		delete world;
-		oGL.delete_all_shaders();
-		Glfw_manager::close_manager();
 		return ;
 	}
 	world->reset_update_timer(Glfw_manager::getTime());
@@ -93,16 +90,23 @@ static void				run_program(void)
 	main_loop(*world, manager);
 	std::cout << "Delete world" << std::endl;
 	delete world;
-	std::cout << "Delete shaders" << std::endl;
-	oGL.delete_all_shaders();
-	std::cout << "Delete models" << std::endl;
-	oGL.delete_all_models();
-	std::cout << "Close manager" << std::endl;
-	Glfw_manager::close_manager();
 }
 
 int						main(void)
 {
-	run_program();
+    Glfw_manager								manager;
+
+    try
+    {
+        Glfw_manager::run_manager();
+    }
+    catch (std::exception &e)
+    {
+        std::cout << e.what() << std::endl;
+        return (0);
+    }
+    run_program(manager);
+   	std::cout << "Close manager" << std::endl;
+	Glfw_manager::close_manager();
 	return (0);
 }
