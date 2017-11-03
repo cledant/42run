@@ -32,6 +32,8 @@ class Glfw_manager
 
 		Glfw_manager(void);
 		virtual ~Glfw_manager(void);
+        Glfw_manager(Glfw_manager const &src) = delete;
+        Glfw_manager &operator=(Glfw_manager const &rhs) = delete;
 
 		static void				run_manager(void);
 		static void				close_manager(void);
@@ -73,8 +75,6 @@ class Glfw_manager
 
 	private :
 
-		Glfw_manager(Glfw_manager const &src);
-		Glfw_manager		&operator=(Glfw_manager const &rhs);
 
 		Input			_input;
 		GLFW_Window		_window;

@@ -27,6 +27,8 @@ class Camera
 			glm::vec3 const &world_up, glm::vec3 const &front, GLfloat yaw,
 			GLfloat pitch);
 		virtual ~Camera(void);
+        Camera(const Camera &src) = delete;
+        Camera		&operator=(Camera const &rhs) = delete;
 
 		void				update(bool mouse_exclusive_to_manager);
 		void				toggle_update(void);
@@ -62,8 +64,6 @@ class Camera
 		void			_update_from_keyboard_input(void);
 		void			_update_from_mouse_input(void);
 		void			_update_vector_matrix(void);
-
-		Camera		&operator=(Camera const &rhs);
 };
 
 #endif

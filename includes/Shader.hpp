@@ -24,14 +24,18 @@ class Shader
 {
 	public :
 
+        Shader(void);
 		Shader(std::string const &name, std::string const &vs_path,
 				std::string const &fs_path);
-		Shader(Shader const &src);
-		Shader		&operator=(Shader const &rhs);
+		Shader(Shader &src) = delete;
+		Shader		&operator=(Shader const &rhs) = delete;
+        Shader(Shader &&src);
+        Shader		&operator=(Shader &&rhs);
 		virtual ~Shader(void);
 
 		std::string const		&getName(void) const;
 		GLuint					getShaderProgram(void) const;
+        GLuint                  moveShaderProgram(void);
 		void					use(void) const;
 		void					setMat4(GLint uniform_id,
 									glm::mat4 const &mat4) const;

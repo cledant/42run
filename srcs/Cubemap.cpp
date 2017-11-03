@@ -45,17 +45,6 @@ Cubemap::~Cubemap(void)
 	oGL_module::oGL_delete_vbo(this->_vbo);
 }
 
-Cubemap::Cubemap(Cubemap const &src)
-{
-	static_cast<void>(src);
-}
-
-Cubemap			&Cubemap::operator=(Cubemap const &rhs)
-{
-	static_cast<void>(rhs);
-	return (*this);
-}
-
 void				Cubemap::update(float time)
 {
 	static_cast<void>(time);

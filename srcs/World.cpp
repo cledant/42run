@@ -41,12 +41,6 @@ World::~World(void)
 		delete *it;
 }
 
-World		&World::operator=(World const &rhs)
-{
-	static_cast<void>(rhs);
-	return (*this);
-}
-
 void		World::update(void)
 {
 	std::vector<IEntity *>::iterator	it;

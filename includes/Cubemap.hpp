@@ -28,6 +28,8 @@ class Cubemap : public IEntity
 			std::vector<std::string> const &files, glm::vec3 const &pos,
             glm::vec3 const &scale);
 		virtual ~Cubemap(void);
+        Cubemap(Cubemap const &src) = delete;
+        Cubemap		&operator=(Cubemap const &rhs) = delete;
 
 		void				update(float time);
 		void				draw(void);
@@ -57,8 +59,7 @@ class Cubemap : public IEntity
 		static float		_vertices[];
 		static size_t		_nb_faces;
 
-		Cubemap(Cubemap const &src);
-		Cubemap		&operator=(Cubemap const &rhs);
+
 };
 
 #endif

@@ -20,17 +20,6 @@ oGL_module::~oGL_module(void)
 {
 }
 
-oGL_module::oGL_module(oGL_module const &src)
-{
-	static_cast<void>(src);
-}
-
-oGL_module		&oGL_module::operator=(oGL_module const &rhs)
-{
-	static_cast<void>(rhs);
-	return (*this);
-}
-
 void			oGL_module::oGL_check_error(void)
 {
 	if (glGetError() != GL_NO_ERROR)

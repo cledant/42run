@@ -26,6 +26,8 @@ class Simple_box : public IEntity
 		Simple_box(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			glm::vec3 const &pos, glm::vec3 const &scale);
 		virtual ~Simple_box(void);
+        Simple_box(Simple_box const &src) = delete;
+        Simple_box &operator=(Simple_box const &rhs) = delete;
 
 		void				update(float time);
 		void				draw(void);
@@ -54,8 +56,7 @@ class Simple_box : public IEntity
 		static float		_vertices[];
 		static size_t		_nb_faces;
 
-		Simple_box(Simple_box const &src);
-		Simple_box	&operator=(Simple_box const &rhs);
+
 };
 
 #endif

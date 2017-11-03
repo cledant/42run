@@ -28,6 +28,8 @@ class oGL_module
 
 		oGL_module(void);
 		virtual ~oGL_module(void);
+        oGL_module(oGL_module const &src) = delete;
+        oGL_module		&operator=(oGL_module const &rhs) =  delete;
 
 		static void			oGL_check_error(void);
 		static void			oGL_display_error(void);
@@ -90,9 +92,6 @@ class oGL_module
 
 		std::vector<Shader>			_shader_list;
         std::vector<Model>          _model_list;
-
-		oGL_module(oGL_module const &src);
-		oGL_module		&operator=(oGL_module const &rhs);
 };
 
 #endif

@@ -25,12 +25,6 @@ Camera::~Camera(void)
 {
 }
 
-Camera		&Camera::operator=(Camera const &rhs)
-{
-	static_cast<void>(rhs);
-	return (*this);
-}
-
 void				Camera::update(bool mouse_exclusive_to_manager)
 {
 	this->_update_cam = mouse_exclusive_to_manager;

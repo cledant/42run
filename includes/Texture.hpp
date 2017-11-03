@@ -32,12 +32,18 @@ class Texture
 		TEX_CUBE,
 	}						t_tex_type;
 
+        Texture(void);
 		Texture(std::string const &name, std::vector<std::string> const &files,
 			Texture::t_tex_type type);
+        Texture(const Texture &src) = delete;
+        Texture		&operator=(Texture const &rhs) = delete;
+        Texture(Texture &&src);
+        Texture		&operator=(Texture &&rhs);
 		virtual ~Texture(void);
 
 		std::string const		&getName(void) const;
 		GLuint					getTextureID(void) const;
+        GLuint                  moveTexture(void);
 
 	class FileOpenException : public GeneralException
 	{
@@ -87,8 +93,6 @@ class Texture
 
 		static GLuint		_load_cubemap(std::vector<std::string> const &files);
         static GLuint		_load_flat(std::vector<std::string> const &files);
-
-        Texture		&operator=(Texture const &rhs);
 };
 
 #endif

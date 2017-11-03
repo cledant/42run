@@ -21,18 +21,6 @@ Glfw_manager::~Glfw_manager(void)
 {
 }
 
-Glfw_manager::Glfw_manager(Glfw_manager const &src) : _input(), _window(),
-	_last_time(0.0f)
-{
-	static_cast<void>(src);
-}
-
-Glfw_manager		&Glfw_manager::operator=(Glfw_manager const &rhs)
-{
-	static_cast<void>(rhs);
-	return (*this);
-}
-
 void				Glfw_manager::run_manager(void)
 {
 	auto	error_callback = [](int error, char const *what)

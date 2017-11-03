@@ -36,6 +36,8 @@ class World
 		World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 			float max_fps, size_t max_frame_skip);
 		virtual ~World(void);
+		World(World const &src) = delete;
+		World		&operator=(World const &rhs) = delete;
 
 		void		update(void);
 		void		render(void);
@@ -77,8 +79,6 @@ class World
 		size_t						_skip_loop;
 		float						_input_timer;
 		float						_input_mouse_timer;
-
-		World		&operator=(World const &rhs);
 };
 
 #endif

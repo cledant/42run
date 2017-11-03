@@ -34,7 +34,6 @@ class Mesh
     };
 
     private :
-        sfdfgdfg;
 };
 
 #endif

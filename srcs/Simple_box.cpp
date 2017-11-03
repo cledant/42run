@@ -42,17 +42,6 @@ Simple_box::~Simple_box(void)
 	oGL_module::oGL_delete_vbo(this->_vbo);
 }
 
-Simple_box::Simple_box(Simple_box const &src)
-{
-	static_cast<void>(src);
-}
-
-Simple_box			&Simple_box::operator=(Simple_box const &rhs)
-{
-	static_cast<void>(rhs);
-	return (*this);
-}
-
 void				Simple_box::update(float time)
 {
 	static_cast<void>(time);

@@ -12,8 +12,12 @@
 
 #include "Shader.hpp"
 
+Shader::Shader(void) : _name(""), _shader_program(0)
+{
+}
+
 Shader::Shader(std::string const &name, std::string const &vs_path,
-		std::string const &fs_path) : _name(name)
+		std::string const &fs_path) : _name(name), _shader_program(0)
 {
 	GLuint		vs = 0;
 	GLuint		fs = 0;
@@ -38,18 +42,19 @@ Shader::Shader(std::string const &name, std::string const &vs_path,
 
 Shader::~Shader(void)
 {
+    glDeleteShader(this->_shader_program);
 }
 
-Shader::Shader(Shader const &src)
+Shader::Shader(Shader &&src) : _name(""), _shader_program(0)
 {
 	this->_name = src.getName();
-	this->_shader_program = src.getShaderProgram();
+	this->_shader_program = src.moveShaderProgram();
 }
 
-Shader		&Shader::operator=(Shader const &rhs)
+Shader		&Shader::operator=(Shader &&rhs)
 {
 	this->_name = rhs.getName();
-	this->_shader_program = rhs.getShaderProgram();
+	this->_shader_program = rhs.moveShaderProgram();
 	return (*this);
 }
 
@@ -61,6 +66,14 @@ std::string const		&Shader::getName(void) const
 GLuint					Shader::getShaderProgram(void) const
 {
 	return (this->_shader_program);
+}
+
+GLuint 					Shader::moveShaderProgram(void)
+{
+	GLuint tmp = this->_shader_program;
+
+	this->_shader_program = 0;
+	return (tmp);
 }
 
 void					Shader::use(void) const

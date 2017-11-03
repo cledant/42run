@@ -13,6 +13,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Texture.hpp"
 
+Texture::Texture(void) : _name(""), _tex_id(0)
+{
+}
+
 Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 	Texture::t_tex_type type) : _name(name), _tex_id(0)
 {
@@ -35,8 +39,16 @@ Texture::~Texture(void)
     glDeleteTextures(1, &(this->_tex_id));
 }
 
-Texture		&Texture::operator=(Texture const &rhs)
+Texture::Texture(Texture &&src) : _name(""), _tex_id(0)
 {
+    this->_name = src.getName();
+    this->_tex_id = src.moveTexture();
+}
+
+Texture		&Texture::operator=(Texture &&rhs)
+{
+    this->_name = rhs.getName();
+    this->_tex_id = rhs.moveTexture();
 	return (*this);
 }
 
@@ -48,6 +60,14 @@ std::string const		&Texture::getName(void) const
 GLuint					Texture::getTextureID(void) const
 {
 	return (this->_tex_id);
+}
+
+GLuint 					Texture::moveTexture(void)
+{
+	GLuint 		tmp = this->_tex_id;
+
+	this->_tex_id = 0;
+	return (tmp);
 }
 
 GLuint			Texture::_load_cubemap(std::vector<std::string> const &files)
