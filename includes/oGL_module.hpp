@@ -55,12 +55,10 @@ class oGL_module
 								std::string const &vs_path,
 								std::string const &fs_path);
 		Shader const		&getShader(std::string const &name);
-		void				delete_all_shaders(void);
 
         void				add_model(std::string const &name,
                                 std::string const &path);
         Model const		    &getModel(std::string const &name);
-        void				delete_all_models(void);
 
 	class ShaderNotFoundException : public GeneralException
 	{

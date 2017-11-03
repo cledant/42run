@@ -176,14 +176,6 @@ Shader const	&oGL_module::getShader(std::string const &name)
 	throw oGL_module::ShaderNotFoundException(name);
 }
 
-void			oGL_module::delete_all_shaders(void)
-{
-	std::vector<Shader>::iterator		it;
-
-	for (it = this->_shader_list.begin(); it != this->_shader_list.end(); ++it)
-		glDeleteShader(it->getShaderProgram());
-}
-
 void			oGL_module::add_model(std::string const &name,
                                       std::string const &path)
 {
@@ -200,17 +192,6 @@ Model const	    &oGL_module::getModel(std::string const &name)
             return (*it);
     }
     throw oGL_module::ModelNotFoundException(name);
-}
-
-void			oGL_module::delete_all_models(void)
-{
-    std::vector<Model>::iterator		it;
-
-    for (it = this->_model_list.begin(); it != this->_model_list.end(); ++it)
-    {
-        //todo
-        static_cast<void>(it);
-    }
 }
 
 oGL_module::ShaderNotFoundException::ShaderNotFoundException(void)
