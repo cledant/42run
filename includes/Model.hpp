@@ -38,7 +38,7 @@ class Model
 		virtual ~Model(void);
 
 		std::string const &getName(void) const;
-		std::vector <Mesh> const &getMeshList(void) const;
+		std::vector<Mesh> const &getMeshList(void) const;
 		void draw(void) const;
 
 		class FileOpenException : public GeneralException
@@ -60,8 +60,8 @@ class Model
 
 	private :
 
-		std::string        _name;
-		std::vector <Mesh> _mesh_list;
+		std::string       _name;
+		std::vector<Mesh> _mesh_list;
 
 		void _load_model(std::string const &path);
 		void _load_node(aiNode *node, const aiScene *scene);

@@ -17,8 +17,6 @@
     <option name="SUPERCLASS_LIST_WRAP" value="1" />
     <option name="SUPERCLASS_LIST_BEFORE_COLON" value="0" />
     <option name="SUPERCLASS_LIST_AFTER_COLON" value="2" />
-    <option name="SPACE_BEFORE_TEMPLATE_DECLARATION_LT" value="true" />
-    <option name="SPACE_BEFORE_TEMPLATE_CALL_LT" value="true" />
     <option name="DISCHARGED_SHORT_TERNARY_OPERATOR" value="true" />
     <option name="TYPE_QUALIFIERS_PLACEMENT" value="AFTER" />
   </Objective-C>

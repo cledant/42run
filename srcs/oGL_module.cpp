@@ -166,7 +166,7 @@ void oGL_module::add_shader(std::string const &name,
 
 Shader const &oGL_module::getShader(std::string const &name)
 {
-	std::vector <Shader>::iterator it;
+	std::vector<Shader>::iterator it;
 
 	for (it = this->_shader_list.begin(); it != this->_shader_list.end(); ++it)
 	{
@@ -184,7 +184,7 @@ void oGL_module::add_model(std::string const &name,
 
 Model const &oGL_module::getModel(std::string const &name)
 {
-	std::vector <Model>::iterator it;
+	std::vector<Model>::iterator it;
 
 	for (it = this->_model_list.begin(); it != this->_model_list.end(); ++it)
 	{

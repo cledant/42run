@@ -33,7 +33,7 @@ class Texture
 		} t_tex_type;
 
 		Texture(void);
-		Texture(std::string const &name, std::vector <std::string> const &files,
+		Texture(std::string const &name, std::vector<std::string> const &files,
 				Texture::t_tex_type type);
 		Texture(const Texture &src) = delete;
 		Texture &operator=(Texture const &rhs) = delete;
@@ -91,8 +91,8 @@ class Texture
 		std::string _name;
 		GLuint      _tex_id;
 
-		static GLuint _load_cubemap(std::vector <std::string> const &files);
-		static GLuint _load_flat(std::vector <std::string> const &files);
+		static GLuint _load_cubemap(std::vector<std::string> const &files);
+		static GLuint _load_flat(std::vector<std::string> const &files);
 };
 
 #endif

@@ -153,8 +153,8 @@ void Shader::_read_file(std::string const &path, std::string &content)
 	{
 		fs.exceptions(std::fstream::failbit | std::fstream::badbit);
 		fs.open(path, std::fstream::in);
-		content.assign((std::istreambuf_iterator <char>(fs)),
-					   std::istreambuf_iterator <char>());
+		content.assign((std::istreambuf_iterator<char>(fs)),
+					   std::istreambuf_iterator<char>());
 		fs.close();
 	}
 	catch (std::exception &e)

@@ -24,16 +24,16 @@ struct Input
 	Input(void);
 	~Input(void);
 
-	std::vector <bool> p_key;
-	std::vector <bool> p_mouse;
-	GLfloat            last_pos_x;
-	GLfloat            last_pos_y;
-	GLfloat            x_offset;
-	GLfloat            y_offset;
-	float              timer;
-	bool               first_time;
-	bool               mouse_refreshed;
-	bool               mouse_exclusive;
+	std::vector<bool> p_key;
+	std::vector<bool> p_mouse;
+	GLfloat           last_pos_x;
+	GLfloat           last_pos_y;
+	GLfloat           x_offset;
+	GLfloat           y_offset;
+	float             timer;
+	bool              first_time;
+	bool              mouse_refreshed;
+	bool              mouse_exclusive;
 };
 
 #endif

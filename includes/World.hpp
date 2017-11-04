@@ -44,7 +44,7 @@ class World
 		IEntity *add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 								glm::vec3 const &scale);
 		IEntity *add_Cubemap(Shader const *shader,
-							 std::vector <std::string> const &files,
+							 std::vector<std::string> const &files,
 							 glm::vec3 const &pos, glm::vec3 const &scale);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
@@ -62,23 +62,23 @@ class World
 
 	private :
 
-		std::vector <IEntity *> _entity_list;
-		IInteractive            *_active;
-		Input const             &_input;
-		GLFW_Window const       &_window;
-		glm::mat4               _perspective;
-		Camera                  _camera;
-		glm::mat4               _perspec_mult_view;
-		float                   _fov;
-		float                   _max_fps;
-		size_t                  _max_frame_skip;
-		float                   _tick;
-		float                   _next_update_tick;
-		float                   _last_update_tick;
-		float                   _delta_tick;
-		size_t                  _skip_loop;
-		float                   _input_timer;
-		float                   _input_mouse_timer;
+		std::vector<IEntity *> _entity_list;
+		IInteractive           *_active;
+		Input const            &_input;
+		GLFW_Window const      &_window;
+		glm::mat4              _perspective;
+		Camera                 _camera;
+		glm::mat4              _perspec_mult_view;
+		float                  _fov;
+		float                  _max_fps;
+		size_t                 _max_frame_skip;
+		float                  _tick;
+		float                  _next_update_tick;
+		float                  _last_update_tick;
+		float                  _delta_tick;
+		size_t                 _skip_loop;
+		float                  _input_timer;
+		float                  _input_mouse_timer;
 };
 
 #endif

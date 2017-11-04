@@ -35,7 +35,7 @@ World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 World::~World(void)
 {
 	static_cast<void>(this->_input);
-	std::vector <IEntity *>::iterator it;
+	std::vector<IEntity *>::iterator it;
 
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
 		delete *it;
@@ -43,7 +43,7 @@ World::~World(void)
 
 void World::update(void)
 {
-	std::vector <IEntity *>::iterator it;
+	std::vector<IEntity *>::iterator it;
 
 	this->_camera.update(this->_input.mouse_exclusive);
 	if (this->_window.resized == true)
@@ -52,7 +52,7 @@ void World::update(void)
 	if (this->_active != nullptr)
 	{
 		if (this->_active->update_mouse_interaction(this->_input, this->_window,
-													this->_camera.getPos(), std::vector <glm::vec3 const *>{
+													this->_camera.getPos(), std::vector<glm::vec3 const *>{
 						&(this->_camera.getFront()), &(this->_camera.getUp()),
 						&(this->_camera.getRight())}, this->_input_mouse_timer) == true)
 			this->_input_mouse_timer = 0.0f;
@@ -70,7 +70,7 @@ void World::update(void)
 
 void World::render(void)
 {
-	std::vector <IEntity *>::iterator it;
+	std::vector<IEntity *>::iterator it;
 
 	oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
@@ -88,7 +88,7 @@ IEntity *World::add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 }
 
 IEntity *World::add_Cubemap(Shader const *shader,
-							std::vector <std::string> const &files,
+							std::vector<std::string> const &files,
 							glm::vec3 const &pos, glm::vec3 const &scale)
 {
 	IEntity *ptr;

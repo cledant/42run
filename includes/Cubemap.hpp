@@ -25,7 +25,7 @@ class Cubemap : public IEntity
 	public :
 
 		Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-				std::vector <std::string> const &files, glm::vec3 const &pos,
+				std::vector<std::string> const &files, glm::vec3 const &pos,
 				glm::vec3 const &scale);
 		virtual ~Cubemap(void);
 		Cubemap(Cubemap const &src) = delete;

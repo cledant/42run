@@ -13,7 +13,7 @@
 #include "Cubemap.hpp"
 
 Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-				 std::vector <std::string> const &files, glm::vec3 const &pos,
+				 std::vector<std::string> const &files, glm::vec3 const &pos,
 				 glm::vec3 const &scale) :
 		_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(nullptr),
 		_vbo(0), _vao(0), _pos(pos), _scale(scale)

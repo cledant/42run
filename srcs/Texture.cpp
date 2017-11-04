@@ -18,7 +18,7 @@ Texture::Texture(void) : _name(""), _tex_id(0)
 {
 }
 
-Texture::Texture(std::string const &name, std::vector <std::string> const &files,
+Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 				 Texture::t_tex_type type) : _name(name), _tex_id(0)
 {
 	switch (type)
@@ -71,7 +71,7 @@ GLuint Texture::moveTexture(void)
 	return (tmp);
 }
 
-GLuint Texture::_load_cubemap(std::vector <std::string> const &files)
+GLuint Texture::_load_cubemap(std::vector<std::string> const &files)
 {
 	GLuint        tex_id;
 	size_t        i = 0;
@@ -113,7 +113,7 @@ GLuint Texture::_load_cubemap(std::vector <std::string> const &files)
 	return (tex_id);
 }
 
-GLuint Texture::_load_flat(std::vector <std::string> const &files)
+GLuint Texture::_load_flat(std::vector<std::string> const &files)
 {
 	GLuint        tex_id;
 	int           tex_w;

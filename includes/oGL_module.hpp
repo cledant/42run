@@ -88,8 +88,8 @@ class oGL_module
 
 	private :
 
-		std::vector <Shader> _shader_list;
-		std::vector <Model>  _model_list;
+		std::vector<Shader> _shader_list;
+		std::vector<Model>  _model_list;
 };
 
 #endif

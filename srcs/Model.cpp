@@ -43,14 +43,14 @@ std::string const &Model::getName(void) const
 	return (this->_name);
 }
 
-std::vector <Mesh> const &Model::getMeshList() const
+std::vector<Mesh> const &Model::getMeshList() const
 {
 	return (this->_mesh_list);
 }
 
 void Model::draw(void) const
 {
-	std::vector <Mesh>::const_iterator it;
+	std::vector<Mesh>::const_iterator it;
 
 	for (it = this->_mesh_list.begin(); it != this->_mesh_list.end(); ++it)
 		it->draw();

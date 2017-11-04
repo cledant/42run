@@ -45,26 +45,33 @@ class Mesh
 		Mesh &operator=(Mesh &&rhs);
 		virtual ~Mesh(void);
 
-		std::vector <Mesh::Vertex> const &getVertexList(void) const;
-		std::vector <Texture> const &getTextureList(void) const;
-		std::vector <unsigned int> const &getIndiceList(void) const;
+		std::vector<Mesh::Vertex> const &getVertexList(void) const;
+		std::vector<Texture> const &getTextureList(void) const;
+		std::vector<unsigned int> const &getIndiceList(void) const;
 		GLuint moveVAO(void);
 		GLuint moveVBO(void);
 		GLuint moveEBO(void);
 		void draw(void) const;
 
+		class GLInitException : public GeneralException
+		{
+			public :
+
+				explicit GLInitException(void);
+				virtual        ~GLInitException(void) throw();
+		};
 
 	private :
 
-		std::vector <Mesh::Vertex> _vertex_list;
-		std::vector <Texture>      _texture_list;
-		std::vector <unsigned int> _indice_list;
-		GLuint                     _vao;
-		GLuint                     _vbo;
-		GLuint                     _ebo;
+		std::vector<Mesh::Vertex> _vertex_list;
+		std::vector<Texture>      _texture_list;
+		std::vector<unsigned int> _indice_list;
+		GLuint                    _vao;
+		GLuint                    _vbo;
+		GLuint                    _ebo;
 
 		void _load_mesh(aiMesh *mesh, const aiScene *scene);
-		void _setup_and_set_ressources(void);
+		void _allocate_set_GL_ressources(void);
 		void _load_material(aiMaterial *mat, aiTextureType type,
 							std::string type_name);
 };

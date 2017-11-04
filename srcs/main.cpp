@@ -47,15 +47,15 @@ static void init_oGL(oGL_module &oGL)
 static void init_program(World **world, oGL_module &oGL,
 						 Glfw_manager &manager)
 {
-	std::vector <std::string> const skybox_files
-											{
-													"./textures/skybox/right.jpg",
-													"./textures/skybox/left.jpg",
-													"./textures/skybox/top.jpg",
-													"./textures/skybox/bottom.jpg",
-													"./textures/skybox/back.jpg",
-													"./textures/skybox/front.jpg",
-											};
+	std::vector<std::string> const skybox_files
+										   {
+												   "./textures/skybox/right.jpg",
+												   "./textures/skybox/left.jpg",
+												   "./textures/skybox/top.jpg",
+												   "./textures/skybox/bottom.jpg",
+												   "./textures/skybox/back.jpg",
+												   "./textures/skybox/front.jpg",
+										   };
 
 	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
 	manager.init_input_callback();
