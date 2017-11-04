@@ -26,13 +26,13 @@ GeneralException::GeneralException(GeneralException const &src)
 	this->_msg = src._msg.c_str();
 }
 
-GeneralException		&GeneralException::operator=(GeneralException const &rhs)
-{	
+GeneralException &GeneralException::operator=(GeneralException const &rhs)
+{
 	this->_msg = rhs._msg.c_str();
 	return (*this);
 }
 
-const char				*GeneralException::what(void) const throw()
+const char *GeneralException::what(void) const throw()
 {
 	return (this->_msg.c_str());
 }

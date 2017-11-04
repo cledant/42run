@@ -20,13 +20,13 @@ class IEntity
 		IEntity(void);
 		virtual ~IEntity(void);
 
-		virtual void	update(float time) = 0;
-		virtual void	draw(void) = 0;
+		virtual void update(float time) = 0;
+		virtual void draw(void) = 0;
 
 	private :
 
 		IEntity(IEntity const &src);
-		virtual IEntity		&operator=(IEntity const &rhs);
+		virtual IEntity &operator=(IEntity const &rhs);
 };
 
 #endif

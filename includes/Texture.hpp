@@ -26,73 +26,73 @@ class Texture
 {
 	public :
 
-	typedef enum			e_tex_type
-	{
-		TEX_FLAT,
-		TEX_CUBE,
-	}						t_tex_type;
+		typedef enum e_tex_type
+		{
+			TEX_FLAT,
+			TEX_CUBE,
+		} t_tex_type;
 
-        Texture(void);
-		Texture(std::string const &name, std::vector<std::string> const &files,
-			Texture::t_tex_type type);
-        Texture(const Texture &src) = delete;
-        Texture		&operator=(Texture const &rhs) = delete;
-        Texture(Texture &&src);
-        Texture		&operator=(Texture &&rhs);
+		Texture(void);
+		Texture(std::string const &name, std::vector <std::string> const &files,
+				Texture::t_tex_type type);
+		Texture(const Texture &src) = delete;
+		Texture &operator=(Texture const &rhs) = delete;
+		Texture(Texture &&src);
+		Texture &operator=(Texture &&rhs);
 		virtual ~Texture(void);
 
-		std::string const		&getName(void) const;
-		GLuint					getTextureID(void) const;
-        GLuint                  moveTexture(void);
+		std::string const &getName(void) const;
+		GLuint getTextureID(void) const;
+		GLuint moveTexture(void);
 
-	class FileOpenException : public GeneralException
-	{
-		public :
+		class FileOpenException : public GeneralException
+		{
+			public :
 
-			explicit FileOpenException(void);
-			explicit FileOpenException(std::string const &path);
-			virtual ~FileOpenException(void) throw();
-	};
+				explicit FileOpenException(void);
+				explicit FileOpenException(std::string const &path);
+				virtual ~FileOpenException(void) throw();
+		};
 
-	class AllocationException : public GeneralException
-	{
-		public :
+		class AllocationException : public GeneralException
+		{
+			public :
 
-			explicit AllocationException(void);
-			virtual ~AllocationException(void) throw();
-	};
+				explicit AllocationException(void);
+				virtual ~AllocationException(void) throw();
+		};
 
-	class TypeException : public GeneralException
-	{
-		public :
+		class TypeException : public GeneralException
+		{
+			public :
 
-			explicit TypeException(void);
-			virtual ~TypeException(void) throw();
-	};
+				explicit TypeException(void);
+				virtual ~TypeException(void) throw();
+		};
 
-	class NumberException : public GeneralException
-	{
-		public :
+		class NumberException : public GeneralException
+		{
+			public :
 
-			explicit NumberException(void);
-			virtual ~NumberException(void) throw();
-	};
+				explicit NumberException(void);
+				virtual ~NumberException(void) throw();
+		};
 
-    class ChannelNumberException : public GeneralException
-    {
-        public :
+		class ChannelNumberException : public GeneralException
+		{
+			public :
 
-        explicit ChannelNumberException(void);
-        virtual ~ChannelNumberException(void) throw();
-    };
+				explicit ChannelNumberException(void);
+				virtual ~ChannelNumberException(void) throw();
+		};
 
-    private :
+	private :
 
-		std::string			_name;
-		GLuint				_tex_id;
+		std::string _name;
+		GLuint      _tex_id;
 
-		static GLuint		_load_cubemap(std::vector<std::string> const &files);
-        static GLuint		_load_flat(std::vector<std::string> const &files);
+		static GLuint _load_cubemap(std::vector <std::string> const &files);
+		static GLuint _load_flat(std::vector <std::string> const &files);
 };
 
 #endif

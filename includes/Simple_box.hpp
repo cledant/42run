@@ -24,37 +24,37 @@ class Simple_box : public IEntity
 	public :
 
 		Simple_box(Shader const *shader, glm::mat4 const *perspec_mult_view,
-			glm::vec3 const &pos, glm::vec3 const &scale);
+				   glm::vec3 const &pos, glm::vec3 const &scale);
 		virtual ~Simple_box(void);
-        Simple_box(Simple_box const &src) = delete;
-        Simple_box &operator=(Simple_box const &rhs) = delete;
+		Simple_box(Simple_box const &src) = delete;
+		Simple_box &operator=(Simple_box const &rhs) = delete;
 
-		void				update(float time);
-		void				draw(void);
-		void				setPosition(glm::vec3 const &pos);
-		void				setScale(glm::vec3 const &scale);
-		glm::mat4 const		&getTotalMatrix(void) const;
+		void update(float time);
+		void draw(void);
+		void setPosition(glm::vec3 const &pos);
+		void setScale(glm::vec3 const &scale);
+		glm::mat4 const &getTotalMatrix(void) const;
 
-	class InitException : public GeneralException
-	{
-		public :
+		class InitException : public GeneralException
+		{
+			public :
 
-			explicit	InitException(void);
-			virtual		~InitException(void) throw();
-	};
+				explicit InitException(void);
+				virtual        ~InitException(void) throw();
+		};
 
 	private :
 
-		Shader const		*_shader;
-		glm::mat4 const		*_perspec_mult_view;
-		GLuint				_vbo;
-		GLuint				_vao;
-		glm::vec3			_pos;
-		glm::vec3			_scale;
-		glm::mat4			_total;
+		Shader const    *_shader;
+		glm::mat4 const *_perspec_mult_view;
+		GLuint          _vbo;
+		GLuint          _vao;
+		glm::vec3       _pos;
+		glm::vec3       _scale;
+		glm::mat4       _total;
 
-		static float		_vertices[];
-		static size_t		_nb_faces;
+		static float  _vertices[];
+		static size_t _nb_faces;
 
 
 };

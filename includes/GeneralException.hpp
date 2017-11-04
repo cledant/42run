@@ -15,7 +15,7 @@
 
 #include <string>
 
-class	GeneralException : public std::exception
+class GeneralException : public std::exception
 {
 	public :
 
@@ -23,11 +23,11 @@ class	GeneralException : public std::exception
 		virtual ~GeneralException(void) throw();
 		GeneralException(GeneralException const &src);
 		GeneralException &operator=(GeneralException const &rhs);
-		virtual const char		*what(void) const throw();
+		virtual const char *what(void) const throw();
 
 	protected :
 
-		std::string		_msg;
+		std::string _msg;
 };
 
 #endif

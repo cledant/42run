@@ -34,51 +34,51 @@ class World
 	public :
 
 		World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
-			float max_fps, size_t max_frame_skip);
+			  float max_fps, size_t max_frame_skip);
 		virtual ~World(void);
 		World(World const &src) = delete;
-		World		&operator=(World const &rhs) = delete;
+		World &operator=(World const &rhs) = delete;
 
-		void		update(void);
-		void		render(void);
-		IEntity		*add_Simple_box(Shader const *shader, glm::vec3 const &pos,
-						glm::vec3 const &scale);
-		IEntity		*add_Cubemap(Shader const *shader,
-						std::vector<std::string> const &files,
-						glm::vec3 const &pos, glm::vec3 const &scale);
-		void		setActiveInteractive(IInteractive *ptr);
-		void		updatePerspective(float fov);
-		void		reset_update_timer(float time);
-		void		reset_skip_loop(void);
-		bool		should_be_updated(float time);
+		void update(void);
+		void render(void);
+		IEntity *add_Simple_box(Shader const *shader, glm::vec3 const &pos,
+								glm::vec3 const &scale);
+		IEntity *add_Cubemap(Shader const *shader,
+							 std::vector <std::string> const &files,
+							 glm::vec3 const &pos, glm::vec3 const &scale);
+		void setActiveInteractive(IInteractive *ptr);
+		void updatePerspective(float fov);
+		void reset_update_timer(float time);
+		void reset_skip_loop(void);
+		bool should_be_updated(float time);
 
-	class WorldFailException : public GeneralException
-	{
-		public :
+		class WorldFailException : public GeneralException
+		{
+			public :
 
-			explicit WorldFailException(void);
-			virtual ~WorldFailException(void) throw();
-	};
+				explicit WorldFailException(void);
+				virtual ~WorldFailException(void) throw();
+		};
 
 	private :
 
-		std::vector<IEntity *>		_entity_list;
-		IInteractive				*_active;
-		Input const					&_input;
-		GLFW_Window const			&_window;
-		glm::mat4					_perspective;
-		Camera						_camera;
-		glm::mat4					_perspec_mult_view;
-		float						_fov;
-		float						_max_fps;
-		size_t						_max_frame_skip;
-		float						_tick;
-		float						_next_update_tick;
-		float						_last_update_tick;
-		float						_delta_tick;
-		size_t						_skip_loop;
-		float						_input_timer;
-		float						_input_mouse_timer;
+		std::vector <IEntity *> _entity_list;
+		IInteractive            *_active;
+		Input const             &_input;
+		GLFW_Window const       &_window;
+		glm::mat4               _perspective;
+		Camera                  _camera;
+		glm::mat4               _perspec_mult_view;
+		float                   _fov;
+		float                   _max_fps;
+		size_t                  _max_frame_skip;
+		float                   _tick;
+		float                   _next_update_tick;
+		float                   _last_update_tick;
+		float                   _delta_tick;
+		size_t                  _skip_loop;
+		float                   _input_timer;
+		float                   _input_mouse_timer;
 };
 
 #endif

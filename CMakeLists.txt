@@ -38,7 +38,8 @@ set(SOURCE_FILES
         srcs/Texture.cpp
         srcs/Window.cpp
         srcs/World.cpp
-        srcs/Model.cpp)
+        srcs/Model.cpp
+        srcs/Mesh.cpp)
 
 #OS specific libs
 if(APPLE)

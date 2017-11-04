@@ -11,23 +11,24 @@
 /* ************************************************************************** */
 
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "Texture.hpp"
 
 Texture::Texture(void) : _name(""), _tex_id(0)
 {
 }
 
-Texture::Texture(std::string const &name, std::vector<std::string> const &files,
-	Texture::t_tex_type type) : _name(name), _tex_id(0)
+Texture::Texture(std::string const &name, std::vector <std::string> const &files,
+				 Texture::t_tex_type type) : _name(name), _tex_id(0)
 {
 	switch (type)
 	{
 		case TEX_CUBE :
 			this->_tex_id = Texture::_load_cubemap(files);
 			break;
-        case TEX_FLAT :
-            this->_tex_id = Texture::_load_flat(files);
-            break;
+		case TEX_FLAT :
+			this->_tex_id = Texture::_load_flat(files);
+			break;
 		default :
 			throw TypeException();
 			break;
@@ -36,48 +37,48 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 
 Texture::~Texture(void)
 {
-    glDeleteTextures(1, &(this->_tex_id));
+	glDeleteTextures(1, &(this->_tex_id));
 }
 
 Texture::Texture(Texture &&src) : _name(""), _tex_id(0)
 {
-    this->_name = src.getName();
-    this->_tex_id = src.moveTexture();
+	this->_name   = src.getName();
+	this->_tex_id = src.moveTexture();
 }
 
-Texture		&Texture::operator=(Texture &&rhs)
+Texture &Texture::operator=(Texture &&rhs)
 {
-    this->_name = rhs.getName();
-    this->_tex_id = rhs.moveTexture();
+	this->_name   = rhs.getName();
+	this->_tex_id = rhs.moveTexture();
 	return (*this);
 }
 
-std::string const		&Texture::getName(void) const
+std::string const &Texture::getName(void) const
 {
 	return (this->_name);
 }
 
-GLuint					Texture::getTextureID(void) const
+GLuint Texture::getTextureID(void) const
 {
 	return (this->_tex_id);
 }
 
-GLuint 					Texture::moveTexture(void)
+GLuint Texture::moveTexture(void)
 {
-	GLuint 		tmp = this->_tex_id;
+	GLuint tmp = this->_tex_id;
 
 	this->_tex_id = 0;
 	return (tmp);
 }
 
-GLuint			Texture::_load_cubemap(std::vector<std::string> const &files)
+GLuint Texture::_load_cubemap(std::vector <std::string> const &files)
 {
-	GLuint			tex_id;
-	size_t			i = 0;
-	int				tex_w;
-	int				tex_h;
-	int				tex_nb_chan;
-	unsigned char	*data;
+	GLuint        tex_id;
+	size_t        i = 0;
+	int           tex_w;
+	int           tex_h;
+	int           tex_nb_chan;
+	unsigned char *data;
 
 	if (files.size() != 6)
 		throw Texture::NumberException();
@@ -88,11 +89,11 @@ GLuint			Texture::_load_cubemap(std::vector<std::string> const &files)
 	while (i < 6)
 	{
 		if ((data = stbi_load(files[i].c_str(), &tex_w, &tex_h,
-			&tex_nb_chan, 0)) != NULL)
+							  &tex_nb_chan, 0)) != NULL)
 		{
 			std::cout << "Loading : " << files[i] << std::endl;
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
-				tex_w, tex_h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+						 tex_w, tex_h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			stbi_image_free(data);
 		}
 		else
@@ -112,25 +113,25 @@ GLuint			Texture::_load_cubemap(std::vector<std::string> const &files)
 	return (tex_id);
 }
 
-GLuint         Texture::_load_flat(std::vector<std::string> const &files)
+GLuint Texture::_load_flat(std::vector <std::string> const &files)
 {
-    GLuint			tex_id;
-    int				tex_w;
-    int				tex_h;
-    int				tex_nb_chan;
-	GLenum 			format;
-    unsigned char	*data;
+	GLuint        tex_id;
+	int           tex_w;
+	int           tex_h;
+	int           tex_nb_chan;
+	GLenum        format;
+	unsigned char *data;
 
-    if (files.size() != 1)
-        throw Texture::NumberException();
-    glGenTextures(1, &tex_id);
-    if (glGetError() != GL_NO_ERROR)
-        throw Texture::AllocationException();
-    glBindTexture(GL_TEXTURE_2D, tex_id);
-    if ((data = stbi_load(files[0].c_str(), &tex_w, &tex_h,
-                          &tex_nb_chan, 0)) != NULL)
-    {
-        std::cout << "Loading : " << files[0] << std::endl;
+	if (files.size() != 1)
+		throw Texture::NumberException();
+	glGenTextures(1, &tex_id);
+	if (glGetError() != GL_NO_ERROR)
+		throw Texture::AllocationException();
+	glBindTexture(GL_TEXTURE_2D, tex_id);
+	if ((data = stbi_load(files[0].c_str(), &tex_w, &tex_h,
+						  &tex_nb_chan, 0)) != NULL)
+	{
+		std::cout << "Loading : " << files[0] << std::endl;
 		if (tex_nb_chan == 3)
 			format = GL_RGB;
 		else if (tex_nb_chan == 4)
@@ -142,21 +143,21 @@ GLuint         Texture::_load_flat(std::vector<std::string> const &files)
 			stbi_image_free(data);
 			throw ChannelNumberException();
 		}
-        glTexImage2D(GL_TEXTURE_2D, 0, format,
-                     tex_w, tex_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        stbi_image_free(data);
-    }
-    else
-    {
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glDeleteTextures(1, &tex_id);
-        throw FileOpenException(files[0]);
-    }
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    return (tex_id);
+		glTexImage2D(GL_TEXTURE_2D, 0, format,
+					 tex_w, tex_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		stbi_image_free(data);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glDeleteTextures(1, &tex_id);
+		throw FileOpenException(files[0]);
+	}
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	return (tex_id);
 }
 
 Texture::FileOpenException::FileOpenException(std::string const &path)

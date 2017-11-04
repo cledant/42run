@@ -25,7 +25,7 @@ IInteractive::IInteractive(IInteractive const &src)
 	static_cast<void>(src);
 }
 
-IInteractive		&IInteractive::operator=(IInteractive const &rhs)
+IInteractive &IInteractive::operator=(IInteractive const &rhs)
 {
 	static_cast<void>(rhs);
 	return (*this);

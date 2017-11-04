@@ -17,10 +17,10 @@ Shader::Shader(void) : _name(""), _shader_program(0)
 }
 
 Shader::Shader(std::string const &name, std::string const &vs_path,
-		std::string const &fs_path) : _name(name), _shader_program(0)
+			   std::string const &fs_path) : _name(name), _shader_program(0)
 {
-	GLuint		vs = 0;
-	GLuint		fs = 0;
+	GLuint vs = 0;
+	GLuint fs = 0;
 
 	try
 	{
@@ -34,7 +34,7 @@ Shader::Shader(std::string const &name, std::string const &vs_path,
 			glDeleteShader(vs);
 		if (fs != 0)
 			glDeleteShader(fs);
-		throw ;
+		throw;
 	}
 	glDeleteShader(vs);
 	glDeleteShader(fs);
@@ -42,33 +42,33 @@ Shader::Shader(std::string const &name, std::string const &vs_path,
 
 Shader::~Shader(void)
 {
-    glDeleteShader(this->_shader_program);
+	glDeleteShader(this->_shader_program);
 }
 
 Shader::Shader(Shader &&src) : _name(""), _shader_program(0)
 {
-	this->_name = src.getName();
+	this->_name           = src.getName();
 	this->_shader_program = src.moveShaderProgram();
 }
 
-Shader		&Shader::operator=(Shader &&rhs)
+Shader &Shader::operator=(Shader &&rhs)
 {
-	this->_name = rhs.getName();
+	this->_name           = rhs.getName();
 	this->_shader_program = rhs.moveShaderProgram();
 	return (*this);
 }
 
-std::string const		&Shader::getName(void) const
+std::string const &Shader::getName(void) const
 {
 	return (this->_name);
 }
 
-GLuint					Shader::getShaderProgram(void) const
+GLuint Shader::getShaderProgram(void) const
 {
 	return (this->_shader_program);
 }
 
-GLuint 					Shader::moveShaderProgram(void)
+GLuint Shader::moveShaderProgram(void)
 {
 	GLuint tmp = this->_shader_program;
 
@@ -76,32 +76,32 @@ GLuint 					Shader::moveShaderProgram(void)
 	return (tmp);
 }
 
-void					Shader::use(void) const
+void Shader::use(void) const
 {
 	glUseProgram(this->_shader_program);
 }
 
-void			Shader::setMat4(GLint uniform_id, glm::mat4 const &mat4) const
+void Shader::setMat4(GLint uniform_id, glm::mat4 const &mat4) const
 {
 	glUniformMatrix4fv(uniform_id, 1, GL_FALSE,
-		reinterpret_cast<const GLfloat *>(&mat4));
+					   reinterpret_cast<const GLfloat *>(&mat4));
 }
 
-void			Shader::setVec3(GLint uniform_id, glm::vec3 const &float3) const
+void Shader::setVec3(GLint uniform_id, glm::vec3 const &float3) const
 {
 	glUniform3fv(uniform_id, 1, reinterpret_cast<const GLfloat *>(&float3));
 }
 
-GLuint			Shader::_load_shader(std::string const &path, GLenum type)
+GLuint Shader::_load_shader(std::string const &path, GLenum type)
 {
-	std::string		content;
-	GLuint			shader = 0;
-	GLint			success;
-	char const		*content_array;
+	std::string content;
+	GLuint      shader = 0;
+	GLint       success;
+	char const  *content_array;
 
 	std::cout << "Loading : " << path << std::endl;
 	Shader::_read_file(path, content);
-	if ((shader = glCreateShader(type)) == 0)
+	if ((shader   = glCreateShader(type)) == 0)
 		throw Shader::AllocationException();
 	content_array = content.c_str();
 	glShaderSource(shader, 1, &content_array, NULL);
@@ -116,10 +116,10 @@ GLuint			Shader::_load_shader(std::string const &path, GLenum type)
 	return (shader);
 }
 
-GLuint			Shader::_compile_program(GLuint vs, GLuint fs)
+GLuint Shader::_compile_program(GLuint vs, GLuint fs)
 {
-	GLuint		prog = 0;
-	GLint		success;
+	GLuint prog = 0;
+	GLint  success;
 
 	if ((prog = glCreateProgram()) == 0)
 		throw Shader::AllocationException();
@@ -135,26 +135,26 @@ GLuint			Shader::_compile_program(GLuint vs, GLuint fs)
 	return (prog);
 }
 
-void			Shader::_get_shader_error(GLuint shader)
+void Shader::_get_shader_error(GLuint shader)
 {
-	char	msg[4096];
-	int		msg_len;
+	char msg[4096];
+	int  msg_len;
 
 	glGetShaderInfoLog(shader, 4095, &msg_len, msg);
 	msg[4095] = '\0';
 	std::cout << msg << std::endl;
 }
 
-void			Shader::_read_file(std::string const &path, std::string &content)
+void Shader::_read_file(std::string const &path, std::string &content)
 {
-	std::fstream	fs;
+	std::fstream fs;
 
 	try
 	{
 		fs.exceptions(std::fstream::failbit | std::fstream::badbit);
 		fs.open(path, std::fstream::in);
-		content.assign((std::istreambuf_iterator<char>(fs)),
-			std::istreambuf_iterator<char>());
+		content.assign((std::istreambuf_iterator <char>(fs)),
+					   std::istreambuf_iterator <char>());
 		fs.close();
 	}
 	catch (std::exception &e)

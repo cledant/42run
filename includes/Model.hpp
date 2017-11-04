@@ -27,44 +27,44 @@
 
 class Model
 {
-    public :
+	public :
 
-        Model(void);
-        Model(std::string const &name, std::string const &path);
-        Model(Model const &src) = delete;
-        Model   &operator=(Model const &rhs) = delete;
-        Model(Model &&src);
-        Model   &operator=(Model &&rhs);
-        virtual ~Model(void);
+		Model(void);
+		Model(std::string const &name, std::string const &path);
+		Model(Model const &src) = delete;
+		Model &operator=(Model const &rhs) = delete;
+		Model(Model &&src);
+		Model &operator=(Model &&rhs);
+		virtual ~Model(void);
 
-        std::string const           &getName(void) const;
-        std::vector<Mesh> const     &getMeshList(void) const;
-        void                        draw(void) const;
+		std::string const &getName(void) const;
+		std::vector <Mesh> const &getMeshList(void) const;
+		void draw(void) const;
 
-    class FileOpenException : public GeneralException
-    {
-        public :
+		class FileOpenException : public GeneralException
+		{
+			public :
 
-            explicit FileOpenException(void);
-            explicit FileOpenException(std::string const &path);
-            virtual ~FileOpenException(void) throw();
-    };
+				explicit FileOpenException(void);
+				explicit FileOpenException(std::string const &path);
+				virtual ~FileOpenException(void) throw();
+		};
 
-    class InvalidNodeException : public GeneralException
-    {
-        public :
+		class InvalidNodeException : public GeneralException
+		{
+			public :
 
-            explicit InvalidNodeException(void);
-            virtual ~InvalidNodeException(void) throw();
-    };
+				explicit InvalidNodeException(void);
+				virtual ~InvalidNodeException(void) throw();
+		};
 
-    private :
+	private :
 
-        std::string             _name;
-        std::vector<Mesh>       _mesh_list;
+		std::string        _name;
+		std::vector <Mesh> _mesh_list;
 
-        void    _load_model(std::string const &path);
-        void    _load_node(aiNode *node, const aiScene *scene);
+		void _load_model(std::string const &path);
+		void _load_node(aiNode *node, const aiScene *scene);
 };
 
 #endif

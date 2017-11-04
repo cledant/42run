@@ -25,7 +25,7 @@ IEntity::IEntity(IEntity const &src)
 	static_cast<void>(src);
 }
 
-IEntity		&IEntity::operator=(IEntity const &rhs)
+IEntity &IEntity::operator=(IEntity const &rhs)
 {
 	static_cast<void>(rhs);
 	return (*this);

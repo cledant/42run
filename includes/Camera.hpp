@@ -24,46 +24,46 @@ class Camera
 	public :
 
 		Camera(Input const &input, glm::vec3 const &pos,
-			glm::vec3 const &world_up, glm::vec3 const &front, GLfloat yaw,
-			GLfloat pitch);
+			   glm::vec3 const &world_up, glm::vec3 const &front, GLfloat yaw,
+			   GLfloat pitch);
 		virtual ~Camera(void);
-        Camera(const Camera &src) = delete;
-        Camera		&operator=(Camera const &rhs) = delete;
+		Camera(const Camera &src) = delete;
+		Camera &operator=(Camera const &rhs) = delete;
 
-		void				update(bool mouse_exclusive_to_manager);
-		void				toggle_update(void);
-		glm::mat4 const		&getViewMatrix(void) const;
-		glm::vec3 const		&getFront(void) const;
-		glm::vec3 const		&getUp(void) const;
-		glm::vec3 const		&getRight(void) const;
-		glm::vec3 const		&getPos(void) const;
+		void update(bool mouse_exclusive_to_manager);
+		void toggle_update(void);
+		glm::mat4 const &getViewMatrix(void) const;
+		glm::vec3 const &getFront(void) const;
+		glm::vec3 const &getUp(void) const;
+		glm::vec3 const &getRight(void) const;
+		glm::vec3 const &getPos(void) const;
 
-	class CameraFailException : public GeneralException
-	{
-		public :
+		class CameraFailException : public GeneralException
+		{
+			public :
 
-			explicit CameraFailException(void);
-			virtual ~CameraFailException(void) throw();
-	};
+				explicit CameraFailException(void);
+				virtual ~CameraFailException(void) throw();
+		};
 
 	private :
 
-		Input const		&_input;
-		glm::vec3		_world_up;
-		glm::vec3		_pos;
-		glm::vec3		_front;
-		glm::vec3		_up;
-		glm::vec3		_right;
-		glm::mat4		_view;
-		GLfloat			_mouse_sensitivity;
-		GLfloat			_movement_speed;
-		bool			_update_cam;
-		GLfloat			_yaw;
-		GLfloat			_pitch;
+		Input const &_input;
+		glm::vec3   _world_up;
+		glm::vec3   _pos;
+		glm::vec3   _front;
+		glm::vec3   _up;
+		glm::vec3   _right;
+		glm::mat4   _view;
+		GLfloat     _mouse_sensitivity;
+		GLfloat     _movement_speed;
+		bool        _update_cam;
+		GLfloat     _yaw;
+		GLfloat     _pitch;
 
-		void			_update_from_keyboard_input(void);
-		void			_update_from_mouse_input(void);
-		void			_update_vector_matrix(void);
+		void _update_from_keyboard_input(void);
+		void _update_from_mouse_input(void);
+		void _update_vector_matrix(void);
 };
 
 #endif
