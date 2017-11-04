@@ -26,15 +26,23 @@ class Texture
 {
 	public :
 
-		typedef enum e_tex_type
+		typedef enum e_tex_gl_type
 		{
 			TEX_FLAT,
 			TEX_CUBE,
+		} t_tex_gl_type;
+
+		typedef enum e_tex_type
+		{
+			TEX_DIFFUSE;
+			TEX_SPECULAR;
+			TEX_NORMAL;
+			TEX_HEIGHT;
 		} t_tex_type;
 
 		Texture(void);
 		Texture(std::string const &name, std::vector<std::string> const &files,
-				Texture::t_tex_type type);
+				Texture::t_tex_gl_type gl_type, Texture::t_tex_type type);
 		Texture(const Texture &src) = delete;
 		Texture &operator=(Texture const &rhs) = delete;
 		Texture(Texture &&src);
@@ -43,6 +51,7 @@ class Texture
 
 		std::string const &getName(void) const;
 		GLuint getTextureID(void) const;
+		Texture::t_tex_type getTextureType(void) const;
 		GLuint moveTexture(void);
 
 		class FileOpenException : public GeneralException
@@ -90,6 +99,7 @@ class Texture
 
 		std::string _name;
 		GLuint      _tex_id;
+		t_tex_type	_type;
 
 		static GLuint _load_cubemap(std::vector<std::string> const &files);
 		static GLuint _load_flat(std::vector<std::string> const &files);

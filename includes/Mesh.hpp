@@ -61,6 +61,22 @@ class Mesh
 				virtual        ~GLInitException(void) throw();
 		};
 
+		class InvalidMeshException : public GeneralException
+		{
+			public :
+
+				explicit InvalidMeshException(void);
+				virtual ~InvalidMeshException(void) throw();
+		};
+
+		class InvalidMaterialException : public GeneralException
+		{
+			public :
+
+				explicit InvalidMaterialException(void);
+				virtual ~InvalidMaterialException(void) throw();
+		};
+
 	private :
 
 		std::vector<Mesh::Vertex> _vertex_list;
@@ -71,9 +87,10 @@ class Mesh
 		GLuint                    _ebo;
 
 		void _load_mesh(aiMesh *mesh, const aiScene *scene);
+		void _load_indice(aiMesh *mesh, const aiScene *scene);
+		void _load_material(aiMesh *mesh, const aiScene *scene);
+		void _load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_type tex_type);
 		void _allocate_set_GL_ressources(void);
-		void _load_material(aiMaterial *mat, aiTextureType type,
-							std::string type_name);
 };
 
 #endif

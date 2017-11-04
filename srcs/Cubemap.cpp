@@ -25,7 +25,7 @@ Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		this->_vao = oGL_module::oGL_create_vao();
 		oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
 										   sizeof(GLfloat) * 3, 0);
-		this->_tex = new Texture("tex_cubemap", files, Texture::TEX_CUBE);
+		this->_tex = new Texture("tex_cubemap", files, Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	}
 	catch (std::exception &e)
 	{

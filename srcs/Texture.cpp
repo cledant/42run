@@ -14,14 +14,14 @@
 
 #include "Texture.hpp"
 
-Texture::Texture(void) : _name(""), _tex_id(0)
+Texture::Texture(void) : _name(""), _tex_id(0), _type(TEX_DIFFUSE)
 {
 }
 
 Texture::Texture(std::string const &name, std::vector<std::string> const &files,
-				 Texture::t_tex_type type) : _name(name), _tex_id(0)
+				 Texture::t_tex_gl_type gl_type, Texture::t_tex_type type) : _name(name), _tex_id(0), _type(type)
 {
-	switch (type)
+	switch (gl_type)
 	{
 		case TEX_CUBE :
 			this->_tex_id = Texture::_load_cubemap(files);
@@ -40,16 +40,18 @@ Texture::~Texture(void)
 	glDeleteTextures(1, &(this->_tex_id));
 }
 
-Texture::Texture(Texture &&src) : _name(""), _tex_id(0)
+Texture::Texture(Texture &&src) : _name(""), _tex_id(0), _type(TEX_DIFFUSE)
 {
 	this->_name   = src.getName();
 	this->_tex_id = src.moveTexture();
+	this->_type = src.getTextureType();
 }
 
 Texture &Texture::operator=(Texture &&rhs)
 {
 	this->_name   = rhs.getName();
 	this->_tex_id = rhs.moveTexture();
+	this->_type = rhs.getTextureType();
 	return (*this);
 }
 
@@ -61,6 +63,11 @@ std::string const &Texture::getName(void) const
 GLuint Texture::getTextureID(void) const
 {
 	return (this->_tex_id);
+}
+
+Texture::t_tex_type 	Texture::getTextureType(void) const
+{
+	return (this->_type);
 }
 
 GLuint Texture::moveTexture(void)
