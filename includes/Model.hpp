@@ -64,7 +64,7 @@ class Model
 		std::vector<Mesh> _mesh_list;
 
 		void _load_model(std::string const &path);
-		void _load_node(aiNode *node, const aiScene *scene);
+		void _load_node(aiNode *node, const aiScene *scene, std::string const &directory);
 };
 
 #endif

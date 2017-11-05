@@ -13,11 +13,11 @@
 #include "Mesh.hpp"
 #include "oGL_module.hpp"
 
-Mesh::Mesh(void) : _vao(0), _vbo(0), _ebo(0)
+Mesh::Mesh(void) : _vao(0), _vbo(0), _ebo(0), _directory(".")
 {
 }
 
-Mesh::Mesh(aiMesh *mesh, const aiScene *scene) : _vao(0), _vbo(0), _ebo(0)
+Mesh::Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory) : _vao(0), _vbo(0), _ebo(0), _directory(directory)
 {
 	if (mesh == NULL)
 		throw Mesh::InvalidMeshException();
@@ -36,6 +36,57 @@ Mesh::Mesh(aiMesh *mesh, const aiScene *scene) : _vao(0), _vbo(0), _ebo(0)
 		oGL_module::oGL_delete_vbo(this->_ebo);
 		throw Mesh::GLInitException();
 	}
+}
+
+Mesh::~Mesh(void)
+{
+	oGL_module::oGL_delete_vao(this->_vao);
+	oGL_module::oGL_delete_vbo(this->_vbo);
+	oGL_module::oGL_delete_vbo(this->_ebo);
+}
+
+std::vector<Mesh::Vertex> const &Mesh::getVertexList(void) const
+{
+	return (this->_vertex_list);
+}
+
+std::vector<Texture> const &Mesh::getTextureList(void) const
+{
+	return (this->_texture_list);
+}
+
+std::vector<unsigned int> const &Mesh::getIndiceList(void) const
+{
+	return (this->_indice_list);
+}
+
+std::string const &Mesh::getDirectory(void) const
+{
+	return (this->_directory);
+}
+
+GLuint Mesh::moveVAO(void)
+{
+	GLuint tmp = this->_vao;
+
+	this->_vao = 0;
+	return (tmp);
+}
+
+GLuint Mesh::moveVBO(void)
+{
+	GLuint tmp = this->_vbo;
+
+	this->_vbo = 0;
+	return (tmp);
+}
+
+GLuint Mesh::moveEBO(void)
+{
+	GLuint tmp = this->_ebo;
+
+	this->_ebo = 0;
+	return (tmp);
 }
 
 void Mesh::_load_mesh(aiMesh *mesh, const aiScene *scene)

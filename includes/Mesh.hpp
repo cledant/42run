@@ -38,7 +38,7 @@ class Mesh
 		};
 
 		Mesh(void);
-		Mesh(aiMesh *mesh, const aiScene *scene);
+		Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory);
 		Mesh(Mesh const &src) = delete;
 		Mesh &operator=(Mesh const &rhs) = delete;
 		Mesh(Mesh &&src);
@@ -48,6 +48,7 @@ class Mesh
 		std::vector<Mesh::Vertex> const &getVertexList(void) const;
 		std::vector<Texture> const &getTextureList(void) const;
 		std::vector<unsigned int> const &getIndiceList(void) const;
+		std::string const &getDirectory(void) const;
 		GLuint moveVAO(void);
 		GLuint moveVBO(void);
 		GLuint moveEBO(void);
@@ -85,6 +86,7 @@ class Mesh
 		GLuint                    _vao;
 		GLuint                    _vbo;
 		GLuint                    _ebo;
+		std::string               _directory;
 
 		void _load_mesh(aiMesh *mesh, const aiScene *scene);
 		void _load_indice(aiMesh *mesh, const aiScene *scene);

@@ -60,22 +60,28 @@ void Model::_load_model(std::string const &path)
 {
 	Assimp::Importer importer;
 	const aiScene    *scene;
+	std::string      directory;
+	size_t           pos;
 
 	scene = importer.ReadFile(path,
 							  aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		throw Model::FileOpenException(path);
-	this->_load_node(scene->mRootNode, scene);
+	if ((pos = path.find_last_of('/')) == std::string::npos)
+		directory = ".";
+	else
+		directory = path.substr(0, pos);
+	this->_load_node(scene->mRootNode, scene, directory);
 }
 
-void Model::_load_node(aiNode *node, const aiScene *scene)
+void Model::_load_node(aiNode *node, const aiScene *scene, std::string const &directory)
 {
 	if (node == NULL)
 		throw Model::InvalidNodeException();
 	for (size_t i = 0; i < node->mNumMeshes; ++i)
-		this->_mesh_list.push_back({scene->mMeshes[node->mMeshes[i]], scene});
+		this->_mesh_list.push_back({scene->mMeshes[node->mMeshes[i]], scene, directory});
 	for (size_t j = 0; j < node->mNumChildren; ++j)
-		this->_load_node(node->mChildren[j], scene);
+		this->_load_node(node->mChildren[j], scene, directory);
 }
 
 Model::FileOpenException::FileOpenException(std::string const &path)
