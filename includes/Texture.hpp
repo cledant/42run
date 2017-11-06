@@ -34,10 +34,10 @@ class Texture
 
 		typedef enum e_tex_type
 		{
-			TEX_DIFFUSE;
-			TEX_SPECULAR;
-			TEX_NORMAL;
-			TEX_HEIGHT;
+			TEX_DIFFUSE,
+			TEX_SPECULAR,
+			TEX_NORMAL,
+			TEX_HEIGHT,
 		} t_tex_type;
 
 		Texture(void);

@@ -39,7 +39,6 @@ class Model
 
 		std::string const &getName(void) const;
 		std::vector<Mesh> const &getMeshList(void) const;
-		void draw(void) const;
 
 		class FileOpenException : public GeneralException
 		{

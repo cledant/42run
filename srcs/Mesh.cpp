@@ -17,7 +17,8 @@ Mesh::Mesh(void) : _vao(0), _vbo(0), _ebo(0), _directory(".")
 {
 }
 
-Mesh::Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory) : _vao(0), _vbo(0), _ebo(0), _directory(directory)
+Mesh::Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory) :
+		_vao(0), _vbo(0), _ebo(0), _directory(directory)
 {
 	if (mesh == NULL)
 		throw Mesh::InvalidMeshException();
@@ -45,14 +46,30 @@ Mesh::~Mesh(void)
 	oGL_module::oGL_delete_vbo(this->_ebo);
 }
 
+Mesh::Mesh(Mesh &&src)
+{
+	this->_indice_list  = src.getIndiceList();
+	this->_vertex_list  = src.getVertexList();
+	this->_vao          = src.moveVAO();
+	this->_vbo          = src.moveVBO();
+	this->_ebo          = src.moveEBO();
+	this->_texture_list = src.moveTextureList();
+}
+
+Mesh &Mesh::operator=(Mesh &&rhs)
+{
+	this->_indice_list  = rhs.getIndiceList();
+	this->_vertex_list  = rhs.getVertexList();
+	this->_vao          = rhs.moveVAO();
+	this->_vbo          = rhs.moveVBO();
+	this->_ebo          = rhs.moveEBO();
+	this->_texture_list = rhs.moveTextureList();
+	return (*this);
+}
+
 std::vector<Mesh::Vertex> const &Mesh::getVertexList(void) const
 {
 	return (this->_vertex_list);
-}
-
-std::vector<Texture> const &Mesh::getTextureList(void) const
-{
-	return (this->_texture_list);
 }
 
 std::vector<unsigned int> const &Mesh::getIndiceList(void) const
@@ -87,6 +104,11 @@ GLuint Mesh::moveEBO(void)
 
 	this->_ebo = 0;
 	return (tmp);
+}
+
+std::vector<Texture> Mesh::moveTextureList(void)
+{
+	return (this->_texture_list);
 }
 
 void Mesh::_load_mesh(aiMesh *mesh, const aiScene *scene)
@@ -141,6 +163,34 @@ void Mesh::_load_material(aiMesh *mesh, const aiScene *scene)
 	this->_load_texture(mat, aiTextureType_AMBIENT, Texture::TEX_HEIGHT);
 }
 
+void Mesh::_load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_type tex_type)
+{
+	aiString    str;
+	std::string std_str;
+
+	for (size_t i = 0; i < mat->GetTextureCount(type); ++i)
+	{
+		mat->GetTexture(type, i, &str);
+		std_str.clear();
+		std_str = this->_directory + '/';
+		std_str.append(str.C_Str());
+		if (this->_find_texture(std_str) == false)
+			this->_texture_list.push_back({std_str, {std_str}, Texture::TEX_FLAT, tex_type});
+	}
+}
+
+bool Mesh::_find_texture(std::string const &name) const
+{
+	std::vector<Texture>::const_iterator it;
+
+	for (it = this->_texture_list.begin(); it != this->_texture_list.end(); ++it)
+	{
+		if (it->getName().compare(name) == 0)
+			return (true);
+	}
+	return (false);
+}
+
 void Mesh::_allocate_set_GL_ressources(void)
 {
 	this->_vao = oGL_module::oGL_create_vao();
@@ -151,4 +201,31 @@ void Mesh::_allocate_set_GL_ressources(void)
 	oGL_module::oGL_set_vao_parameters(this->_vbo, this->_vao, 2, 3, sizeof(Vertex), sizeof(GLfloat) * 6);
 	oGL_module::oGL_set_vao_parameters(this->_vbo, this->_vao, 3, 3, sizeof(Vertex), sizeof(GLfloat) * 8);
 	oGL_module::oGL_set_vao_parameters(this->_vbo, this->_vao, 4, 3, sizeof(Vertex), sizeof(GLfloat) * 11);
+}
+
+Mesh::GLInitException::GLInitException(void)
+{
+	this->_msg = "Mesh : GL ressources initialization failed";
+}
+
+Mesh::GLInitException::~GLInitException(void) throw()
+{
+}
+
+Mesh::InvalidMeshException::InvalidMeshException(void)
+{
+	this->_msg = "Model : Invalid Assimp Mesh";
+}
+
+Mesh::InvalidMeshException::~InvalidMeshException(void) throw()
+{
+}
+
+Mesh::InvalidMaterialException::InvalidMaterialException(void)
+{
+	this->_msg = "Mesh : Invalid Material";
+}
+
+Mesh::InvalidMaterialException::~InvalidMaterialException(void) throw()
+{
 }
