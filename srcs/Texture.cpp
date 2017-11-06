@@ -12,7 +12,6 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#include <oGL_module.hpp>
 #include "Texture.hpp"
 
 Texture::Texture(void) : _name(""), _tex_id(0), _type(TEX_DIFFUSE)
