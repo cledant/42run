@@ -17,8 +17,8 @@
 # include "oGL_module.hpp"
 # include "Model.hpp"
 # include "Shader.hpp"
-
 # include "GeneralException.hpp"
+# include "glm/gtc/matrix_transform.hpp"
 # include "glm/glm.hpp"
 # include <iostream>
 # include <vector>
@@ -27,12 +27,12 @@ class Prop : public IEntity
 {
 	public :
 
-		Prop(void);
+		Prop(Shader const *shader, glm::mat4 const *perspec_mult_view,
+			 Model const *model, glm::vec3 const &pos,
+			 glm::vec3 const &scale);
 		virtual ~Prop(void);
 		Prop(Prop const &src) = delete;
 		Prop &operator=(Prop const &rhs) = delete;
-		Prop(Prop &&src);
-		Prop &operator=(Prop &&rhs);
 
 		void update(float time);
 		void draw(void);

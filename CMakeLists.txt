@@ -39,7 +39,8 @@ set(SOURCE_FILES
 		srcs/Window.cpp
 		srcs/World.cpp
 		srcs/Model.cpp
-		srcs/Mesh.cpp)
+		srcs/Mesh.cpp
+		srcs/Prop.cpp)
 
 #OS specific libs
 if (APPLE)
