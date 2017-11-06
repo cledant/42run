@@ -38,6 +38,44 @@ void Prop::update(float time)
 				   glm::scale(glm::translate(glm::mat4(1.0f), this->_pos), this->_scale);
 }
 
+void Prop::draw(void)
+{
+	GLint  uniform_mat_total_id;
+	GLint  uniform_tex_diff_id;
+	size_t nb_tex = 0;
+
+	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
+		this->_model == nullptr ||
+		oGL_module::oGL_getUniformID("uniform_mat_total", this->_shader->getShaderProgram(),
+									 &uniform_mat_total_id) == false ||
+		oGL_module::oGL_getUniformID("uniform_tex_diff", this->_shader->getShaderProgram(),
+									 &uniform_tex_diff_id))
+	{
+		std::cout << "Warning : Can't draw Cubemap" << std::endl;
+		return;
+	}
+	this->_shader->use();
+	this->_shader->setMat4(uniform_mat_total_id, this->_total);
+	for (size_t i = 0; i < this->_model->getMeshList().size(); ++i)
+	{
+		nb_tex = 0;
+		for (size_t j = 0; j < this->_model->getMeshList()[i].getTextureList().size(); ++j)
+		{
+			if (this->_model->getMeshList()[i].getTextureList()[j]
+						.getTextureType() == Texture::TEX_DIFFUSE)
+			{
+				this->_shader->getShaderProgram().setTexture(uniform_tex_diff_id,
+															 this->_model->getMeshList()[i].getTextureList()[j]
+																	 .getTextureID());
+				break;
+			}
+		}
+		oGL_module::oGL_draw_indiced_filled(this->_model->getMeshList()[i].getVAO(),
+											this->_model->getMeshList()[i].getIndiceList().size(),
+											&(this->_model->getMeshList()[i].getIndiceList()));
+	}
+}
+
 void Prop::setPosition(glm::vec3 const &pos)
 {
 	this->_pos = pos;

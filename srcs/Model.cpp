@@ -44,6 +44,11 @@ std::string const &Model::getName(void) const
 	return (this->_name);
 }
 
+std::vector<Mesh> const &Model::getMeshList(void) const
+{
+	return (this->_mesh_list);
+}
+
 std::vector<Mesh> Model::moveMeshList()
 {
 	return (std::move(this->_mesh_list));

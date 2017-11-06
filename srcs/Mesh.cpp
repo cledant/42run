@@ -74,6 +74,11 @@ std::vector<Mesh::Vertex> const &Mesh::getVertexList(void) const
 	return (this->_vertex_list);
 }
 
+std::vector<Texture> const &Mesh::getTextureList(void) const
+{
+	return (this->_texture_list);
+}
+
 std::vector<unsigned int> const &Mesh::getIndiceList(void) const
 {
 	return (this->_indice_list);
@@ -82,6 +87,11 @@ std::vector<unsigned int> const &Mesh::getIndiceList(void) const
 std::string const &Mesh::getDirectory(void) const
 {
 	return (this->_directory);
+}
+
+GLuint Mesh::getVAO(void) const
+{
+	return (this->_vao);
 }
 
 GLuint Mesh::moveVAO(void)
@@ -120,9 +130,9 @@ void Mesh::_load_mesh(aiMesh *mesh)
 	for (size_t i = 0; i < mesh->mNumVertices; ++i)
 	{
 		std::memset(&tmp, 0, sizeof(Mesh::Vertex));
-		tmp.Position.x  = mesh->mVertices[i].x;
-		tmp.Position.y  = mesh->mVertices[i].y;
-		tmp.Position.z  = mesh->mVertices[i].z;
+		tmp.Position.x = mesh->mVertices[i].x;
+		tmp.Position.y = mesh->mVertices[i].y;
+		tmp.Position.z = mesh->mVertices[i].z;
 		if (mesh->mNormals != NULL)
 		{
 			tmp.Normal.x = mesh->mNormals[i].x;

@@ -46,9 +46,11 @@ class Mesh
 		virtual ~Mesh(void);
 
 		std::vector<Mesh::Vertex> const &getVertexList(void) const;
+		std::vector<Texture> const &getTextureList(void) const;
 		std::vector<unsigned int> const &getIndiceList(void) const;
 		std::string const &getDirectory(void) const;
 		std::vector<Texture> moveTextureList(void);
+		GLuint getVAO(void) const;
 		GLuint moveVAO(void);
 		GLuint moveVBO(void);
 		GLuint moveEBO(void);
