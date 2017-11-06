@@ -54,6 +54,7 @@ Mesh::Mesh(Mesh &&src)
 	this->_vbo          = src.moveVBO();
 	this->_ebo          = src.moveEBO();
 	this->_texture_list = src.moveTextureList();
+	this->_directory    = src.getDirectory();
 }
 
 Mesh &Mesh::operator=(Mesh &&rhs)
@@ -64,6 +65,7 @@ Mesh &Mesh::operator=(Mesh &&rhs)
 	this->_vbo          = rhs.moveVBO();
 	this->_ebo          = rhs.moveEBO();
 	this->_texture_list = rhs.moveTextureList();
+	this->_directory    = rhs.getDirectory();
 	return (*this);
 }
 
