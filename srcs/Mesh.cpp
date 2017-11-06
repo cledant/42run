@@ -22,8 +22,8 @@ Mesh::Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory) :
 {
 	if (mesh == NULL)
 		throw Mesh::InvalidMeshException();
-	this->_load_mesh(mesh, scene);
-	this->_load_indice(mesh, scene);
+	this->_load_mesh(mesh);
+	this->_load_indice(mesh);
 	this->_load_material(mesh, scene);
 	try
 	{
@@ -110,10 +110,10 @@ GLuint Mesh::moveEBO(void)
 
 std::vector<Texture> Mesh::moveTextureList(void)
 {
-	return (this->_texture_list);
+	return (std::move(this->_texture_list));
 }
 
-void Mesh::_load_mesh(aiMesh *mesh, const aiScene *scene)
+void Mesh::_load_mesh(aiMesh *mesh)
 {
 	struct Mesh::Vertex tmp;
 
@@ -141,7 +141,7 @@ void Mesh::_load_mesh(aiMesh *mesh, const aiScene *scene)
 	}
 }
 
-void Mesh::_load_indice(aiMesh *mesh, const aiScene *scene)
+void Mesh::_load_indice(aiMesh *mesh)
 {
 	aiFace face;
 

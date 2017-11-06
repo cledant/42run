@@ -24,13 +24,13 @@ Model::Model(std::string const &name, std::string const &path) : _name(name)
 Model::Model(Model &&src) : _name("")
 {
 	this->_name      = src.getName();
-	this->_mesh_list = src.getMeshList(); //not sure => check later
+	this->_mesh_list = src.moveMeshList();
 }
 
 Model &Model::operator=(Model &&rhs)
 {
 	this->_name      = rhs.getName();
-	this->_mesh_list = rhs.getMeshList(); //not sure => check later
+	this->_mesh_list = rhs.moveMeshList();
 	return (*this);
 }
 
@@ -43,9 +43,9 @@ std::string const &Model::getName(void) const
 	return (this->_name);
 }
 
-std::vector<Mesh> const &Model::getMeshList() const
+std::vector<Mesh> Model::moveMeshList()
 {
-	return (this->_mesh_list);
+	return (std::move(this->_mesh_list));
 }
 
 void Model::_load_model(std::string const &path)

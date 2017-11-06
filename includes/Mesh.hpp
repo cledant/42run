@@ -87,8 +87,8 @@ class Mesh
 		GLuint                    _ebo;
 		std::string               _directory;
 
-		void _load_mesh(aiMesh *mesh, const aiScene *scene);
-		void _load_indice(aiMesh *mesh, const aiScene *scene);
+		void _load_mesh(aiMesh *mesh);
+		void _load_indice(aiMesh *mesh);
 		void _load_material(aiMesh *mesh, const aiScene *scene);
 		void _load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_type tex_type);
 		bool _find_texture(std::string const &name) const;

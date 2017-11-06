@@ -38,7 +38,7 @@ class Model
 		virtual ~Model(void);
 
 		std::string const &getName(void) const;
-		std::vector<Mesh> const &getMeshList(void) const;
+		std::vector<Mesh> moveMeshList(void);
 
 		class FileOpenException : public GeneralException
 		{

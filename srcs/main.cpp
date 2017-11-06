@@ -42,6 +42,7 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/simple_box/simple_box.fs");
 	oGL.add_shader("cubemap", "./shaders/cubemap/cubemap.vs",
 				   "./shaders/cubemap/cubemap.fs");
+	oGL.add_model("Alice", "./models/Alice/Alice.obj");
 }
 
 static void init_program(World **world, oGL_module &oGL,

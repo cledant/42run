@@ -44,14 +44,14 @@ Texture::Texture(Texture &&src) : _name(""), _tex_id(0), _type(TEX_DIFFUSE)
 {
 	this->_name   = src.getName();
 	this->_tex_id = src.moveTexture();
-	this->_type = src.getTextureType();
+	this->_type   = src.getTextureType();
 }
 
 Texture &Texture::operator=(Texture &&rhs)
 {
 	this->_name   = rhs.getName();
 	this->_tex_id = rhs.moveTexture();
-	this->_type = rhs.getTextureType();
+	this->_type   = rhs.getTextureType();
 	return (*this);
 }
 
@@ -65,7 +65,7 @@ GLuint Texture::getTextureID(void) const
 	return (this->_tex_id);
 }
 
-Texture::t_tex_type 	Texture::getTextureType(void) const
+Texture::t_tex_type Texture::getTextureType(void) const
 {
 	return (this->_type);
 }

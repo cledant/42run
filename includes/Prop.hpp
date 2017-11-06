@@ -1,40 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cubemap.hpp                                        :+:      :+:    :+:   */
+/*   Prop.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/09 16:07:59 by cledant           #+#    #+#             */
-/*   Updated: 2017/09/10 14:43:03 by cledant          ###   ########.fr       */
+/*   Created: 2017/11/06 09:38:15 by cledant           #+#    #+#             */
+/*   Updated: 2017/11/06 09:38:15 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUBEMAP_HPP
-# define CUBEMAP_HPP
+#ifndef PROP_HPP
+# define PROP_HPP
 
-#include "IEntity.hpp"
-#include "oGL_module.hpp"
-#include "Texture.hpp"
-#include "Camera.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+# include "IEntity.hpp"
+# include "oGL_module.hpp"
+# include "Model.hpp"
+# include "Shader.hpp"
 
-class Cubemap : public IEntity
+# include "GeneralException.hpp"
+# include "glm/glm.hpp"
+# include <iostream>
+# include <vector>
+
+class Prop : public IEntity
 {
 	public :
 
-		Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-				std::vector<std::string> const &files, glm::vec3 const &pos,
-				glm::vec3 const &scale);
-		virtual ~Cubemap(void);
-		Cubemap(Cubemap const &src) = delete;
-		Cubemap &operator=(Cubemap const &rhs) = delete;
+		Prop(void);
+		virtual ~Prop(void);
+		Prop(Prop const &src) = delete;
+		Prop &operator=(Prop const &rhs) = delete;
+		Prop(Prop &&src);
+		Prop &operator=(Prop &&rhs);
 
 		void update(float time);
 		void draw(void);
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);
+		void setYaw(GLfloat yaw);
+		void setPitch(GLfloat pitch);
 		glm::mat4 const &getTotalMatrix(void) const;
 
 		class InitException : public GeneralException
@@ -49,15 +54,12 @@ class Cubemap : public IEntity
 
 		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;
-		Texture         *_tex;
-		GLuint          _vbo;
-		GLuint          _vao;
+		Model const     *_model;
+		GLfloat 		_yaw;
+		GLfloat 		_pitch;
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;
-
-		static float  _vertices[];
-		static size_t _nb_faces;
 };
 
 #endif
