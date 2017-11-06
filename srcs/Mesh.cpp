@@ -123,15 +123,24 @@ void Mesh::_load_mesh(aiMesh *mesh)
 		tmp.Position.x  = mesh->mVertices[i].x;
 		tmp.Position.y  = mesh->mVertices[i].y;
 		tmp.Position.z  = mesh->mVertices[i].z;
-		tmp.Normal.x    = mesh->mNormals[i].x;
-		tmp.Normal.y    = mesh->mNormals[i].y;
-		tmp.Normal.z    = mesh->mNormals[i].z;
-		tmp.Tangent.x   = mesh->mTangents[i].x;
-		tmp.Tangent.y   = mesh->mTangents[i].y;
-		tmp.Tangent.z   = mesh->mTangents[i].z;
-		tmp.Bitangent.x = mesh->mBitangents[i].x;
-		tmp.Bitangent.y = mesh->mBitangents[i].y;
-		tmp.Bitangent.z = mesh->mBitangents[i].z;
+		if (mesh->mNormals != NULL)
+		{
+			tmp.Normal.x = mesh->mNormals[i].x;
+			tmp.Normal.y = mesh->mNormals[i].y;
+			tmp.Normal.z = mesh->mNormals[i].z;
+		}
+		if (mesh->mTangents != NULL)
+		{
+			tmp.Tangent.x = mesh->mTangents[i].x;
+			tmp.Tangent.y = mesh->mTangents[i].y;
+			tmp.Tangent.z = mesh->mTangents[i].z;
+		}
+		if (mesh->mBitangents != NULL)
+		{
+			tmp.Bitangent.x = mesh->mBitangents[i].x;
+			tmp.Bitangent.y = mesh->mBitangents[i].y;
+			tmp.Bitangent.z = mesh->mBitangents[i].z;
+		}
 		if (mesh->mTextureCoords[0] != NULL)
 		{
 			tmp.TexCoords.x = mesh->mTextureCoords[0][i].x;
@@ -198,11 +207,11 @@ void Mesh::_allocate_set_GL_ressources(void)
 	this->_vao = oGL_module::oGL_create_vao();
 	this->_vbo = oGL_module::oGL_create_vbo(this->_vertex_list.size() * sizeof(Vertex), &(this->_vertex_list[0]));
 	this->_ebo = oGL_module::oGL_create_vbo(this->_indice_list.size() * sizeof(unsigned int), &(this->_indice_list[0]));
-	oGL_module::oGL_set_vao_parameters(this->_vbo, this->_vao, 0, 3, sizeof(Vertex), 0);
-	oGL_module::oGL_set_vao_parameters(this->_vbo, this->_vao, 1, 3, sizeof(Vertex), sizeof(GLfloat) * 3);
-	oGL_module::oGL_set_vao_parameters(this->_vbo, this->_vao, 2, 3, sizeof(Vertex), sizeof(GLfloat) * 6);
-	oGL_module::oGL_set_vao_parameters(this->_vbo, this->_vao, 3, 3, sizeof(Vertex), sizeof(GLfloat) * 8);
-	oGL_module::oGL_set_vao_parameters(this->_vbo, this->_vao, 4, 3, sizeof(Vertex), sizeof(GLfloat) * 11);
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3, sizeof(Vertex), 0);
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 1, 3, sizeof(Vertex), sizeof(GLfloat) * 3);
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 2, 2, sizeof(Vertex), sizeof(GLfloat) * 6);
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 3, 3, sizeof(Vertex), sizeof(GLfloat) * 8);
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 4, 3, sizeof(Vertex), sizeof(GLfloat) * 11);
 }
 
 Mesh::GLInitException::GLInitException(void)

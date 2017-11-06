@@ -76,7 +76,7 @@ GLuint oGL_module::oGL_create_vao(void)
 	return (new_vao);
 }
 
-void oGL_module::oGL_set_vao_parameters(GLuint vbo, GLuint vao,
+void oGL_module::oGL_set_vao_parameters(GLuint vao, GLuint vbo,
 										GLuint index, GLint size, GLsizei stride,
 										size_t shift)
 {

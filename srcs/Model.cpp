@@ -18,6 +18,7 @@ Model::Model(void) : _name("")
 
 Model::Model(std::string const &name, std::string const &path) : _name(name)
 {
+	std::cout << "Loading : " << path << std::endl;
 	this->_load_model(path);
 }
 

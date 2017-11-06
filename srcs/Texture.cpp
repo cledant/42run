@@ -12,6 +12,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
+#include <oGL_module.hpp>
 #include "Texture.hpp"
 
 Texture::Texture(void) : _name(""), _tex_id(0), _type(TEX_DIFFUSE)
@@ -151,7 +152,7 @@ GLuint Texture::_load_flat(std::vector<std::string> const &files)
 			throw ChannelNumberException();
 		}
 		glTexImage2D(GL_TEXTURE_2D, 0, format,
-					 tex_w, tex_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+					 tex_w, tex_h, 0, format, GL_UNSIGNED_BYTE, data);
 		stbi_image_free(data);
 	}
 	else
@@ -164,6 +165,7 @@ GLuint Texture::_load_flat(std::vector<std::string> const &files)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	return (tex_id);
 }
 
