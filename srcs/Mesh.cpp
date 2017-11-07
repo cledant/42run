@@ -13,16 +13,17 @@
 #include "Mesh.hpp"
 #include "oGL_module.hpp"
 
-Mesh::Mesh(void) : _vao(0), _vbo(0), _ebo(0), _directory(".")
+Mesh::Mesh(void) : _vao(0), _vbo(0), _ebo(0), _directory("."), _center({0.0f, 0.0f, 0.0f})
 {
 }
 
 Mesh::Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory) :
-		_vao(0), _vbo(0), _ebo(0), _directory(directory)
+		_vao(0), _vbo(0), _ebo(0), _directory(directory) , _center({0.0f, 0.0f, 0.0f})
 {
 	if (mesh == NULL)
 		throw Mesh::InvalidMeshException();
 	this->_load_mesh(mesh);
+	this->_calculate_center();
 	this->_load_indice(mesh);
 	this->_load_material(mesh, scene);
 	try
@@ -55,6 +56,7 @@ Mesh::Mesh(Mesh &&src)
 	this->_ebo          = src.moveEBO();
 	this->_texture_list = src.moveTextureList();
 	this->_directory    = src.getDirectory();
+	this->_center       = src.getCenter();
 }
 
 Mesh &Mesh::operator=(Mesh &&rhs)
@@ -66,6 +68,7 @@ Mesh &Mesh::operator=(Mesh &&rhs)
 	this->_ebo          = rhs.moveEBO();
 	this->_texture_list = rhs.moveTextureList();
 	this->_directory    = rhs.getDirectory();
+	this->_center       = rhs.getCenter();
 	return (*this);
 }
 
@@ -82,6 +85,11 @@ std::vector<Texture> const &Mesh::getTextureList(void) const
 std::vector<unsigned int> const &Mesh::getIndiceList(void) const
 {
 	return (this->_indice_list);
+}
+
+glm::vec3 const &Mesh::getCenter(void) const
+{
+	return (this->_center);
 }
 
 std::string const &Mesh::getDirectory(void) const
@@ -210,6 +218,19 @@ bool Mesh::_find_texture(std::string const &name) const
 			return (true);
 	}
 	return (false);
+}
+
+void Mesh::_calculate_center(void)
+{
+	for (size_t i = 0; i < this->_vertex_list.size(); i++)
+	{
+		this->_center.x += this->_vertex_list[i].Position.x;
+		this->_center.y += this->_vertex_list[i].Position.y;
+		this->_center.z += this->_vertex_list[i].Position.z;
+	}
+	this->_center.x /= this->_vertex_list.size();
+	this->_center.y /= this->_vertex_list.size();
+	this->_center.z /= this->_vertex_list.size();
 }
 
 void Mesh::_allocate_set_GL_ressources(void)

@@ -125,14 +125,10 @@ bool oGL_module::oGL_getUniformID(std::string const &name,
 
 void oGL_module::oGL_set_texture(GLint tex_uniform, GLint tex_index, GLuint tex_id)
 {
-/*	std::cout << "================" << std::endl;
-	std::cout << "Index : " << tex_index << std::endl;
-	std::cout << "ID : " << tex_id << std::endl;
-	std::cout << "================" << std::endl;
-*/	glActiveTexture(GL_TEXTURE0 + tex_index);
+	glActiveTexture(GL_TEXTURE0 + tex_index);
 	glUniform1i(tex_uniform, tex_index);
 	glBindTexture(GL_TEXTURE_2D, tex_id);
-//	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0);
 }
 
 void oGL_module::oGL_draw_filled(GLuint vao, size_t nb_faces)
@@ -140,15 +136,6 @@ void oGL_module::oGL_draw_filled(GLuint vao, size_t nb_faces)
 	glBindVertexArray(vao);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawArrays(GL_TRIANGLES, 0, nb_faces);
-	glBindVertexArray(0);
-}
-
-void oGL_module::oGL_draw_indiced_filled(GLuint vao, size_t nb_faces)
-{
-	//to delete
-	glBindVertexArray(vao);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glDrawElements(GL_TRIANGLES, nb_faces, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 

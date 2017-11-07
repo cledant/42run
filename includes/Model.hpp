@@ -39,6 +39,7 @@ class Model
 
 		std::string const &getName(void) const;
 		std::vector<Mesh> const &getMeshList(void) const;
+		glm::vec3 const &getCenter(void) const;
 		std::vector<Mesh> moveMeshList(void);
 
 		class FileOpenException : public GeneralException
@@ -62,9 +63,11 @@ class Model
 
 		std::string       _name;
 		std::vector<Mesh> _mesh_list;
+		glm::vec3         _center;
 
 		void _load_model(std::string const &path);
 		void _load_node(aiNode *node, const aiScene *scene, std::string const &directory);
+		void _calculate_center(void);
 };
 
 #endif

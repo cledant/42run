@@ -47,7 +47,6 @@ class oGL_module
 									 GLuint prog, GLint *uniform_id);
 		static void oGL_set_texture(GLint tex_uniform, GLint tex_index, GLuint tex_id);
 		static void oGL_draw_filled(GLuint vao, size_t nb_faces);
-		static void oGL_draw_indiced_filled(GLuint vao, size_t nb_faces);
 		static void oGL_draw_points(GLuint vao, size_t nb_faces);
 		static void oGL_draw_cubemap(GLuint vao, GLuint tex,
 									 size_t nb_faces);

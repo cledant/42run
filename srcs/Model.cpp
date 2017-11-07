@@ -12,26 +12,29 @@
 
 #include "Model.hpp"
 
-Model::Model(void) : _name("")
+Model::Model(void) : _name(""), _center({0.0f, 0.0f, 0.0f})
 {
 }
 
-Model::Model(std::string const &name, std::string const &path) : _name(name)
+Model::Model(std::string const &name, std::string const &path) : _name(name), _center({0.0f, 0.0f, 0.0f})
 {
 	std::cout << "Loading : " << path << std::endl;
 	this->_load_model(path);
+	this->_calculate_center();
 }
 
-Model::Model(Model &&src) : _name("")
+Model::Model(Model &&src) : _name(""), _center({0.0f, 0.0f, 0.0f})
 {
 	this->_name      = src.getName();
 	this->_mesh_list = src.moveMeshList();
+	this->_center    = src.getCenter();
 }
 
 Model &Model::operator=(Model &&rhs)
 {
 	this->_name      = rhs.getName();
 	this->_mesh_list = rhs.moveMeshList();
+	this->_center    = rhs.getCenter();
 	return (*this);
 }
 
@@ -47,6 +50,11 @@ std::string const &Model::getName(void) const
 std::vector<Mesh> const &Model::getMeshList(void) const
 {
 	return (this->_mesh_list);
+}
+
+glm::vec3 const &Model::getCenter(void) const
+{
+	return (this->_center);
 }
 
 std::vector<Mesh> Model::moveMeshList()
@@ -80,6 +88,19 @@ void Model::_load_node(aiNode *node, const aiScene *scene, std::string const &di
 		this->_mesh_list.push_back({scene->mMeshes[node->mMeshes[i]], scene, directory});
 	for (size_t j = 0; j < node->mNumChildren; ++j)
 		this->_load_node(node->mChildren[j], scene, directory);
+}
+
+void Model::_calculate_center(void)
+{
+	for (size_t i = 0; i < this->_mesh_list.size(); i++)
+	{
+		this->_center.x += this->_mesh_list[i].getCenter().x;
+		this->_center.y += this->_mesh_list[i].getCenter().y;
+		this->_center.z += this->_mesh_list[i].getCenter().z;
+	}
+	this->_center.x /= this->_mesh_list.size();
+	this->_center.y /= this->_mesh_list.size();
+	this->_center.z /= this->_mesh_list.size();
 }
 
 Model::FileOpenException::FileOpenException(std::string const &path)
