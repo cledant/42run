@@ -49,7 +49,7 @@ void Prop::draw(void)
 		oGL_module::oGL_getUniformID("uniform_mat_total", this->_shader->getShaderProgram(),
 									 &uniform_mat_total_id) == false ||
 		oGL_module::oGL_getUniformID("uniform_tex_diff", this->_shader->getShaderProgram(),
-									 &uniform_tex_diff_id))
+									 &uniform_tex_diff_id) == false)
 	{
 		std::cout << "Warning : Can't draw Cubemap" << std::endl;
 		return;
@@ -64,15 +64,14 @@ void Prop::draw(void)
 			if (this->_model->getMeshList()[i].getTextureList()[j]
 						.getTextureType() == Texture::TEX_DIFFUSE)
 			{
-				this->_shader->getShaderProgram().setTexture(uniform_tex_diff_id,
-															 this->_model->getMeshList()[i].getTextureList()[j]
-																	 .getTextureID());
+				oGL_module::oGL_set_texture(uniform_tex_diff_id, nb_tex,
+											this->_model->getMeshList()[i].getTextureList()[j].getTextureID());
+				nb_tex++;
 				break;
 			}
 		}
-		oGL_module::oGL_draw_indiced_filled(this->_model->getMeshList()[i].getVAO(),
-											this->_model->getMeshList()[i].getIndiceList().size(),
-											&(this->_model->getMeshList()[i].getIndiceList()));
+		oGL_module::oGL_draw_filled(this->_model->getMeshList()[i].getVAO(),
+									this->_model->getMeshList()[i].getIndiceList().size());
 	}
 }
 

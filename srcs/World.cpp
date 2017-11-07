@@ -98,6 +98,16 @@ IEntity *World::add_Cubemap(Shader const *shader,
 	return (ptr);
 }
 
+IEntity *World::add_Prop(Shader const *shader, Model const *model,
+						 glm::vec3 const &pos, glm::vec3 const &scale)
+{
+	IEntity *ptr;
+
+	ptr = new Prop(shader, &(this->_perspec_mult_view), model, pos, scale);
+	this->_entity_list.push_back(ptr);
+	return (ptr);
+}
+
 void World::setActiveInteractive(IInteractive *ptr)
 {
 	this->_active = ptr;

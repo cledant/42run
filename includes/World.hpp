@@ -21,6 +21,7 @@
 # include "IInteractive.hpp"
 # include "Simple_box.hpp"
 # include "Cubemap.hpp"
+# include "Prop.hpp"
 # include "Shader.hpp"
 # include "Camera.hpp"
 # include "Window.hpp"
@@ -46,6 +47,8 @@ class World
 		IEntity *add_Cubemap(Shader const *shader,
 							 std::vector<std::string> const &files,
 							 glm::vec3 const &pos, glm::vec3 const &scale);
+		IEntity *add_Prop(Shader const *shader, Model const *model,
+						  glm::vec3 const &pos, glm::vec3 const &scale);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);

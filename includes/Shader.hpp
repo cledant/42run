@@ -41,7 +41,6 @@ class Shader
 					 glm::mat4 const &mat4) const;
 		void setVec3(GLint uniform_id,
 					 glm::vec3 const &vec3) const;
-		void setTexture(GLint uniform_id) const; //todo
 
 		class FileOpenException : public GeneralException
 		{
