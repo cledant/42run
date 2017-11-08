@@ -48,7 +48,6 @@ class Mesh
 		std::vector<Mesh::Vertex> const &getVertexList(void) const;
 		std::vector<Texture> const &getTextureList(void) const;
 		std::vector<unsigned int> const &getIndiceList(void) const;
-		glm::vec3 const &getCenter(void) const;
 		std::string const &getDirectory(void) const;
 		std::vector<Texture> moveTextureList(void);
 		GLuint getVAO(void) const;
@@ -89,14 +88,12 @@ class Mesh
 		GLuint                    _vbo;
 		GLuint                    _ebo;
 		std::string               _directory;
-		glm::vec3                 _center;
 
 		void _load_mesh(aiMesh *mesh);
 		void _load_indice(aiMesh *mesh);
 		void _load_material(aiMesh *mesh, const aiScene *scene);
 		void _load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_type tex_type);
 		bool _find_texture(std::string const &name) const;
-		void _calculate_center(void);
 		void _allocate_set_GL_ressources(void);
 };
 

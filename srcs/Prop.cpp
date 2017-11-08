@@ -16,7 +16,7 @@ Prop::Prop(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		   Model const *model, glm::vec3 const &pos,
 		   glm::vec3 const &scale) :
 		_shader(shader), _perspec_mult_view(perspec_mult_view), _model(model),
-		_yaw(0.0f), _pitch(0.0f), _pos(pos), _scale(scale)
+		_yaw(0.0f), _pitch(0.0f), _roll(0.0f), _pos(pos), _scale(scale)
 {
 	this->update(0.0f);
 }
@@ -27,6 +27,8 @@ Prop::~Prop(void)
 
 void Prop::update(float time)
 {
+	glm::mat4 model;
+
 	static_cast<void>(time);
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
 		this->_model == nullptr)
@@ -34,8 +36,16 @@ void Prop::update(float time)
 		std::cout << "Warning : Can't update Cubemap" << std::endl;
 		return;
 	}
-	this->_total = *(this->_perspec_mult_view) *
-				   glm::scale(glm::translate(glm::mat4(1.0f), this->_pos), this->_scale);
+	model = glm::mat4(1.0f);
+	model = glm::rotate(model, glm::radians(this->_yaw), glm::vec3({0.0f, 1.0f, 0.0f}));
+	model = glm::rotate(model, glm::radians(this->_pitch), glm::vec3({1.0f, 0.0f, 0.0f}));
+	model = glm::rotate(model, glm::radians(this->_roll), glm::vec3({0.0f, 0.0f, 1.0f}));
+	model = glm::translate(model, glm::vec3({-this->_model->getCenter().x * this->_scale.x,
+											 -this->_model->getCenter().y * this->_scale.y,
+											 -this->_model->getCenter().z * this->_scale.z}));
+	model = glm::translate(model, this->_pos);
+	model = glm::scale(model, this->_scale);
+	this->_total = *(this->_perspec_mult_view) * model;
 }
 
 void Prop::draw(void)
@@ -93,6 +103,11 @@ void Prop::setYaw(GLfloat yaw)
 void Prop::setPitch(GLfloat pitch)
 {
 	this->_pitch = pitch;
+}
+
+void Prop::setRoll(GLfloat roll)
+{
+	this->_roll = roll;
 }
 
 glm::mat4 const &Prop::getTotalMatrix(void) const

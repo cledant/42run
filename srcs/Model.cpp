@@ -23,7 +23,7 @@ Model::Model(std::string const &name, std::string const &path) : _name(name), _c
 	this->_calculate_center();
 }
 
-Model::Model(Model &&src) : _name(""), _center({0.0f, 0.0f, 0.0f})
+Model::Model(Model &&src)
 {
 	this->_name      = src.getName();
 	this->_mesh_list = src.moveMeshList();
@@ -92,15 +92,21 @@ void Model::_load_node(aiNode *node, const aiScene *scene, std::string const &di
 
 void Model::_calculate_center(void)
 {
+	size_t 	nb_vertex = 0;
+
 	for (size_t i = 0; i < this->_mesh_list.size(); i++)
 	{
-		this->_center.x += this->_mesh_list[i].getCenter().x;
-		this->_center.y += this->_mesh_list[i].getCenter().y;
-		this->_center.z += this->_mesh_list[i].getCenter().z;
+		for (size_t j = 0; j < this->_mesh_list[i].getVertexList().size(); j++)
+		{
+			this->_center.x += this->_mesh_list[i].getVertexList()[j].Position.x;
+			this->_center.y += this->_mesh_list[i].getVertexList()[j].Position.y;
+			this->_center.z += this->_mesh_list[i].getVertexList()[j].Position.z;
+			nb_vertex++;
+		}
 	}
-	this->_center.x /= this->_mesh_list.size();
-	this->_center.y /= this->_mesh_list.size();
-	this->_center.z /= this->_mesh_list.size();
+	this->_center.x /= nb_vertex;
+	this->_center.y /= nb_vertex;
+	this->_center.z /= nb_vertex;
 }
 
 Model::FileOpenException::FileOpenException(std::string const &path)

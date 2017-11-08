@@ -40,6 +40,7 @@ class Prop : public IEntity
 		void setScale(glm::vec3 const &scale);
 		void setYaw(GLfloat yaw);
 		void setPitch(GLfloat pitch);
+		void setRoll(GLfloat roll);
 		glm::mat4 const &getTotalMatrix(void) const;
 
 		class InitException : public GeneralException
@@ -57,6 +58,7 @@ class Prop : public IEntity
 		Model const     *_model;
 		GLfloat 		_yaw;
 		GLfloat 		_pitch;
+		GLfloat 		_roll;
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;
