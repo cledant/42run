@@ -13,10 +13,11 @@
 #include "Prop.hpp"
 
 Prop::Prop(Shader const *shader, glm::mat4 const *perspec_mult_view,
-		   Model const *model, glm::vec3 const &pos,
+		   Model const *model, glm::vec3 const &pos, glm::vec3 const &orientation,
 		   glm::vec3 const &scale) :
 		_shader(shader), _perspec_mult_view(perspec_mult_view), _model(model),
-		_yaw(0.0f), _pitch(0.0f), _roll(0.0f), _pos(pos), _scale(scale)
+		_yaw(orientation.x), _pitch(orientation.y), _roll(orientation.z),
+		_pos(pos), _scale(scale)
 {
 	this->update(0.0f);
 }

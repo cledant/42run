@@ -71,7 +71,8 @@ static void init_program(World **world, oGL_module &oGL,
 	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
-			glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.05f, 0.05f, 0.05f));
+					   glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
+					   glm::vec3(0.05f, 0.05f, 0.05f));
 }
 
 static void run_program(Glfw_manager &manager)

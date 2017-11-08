@@ -28,7 +28,7 @@ class Prop : public IEntity
 	public :
 
 		Prop(Shader const *shader, glm::mat4 const *perspec_mult_view,
-			 Model const *model, glm::vec3 const &pos,
+			 Model const *model, glm::vec3 const &pos, glm::vec3 const &angles,
 			 glm::vec3 const &scale);
 		virtual ~Prop(void);
 		Prop(Prop const &src) = delete;
@@ -56,9 +56,9 @@ class Prop : public IEntity
 		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;
 		Model const     *_model;
-		GLfloat 		_yaw;
-		GLfloat 		_pitch;
-		GLfloat 		_roll;
+		GLfloat         _yaw;
+		GLfloat         _pitch;
+		GLfloat         _roll;
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;

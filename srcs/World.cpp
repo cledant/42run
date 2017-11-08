@@ -99,11 +99,13 @@ IEntity *World::add_Cubemap(Shader const *shader,
 }
 
 IEntity *World::add_Prop(Shader const *shader, Model const *model,
-						 glm::vec3 const &pos, glm::vec3 const &scale)
+						 glm::vec3 const &pos, glm::vec3 const &orientation,
+						 glm::vec3 const &scale)
 {
 	IEntity *ptr;
 
-	ptr = new Prop(shader, &(this->_perspec_mult_view), model, pos, scale);
+	ptr = new Prop(shader, &(this->_perspec_mult_view), model, pos, orientation,
+				   scale);
 	this->_entity_list.push_back(ptr);
 	return (ptr);
 }
