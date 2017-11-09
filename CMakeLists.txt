@@ -44,7 +44,8 @@ set(SOURCE_FILES
 		srcs/World.cpp
 		srcs/Model.cpp
 		srcs/Mesh.cpp
-		srcs/Prop.cpp)
+		srcs/Prop.cpp
+		srcs/FontSet.cpp)
 
 #OS specific libs
 if (APPLE)

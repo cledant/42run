@@ -19,7 +19,8 @@ Texture::Texture(void) : _name(""), _tex_id(0), _type(TEX_DIFFUSE)
 }
 
 Texture::Texture(std::string const &name, std::vector<std::string> const &files,
-				 Texture::t_tex_gl_type gl_type, Texture::t_tex_type type) : _name(name), _tex_id(0), _type(type)
+				 Texture::t_tex_gl_type gl_type, Texture::t_tex_type type) :
+		_name(name), _tex_id(0), _type(type)
 {
 	switch (gl_type)
 	{
@@ -36,7 +37,8 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 }
 
 Texture::Texture(std::string const &name, const void *buffer,
-				 glm::ivec2 const &size, Texture::t_tex_type type)
+				 glm::ivec2 const &size, Texture::t_tex_type type) :
+		_name(name), _tex_id(0), _type(type)
 {
 	switch (type)
 	{

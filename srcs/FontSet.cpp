@@ -55,6 +55,7 @@ FontSet &FontSet::operator=(FontSet &&rhs)
 	this->_proj_matrix = rhs.getProjectionMatrix();
 	this->_vao         = rhs.moveVAO();
 	this->_vbo         = rhs.moveVBO();
+	return (*this);
 }
 
 Shader const *FontSet::getShader(void) const
@@ -67,7 +68,7 @@ glm::mat4 const &FontSet::getProjectionMatrix(void) const
 	return (this->_proj_matrix);
 }
 
-std::map<GLchar, FontSet::FontChar>  FontSet::moveCharList(void)
+std::map<GLchar, FontSet::FontChar> FontSet::moveCharList(void)
 {
 	return (std::move(this->_char_list));
 }
@@ -109,7 +110,7 @@ void FontSet::_load_char_list(std::string const &path)
 	}
 	FT_Set_Pixel_Sizes(face, 0, 48);
 	oGL_module::oGL_disable_texture_alignment();
-	for (GLbyte i = 0; i < 128; i++)
+	for (GLubyte i = 0; i < 128; i++)
 	{
 		if (FT_Load_Glyph(face, i, FT_LOAD_RENDER) != 0)
 		{
@@ -121,11 +122,13 @@ void FontSet::_load_char_list(std::string const &path)
 		{
 			tex_name.clear();
 			tex_name = "font_char_" + std::to_string(i);
-			fchar    = {Texture(tex_name, face->glyph->bitmap.buffer, Texture::TEX_GLYPH),
+			fchar    = {Texture(tex_name, face->glyph->bitmap.buffer,
+								glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+								Texture::TEX_GLYPH),
 						glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 						glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-						face->glyph->advance.x};
-			this->_char_list.insert(std::pair<GLchar, FontChar>(i, fchar));
+						static_cast<GLuint>(face->glyph->advance.x)};
+			this->_char_list.insert(std::pair<GLchar, FontChar>(i, std::move(fchar)));
 		}
 		catch (std::exception &e)
 		{
@@ -137,4 +140,40 @@ void FontSet::_load_char_list(std::string const &path)
 	}
 	FT_Done_Face(face);
 	FT_Done_FreeType(lib);
+}
+
+FontSet::FontSetInitException::FontSetInitException(void)
+{
+	this->_msg = "FontSet : Initialization failed";
+}
+
+FontSet::FontSetInitException::~FontSetInitException(void) throw()
+{
+}
+
+FontSet::FreeTypeInitException::FreeTypeInitException(void)
+{
+	this->_msg = "FontSet : FreeType initialization failed";
+}
+
+FontSet::FreeTypeInitException::~FreeTypeInitException(void) throw()
+{
+}
+
+FontSet::FontLoadingException::FontLoadingException(void)
+{
+	this->_msg = "FontSet : Font loading failed";
+}
+
+FontSet::FontLoadingException::~FontLoadingException(void) throw()
+{
+}
+
+FontSet::GlyphLoadingException::GlyphLoadingException(void)
+{
+	this->_msg = "FontSet : Font loading failed";
+}
+
+FontSet::GlyphLoadingException::~GlyphLoadingException(void) throw()
+{
 }
