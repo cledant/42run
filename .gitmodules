@@ -13,3 +13,6 @@
 [submodule "assimp"]
 	path = assimp
 	url = https://github.com/assimp/assimp.git
+[submodule "freetype"]
+	path = freetype
+	url = git://git.sv.nongnu.org/freetype/freetype2.git
