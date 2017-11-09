@@ -18,9 +18,9 @@ FontSet::FontSet(Shader const *shader, std::string const &font_path, int win_wid
 {
 	try
 	{
-		this->_load_char_list(font_path);
 		this->_vao = oGL_module::oGL_create_vao();
 		this->_vbo = oGL_module::oGL_create_dynamic_vbo(sizeof(GLfloat) * 6 * 4, NULL);
+		this->_load_char_list(font_path);
 	}
 	catch (std::exception &e)
 	{
@@ -30,7 +30,7 @@ FontSet::FontSet(Shader const *shader, std::string const &font_path, int win_wid
 		throw FontSet::FontSetInitException();
 	}
 	this->_proj_matrix = glm::ortho(0.0f, static_cast<float>(win_width), 0.0f,
-			static_cast<float>(win_height));
+									static_cast<float>(win_height));
 }
 
 FontSet::~FontSet(void)
@@ -67,6 +67,11 @@ glm::mat4 const &FontSet::getProjectionMatrix(void) const
 	return (this->_proj_matrix);
 }
 
+std::map<GLchar, FontSet::FontChar>  FontSet::moveCharList(void)
+{
+	return (std::move(this->_char_list));
+}
+
 GLuint FontSet::moveVAO(void)
 {
 	GLuint tmp = this->_vao;
@@ -90,4 +95,46 @@ void FontSet::setProjectionMatrix(glm::mat4 const &matrix)
 
 void FontSet::_load_char_list(std::string const &path)
 {
+	FT_Library  lib;
+	FT_Face     face;
+	FontChar    fchar;
+	std::string tex_name;
+
+	if (FT_Init_FreeType(&lib) != 0)
+		throw FontSet::FreeTypeInitException();
+	if (FT_New_Face(lib, path.c_str(), 0, &face) != 0)
+	{
+		FT_Done_FreeType(lib);
+		throw FontSet::FontLoadingException();
+	}
+	FT_Set_Pixel_Sizes(face, 0, 48);
+	oGL_module::oGL_disable_texture_alignment();
+	for (GLbyte i = 0; i < 128; i++)
+	{
+		if (FT_Load_Glyph(face, i, FT_LOAD_RENDER) != 0)
+		{
+			FT_Done_Face(face);
+			FT_Done_FreeType(lib);
+			throw FontSet::GlyphLoadingException();
+		}
+		try
+		{
+			tex_name.clear();
+			tex_name = "font_char_" + std::to_string(i);
+			fchar    = {Texture(tex_name, face->glyph->bitmap.buffer, Texture::TEX_GLYPH),
+						glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+						glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+						face->glyph->advance.x};
+			this->_char_list.insert(std::pair<GLchar, FontChar>(i, fchar));
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+			FT_Done_Face(face);
+			FT_Done_FreeType(lib);
+			throw FontSet::GlyphLoadingException();
+		}
+	}
+	FT_Done_Face(face);
+	FT_Done_FreeType(lib);
 }

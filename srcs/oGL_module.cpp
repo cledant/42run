@@ -175,6 +175,11 @@ void oGL_module::oGL_draw_cubemap(GLuint vao, GLuint tex,
 	glDepthFunc(GL_LESS);
 }
 
+void oGL_module::oGL_disable_texture_alignment(void)
+{
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+}
+
 void oGL_module::oGL_finish(void)
 {
 	glFinish();

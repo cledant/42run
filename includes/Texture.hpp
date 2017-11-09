@@ -38,11 +38,14 @@ class Texture
 			TEX_SPECULAR,
 			TEX_NORMAL,
 			TEX_HEIGHT,
+			TEX_GLYPH,
 		} t_tex_type;
 
 		Texture(void);
 		Texture(std::string const &name, std::vector<std::string> const &files,
 				Texture::t_tex_gl_type gl_type, Texture::t_tex_type type);
+		Texture(std::string const &name, const void *buffer, glm::ivec2 const &size,
+				Texture::t_tex_type type);
 		Texture(const Texture &src) = delete;
 		Texture &operator=(Texture const &rhs) = delete;
 		Texture(Texture &&src);
@@ -95,6 +98,14 @@ class Texture
 				virtual ~ChannelNumberException(void) throw();
 		};
 
+		class BufferException : public GeneralException
+		{
+			public :
+
+				explicit BufferException(void);
+				virtual ~BufferException(void) throw();
+		};
+
 	private :
 
 		std::string _name;
@@ -103,6 +114,7 @@ class Texture
 
 		static GLuint _load_cubemap(std::vector<std::string> const &files);
 		static GLuint _load_flat(std::vector<std::string> const &files);
+		static GLuint _load_glyph(const void *buffer, int tex_w, int tex_h);
 };
 
 #endif

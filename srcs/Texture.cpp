@@ -35,6 +35,20 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 	}
 }
 
+Texture::Texture(std::string const &name, const void *buffer,
+				 glm::ivec2 const &size, Texture::t_tex_type type)
+{
+	switch (type)
+	{
+		case TEX_GLYPH :
+			this->_tex_id = Texture::_load_glyph(buffer, size.x, size.y);
+			break;
+		default :
+			throw TypeException();
+			break;
+	}
+}
+
 Texture::~Texture(void)
 {
 	glDeleteTextures(1, &(this->_tex_id));
@@ -168,6 +182,26 @@ GLuint Texture::_load_flat(std::vector<std::string> const &files)
 	return (tex_id);
 }
 
+GLuint Texture::_load_glyph(const void *buffer, int tex_w, int tex_h)
+{
+	GLuint tex_id;
+
+	if (buffer == NULL || buffer == nullptr)
+		throw Texture::BufferException();
+	glGenTextures(1, &tex_id);
+	if (glGetError() != GL_NO_ERROR)
+		throw Texture::AllocationException();
+	glBindTexture(GL_TEXTURE_2D, tex_id);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,
+				 tex_w, tex_h, 0, GL_RED, GL_UNSIGNED_BYTE, buffer);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	return (tex_id);
+}
+
 Texture::FileOpenException::FileOpenException(std::string const &path)
 {
 	this->_msg = "Texture : Failed to find to open file : ";
@@ -216,5 +250,14 @@ Texture::ChannelNumberException::ChannelNumberException(void)
 }
 
 Texture::ChannelNumberException::~ChannelNumberException(void) throw()
+{
+}
+
+Texture::BufferException::BufferException(void)
+{
+	this->_msg = "Texture : Invalid buffer";
+}
+
+Texture::BufferException::~BufferException(void) throw()
 {
 }
