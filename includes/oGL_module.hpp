@@ -34,6 +34,7 @@ class oGL_module
 		static void oGL_check_error(void);
 		static void oGL_display_error(void);
 		static GLuint oGL_create_vbo(size_t size, void *data);
+		static GLuint oGL_create_dynamic_vbo(size_t size, void *data);
 		static void oGL_delete_vbo(GLuint vbo);
 		static GLuint oGL_create_vao(void);
 		static void oGL_delete_vao(GLuint vao);

@@ -62,6 +62,20 @@ GLuint oGL_module::oGL_create_vbo(size_t size, void *data)
 	return (new_vbo);
 }
 
+GLuint oGL_module::oGL_create_dynamic_vbo(size_t size, void *data)
+{
+	GLuint new_vbo;
+
+	glGenBuffers(1, &new_vbo);
+	oGL_module::oGL_check_error();
+	glBindBuffer(GL_ARRAY_BUFFER, new_vbo);
+	glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(size), data,
+				 GL_DYNAMIC_DRAW);
+	oGL_module::oGL_check_error();
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	return (new_vbo);
+}
+
 void oGL_module::oGL_delete_vbo(GLuint vbo)
 {
 	glDeleteBuffers(1, &vbo);
