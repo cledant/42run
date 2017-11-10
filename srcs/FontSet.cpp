@@ -225,7 +225,7 @@ FontSet::FontLoadingException::~FontLoadingException(void) throw()
 
 FontSet::GlyphLoadingException::GlyphLoadingException(void)
 {
-	this->_msg = "FontSet : Font loading failed";
+	this->_msg = "FontSet : Glyph loading failed";
 }
 
 FontSet::GlyphLoadingException::~GlyphLoadingException(void) throw()
