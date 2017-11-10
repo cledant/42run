@@ -103,6 +103,16 @@ void oGL_module::oGL_set_vao_parameters(GLuint vao, GLuint vbo,
 	glBindVertexArray(0);
 }
 
+void oGL_module::oGL_set_dynamic_vbo_data(GLuint vao, GLuint vbo,
+										  size_t size, void *data)
+{
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
 void oGL_module::oGL_delete_vao(GLuint vao)
 {
 	glDeleteVertexArrays(1, &vao);

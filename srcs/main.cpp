@@ -12,8 +12,9 @@
 
 #include "Glfw_manager.hpp"
 #include "World.hpp"
+#include "FontSet.hpp"
 
-static void main_loop(World &world, Glfw_manager &manager)
+static void main_loop(World &world, Glfw_manager &manager, FontSet &font)
 {
 	while (Glfw_manager::getActiveWindowNumber())
 	{
@@ -24,6 +25,8 @@ static void main_loop(World &world, Glfw_manager &manager)
 			{
 				manager.update_events();
 				world.update();
+				font.drawText("Hey : this is a test !", {0.0f, 0.0f, 0.0f},
+							  {100.0f, 100.0f, 1.0f});
 				manager.calculate_and_display_fps();
 			}
 			world.render();
@@ -44,12 +47,14 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/cubemap/cubemap.fs");
 	oGL.add_shader("prop", "./shaders/prop/prop.vs",
 				   "./shaders/prop/prop.fs");
+	oGL.add_shader("fontset", "./shaders/fontset/fontset.vs",
+				   "./shaders/fontset/fontset.fs");
 	oGL.add_model("Alice", "./models/Alice/Alice.obj");
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
 }
 
 static void init_program(World **world, oGL_module &oGL,
-						 Glfw_manager &manager)
+						 Glfw_manager &manager, FontSet **font)
 {
 	std::vector<std::string> const skybox_files
 										   {
@@ -71,8 +76,13 @@ static void init_program(World **world, oGL_module &oGL,
 	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
-					   glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
+					   glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.05f, 0.05f, 0.05f));
+	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
+					   glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
+					   glm::vec3(0.05f, 0.05f, 0.05f));
+	(*font) = new FontSet(&(oGL.getShader("prop")), "./fonts/Roboto-Light.ttf",
+						  manager.getWindow().cur_win_w, manager.getWindow().cur_win_h);
 }
 
 static void run_program(Glfw_manager &manager)
@@ -80,23 +90,27 @@ static void run_program(Glfw_manager &manager)
 
 	oGL_module oGL;
 	World      *world = nullptr;
+	FontSet    *font  = nullptr;
 
 	try
 	{
-		init_program(&world, oGL, manager);
+		init_program(&world, oGL, manager, &font);
 	}
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl;
 		delete world;
+		delete font;
 		return;
 	}
 	world->reset_update_timer(Glfw_manager::getTime());
 	manager.reset_fps_counter();
 	manager.toogle_mouse_exclusive();
-	main_loop(*world, manager);
+	main_loop(*world, manager, *font);
 	std::cout << "Delete world" << std::endl;
 	delete world;
+	std::cout << "Delete font" << std::endl;
+	delete font;
 }
 
 int main(void)

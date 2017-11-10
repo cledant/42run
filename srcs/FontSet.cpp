@@ -16,11 +16,14 @@ FontSet::FontSet(Shader const *shader, std::string const &font_path, int win_wid
 				 int win_height) :
 		_shader(shader), _vao(0), _vbo(0)
 {
+	std::cout << "Loading : " << font_path << std::endl;
 	try
 	{
 		this->_vao = oGL_module::oGL_create_vao();
 		this->_vbo = oGL_module::oGL_create_dynamic_vbo(sizeof(GLfloat) * 6 * 4, NULL);
 		this->_load_char_list(font_path);
+		oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 4,
+										   sizeof(GLfloat) * 4, 0);
 	}
 	catch (std::exception &e)
 	{
@@ -140,6 +143,57 @@ void FontSet::_load_char_list(std::string const &path)
 	}
 	FT_Done_Face(face);
 	FT_Done_FreeType(lib);
+}
+
+void FontSet::drawText(std::string const &str, glm::vec3 const &color,
+					   glm::vec3 const &pos_scale) const
+{
+	std::string::const_iterator                it;
+	std::map<GLchar, FontChar>::const_iterator fchar;
+	GLfloat                                    pos_x = pos_scale.x;
+	GLfloat                                    pos_y = pos_scale.y;
+	GLint                                      uniform_color;
+	GLint                                      uniform_mat_proj;
+	GLint                                      uniform_tex;
+
+	if (this->_shader == nullptr ||
+		oGL_module::oGL_getUniformID("uniform_color", this->_shader->getShaderProgram(),
+									 &uniform_color) == false ||
+		oGL_module::oGL_getUniformID("uniform_mat_proj", this->_shader->getShaderProgram(),
+									 &uniform_mat_proj) == false ||
+		oGL_module::oGL_getUniformID("uniform_tex", this->_shader->getShaderProgram(),
+									 &uniform_tex) == false)
+	{
+		std::cout << "Warning : Can't draw text" << std::endl;
+		return;
+	}
+	for (it = str.begin(); it != str.end(); ++it)
+	{
+		if ((fchar = this->_char_list.find(*it)) == this->_char_list.end())
+			fchar = this->_char_list.find('?');
+
+		GLfloat xpos           = pos_x + fchar->second.bearing.x * pos_scale.z;
+		GLfloat ypos           = pos_y - (fchar->second.size.y - fchar->second.bearing.y) * pos_scale.z;
+		GLfloat w              = fchar->second.size.x * pos_scale.z;
+		GLfloat h              = fchar->second.size.y * pos_scale.z;
+		GLfloat vertices[6][4] =
+						{
+								{xpos,     ypos + h, 0.0, 0.0},
+								{xpos,     ypos,     0.0, 1.0},
+								{xpos + w, ypos,     1.0, 1.0},
+
+								{xpos,     ypos + h, 0.0, 0.0},
+								{xpos + w, ypos,     1.0, 1.0},
+								{xpos + w, ypos + h, 1.0, 0.0}
+						};
+		this->_shader->use();
+		this->_shader->setMat4(uniform_mat_proj, this->_proj_matrix);
+		this->_shader->setVec3(uniform_color, color);
+		oGL_module::oGL_set_texture(uniform_tex, 0, fchar->second.tex.getTextureID());
+		oGL_module::oGL_set_dynamic_vbo_data(this->_vao, this->_vbo, sizeof(GLfloat) * 6 * 4, vertices);
+		oGL_module::oGL_draw_filled(this->_vao, 6);
+		pos_x += (fchar->second.advance >> 6) * pos_scale.z;
+	}
 }
 
 FontSet::FontSetInitException::FontSetInitException(void)
