@@ -188,8 +188,6 @@ GLuint Texture::_load_glyph(const void *buffer, int tex_w, int tex_h)
 {
 	GLuint tex_id;
 
-	if (buffer == NULL || buffer == nullptr)
-		throw Texture::BufferException();
 	glGenTextures(1, &tex_id);
 	if (glGetError() != GL_NO_ERROR)
 		throw Texture::AllocationException();

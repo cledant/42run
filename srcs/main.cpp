@@ -25,11 +25,11 @@ static void main_loop(World &world, Glfw_manager &manager, FontSet &font)
 			{
 				manager.update_events();
 				world.update();
-				font.drawText("Hey : this is a test !", {0.0f, 0.0f, 0.0f},
-							  {100.0f, 100.0f, 1.0f});
 				manager.calculate_and_display_fps();
 			}
 			world.render();
+			font.drawText("Hey : This Is A Test!", {0.5f, 0.8f, 0.2f},
+						  {25.0f, 25.0f, 0.5f});
 			manager.swap_buffers();
 			if (manager.should_window_be_closed() == true)
 				manager.destroy_window();

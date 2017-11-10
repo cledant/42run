@@ -115,7 +115,7 @@ void FontSet::_load_char_list(std::string const &path)
 	oGL_module::oGL_disable_texture_alignment();
 	for (GLubyte i = 0; i < 128; i++)
 	{
-		if (FT_Load_Glyph(face, i, FT_LOAD_RENDER) != 0)
+		if (FT_Load_Char(face, i, FT_LOAD_RENDER) != 0)
 		{
 			FT_Done_Face(face);
 			FT_Done_FreeType(lib);
