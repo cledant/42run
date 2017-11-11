@@ -42,6 +42,7 @@ class Glfw_manager
 
 		Input const &getInput(void) const;
 		GLFW_Window const &getWindow(void) const;
+		std::string const &getStrFps(void) const;
 		bool getMouseMode(void) const;
 
 		void create_resizable_window(std::string const &name, int const major,
@@ -52,8 +53,8 @@ class Glfw_manager
 		void swap_buffers(void);
 		bool should_window_be_closed(void);
 		void update_title(std::string const &name);
-		void update_title_fps(size_t nb_frame);
-		void calculate_and_display_fps(void);
+		void update_title_fps(void);
+		void calculate_fps(void);
 		void reset_fps_counter(void);
 		void toogle_mouse_exclusive(void);
 
@@ -82,6 +83,7 @@ class Glfw_manager
 		float       _last_time;
 		float       _last_fps_time;
 		size_t      _nb_frame;
+		std::string _str_fps;
 
 		static size_t _nb_active_win;
 

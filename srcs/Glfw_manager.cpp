@@ -13,7 +13,7 @@
 #include "Glfw_manager.hpp"
 
 Glfw_manager::Glfw_manager(void) : _input(), _window(), _last_time(0.0f),
-								   _last_fps_time(0.0f), _nb_frame(0)
+								   _last_fps_time(0.0f), _nb_frame(0), _str_fps("60.0")
 {
 }
 
@@ -57,6 +57,11 @@ Input const &Glfw_manager::getInput(void) const
 GLFW_Window const &Glfw_manager::getWindow(void) const
 {
 	return (this->_window);
+}
+
+std::string const &Glfw_manager::getStrFps(void) const
+{
+	return (this->_str_fps);
 }
 
 bool Glfw_manager::getMouseMode(void) const
@@ -203,20 +208,20 @@ void Glfw_manager::update_title(std::string const &name)
 	glfwSetWindowTitle(this->_window.win, name.c_str());
 }
 
-void Glfw_manager::update_title_fps(size_t nb_frame)
+void Glfw_manager::update_title_fps(void)
 {
 	std::string str;
 
-	str = this->_win_name + " | " + std::to_string(nb_frame) + " fps";
+	str = this->_win_name + " | " + this->_str_fps + " fps";
 	glfwSetWindowTitle(this->_window.win, str.c_str());
 }
 
-void Glfw_manager::calculate_and_display_fps(void)
+void Glfw_manager::calculate_fps(void)
 {
 	(this->_nb_frame)++;
 	if ((glfwGetTime() - this->_last_fps_time) > 1.0f)
 	{
-		this->update_title_fps(this->_nb_frame);
+		this->_str_fps  = std::to_string(this->_nb_frame);
 		this->_nb_frame = 0;
 		this->_last_fps_time += 1.0f;
 	}

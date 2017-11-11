@@ -25,7 +25,8 @@ static void main_loop(World &world, Glfw_manager &manager)
 			{
 				manager.update_events();
 				world.update();
-				manager.calculate_and_display_fps();
+				manager.calculate_fps();
+				manager.update_title_fps();
 			}
 			world.render();
 			manager.swap_buffers();
