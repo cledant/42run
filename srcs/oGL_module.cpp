@@ -190,6 +190,17 @@ void oGL_module::oGL_disable_texture_alignment(void)
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
+void oGL_module::oGL_enable_blend(void)
+{
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void oGL_module::oGL_disable_blend(void)
+{
+	glDisable(GL_BLEND);
+}
+
 void oGL_module::oGL_finish(void)
 {
 	glFinish();

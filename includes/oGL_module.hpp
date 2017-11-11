@@ -54,6 +54,8 @@ class oGL_module
 		static void oGL_draw_cubemap(GLuint vao, GLuint tex,
 									 size_t nb_faces);
 		static void oGL_disable_texture_alignment(void);
+		static void oGL_enable_blend(void);
+		static void oGL_disable_blend(void);
 		static void oGL_finish(void);
 
 		void add_shader(std::string const &name,

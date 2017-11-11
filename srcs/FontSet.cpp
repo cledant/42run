@@ -172,6 +172,7 @@ void FontSet::drawText(std::string const &str, glm::vec3 const &color,
 		std::cout << "Warning : Can't draw text" << std::endl;
 		return;
 	}
+	oGL_module::oGL_enable_blend();
 	for (it = str.begin(); it != str.end(); ++it)
 	{
 		if ((fchar = this->_char_list.find(*it)) == this->_char_list.end())
@@ -198,7 +199,9 @@ void FontSet::drawText(std::string const &str, glm::vec3 const &color,
 		oGL_module::oGL_set_dynamic_vbo_data(this->_vao, this->_vbo, sizeof(GLfloat) * 6 * 4, vertices);
 		oGL_module::oGL_draw_filled(this->_vao, 6);
 		pos_x += (fchar->second.advance >> 6) * pos_scale.z;
+
 	}
+	oGL_module::oGL_disable_blend();
 }
 
 FontSet::FontSetInitException::FontSetInitException(void)

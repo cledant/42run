@@ -32,7 +32,7 @@ static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 			ui.drawText("roboto", "42Run : " + manager.getStrFps() + " fps",
 						glm::vec3(0.4f, 0.4f, 0.4f),
 						glm::vec3(10.0f,
-								  static_cast<float>(manager.getWindow().cur_win_h) - 30.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) - 40.0f,
 								  0.5f));
 			manager.swap_buffers();
 			if (manager.should_window_be_closed() == true)
@@ -87,7 +87,7 @@ static void init_program(World **world, oGL_module &oGL,
 					   glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.05f, 0.05f, 0.05f));
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
-					  "./fonts/Roboto-Light.ttf", 56);
+					  "./fonts/Roboto-Light.ttf", 60);
 }
 
 static void run_program(Glfw_manager &manager)

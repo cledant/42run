@@ -13,6 +13,4 @@ void main (void)
 
 	sampled = vec4(1.0f, 1.0f, 1.0f, texture(uniform_tex, vertex_tex).r);
 	color = vec4(uniform_color, 1.0) * sampled;
-	if (color.a < 0.5f)
-	    discard;
 }
