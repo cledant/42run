@@ -40,8 +40,8 @@ class FontSet
 			GLuint     advance;
 		};
 
-		FontSet(Shader const *shader, std::string const &font_path,
-				int win_width, int win_height);
+		FontSet(Shader const *shader, glm::mat4 const *proj_mat,
+				std::string const &name, std::string const &font_path);
 		virtual ~FontSet(void);
 		FontSet(FontSet const &src) = delete;
 		FontSet &operator=(FontSet const &rhs) = delete;
@@ -49,11 +49,12 @@ class FontSet
 		FontSet &operator=(FontSet &&rhs);
 
 		Shader const *getShader(void) const;
-		glm::mat4 const &getProjectionMatrix(void) const;
+		std::string const &getName(void) const;
+		glm::mat4 const *getProjectionMatrix(void) const;
 		std::map<GLchar, FontChar> moveCharList(void);
 		GLuint moveVAO(void);
 		GLuint moveVBO(void);
-		void setProjectionMatrix(glm::mat4 const &matrix);
+		void setProjectionMatrix(glm::mat4 const *matrix);
 		void drawText(std::string const &str, glm::vec3 const &color,
 					  glm::vec3 const &pos_scale) const;
 
@@ -92,7 +93,8 @@ class FontSet
 	private :
 
 		Shader const               *_shader;
-		glm::mat4                  _proj_matrix;
+		glm::mat4 const            *_proj_matrix;
+		std::string                _name;
 		std::map<GLchar, FontChar> _char_list;
 		GLuint                     _vao;
 		GLuint                     _vbo;

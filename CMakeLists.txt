@@ -18,7 +18,7 @@ add_subdirectory(assimp ${CMAKE_BINARY_DIR}/assimp/build)
 #Setup FreeType
 add_subdirectory(freetype ${CMAKE_BINARY_DIR}/freetype/build)
 
-#Setup particle_system
+#Setup 42Run
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra -O2")
 include_directories(includes glm stb glad/build/includes glfw/include/GLFW assimp/include
@@ -45,7 +45,8 @@ set(SOURCE_FILES
 		srcs/Model.cpp
 		srcs/Mesh.cpp
 		srcs/Prop.cpp
-		srcs/FontSet.cpp)
+		srcs/FontSet.cpp
+		srcs/Ui.cpp)
 
 #OS specific libs
 if (APPLE)

@@ -12,9 +12,9 @@
 
 #include "FontSet.hpp"
 
-FontSet::FontSet(Shader const *shader, std::string const &font_path, int win_width,
-				 int win_height) :
-		_shader(shader), _vao(0), _vbo(0)
+FontSet::FontSet(Shader const *shader, glm::mat4 const *proj_mat,
+				 std::string const &name, std::string const &font_path) :
+		_shader(shader), _proj_matrix(proj_mat), _name(name), _vao(0), _vbo(0)
 {
 	std::cout << "Loading : " << font_path << std::endl;
 	try
@@ -32,8 +32,6 @@ FontSet::FontSet(Shader const *shader, std::string const &font_path, int win_wid
 		oGL_module::oGL_delete_vbo(this->_vbo);
 		throw FontSet::FontSetInitException();
 	}
-	this->_proj_matrix = glm::ortho(0.0f, static_cast<float>(win_width), 0.0f,
-									static_cast<float>(win_height));
 }
 
 FontSet::~FontSet(void)
@@ -45,6 +43,7 @@ FontSet::~FontSet(void)
 FontSet::FontSet(FontSet &&src)
 {
 	this->_shader      = src.getShader();
+	this->_name        = src.getName();
 	this->_char_list   = src.moveCharList();
 	this->_proj_matrix = src.getProjectionMatrix();
 	this->_vao         = src.moveVAO();
@@ -54,6 +53,7 @@ FontSet::FontSet(FontSet &&src)
 FontSet &FontSet::operator=(FontSet &&rhs)
 {
 	this->_shader      = rhs.getShader();
+	this->_name        = rhs.getName();
 	this->_char_list   = rhs.moveCharList();
 	this->_proj_matrix = rhs.getProjectionMatrix();
 	this->_vao         = rhs.moveVAO();
@@ -66,7 +66,12 @@ Shader const *FontSet::getShader(void) const
 	return (this->_shader);
 }
 
-glm::mat4 const &FontSet::getProjectionMatrix(void) const
+std::string const &FontSet::getName(void) const
+{
+	return (this->_name);
+}
+
+glm::mat4 const *FontSet::getProjectionMatrix(void) const
 {
 	return (this->_proj_matrix);
 }
@@ -92,7 +97,7 @@ GLuint FontSet::moveVBO(void)
 	return (tmp);
 }
 
-void FontSet::setProjectionMatrix(glm::mat4 const &matrix)
+void FontSet::setProjectionMatrix(glm::mat4 const *matrix)
 {
 	this->_proj_matrix = matrix;
 }
@@ -156,7 +161,7 @@ void FontSet::drawText(std::string const &str, glm::vec3 const &color,
 	GLint                                      uniform_mat_proj;
 	GLint                                      uniform_tex;
 
-	if (this->_shader == nullptr ||
+	if (this->_shader == nullptr || this->_proj_matrix == nullptr ||
 		oGL_module::oGL_getUniformID("uniform_color", this->_shader->getShaderProgram(),
 									 &uniform_color) == false ||
 		oGL_module::oGL_getUniformID("uniform_mat_proj", this->_shader->getShaderProgram(),
@@ -187,7 +192,7 @@ void FontSet::drawText(std::string const &str, glm::vec3 const &color,
 								{xpos + w, ypos + h, 1.0, 0.0}
 						};
 		this->_shader->use();
-		this->_shader->setMat4(uniform_mat_proj, this->_proj_matrix);
+		this->_shader->setMat4(uniform_mat_proj, *(this->_proj_matrix));
 		this->_shader->setVec3(uniform_color, color);
 		oGL_module::oGL_set_texture(uniform_tex, 0, fchar->second.tex.getTextureID());
 		oGL_module::oGL_set_dynamic_vbo_data(this->_vao, this->_vbo, sizeof(GLfloat) * 6 * 4, vertices);
