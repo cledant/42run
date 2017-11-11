@@ -32,9 +32,9 @@ void Ui::update(void)
 }
 
 void Ui::addFontSet(Shader const *shader, std::string const &name,
-					std::string const &font_path)
+					std::string const &font_path, size_t size)
 {
-	this->_fset_list.push_back(FontSet(shader, &(this->_proj_matrix), name, font_path));
+	this->_fset_list.push_back(FontSet(shader, &(this->_proj_matrix), name, font_path, size));
 }
 
 FontSet const &Ui::getFontSet(std::string const &name) const

@@ -70,7 +70,7 @@ static void init_program(World **world, oGL_module &oGL,
 												   "./textures/skybox/front.jpg",
 										   };
 
-	manager.create_resizable_window("42Run", 4, 1, 680, 480);
+	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
 	manager.init_input_callback();
 	init_oGL(oGL);
 	(*world) = new World(manager.getInput(), manager.getWindow(),
@@ -86,7 +86,8 @@ static void init_program(World **world, oGL_module &oGL,
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
 					   glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.05f, 0.05f, 0.05f));
-	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto", "./fonts/Roboto-Light.ttf");
+	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
+					  "./fonts/Roboto-Light.ttf", 56);
 }
 
 static void run_program(Glfw_manager &manager)

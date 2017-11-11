@@ -13,7 +13,7 @@
 #include "FontSet.hpp"
 
 FontSet::FontSet(Shader const *shader, glm::mat4 const *proj_mat,
-				 std::string const &name, std::string const &font_path) :
+				 std::string const &name, std::string const &font_path, size_t size) :
 		_shader(shader), _proj_matrix(proj_mat), _name(name), _vao(0), _vbo(0)
 {
 	std::cout << "Loading : " << font_path << std::endl;
@@ -21,7 +21,7 @@ FontSet::FontSet(Shader const *shader, glm::mat4 const *proj_mat,
 	{
 		this->_vao = oGL_module::oGL_create_vao();
 		this->_vbo = oGL_module::oGL_create_dynamic_vbo(sizeof(GLfloat) * 6 * 4, NULL);
-		this->_load_char_list(font_path);
+		this->_load_char_list(font_path, size);
 		oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 4,
 										   sizeof(GLfloat) * 4, 0);
 	}
@@ -102,7 +102,7 @@ void FontSet::setProjectionMatrix(glm::mat4 const *matrix)
 	this->_proj_matrix = matrix;
 }
 
-void FontSet::_load_char_list(std::string const &path)
+void FontSet::_load_char_list(std::string const &path, size_t size)
 {
 	FT_Library  lib;
 	FT_Face     face;
@@ -116,7 +116,7 @@ void FontSet::_load_char_list(std::string const &path)
 		FT_Done_FreeType(lib);
 		throw FontSet::FontLoadingException();
 	}
-	FT_Set_Pixel_Sizes(face, 0, 48);
+	FT_Set_Pixel_Sizes(face, 0, size);
 	oGL_module::oGL_disable_texture_alignment();
 	for (GLubyte i = 0; i < 128; i++)
 	{

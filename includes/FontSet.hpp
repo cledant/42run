@@ -41,7 +41,7 @@ class FontSet
 		};
 
 		FontSet(Shader const *shader, glm::mat4 const *proj_mat,
-				std::string const &name, std::string const &font_path);
+				std::string const &name, std::string const &font_path, size_t size);
 		virtual ~FontSet(void);
 		FontSet(FontSet const &src) = delete;
 		FontSet &operator=(FontSet const &rhs) = delete;
@@ -99,7 +99,7 @@ class FontSet
 		GLuint                     _vao;
 		GLuint                     _vbo;
 
-		void _load_char_list(std::string const &path);
+		void _load_char_list(std::string const &path, size_t size);
 };
 
 #endif
