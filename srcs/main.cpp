@@ -25,8 +25,8 @@ static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 			{
 				manager.update_events();
 				world.update();
-				manager.calculate_fps();
 			}
+			manager.calculate_fps();
 			world.render();
 			ui.update();
 			ui.drawText("roboto", "42Run : " + manager.getStrFps() + " fps",
