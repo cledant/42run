@@ -40,9 +40,9 @@ World::~World(void)
 
 	for (it       = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
 		delete *it;
-//	for (debug_it = this->_debug_collision.begin(); debug_it != this->_debug_collision.end(); ++it)
-//		delete *it;
-//	delete this->_debug_target;
+	for (debug_it = this->_debug_collision.begin(); debug_it != this->_debug_collision.end(); ++debug_it)
+		delete *debug_it;
+	delete this->_debug_target;
 }
 
 void World::update(void)
@@ -201,17 +201,17 @@ void World::debug_checkCollision(void) const
 
 void World::debug_collision_test_1(Shader const *shader)
 {
-	this->debug_add_cbox(shader, glm::vec3({1.0f, 0.0f, 0.0f}),
+	this->debug_add_cbox(shader, glm::vec3({3.0f, 0.0f, 0.0f}),
 						 glm::vec3({-1.0f, -1.0f, -1.0f}), glm::vec3({1.0f, 1.0f, 1.0f}),
 						 "Box1");
-	this->debug_add_cbox(shader, glm::vec3({0.0f, 1.0f, 0.0f}),
+	this->debug_add_cbox(shader, glm::vec3({0.0f, 3.0f, 0.0f}),
 						 glm::vec3({-1.0f, -1.0f, -1.0f}), glm::vec3({1.0f, 1.0f, 1.0f}),
 						 "Box2");
-	this->debug_add_cbox(shader, glm::vec3({0.0f, 1.0f, 0.0f}),
+	this->debug_add_cbox(shader, glm::vec3({0.0f, 0.0f, 3.0f}),
 						 glm::vec3({-1.0f, -1.0f, -1.0f}), glm::vec3({1.0f, 1.0f, 1.0f}),
 						 "Box3");
 	this->debug_add_target(shader, glm::vec3({0.0f, 0.0f, 0.0f}),
-						 glm::vec3({-0.1f, -0.1f, -0.1f}), glm::vec3({0.1f, 0.1f, 0.1f}),
+						 glm::vec3({-3.0f, -0.5f, -3.0f}), glm::vec3({3.0f, 0.5f, 3.0f}),
 						 "Target");
 }
 
@@ -221,13 +221,14 @@ void World::debug_update(void)
 
 	for (it = this->_debug_collision.begin(); it != this->_debug_collision.end(); ++it)
 		(*it)->update(this->_delta_tick);
+	this->_debug_target->update(this->_delta_tick);
 }
 
 void World::debug_render(void)
 {
 	std::vector<CollisionBox *>::iterator it;
 
-//	oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
 	for (it = this->_debug_collision.begin(); it != this->_debug_collision.end(); ++it)
 		(*it)->draw();
+	this->_debug_target->draw();
 }

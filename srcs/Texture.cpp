@@ -102,6 +102,7 @@ GLuint Texture::_load_cubemap(std::vector<std::string> const &files)
 	int           tex_h;
 	int           tex_nb_chan;
 	unsigned char *data;
+	GLenum        format;
 
 	if (files.size() != 6)
 		throw Texture::NumberException();
@@ -115,8 +116,19 @@ GLuint Texture::_load_cubemap(std::vector<std::string> const &files)
 							  &tex_nb_chan, 0)) != NULL)
 		{
 			std::cout << "Loading : " << files[i] << std::endl;
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
-						 tex_w, tex_h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			if (tex_nb_chan == 3)
+				format = GL_RGB;
+			else if (tex_nb_chan == 4)
+				format = GL_RGBA;
+			else
+			{
+				glBindTexture(GL_TEXTURE_2D, 0);
+				glDeleteTextures(1, &tex_id);
+				stbi_image_free(data);
+				throw ChannelNumberException();
+			}
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format,
+						 tex_w, tex_h, 0, format, GL_UNSIGNED_BYTE, data);
 			stbi_image_free(data);
 		}
 		else

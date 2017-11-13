@@ -33,7 +33,7 @@ class CollisionBox : public IEntity
 
 		void update(float time);
 		void draw(void);
-//		void setPos(glm::vec3 const &pos);
+		void setPos(glm::vec3 const &pos);
 		glm::vec3 const &getMin(void) const;
 		glm::vec3 const &getMax(void) const;
 		glm::vec3 const &getPos(void) const;

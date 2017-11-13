@@ -64,6 +64,11 @@ void CollisionBox::draw(void)
 	this->_debug_draw.get()->draw();
 }
 
+void CollisionBox::setPos(glm::vec3 const &pos)
+{
+	this->_pos = pos;
+}
+
 glm::vec3 const &CollisionBox::getMin(void) const
 {
 	return (this->_min);
@@ -107,6 +112,10 @@ CollisionBox::InitException::InitException(void)
 CollisionBox::InitException::~InitException(void) throw()
 {
 }
+
+/*
+ *  Set of functions for collision unit_test
+ */
 
 void CollisionBox::debug_checkCollision(CollisionBox const &box) const
 {
