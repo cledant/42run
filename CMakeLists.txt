@@ -46,7 +46,8 @@ set(SOURCE_FILES
 		srcs/Mesh.cpp
 		srcs/Prop.cpp
 		srcs/FontSet.cpp
-		srcs/Ui.cpp)
+		srcs/Ui.cpp
+		srcs/CollisionBox.cpp)
 
 #OS specific libs
 if (APPLE)
