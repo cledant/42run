@@ -20,7 +20,8 @@ CollisionBox::CollisionBox(Shader const *shader, glm::mat4 const *perspec_mult_v
 	try
 	{
 		this->_debug_draw = std::make_shared<Cubemap>(shader, perspec_mult_view,
-													  std::vector<std::string>({"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"}),
+													  std::vector<std::string>(
+															  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"}),
 													  pos, this->_max);
 	}
 	catch (std::exception &e)
@@ -38,18 +39,18 @@ CollisionBox::CollisionBox(CollisionBox const &src)
 {
 	this->_debug_draw = src.getCubemap();
 	this->_debug_name = src.getName();
-	this->_min = src.getMin();
-	this->_max = src.getMax();
-	this->_pos = src.getPos();
+	this->_min        = src.getMin();
+	this->_max        = src.getMax();
+	this->_pos        = src.getPos();
 }
 
 CollisionBox &CollisionBox::operator=(CollisionBox const &rhs)
 {
 	this->_debug_draw = rhs.getCubemap();
 	this->_debug_name = rhs.getName();
-	this->_min = rhs.getMin();
-	this->_max = rhs.getMax();
-	this->_pos = rhs.getPos();
+	this->_min        = rhs.getMin();
+	this->_max        = rhs.getMax();
+	this->_pos        = rhs.getPos();
 	return (*this);
 }
 
@@ -105,4 +106,9 @@ CollisionBox::InitException::InitException(void)
 
 CollisionBox::InitException::~InitException(void) throw()
 {
+}
+
+void CollisionBox::debug_checkCollision(CollisionBox const &box) const
+{
+	std::cout << "Collision between : " << this->_debug_name << " and " << box.getName() << " = " << this->checkCollision(box) << std::endl;
 }

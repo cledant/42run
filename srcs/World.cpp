@@ -20,7 +20,7 @@ World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 		_fov(45.0f), _max_fps(max_fps),
 		_max_frame_skip(max_frame_skip), _next_update_tick(0.0f),
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
-		_input_timer(0.0f), _input_mouse_timer(0.0f)
+		_input_timer(0.0f), _input_mouse_timer(0.0f), _debug_target(nullptr)
 {
 	if (max_frame_skip == 0)
 		throw World::WorldFailException();
@@ -35,10 +35,14 @@ World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 World::~World(void)
 {
 	static_cast<void>(this->_input);
-	std::vector<IEntity *>::iterator it;
+	std::vector<IEntity *>::iterator      it;
+	std::vector<CollisionBox *>::iterator debug_it;
 
-	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
+	for (it       = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
 		delete *it;
+//	for (debug_it = this->_debug_collision.begin(); debug_it != this->_debug_collision.end(); ++it)
+//		delete *it;
+//	delete this->_debug_target;
 }
 
 void World::update(void)
@@ -115,6 +119,7 @@ void World::setActiveInteractive(IInteractive *ptr)
 	this->_active = ptr;
 }
 
+
 void World::updatePerspective(float fov)
 {
 	GLfloat ratio = static_cast<GLfloat>(this->_window.cur_win_w) /
@@ -154,4 +159,75 @@ World::WorldFailException::WorldFailException(void)
 
 World::WorldFailException::~WorldFailException(void) throw()
 {
+}
+
+/*
+ *  Set of functions for collision unit_test
+ */
+
+CollisionBox *World::debug_add_cbox(Shader const *shader, glm::vec3 const &pos,
+									glm::vec3 const &min, glm::vec3 const &max,
+									std::string const &name)
+{
+	CollisionBox *ptr;
+
+	ptr = new CollisionBox(shader, &(this->_perspec_mult_view), pos,
+						   min, max, name);
+	this->_debug_collision.push_back(ptr);
+	return (ptr);
+}
+
+CollisionBox *World::debug_add_target(Shader const *shader, glm::vec3 const &pos,
+									  glm::vec3 const &min, glm::vec3 const &max,
+									  std::string const &name)
+{
+	CollisionBox *ptr;
+
+	ptr = new CollisionBox(shader, &(this->_perspec_mult_view), pos,
+						   min, max, name);
+	this->_debug_target = ptr;
+	return (ptr);
+}
+
+void World::debug_checkCollision(void) const
+{
+	std::vector<CollisionBox *>::const_iterator it;
+
+	std::cout << "=======================" << std::endl;
+	for (it = this->_debug_collision.begin(); it != this->_debug_collision.end(); ++it)
+		(*it)->debug_checkCollision(*(this->_debug_target));
+	std::cout << "=======================" << std::endl;
+}
+
+void World::debug_collision_test_1(Shader const *shader)
+{
+	this->debug_add_cbox(shader, glm::vec3({1.0f, 0.0f, 0.0f}),
+						 glm::vec3({-1.0f, -1.0f, -1.0f}), glm::vec3({1.0f, 1.0f, 1.0f}),
+						 "Box1");
+	this->debug_add_cbox(shader, glm::vec3({0.0f, 1.0f, 0.0f}),
+						 glm::vec3({-1.0f, -1.0f, -1.0f}), glm::vec3({1.0f, 1.0f, 1.0f}),
+						 "Box2");
+	this->debug_add_cbox(shader, glm::vec3({0.0f, 1.0f, 0.0f}),
+						 glm::vec3({-1.0f, -1.0f, -1.0f}), glm::vec3({1.0f, 1.0f, 1.0f}),
+						 "Box3");
+	this->debug_add_target(shader, glm::vec3({0.0f, 0.0f, 0.0f}),
+						 glm::vec3({-0.1f, -0.1f, -0.1f}), glm::vec3({0.1f, 0.1f, 0.1f}),
+						 "Target");
+}
+
+void World::debug_update(void)
+{
+	std::vector<CollisionBox *>::iterator it;
+
+	for (it = this->_debug_collision.begin(); it != this->_debug_collision.end(); ++it)
+		(*it)->update(this->_delta_tick);
+}
+
+void World::debug_render(void)
+{
+	std::vector<CollisionBox *>::iterator it;
+
+//	oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
+	for (it = this->_debug_collision.begin(); it != this->_debug_collision.end(); ++it)
+		(*it)->draw();
 }

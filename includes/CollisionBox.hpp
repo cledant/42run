@@ -49,6 +49,11 @@ class CollisionBox : public IEntity
 				virtual        ~InitException(void) throw();
 		};
 
+		/*
+		 * Set of function for for collision unit_test
+		 */
+		void debug_checkCollision(CollisionBox const &box) const;
+
 	private :
 
 		std::shared_ptr<Cubemap> _debug_draw;
