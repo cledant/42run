@@ -91,7 +91,8 @@ static void init_program(World **world, oGL_module &oGL,
 					   glm::vec3(0.05f, 0.05f, 0.05f));*/
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
-	(*world)->debug_collision_test_1(&(oGL.getShader("cubemap")));
+//	(*world)->debug_collision_test_1(&(oGL.getShader("cubemap")));
+	(*world)->debug_collision_test_2(&(oGL.getShader("cubemap")));
 }
 
 static void run_program(Glfw_manager &manager)

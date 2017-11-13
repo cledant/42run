@@ -211,8 +211,18 @@ void World::debug_collision_test_1(Shader const *shader)
 						 glm::vec3({-1.0f, -1.0f, -1.0f}), glm::vec3({1.0f, 1.0f, 1.0f}),
 						 "Box3");
 	this->debug_add_target(shader, glm::vec3({0.0f, 0.0f, 0.0f}),
-						 glm::vec3({-3.0f, -0.5f, -3.0f}), glm::vec3({3.0f, 0.5f, 3.0f}),
-						 "Target");
+						   glm::vec3({-3.0f, -0.5f, -3.0f}), glm::vec3({3.0f, 0.5f, 3.0f}),
+						   "Target");
+}
+
+void World::debug_collision_test_2(Shader const *shader)
+{
+	this->debug_add_cbox(shader, glm::vec3({0.0f, -1.0f, 0.0f}),
+						 glm::vec3({-10.0f, -0.5f, -10.0f}), glm::vec3({10.0f, 0.5f, 10.0f}),
+						 "Box1");
+	this->debug_add_target(shader, glm::vec3({0.0f, 5.0f, 0.0f}),
+						   glm::vec3({-0.5f, -1.0f, -0.5f}), glm::vec3({0.5f, 1.0f, 0.5f}),
+						   "Target");
 }
 
 void World::debug_update(void)

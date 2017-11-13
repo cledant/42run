@@ -76,6 +76,7 @@ class World
 									   std::string const &name);
 		void debug_checkCollision(void) const;
 		void debug_collision_test_1(Shader const *shader);
+		void debug_collision_test_2(Shader const *shader);
 		void debug_update(void);
 		void debug_render(void);
 
