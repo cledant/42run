@@ -25,12 +25,12 @@ static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 			{
 				manager.update_events();
 				world.update();
-				world.debug_update();
-				world.debug_checkCollision();
+	//			world.debug_update();
+	//			world.debug_checkCollision();
 			}
 			manager.calculate_fps();
 			world.render();
-			world.debug_render();
+	//		world.debug_render();
 			ui.update();
 			ui.drawText("roboto", "42Run : " + manager.getStrFps() + " fps",
 						glm::vec3(0.4f, 0.4f, 0.4f),
@@ -81,9 +81,9 @@ static void init_program(World **world, oGL_module &oGL,
 	(*ui)    = new Ui(manager.getWindow());
 	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
 						  glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
-/*	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
+	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
+/*	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
 					   glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.05f, 0.05f, 0.05f));
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
@@ -92,7 +92,7 @@ static void init_program(World **world, oGL_module &oGL,
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
 //	(*world)->debug_collision_test_1(&(oGL.getShader("cubemap")));
-	(*world)->debug_collision_test_2(&(oGL.getShader("cubemap")));
+//	(*world)->debug_collision_test_2(&(oGL.getShader("cubemap")));
 }
 
 static void run_program(Glfw_manager &manager)

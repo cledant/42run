@@ -15,7 +15,7 @@
 World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 			 float max_fps, size_t max_frame_skip) :
 		_active(nullptr), _input(input), _window(win),
-		_camera(input, cam_pos, glm::vec3(0.0f, 1.0f, 0.0f),
+		_camera(input, cam_pos, 10.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), -90.0f, 0.0f),
 		_fov(45.0f), _max_fps(max_fps),
 		_max_frame_skip(max_frame_skip), _next_update_tick(0.0f),
@@ -29,7 +29,7 @@ World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 	this->_tick        = 1.0f / this->_max_fps;
 	this->_perspective = glm::perspective(glm::radians(this->_fov), ratio, 0.1f,
 										  400.0f);
-	this->_camera.update(true);
+	this->_camera.update_third_person(true, glm::vec3{0.0f, 0.0f, 0.0f});
 }
 
 World::~World(void)
@@ -49,7 +49,7 @@ void World::update(void)
 {
 	std::vector<IEntity *>::iterator it;
 
-	this->_camera.update(this->_input.mouse_exclusive);
+	this->_camera.update_third_person(this->_input.mouse_exclusive, glm::vec3({0.0f, 0.0f, 0.0f}));
 	if (this->_window.resized == true)
 		this->updatePerspective(this->_fov);
 	this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
