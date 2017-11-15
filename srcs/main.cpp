@@ -115,7 +115,6 @@ static void run_program(Glfw_manager &manager)
 	}
 	world->reset_update_timer(Glfw_manager::getTime());
 	manager.reset_fps_counter();
-	manager.toogle_mouse_exclusive();
 	main_loop(*world, manager, *ui);
 	std::cout << "Delete Ui" << std::endl;
 	delete ui;

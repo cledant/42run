@@ -15,7 +15,7 @@
 World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 			 float max_fps, size_t max_frame_skip) :
 		_active(nullptr), _input(input), _window(win),
-		_camera(input, cam_pos, 10.0f, glm::vec3(0.0f, 1.0f, 0.0f),
+		_camera(input, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), -90.0f, 0.0f),
 		_fov(45.0f), _max_fps(max_fps),
 		_max_frame_skip(max_frame_skip), _next_update_tick(0.0f),

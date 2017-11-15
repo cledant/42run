@@ -17,8 +17,7 @@ ThirdPersonCamera::ThirdPersonCamera(Input const &input, glm::vec3 const &target
 									 glm::vec3 const &front, GLfloat yaw, GLfloat pitch) :
 		Camera(input, glm::vec3({0.0f, 0.0f, 0.0f}), world_up, front, yaw, pitch)
 {
-	if (dist_to_target < 0.001f)
-		this->_dist_to_target = 0.001f;
+	this->_dist_to_target = (dist_to_target < 0.001f) ? 0.001f : dist_to_target;
 	this->update_third_person(true, target_pos);
 }
 
@@ -42,9 +41,9 @@ void ThirdPersonCamera::update_third_person(bool mouse_exclusive_to_manager,
 	{
 		if (this->_input.mouse_refreshed == true)
 			this->_update_from_mouse_input();
-		this->_update_from_keyboard_input();
-		this->_view = glm::lookAt(this->_pos - this->_front * this->_dist_to_target, this->_pos + this->_front, this->_up);
 	}
+	this->_update_from_keyboard_input();
+	this->_view = glm::lookAt(this->_pos - this->_front * this->_dist_to_target, this->_pos + this->_front, this->_up);
 }
 
 void ThirdPersonCamera::_update_from_keyboard_input(void)

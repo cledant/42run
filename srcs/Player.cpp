@@ -16,11 +16,11 @@ Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, ThirdPersonCamera const *cam) :
 		_cam(cam), _model(shader, perspec_mult_view, std::vector<std::string>(
 		{"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"}),
-						  pos, glm::vec3{0.1f, 0.4f, 0.1f}), _pos(pos),
+						  pos, glm::vec3{0.1f, 0.2f, 0.1f}), _pos(pos),
 		_vel(glm::vec3({0.0f, 0.0f, 0.0f})), _acc(glm::vec3({0.0f, 0.0f, 0.0f})),
 		_mass(1.0f)
 {
-	this->update(0.0f);
+	this->update(1.0f);
 }
 
 Player::~Player(void)
@@ -36,6 +36,7 @@ glm::vec3 const &Player::getPos(void) const
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
 	float velocity = 0.05f;
+	bool  toogle   = false;
 
 	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
@@ -43,23 +44,25 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		if (input.p_key[GLFW_KEY_W] == PRESSED)
 		{
 			this->_pos += velocity * this->_cam->getFront();
-			return (true);
+			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_S] == PRESSED)
 		{
 			this->_pos -= velocity * this->_cam->getFront();
-			return (true);
+			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_D] == PRESSED)
 		{
 			this->_pos += velocity * this->_cam->getRight();
-			return (true);
+			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_A] == PRESSED)
 		{
 			this->_pos -= velocity * this->_cam->getRight();
-			return (true);
+			toogle = true;
 		}
+		if (toogle == true)
+			return (true);
 	}
 	else
 		std::cout << "Player : Can't update keyboard interaction" << std::endl;
@@ -79,8 +82,8 @@ bool Player::update_mouse_interaction(Input const &input, GLFW_Window const &win
 
 void Player::update(float time)
 {
-	this->_model.setPosition(this->_pos);
 	this->_model.update(time);
+	this->_model.setPosition(this->_pos);
 }
 
 void Player::draw(void)
