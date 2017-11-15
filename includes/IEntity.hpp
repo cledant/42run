@@ -19,14 +19,11 @@ class IEntity
 
 		IEntity(void);
 		virtual ~IEntity(void);
+		IEntity(IEntity const &src) = delete;
+		IEntity &operator=(IEntity const &rhs) = delete;
 
 		virtual void update(float time) = 0;
 		virtual void draw(void) = 0;
-
-	private :
-
-		IEntity(IEntity const &src);
-		virtual IEntity &operator=(IEntity const &rhs);
 };
 
 #endif

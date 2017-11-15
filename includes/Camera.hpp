@@ -46,7 +46,7 @@ class Camera
 				virtual ~CameraFailException(void) throw();
 		};
 
-	private :
+	protected :
 
 		Input const &_input;
 		glm::vec3   _world_up;
@@ -61,9 +61,12 @@ class Camera
 		GLfloat     _yaw;
 		GLfloat     _pitch;
 
-		void _update_from_keyboard_input(void);
-		void _update_from_mouse_input(void);
 		void _update_vector_matrix(void);
+
+	private :
+
+		virtual void _update_from_keyboard_input(void);
+		virtual void _update_from_mouse_input(void);
 };
 
 #endif

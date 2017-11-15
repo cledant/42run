@@ -24,7 +24,8 @@
 # include "Prop.hpp"
 # include "CollisionBox.hpp"
 # include "Shader.hpp"
-# include "Camera.hpp"
+# include "ThirdPersonCamera.hpp"
+# include "Player.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
 # include <iostream>
@@ -83,23 +84,23 @@ class World
 
 	private :
 
-		std::vector<IEntity *>      _entity_list;
-		IInteractive                *_active;
-		Input const                 &_input;
-		GLFW_Window const           &_window;
-		glm::mat4                   _perspective;
-		Camera                      _camera;
-		glm::mat4                   _perspec_mult_view;
-		float                       _fov;
-		float                       _max_fps;
-		size_t                      _max_frame_skip;
-		float                       _tick;
-		float                       _next_update_tick;
-		float                       _last_update_tick;
-		float                       _delta_tick;
-		size_t                      _skip_loop;
-		float                       _input_timer;
-		float                       _input_mouse_timer;
+		std::vector<IEntity *> _entity_list;
+		IInteractive           *_active;
+		Input const            &_input;
+		GLFW_Window const      &_window;
+		glm::mat4              _perspective;
+		ThirdPersonCamera      _camera;
+		glm::mat4              _perspec_mult_view;
+		float                  _fov;
+		float                  _max_fps;
+		size_t                 _max_frame_skip;
+		float                  _tick;
+		float                  _next_update_tick;
+		float                  _last_update_tick;
+		float                  _delta_tick;
+		size_t                 _skip_loop;
+		float                  _input_timer;
+		float                  _input_mouse_timer;
 
 		/*
 		 * Set of variables for collision unit_test

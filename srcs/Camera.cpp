@@ -13,10 +13,9 @@
 #include "Camera.hpp"
 
 Camera::Camera(Input const &input, glm::vec3 const &pos, glm::vec3 const &world_up,
-			   glm::vec3 const &front, GLfloat yaw, GLfloat pitch) : _input(input),
-																	 _world_up(world_up), _pos(pos), _front(front),
-																	 _mouse_sensitivity(0.05f),
-																	 _update_cam(true), _yaw(yaw), _pitch(pitch)
+			   glm::vec3 const &front, GLfloat yaw, GLfloat pitch) :
+		_input(input), _world_up(world_up), _pos(pos), _front(front),
+		_mouse_sensitivity(0.05f), _update_cam(true), _yaw(yaw), _pitch(pitch)
 {
 	this->_movement_speed = 0.075f;
 	this->update(true);

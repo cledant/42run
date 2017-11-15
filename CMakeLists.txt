@@ -47,7 +47,7 @@ set(SOURCE_FILES
 		srcs/Prop.cpp
 		srcs/FontSet.cpp
 		srcs/Ui.cpp
-		srcs/CollisionBox.cpp)
+		srcs/CollisionBox.cpp srcs/ThirdPersonCamera.cpp)
 
 #OS specific libs
 if (APPLE)

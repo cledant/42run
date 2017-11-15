@@ -23,6 +23,8 @@ class IInteractive
 
 		IInteractive(void);
 		virtual ~IInteractive(void);
+		IInteractive(IInteractive const &src) = delete;
+		IInteractive &operator=(IInteractive const &rhs) = delete;
 
 		virtual bool update_keyboard_interaction(Input const &input,
 												 float input_timer) = 0;
@@ -30,11 +32,6 @@ class IInteractive
 											  GLFW_Window const &win, glm::vec3 const &origin,
 											  std::vector<glm::vec3 const *> const &axes,
 											  float input_timer) = 0;
-
-	private :
-
-		IInteractive(IInteractive const &src);
-		virtual IInteractive &operator=(IInteractive const &rhs);
 };
 
 #endif
