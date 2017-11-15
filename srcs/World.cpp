@@ -49,7 +49,10 @@ void World::update(void)
 {
 	std::vector<IEntity *>::iterator it;
 
-	this->_camera.update_third_person(this->_input.mouse_exclusive, glm::vec3({0.0f, 0.0f, 0.0f}));
+	if (this->_active == nullptr)
+		this->_camera.update_third_person(this->_input.mouse_exclusive, glm::vec3({0.0f, 0.0f, 0.0f}));
+	else
+		this->_camera.update_third_person(this->_input.mouse_exclusive, reinterpret_cast<Player *>(this->_active)->getPos());
 	if (this->_window.resized == true)
 		this->updatePerspective(this->_fov);
 	this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
@@ -67,6 +70,7 @@ void World::update(void)
 			this->_input_timer       = 0.0f;
 		else if (this->_input_timer < 1.0f)
 			this->_input_timer += this->_tick;
+		reinterpret_cast<Player *>(this->_active)->update(0.0f);
 	}
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
 		(*it)->update(this->_delta_tick);
@@ -79,6 +83,8 @@ void World::render(void)
 	oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
 		(*it)->draw();
+	if (this->_active != nullptr)
+		reinterpret_cast<Player *>(this->_active)->draw();
 }
 
 IEntity *World::add_Simple_box(Shader const *shader, glm::vec3 const &pos,
@@ -111,6 +117,15 @@ IEntity *World::add_Prop(Shader const *shader, Model const *model,
 	ptr = new Prop(shader, &(this->_perspec_mult_view), model, pos, orientation,
 				   scale);
 	this->_entity_list.push_back(ptr);
+	return (ptr);
+}
+
+IInteractive *World::add_Player(Shader const *shader, glm::vec3 const &pos)
+{
+	IInteractive *ptr;
+
+	ptr = new Player(shader, &(this->_perspec_mult_view), pos, &(this->_camera));
+	this->_active = ptr;
 	return (ptr);
 }
 
