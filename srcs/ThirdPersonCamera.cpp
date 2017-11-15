@@ -36,11 +36,15 @@ void ThirdPersonCamera::setDistToTarget(float dist)
 void ThirdPersonCamera::update_third_person(bool mouse_exclusive_to_manager,
 											glm::vec3 const &target_pos)
 {
-	glm::vec3	tr = this->_front * this->_dist_to_target;
-
 	this->_pos = target_pos;
-	this->update(mouse_exclusive_to_manager);
-	this->_view = glm::translate(this->_view, tr);
+	this->_update_cam = mouse_exclusive_to_manager;
+	if (this->_update_cam == true)
+	{
+		if (this->_input.mouse_refreshed == true)
+			this->_update_from_mouse_input();
+		this->_update_from_keyboard_input();
+		this->_view = glm::lookAt(this->_pos - this->_front * this->_dist_to_target, this->_pos + this->_front, this->_up);
+	}
 }
 
 void ThirdPersonCamera::_update_from_keyboard_input(void)
