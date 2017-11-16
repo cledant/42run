@@ -67,10 +67,8 @@ bool CollisionBox::IsPointInBox(glm::vec3 const &pt, Resolution *res) const
 	d     = pt - this->_pos;
 	p     = this->_half_size - glm::abs(d);
 	is_in = (p.x <= 0.0f || p.y <= 0.0f || p.z <= 0.0f) ? false : true;
-	if (res == nullptr || res == NULL)
+	if (res == nullptr || res == NULL || is_in == false)
 		return (is_in);
-	if (is_in == false)
-		return (false);
 	std::memset(res, 0, sizeof(Resolution));
 	if (p.x < p.y)
 	{
@@ -85,6 +83,41 @@ bool CollisionBox::IsPointInBox(glm::vec3 const &pt, Resolution *res) const
 			this->_resolution_pt_y(res, pt, d, p);
 		else
 			this->_resolution_pt_z(res, pt, d, p);
+	}
+	return (true);
+}
+
+/*
+ * If IsBoxInBox is given nullptr or NULL as param for res, it will
+ * only check collision and wont return a new allocated Resolution struct.
+ *
+ * If IsBoxInBox returns false, it won't change res pointer.
+ */
+bool CollisionBox::IsBoxInBox(CollisionBox const &box, Resolution *res) const
+{
+	glm::vec3 d;
+	glm::vec3 p;
+	bool      is_in;
+
+	d     = box.getPos() - this->_pos;
+	p     = (this->_half_size + box.getHalfSize()) - glm::abs(d);
+	is_in = (p.x <= 0.0f || p.y <= 0.0f || p.z <= 0.0f) ? false : true;
+	if (res == nullptr || res == NULL || is_in == false)
+		return (is_in);
+	std::memset(res, 0, sizeof(Resolution));
+	if (p.x < p.y)
+	{
+		if (p.x < p.z)
+			this->_resolution_box_x(res, box, d, p);
+		else
+			this->_resolution_box_z(res, box, d, p);
+	}
+	else
+	{
+		if (p.y < p.z)
+			this->_resolution_box_y(res, box, d, p);
+		else
+			this->_resolution_box_z(res, box, d, p);
 	}
 	return (true);
 }
@@ -125,6 +158,39 @@ void CollisionBox::_resolution_pt_z(Resolution *res, glm::vec3 const &pt,
 	res->pos.z    = this->_pos.z + (this->_half_size.z * sign);
 	res->pos.x    = pt.x;
 	res->pos.y    = pt.y;
+}
+
+void CollisionBox::_resolution_box_x(Resolution *res, CollisionBox const &box,
+									 glm::vec3 const &d, glm::vec3 const &p) const
+{
+	float sign = CollisionBox::_sign(d.x);
+	res->delta.x  = p.x * sign;
+	res->normal.x = sign;
+	res->pos.x    = this->_pos.x + (this->_half_size.x * sign);
+	res->pos.y    = box.getPos().y;
+	res->pos.z    = box.getPos().z;
+}
+
+void CollisionBox::_resolution_box_y(Resolution *res, CollisionBox const &box,
+									 glm::vec3 const &d, glm::vec3 const &p) const
+{
+	float sign = CollisionBox::_sign(d.y);
+	res->delta.y  = p.y * sign;
+	res->normal.y = sign;
+	res->pos.y    = this->_pos.y + (this->_half_size.y * sign);
+	res->pos.x    = box.getPos().x;
+	res->pos.z    = box.getPos().z;
+}
+
+void CollisionBox::_resolution_box_z(Resolution *res, CollisionBox const &box,
+									 glm::vec3 const &d, glm::vec3 const &p) const
+{
+	float sign = CollisionBox::_sign(d.z);
+	res->delta.z  = p.z * sign;
+	res->normal.z = sign;
+	res->pos.z    = this->_pos.z + (this->_half_size.z * sign);
+	res->pos.x    = box.getPos().x;
+	res->pos.y    = box.getPos().y;
 }
 
 CollisionBox::InitException::InitException(void)

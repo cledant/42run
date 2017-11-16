@@ -64,6 +64,12 @@ class CollisionBox
 							  glm::vec3 const &d, glm::vec3 const &p) const;
 		void _resolution_pt_z(Resolution *res, glm::vec3 const &pt,
 							  glm::vec3 const &d, glm::vec3 const &p) const;
+		void _resolution_box_x(Resolution *res, CollisionBox const &box,
+							  glm::vec3 const &d, glm::vec3 const &p) const;
+		void _resolution_box_y(Resolution *res, CollisionBox const &box,
+							  glm::vec3 const &d, glm::vec3 const &p) const;
+		void _resolution_box_z(Resolution *res, CollisionBox const &box,
+							  glm::vec3 const &d, glm::vec3 const &p) const;
 };
 
 #endif
