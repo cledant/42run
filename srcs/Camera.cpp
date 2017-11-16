@@ -15,7 +15,8 @@
 Camera::Camera(Input const &input, glm::vec3 const &pos, glm::vec3 const &world_up,
 			   glm::vec3 const &front, GLfloat yaw, GLfloat pitch) :
 		_input(input), _world_up(world_up), _pos(pos), _front(front),
-		_mouse_sensitivity(0.05f), _update_cam(true), _yaw(yaw), _pitch(pitch)
+		_xy_front(glm::vec3(0.0f, 0.0f, 0.0f)), _mouse_sensitivity(0.05f),
+		_update_cam(true), _yaw(yaw), _pitch(pitch)
 {
 	this->_movement_speed = 0.075f;
 	this->update(true);
@@ -72,6 +73,11 @@ glm::vec3 const &Camera::getPos(void) const
 	return (this->_pos);
 }
 
+glm::vec3 const &Camera::getXYFront(void) const
+{
+	return (this->_xy_front);
+}
+
 void Camera::_update_from_keyboard_input(void)
 {
 	float velocity;
@@ -112,6 +118,9 @@ void Camera::_update_vector_matrix(void)
 	glm::normalize(this->_front);
 	this->_right = glm::normalize(glm::cross(this->_front, this->_world_up));
 	this->_up    = glm::normalize(glm::cross(this->_right, this->_front));
+	this->_xy_front.x = this->_front.x;
+	this->_xy_front.z = this->_front.z;
+	this->_xy_front = glm::normalize(this->_xy_front);
 }
 
 Camera::CameraFailException::CameraFailException(void)

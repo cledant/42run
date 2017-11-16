@@ -38,6 +38,7 @@ class Camera
 		glm::vec3 const &getUp(void) const;
 		glm::vec3 const &getRight(void) const;
 		glm::vec3 const &getPos(void) const;
+		glm::vec3 const &getXYFront(void) const;
 
 		class CameraFailException : public GeneralException
 		{
@@ -55,6 +56,7 @@ class Camera
 		glm::vec3   _front;
 		glm::vec3   _up;
 		glm::vec3   _right;
+		glm::vec3	_xy_front;
 		glm::mat4   _view;
 		GLfloat     _mouse_sensitivity;
 		GLfloat     _movement_speed;
