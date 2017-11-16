@@ -242,6 +242,26 @@ Model const &oGL_module::getModel(std::string const &name)
 	throw oGL_module::ModelNotFoundException(name);
 }
 
+void oGL_module::add_texture(std::string const &name,
+							 std::vector<std::string> const &files,
+							 Texture::t_tex_gl_type gl_type,
+							 Texture::t_tex_type type)
+{
+	this->_texture_list.push_back({name, files, gl_type, type});
+}
+
+Texture const &oGL_module::getTexture(std::string const &name)
+{
+	std::vector<Texture>::iterator it;
+
+	for (it = this->_texture_list.begin(); it != this->_texture_list.end(); ++it)
+	{
+		if (it->getName().compare(name) == 0)
+			return (*it);
+	}
+	throw oGL_module::TextureNotFoundException(name);
+}
+
 oGL_module::ShaderNotFoundException::ShaderNotFoundException(void)
 {
 	this->_msg = "OpenGL : Failed to find requested shader";
@@ -269,6 +289,21 @@ oGL_module::ModelNotFoundException::ModelNotFoundException(std::string const &na
 }
 
 oGL_module::ModelNotFoundException::~ModelNotFoundException(void) throw()
+{
+}
+
+oGL_module::TextureNotFoundException::TextureNotFoundException(void)
+{
+	this->_msg = "OpenGL : Failed to find requested texture";
+}
+
+oGL_module::TextureNotFoundException::TextureNotFoundException(std::string const &name)
+{
+	this->_msg = "OpenGL : Failed to find texture : ";
+	this->_msg += name.c_str();
+}
+
+oGL_module::TextureNotFoundException::~TextureNotFoundException(void) throw()
 {
 }
 

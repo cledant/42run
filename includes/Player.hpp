@@ -34,7 +34,7 @@ class Player : public IInteractive, public IEntity
 
 		Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, glm::vec3 const &size,
-			   ThirdPersonCamera const *cam);
+			   ThirdPersonCamera const *cam, Texture const *tex);
 		virtual ~Player();
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;

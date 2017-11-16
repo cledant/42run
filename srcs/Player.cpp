@@ -14,11 +14,9 @@
 
 Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, glm::vec3 const &size,
-			   ThirdPersonCamera const *cam) :
-		_cam(cam), _model(shader, perspec_mult_view, std::vector<std::string>(
-		{"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"}),
-						  pos, size), _cb(pos, size), _pos(pos),
-		_vel(glm::vec3({0.0f, 0.0f, 0.0f})),
+			   ThirdPersonCamera const *cam, Texture const *tex) :
+		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size),
+		_cb(pos, size), _pos(pos), _vel(glm::vec3({0.0f, 0.0f, 0.0f})),
 		_acc(glm::vec3({0.0f, 0.0f, 0.0f})), _mass(1.0f)
 {
 	this->update(1.0f);

@@ -53,7 +53,7 @@ class World
 						  glm::vec3 const &pos, glm::vec3 const &orientation,
 						  glm::vec3 const &scale);
 		IInteractive *add_Player(Shader const *shader, glm::vec3 const &pos,
-								 glm::vec3 const &size);
+								 glm::vec3 const &size, Texture const *tex);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);

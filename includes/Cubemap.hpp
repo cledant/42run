@@ -27,6 +27,9 @@ class Cubemap : public IEntity
 		Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 				std::vector<std::string> const &files, glm::vec3 const &pos,
 				glm::vec3 const &scale);
+		Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
+				Texture const *tex, glm::vec3 const &pos,
+				glm::vec3 const &scale);
 		virtual ~Cubemap(void);
 		Cubemap(Cubemap const &src) = delete;
 		Cubemap &operator=(Cubemap const &rhs) = delete;
@@ -49,7 +52,7 @@ class Cubemap : public IEntity
 
 		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;
-		Texture         *_tex;
+		Texture const   *_tex;
 		GLuint          _vbo;
 		GLuint          _vao;
 		glm::vec3       _pos;
@@ -58,6 +61,8 @@ class Cubemap : public IEntity
 
 		static float  _vertices[];
 		static size_t _nb_faces;
+
+		void _oGL_alloc(void);
 };
 
 #endif

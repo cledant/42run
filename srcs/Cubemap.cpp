@@ -20,11 +20,7 @@ Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 {
 	try
 	{
-		this->_vbo = oGL_module::oGL_create_vbo(sizeof(float) * 6 * 3 * 6,
-												static_cast<void *>(Cubemap::_vertices));
-		this->_vao = oGL_module::oGL_create_vao();
-		oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
-										   sizeof(GLfloat) * 3, 0);
+		this->_oGL_alloc();
 		this->_tex = new Texture("tex_cubemap", files, Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	}
 	catch (std::exception &e)
@@ -33,6 +29,26 @@ Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		oGL_module::oGL_delete_vao(this->_vao);
 		oGL_module::oGL_delete_vbo(this->_vbo);
 		delete _tex;
+		throw Cubemap::InitException();
+	}
+	this->update(0.0f);
+}
+
+Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
+				 Texture const *tex, glm::vec3 const &pos,
+				 glm::vec3 const &scale) :
+		_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(tex),
+		_vbo(0), _vao(0), _pos(pos), _scale(scale)
+{
+	try
+	{
+		this->_oGL_alloc();
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+		oGL_module::oGL_delete_vao(this->_vao);
+		oGL_module::oGL_delete_vbo(this->_vbo);
 		throw Cubemap::InitException();
 	}
 	this->update(0.0f);
@@ -88,6 +104,15 @@ void Cubemap::setScale(glm::vec3 const &scale)
 glm::mat4 const &Cubemap::getTotalMatrix(void) const
 {
 	return (this->_total);
+}
+
+void Cubemap::_oGL_alloc(void)
+{
+	this->_vbo = oGL_module::oGL_create_vbo(sizeof(float) * 6 * 3 * 6,
+											static_cast<void *>(Cubemap::_vertices));
+	this->_vao = oGL_module::oGL_create_vao();
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
+									   sizeof(GLfloat) * 3, 0);
 }
 
 Cubemap::InitException::InitException(void)

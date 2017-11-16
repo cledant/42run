@@ -25,12 +25,9 @@ static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 			{
 				manager.update_events();
 				world.update();
-				//			world.debug_update();
-				//			world.debug_checkCollision();
 			}
 			manager.calculate_fps();
 			world.render();
-			//		world.debug_render();
 			ui.update();
 			ui.drawText("roboto", "42Run : " + manager.getStrFps() + " fps",
 						glm::vec3(0.4f, 0.4f, 0.4f),
@@ -56,6 +53,9 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/prop/prop.fs");
 	oGL.add_shader("fontset", "./shaders/fontset/fontset.vs",
 				   "./shaders/fontset/fontset.fs");
+	oGL.add_texture("TestTex",
+					{"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
+					Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	oGL.add_model("Alice", "./models/Alice/Alice.obj");
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
 }
@@ -84,7 +84,7 @@ static void init_program(World **world, oGL_module &oGL,
 	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	(*world)->add_Player(&(oGL.getShader("cubemap")), glm::vec3({1.0f, 1.0f, 1.0f}),
-						 glm::vec3({0.1f, 0.2f, 0.1f}));
+						 glm::vec3({0.1f, 0.2f, 0.1f}), &(oGL.getTexture("TestTex")));
 /*	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
 					   glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.05f, 0.05f, 0.05f));
@@ -93,8 +93,6 @@ static void init_program(World **world, oGL_module &oGL,
 					   glm::vec3(0.05f, 0.05f, 0.05f));*/
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
-//	(*world)->debug_collision_test_1(&(oGL.getShader("cubemap")));
-//	(*world)->debug_collision_test_2(&(oGL.getShader("cubemap")));
 }
 
 static void run_program(Glfw_manager &manager)

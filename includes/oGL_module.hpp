@@ -67,6 +67,12 @@ class oGL_module
 					   std::string const &path);
 		Model const &getModel(std::string const &name);
 
+		void add_texture(std::string const &name,
+						 std::vector<std::string> const &files,
+						 Texture::t_tex_gl_type gl_type,
+						 Texture::t_tex_type type);
+		Texture const &getTexture(std::string const &name);
+
 		class ShaderNotFoundException : public GeneralException
 		{
 			public :
@@ -85,6 +91,15 @@ class oGL_module
 				virtual ~ModelNotFoundException(void) throw();
 		};
 
+		class TextureNotFoundException : public GeneralException
+		{
+			public :
+
+				explicit TextureNotFoundException(void);
+				explicit TextureNotFoundException(std::string const &name);
+				virtual ~TextureNotFoundException(void) throw();
+		};
+
 		class oGLFailException : public GeneralException
 		{
 			public :
@@ -95,8 +110,9 @@ class oGL_module
 
 	private :
 
-		std::vector<Shader> _shader_list;
-		std::vector<Model>  _model_list;
+		std::vector<Shader>  _shader_list;
+		std::vector<Model>   _model_list;
+		std::vector<Texture> _texture_list;
 };
 
 #endif
