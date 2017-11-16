@@ -42,12 +42,14 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 	{
 		if (input.p_key[GLFW_KEY_W] == PRESSED)
 		{
-			this->_pos += velocity * this->_cam->getFront();
+			this->_pos += velocity * glm::vec3(this->_cam->getFront().x, 0.0f,
+											   this->_cam->getFront().z);
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_S] == PRESSED)
 		{
-			this->_pos -= velocity * this->_cam->getFront();
+			this->_pos -= velocity * glm::vec3(this->_cam->getFront().x, 0.0f,
+											   this->_cam->getFront().z);
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_D] == PRESSED)
@@ -58,6 +60,16 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		if (input.p_key[GLFW_KEY_A] == PRESSED)
 		{
 			this->_pos -= velocity * this->_cam->getRight();
+			toogle = true;
+		}
+		if (input.p_key[GLFW_KEY_R] == PRESSED)
+		{
+			this->_pos += velocity * this->_cam->getWorldUp();
+			toogle = true;
+		}
+		if (input.p_key[GLFW_KEY_F] == PRESSED)
+		{
+			this->_pos += -velocity * this->_cam->getWorldUp();
 			toogle = true;
 		}
 		if (toogle == true)

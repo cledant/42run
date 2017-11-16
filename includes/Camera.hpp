@@ -33,6 +33,7 @@ class Camera
 		void update(bool mouse_exclusive_to_manager);
 		void toggle_update(void);
 		glm::mat4 const &getViewMatrix(void) const;
+		glm::vec3 const &getWorldUp(void) const;
 		glm::vec3 const &getFront(void) const;
 		glm::vec3 const &getUp(void) const;
 		glm::vec3 const &getRight(void) const;

@@ -47,6 +47,11 @@ glm::mat4 const &Camera::getViewMatrix(void) const
 	return (this->_view);
 }
 
+glm::vec3 const &Camera::getWorldUp(void) const
+{
+	return (this->_world_up);
+}
+
 glm::vec3 const &Camera::getFront(void) const
 {
 	return (this->_front);
