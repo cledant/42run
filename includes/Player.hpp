@@ -15,6 +15,7 @@
 
 # include "oGL_module.hpp"
 # include "Cubemap.hpp"
+# include "CollisionBox.hpp"
 # include "GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"
@@ -32,7 +33,8 @@ class Player : public IInteractive, public IEntity
 	public :
 
 		Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
-			   glm::vec3 const &pos, ThirdPersonCamera const *cam);
+			   glm::vec3 const &pos, glm::vec3 const &size,
+			   ThirdPersonCamera const *cam);
 		virtual ~Player();
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;
@@ -52,6 +54,7 @@ class Player : public IInteractive, public IEntity
 
 		ThirdPersonCamera const *_cam;
 		Cubemap                 _model;
+		CollisionBox            _cb;
 		glm::vec3               _pos;
 		glm::vec3               _vel;
 		glm::vec3               _acc;

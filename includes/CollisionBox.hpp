@@ -13,33 +13,25 @@
 #ifndef COLLISIONBOX_HPP
 # define COLLISIONBOX_HPP
 
-#include "IEntity.hpp"
-#include "Cubemap.hpp"
+#include "GeneralException.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
 #include <memory>
 
-class CollisionBox : public IEntity
+class CollisionBox
 {
 	public :
 
-		CollisionBox(Shader const *shader, glm::mat4 const *perspec_mult_view,
-					 glm::vec3 const &pos, glm::vec3 const &min, glm::vec3 const &max,
-					 std::string const &name);
+		CollisionBox(glm::vec3 const &pos, glm::vec3 const &half_size);
 		CollisionBox(CollisionBox const &src);
 		CollisionBox &operator=(CollisionBox const &rhs);
 		virtual ~CollisionBox(void);
 
-		void update(float time);
-		void draw(void);
 		void setPos(glm::vec3 const &pos);
-		glm::vec3 const &getMin(void) const;
-		glm::vec3 const &getMax(void) const;
+		void setHalfSize(glm::vec3 const &pos);
 		glm::vec3 const &getPos(void) const;
-		std::string const &getName(void) const;
-		std::shared_ptr<Cubemap> const &getCubemap(void) const;
-		bool checkCollision(CollisionBox const &box) const;
+		glm::vec3 const &getHalfSize(void) const;
 
 		class InitException : public GeneralException
 		{
@@ -49,18 +41,10 @@ class CollisionBox : public IEntity
 				virtual        ~InitException(void) throw();
 		};
 
-		/*
-		 * Set of function for for collision unit_test
-		 */
-		void debug_checkCollision(CollisionBox const &box) const;
-
 	private :
 
-		std::shared_ptr<Cubemap> _debug_draw;
-		std::string              _debug_name;
-		glm::vec3                _min;
-		glm::vec3                _max;
-		glm::vec3                _pos;
+		glm::vec3 _pos;
+		glm::vec3 _half_size;
 };
 
 #endif

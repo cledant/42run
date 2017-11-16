@@ -52,7 +52,8 @@ class World
 		IEntity *add_Prop(Shader const *shader, Model const *model,
 						  glm::vec3 const &pos, glm::vec3 const &orientation,
 						  glm::vec3 const &scale);
-		IInteractive *add_Player(Shader const *shader, glm::vec3 const &pos);
+		IInteractive *add_Player(Shader const *shader, glm::vec3 const &pos,
+								 glm::vec3 const &size);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);
@@ -66,22 +67,6 @@ class World
 				explicit WorldFailException(void);
 				virtual ~WorldFailException(void) throw();
 		};
-
-		/*
-		 *  Set of functions for collision unit_test
-		 */
-		CollisionBox *debug_add_cbox(Shader const *shader, glm::vec3 const &pos,
-									 glm::vec3 const &min, glm::vec3 const &max,
-									 std::string const &name);
-		CollisionBox *debug_add_target(Shader const *shader, glm::vec3 const &pos,
-									   glm::vec3 const &min, glm::vec3 const &max,
-									   std::string const &name);
-		void debug_checkCollision(void) const;
-		void debug_collision_test_1(Shader const *shader);
-		void debug_collision_test_2(Shader const *shader);
-		void debug_update(void);
-		void debug_render(void);
-
 
 	private :
 
@@ -102,12 +87,6 @@ class World
 		size_t                 _skip_loop;
 		float                  _input_timer;
 		float                  _input_mouse_timer;
-
-		/*
-		 * Set of variables for collision unit_test
-		 */
-		CollisionBox                *_debug_target;
-		std::vector<CollisionBox *> _debug_collision;
 };
 
 #endif
