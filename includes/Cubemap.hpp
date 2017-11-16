@@ -50,6 +50,12 @@ class Cubemap : public IEntity
 
 	private :
 
+		typedef enum e_tex_source
+		{
+			EXTERNAL,
+			INTERNAL,
+		} t_tex_source;
+
 		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;
 		Texture const   *_tex;
@@ -58,6 +64,7 @@ class Cubemap : public IEntity
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;
+		t_tex_source    _src_tex;
 
 		static float  _vertices[];
 		static size_t _nb_faces;

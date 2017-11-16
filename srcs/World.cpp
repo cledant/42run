@@ -128,6 +128,16 @@ IInteractive *World::add_Player(Shader const *shader, glm::vec3 const &pos,
 	return (ptr);
 }
 
+IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
+								  glm::vec3 const &size, Texture const *tex)
+{
+	IEntity *ptr;
+
+	ptr = new CollidableBox(shader, &(this->_perspec_mult_view), pos, size, tex);
+	this->_entity_list.push_back(ptr);
+	return (ptr);
+}
+
 void World::setActiveInteractive(IInteractive *ptr)
 {
 	this->_active = ptr;

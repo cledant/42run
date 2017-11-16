@@ -19,6 +19,7 @@ Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		_cb(pos, size), _pos(pos), _vel(glm::vec3({0.0f, 0.0f, 0.0f})),
 		_acc(glm::vec3({0.0f, 0.0f, 0.0f})), _mass(1.0f)
 {
+	static_cast<void>(this->_mass);
 	this->update(1.0f);
 }
 
@@ -28,7 +29,6 @@ Player::~Player(void)
 
 glm::vec3 const &Player::getPos(void) const
 {
-	static_cast<void>(this->_mass);
 	return (this->_pos);
 }
 

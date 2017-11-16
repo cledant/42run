@@ -26,6 +26,7 @@
 # include "Shader.hpp"
 # include "ThirdPersonCamera.hpp"
 # include "Player.hpp"
+# include "CollidableBox.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
 # include <iostream>
@@ -54,6 +55,8 @@ class World
 						  glm::vec3 const &scale);
 		IInteractive *add_Player(Shader const *shader, glm::vec3 const &pos,
 								 glm::vec3 const &size, Texture const *tex);
+		IEntity *add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
+								   glm::vec3 const &size, Texture const *tex);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);

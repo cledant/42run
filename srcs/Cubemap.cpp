@@ -16,7 +16,7 @@ Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 				 std::vector<std::string> const &files, glm::vec3 const &pos,
 				 glm::vec3 const &scale) :
 		_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(nullptr),
-		_vbo(0), _vao(0), _pos(pos), _scale(scale)
+		_vbo(0), _vao(0), _pos(pos), _scale(scale), _src_tex(Cubemap::INTERNAL)
 {
 	try
 	{
@@ -38,7 +38,7 @@ Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 				 Texture const *tex, glm::vec3 const &pos,
 				 glm::vec3 const &scale) :
 		_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(tex),
-		_vbo(0), _vao(0), _pos(pos), _scale(scale)
+		_vbo(0), _vao(0), _pos(pos), _scale(scale), _src_tex(Cubemap::EXTERNAL)
 {
 	try
 	{
@@ -56,7 +56,8 @@ Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 
 Cubemap::~Cubemap(void)
 {
-	delete this->_tex;
+	if (this->_src_tex == Cubemap::INTERNAL)
+		delete this->_tex;
 	oGL_module::oGL_delete_vao(this->_vao);
 	oGL_module::oGL_delete_vbo(this->_vbo);
 }
