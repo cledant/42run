@@ -42,7 +42,7 @@ class CollisionBox
 		glm::vec3 const &getHalfSize(void) const;
 
 		bool IsPointInBox(glm::vec3 const &pt, Resolution *res) const;
-		bool IsBoxInBox(CollisionBox const &box) const;
+		bool IsBoxInBox(CollisionBox const &box, Resolution *res) const;
 
 		class InitException : public GeneralException
 		{
@@ -58,12 +58,12 @@ class CollisionBox
 		glm::vec3 _half_size;
 
 		static float _sign(float nb);
-		void _resolution_pt_x(Resolution *res, glm::vec3 const &d,
-							  glm::vec3 const &p) const;
-		void _resolution_pt_y(Resolution *res, glm::vec3 const &d,
-							  glm::vec3 const &p) const;
-		void _resolution_pt_z(Resolution *res, glm::vec3 const &d,
-							  glm::vec3 const &p) const;
+		void _resolution_pt_x(Resolution *res, glm::vec3 const &pt,
+							  glm::vec3 const &d, glm::vec3 const &p) const;
+		void _resolution_pt_y(Resolution *res, glm::vec3 const &pt,
+							  glm::vec3 const &d, glm::vec3 const &p) const;
+		void _resolution_pt_z(Resolution *res, glm::vec3 const &pt,
+							  glm::vec3 const &d, glm::vec3 const &p) const;
 };
 
 #endif

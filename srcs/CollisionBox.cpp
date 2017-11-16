@@ -75,16 +75,16 @@ bool CollisionBox::IsPointInBox(glm::vec3 const &pt, Resolution *res) const
 	if (p.x < p.y)
 	{
 		if (p.x < p.z)
-			this->_resolution_pt_x(res, d, p);
+			this->_resolution_pt_x(res, pt, d, p);
 		else
-			this->_resolution_pt_z(res, d, p);
+			this->_resolution_pt_z(res, pt, d, p);
 	}
 	else
 	{
 		if (p.y < p.z)
-			this->_resolution_pt_y(res, d, p);
+			this->_resolution_pt_y(res, pt, d, p);
 		else
-			this->_resolution_pt_z(res, d, p);
+			this->_resolution_pt_z(res, pt, d, p);
 	}
 	return (true);
 }
@@ -94,37 +94,37 @@ float CollisionBox::_sign(float nb)
 	return ((nb < 0.0f) ? -1.0f : 1.0f);
 }
 
-void CollisionBox::_resolution_pt_x(Resolution *res, glm::vec3 const &d,
-									glm::vec3 const &p) const
+void CollisionBox::_resolution_pt_x(Resolution *res, glm::vec3 const &pt,
+									glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.x);
 	res->delta.x  = p.x * sign;
 	res->normal.x = sign;
 	res->pos.x    = this->_pos.x + (this->_half_size.x * sign);
-	res->pos.y    = this->_pos.y;
-	res->pos.z    = this->_pos.z;
+	res->pos.y    = pt.y;
+	res->pos.z    = pt.z;
 }
 
-void CollisionBox::_resolution_pt_y(Resolution *res, glm::vec3 const &d,
-									glm::vec3 const &p) const
+void CollisionBox::_resolution_pt_y(Resolution *res, glm::vec3 const &pt,
+									glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.y);
 	res->delta.y  = p.y * sign;
 	res->normal.y = sign;
 	res->pos.y    = this->_pos.y + (this->_half_size.y * sign);
-	res->pos.x    = this->_pos.x;
-	res->pos.z    = this->_pos.z;
+	res->pos.x    = pt.x;
+	res->pos.z    = pt.z;
 }
 
-void CollisionBox::_resolution_pt_z(Resolution *res, glm::vec3 const &d,
-									glm::vec3 const &p) const
+void CollisionBox::_resolution_pt_z(Resolution *res, glm::vec3 const &pt,
+									glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.z);
 	res->delta.z  = p.z * sign;
 	res->normal.z = sign;
 	res->pos.z    = this->_pos.z + (this->_half_size.z * sign);
-	res->pos.x    = this->_pos.x;
-	res->pos.y    = this->_pos.y;
+	res->pos.x    = pt.x;
+	res->pos.y    = pt.y;
 }
 
 CollisionBox::InitException::InitException(void)
