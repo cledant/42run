@@ -176,6 +176,42 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	return (true);
 }
 
+bool CollisionBox::IsBoxInBoxSweep(glm::vec3 const &pt, glm::vec3 const &delta,
+								   SweepResolution *s_res) const
+{
+	glm::vec3 dir;
+
+	std::memset(s_res, 0, sizeof(SweepResolution));
+	if (delta.x == 0.0f && delta.y == 0.0f && delta.z == 0.0f)
+	{
+		s_res->pos  = this->_pos;
+		if ((this->IsBoxInBox(*this, &(s_res->res))) == true)
+		{
+			s_res->time = 0.0f;
+			return (true);
+		}
+		s_res->time = 1.0f;
+		return (false);
+	}
+	if ((this->IsSegmentInBox(pt, delta, this->_half_size, &(s_res->res))) == true)
+	{
+		s_res->time = std::clamp(s_res->res.time - (1.0e-8f), 0.0f, 1.0f);
+		s_res->pos  = this->_pos + delta * s_res->time;
+		dir = glm::normalize(delta);
+		s_res->pos   = s_res->pos + dir * this->_half_size;
+		s_res->pos.x = std::clamp(s_res->pos.x, this->_pos.x - this->_half_size.x,
+								  this->_pos.x + this->_half_size.x);
+		s_res->pos.y = std::clamp(s_res->pos.y, this->_pos.y - this->_half_size.y,
+								  this->_pos.y + this->_half_size.y);
+		s_res->pos.z = std::clamp(s_res->pos.z, this->_pos.z - this->_half_size.z,
+								  this->_pos.z + this->_half_size.z);
+		return (true);
+	}
+	s_res->pos  = this->_pos + delta;
+	s_res->time = 1.0f;
+	return (false);
+}
+
 float CollisionBox::_sign(float nb)
 {
 	return ((nb < 0.0f) ? -1.0f : 1.0f);

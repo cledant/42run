@@ -32,6 +32,13 @@ class CollisionBox
 			float     time;
 		};
 
+		struct SweepResolution
+		{
+			Resolution res;
+			glm::vec3  pos;
+			float      time;
+		};
+
 		CollisionBox(glm::vec3 const &pos, glm::vec3 const &half_size);
 		CollisionBox(CollisionBox const &src);
 		CollisionBox &operator=(CollisionBox const &rhs);
@@ -46,6 +53,8 @@ class CollisionBox
 		bool IsBoxInBox(CollisionBox const &box, Resolution *res) const;
 		bool IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 							glm::vec3 const &padding, Resolution *res) const;
+		bool IsBoxInBoxSweep(glm::vec3 const &pt, glm::vec3 const &delta,
+							 SweepResolution *s_res) const;
 
 		class InitException : public GeneralException
 		{
