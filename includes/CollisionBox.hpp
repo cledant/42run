@@ -18,6 +18,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
 #include <memory>
+#include <algorithm>
 
 class CollisionBox
 {
@@ -43,6 +44,8 @@ class CollisionBox
 
 		bool IsPointInBox(glm::vec3 const &pt, Resolution *res) const;
 		bool IsBoxInBox(CollisionBox const &box, Resolution *res) const;
+		bool IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
+							glm::vec3 const &padding, Resolution *res) const;
 
 		class InitException : public GeneralException
 		{
@@ -65,11 +68,13 @@ class CollisionBox
 		void _resolution_pt_z(Resolution *res, glm::vec3 const &pt,
 							  glm::vec3 const &d, glm::vec3 const &p) const;
 		void _resolution_box_x(Resolution *res, CollisionBox const &box,
-							  glm::vec3 const &d, glm::vec3 const &p) const;
+							   glm::vec3 const &d, glm::vec3 const &p) const;
 		void _resolution_box_y(Resolution *res, CollisionBox const &box,
-							  glm::vec3 const &d, glm::vec3 const &p) const;
+							   glm::vec3 const &d, glm::vec3 const &p) const;
 		void _resolution_box_z(Resolution *res, CollisionBox const &box,
-							  glm::vec3 const &d, glm::vec3 const &p) const;
+							   glm::vec3 const &d, glm::vec3 const &p) const;
+
+		static float _max_vec3(glm::vec3 const &vec);
 };
 
 #endif

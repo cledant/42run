@@ -122,6 +122,60 @@ bool CollisionBox::IsBoxInBox(CollisionBox const &box, Resolution *res) const
 	return (true);
 }
 
+/*
+ * If IsSegmentInBox is given nullptr or NULL as param for res, it will
+ * only check collision and wont return a new allocated Resolution struct.
+ *
+ * If IsSegmentInBox returns false, it won't change res pointer.
+ */
+bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
+								  glm::vec3 const &padding, Resolution *res) const
+{
+	glm::vec3 scale;
+	glm::vec3 sign;
+	glm::vec3 nearTime;
+	glm::vec3 farTime;
+	bool      is_in;
+	float     max_nt;
+	float     max_ft;
+
+	scale = 1.0f / delta;
+	sign.x = this->_sign(scale.x);
+	sign.y = this->_sign(scale.y);
+	sign.z = this->_sign(scale.z);
+	nearTime = (this->_pos - sign * (this->_half_size + padding) - pt) * scale;
+	farTime  = (this->_pos + sign * (this->_half_size + padding) - pt) * scale;
+	is_in    = (nearTime.x > farTime.y) || (nearTime.y > farTime.x) ||
+			   (nearTime.x > farTime.z) || (nearTime.z > farTime.x) ||
+			   (nearTime.y > farTime.z) || (nearTime.z > farTime.y);
+	if (is_in == false)
+		return (is_in);
+	max_nt = CollisionBox::_max_vec3(nearTime);
+	max_ft = CollisionBox::_max_vec3(farTime);
+	is_in  = (max_nt >= 1 || max_ft <= 0) ? false : true;
+	if (res == nullptr || res == NULL || is_in == false)
+		return (is_in);
+	std::memset(res, 0, sizeof(Resolution));
+	res->time  = std::clamp(max_nt, 0.0f, 1.0f);
+	res->delta = delta * res->time;
+	res->pos   = pt + res->delta;
+	if (nearTime.x < nearTime.y)
+	{
+		if (nearTime.x < nearTime.z)
+			res->normal = glm::vec3(-sign.x, 0.0f, 0.0f);
+		else
+			res->normal = glm::vec3(0.0f, 0.0f, -sign.z);
+	}
+	else
+	{
+		if (nearTime.y < nearTime.z)
+			res->normal = glm::vec3(0.0f, -sign.y, 0.0f);
+		else
+			res->normal = glm::vec3(0.0f, 0.0f, -sign.z);
+	}
+	return (true);
+}
+
 float CollisionBox::_sign(float nb)
 {
 	return ((nb < 0.0f) ? -1.0f : 1.0f);
@@ -191,6 +245,11 @@ void CollisionBox::_resolution_box_z(Resolution *res, CollisionBox const &box,
 	res->pos.z    = this->_pos.z + (this->_half_size.z * sign);
 	res->pos.x    = box.getPos().x;
 	res->pos.y    = box.getPos().y;
+}
+
+float CollisionBox::_max_vec3(glm::vec3 const &vec)
+{
+	return (std::max(std::max(vec.x, vec.y), vec.z));
 }
 
 CollisionBox::InitException::InitException(void)
