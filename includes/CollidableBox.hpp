@@ -15,12 +15,12 @@
 
 # include "oGL_module.hpp"
 # include "Cubemap.hpp"
-# include "CollisionBox.hpp"
 # include "GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "IEntity.hpp"
+# include "ICollidable.hpp"
 
-class CollidableBox : public IEntity
+class CollidableBox : public IEntity, public ICollidable
 {
 	public :
 
@@ -31,6 +31,8 @@ class CollidableBox : public IEntity
 		CollidableBox &operator=(const CollidableBox &rhs) = delete;
 
 		glm::vec3 const &getPos(void) const;
+
+		CollisionBox const &getCollisionBox(void) const;
 
 		void update(float time);
 		void draw(void);

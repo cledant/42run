@@ -71,6 +71,8 @@ void World::update(void)
 	}
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
 		(*it)->update(this->_delta_tick);
+	if (this->_active != nullptr)
+		this->_check_collisions();
 }
 
 void World::render(void)
@@ -135,6 +137,7 @@ IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 
 	ptr = new CollidableBox(shader, &(this->_perspec_mult_view), pos, size, tex);
 	this->_entity_list.push_back(ptr);
+	this->_collision_check_list.push_back(reinterpret_cast<CollidableBox *>(ptr));
 	return (ptr);
 }
 
@@ -174,6 +177,25 @@ bool World::should_be_updated(float time)
 		return (true);
 	}
 	return (false);
+}
+
+void World::_check_collisions(void)
+{
+	CollisionBox::Resolution res;
+	bool out = true;
+
+	for (auto it = this->_collision_check_list.begin(); it != this->_collision_check_list.end(); ++it)
+	{
+		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().IsBoxInBox((*it)->getCollisionBox(), &res)) == true)
+		{
+			out = false;
+			std::cout << "I'm in something" << std::endl;
+		}
+	}
+	if (out == true)
+	{
+		std::cout << "I'm in nothing" << std::endl;
+	}
 }
 
 World::WorldFailException::WorldFailException(void)

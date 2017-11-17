@@ -32,6 +32,11 @@ glm::vec3 const &Player::getPos(void) const
 	return (this->_pos);
 }
 
+CollisionBox const &Player::getCollisionBox(void) const
+{
+	return (this->_cb);
+}
+
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
 	float velocity = 0.05f;
@@ -93,6 +98,7 @@ void Player::update(float time)
 {
 	this->_model.update(time);
 	this->_model.setPosition(this->_pos);
+	this->_cb.setPos(this->_pos);
 }
 
 void Player::draw(void)

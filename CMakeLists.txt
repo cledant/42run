@@ -34,6 +34,7 @@ set(SOURCE_FILES
 		srcs/Glfw_manager.cpp
 		srcs/IEntity.cpp
 		srcs/IInteractive.cpp
+		srcs/ICollidable.cpp
 		srcs/Input.cpp
 		srcs/main.cpp
 		srcs/oGL_module.cpp
@@ -49,7 +50,8 @@ set(SOURCE_FILES
 		srcs/Ui.cpp
 		srcs/CollisionBox.cpp
 		srcs/ThirdPersonCamera.cpp
-		srcs/Player.cpp srcs/CollidableBox.cpp)
+		srcs/Player.cpp
+		srcs/CollidableBox.cpp)
 
 #OS specific libs
 if (APPLE)

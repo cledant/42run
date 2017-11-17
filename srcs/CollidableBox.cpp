@@ -30,6 +30,11 @@ glm::vec3 const &CollidableBox::getPos(void) const
 	return (this->_pos);
 }
 
+CollisionBox const &CollidableBox::getCollisionBox(void) const
+{
+	return (this->_cb);
+}
+
 void CollidableBox::update(float time)
 {
 	this->_model.update(time);

@@ -15,12 +15,12 @@
 
 # include "oGL_module.hpp"
 # include "Cubemap.hpp"
-# include "CollisionBox.hpp"
 # include "GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"
 # include "IEntity.hpp"
 # include "IInteractive.hpp"
+# include "ICollidable.hpp"
 # include "ThirdPersonCamera.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
@@ -28,7 +28,7 @@
 # include <vector>
 # include <fstream>
 
-class Player : public IInteractive, public IEntity
+class Player : public IInteractive, public IEntity, public ICollidable
 {
 	public :
 
@@ -40,6 +40,8 @@ class Player : public IInteractive, public IEntity
 		Player &operator=(const Player &rhs) = delete;
 
 		glm::vec3 const &getPos(void) const;
+
+		CollisionBox const &getCollisionBox(void) const;
 
 		bool update_keyboard_interaction(Input const &input,
 										 float input_timer);

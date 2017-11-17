@@ -19,6 +19,7 @@
 # include "glm/gtc/matrix_transform.hpp"
 # include "IEntity.hpp"
 # include "IInteractive.hpp"
+# include "ICollidable.hpp"
 # include "Simple_box.hpp"
 # include "Cubemap.hpp"
 # include "Prop.hpp"
@@ -73,23 +74,26 @@ class World
 
 	private :
 
-		std::vector<IEntity *> _entity_list;
-		IInteractive           *_active;
-		Input const            &_input;
-		GLFW_Window const      &_window;
-		glm::mat4              _perspective;
-		ThirdPersonCamera      _camera;
-		glm::mat4              _perspec_mult_view;
-		float                  _fov;
-		float                  _max_fps;
-		size_t                 _max_frame_skip;
-		float                  _tick;
-		float                  _next_update_tick;
-		float                  _last_update_tick;
-		float                  _delta_tick;
-		size_t                 _skip_loop;
-		float                  _input_timer;
-		float                  _input_mouse_timer;
+		std::vector<IEntity *>       _entity_list;
+		std::vector<CollidableBox *> _collision_check_list;
+		IInteractive                 *_active;
+		Input const                  &_input;
+		GLFW_Window const            &_window;
+		glm::mat4                    _perspective;
+		ThirdPersonCamera            _camera;
+		glm::mat4                    _perspec_mult_view;
+		float                        _fov;
+		float                        _max_fps;
+		size_t                       _max_frame_skip;
+		float                        _tick;
+		float                        _next_update_tick;
+		float                        _last_update_tick;
+		float                        _delta_tick;
+		size_t                       _skip_loop;
+		float                        _input_timer;
+		float                        _input_mouse_timer;
+
+		void _check_collisions(void);
 };
 
 #endif
