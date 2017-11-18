@@ -135,7 +135,7 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	glm::vec3 sign;
 	glm::vec3 nearTime;
 	glm::vec3 farTime;
-	//bool      is_in;
+	bool      is_in = false;
 	float     max_nt;
 	float     min_ft;
 
@@ -153,37 +153,43 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	std::cout << "farTime Y = " << farTime.y << std::endl;
 	std::cout << "farTime Z = " << farTime.z << std::endl;
 	std::cout << "=============" << std::endl;
-	if ((nearTime.x < farTime.y) || (nearTime.y < farTime.x))
+	if ((nearTime.x <= farTime.y) && (nearTime.y <= farTime.x) && is_in == false)
 	{
+		std::cout << "TEST 1" << std::endl;
 		max_nt = std::max(nearTime.x, nearTime.y);
 		min_ft = std::min(farTime.x, farTime.y);
+		is_in  = true;
 		if (max_nt >= 1.0f || min_ft <= 0.0f)
 		{
-			std::cout << "Exit 1" << std::endl;
-			return (false);
+			std::cout << "Exit 1.1" << std::endl;
+			is_in = false;
 		}
 	}
-	else if ((nearTime.x < farTime.z) || (nearTime.z < farTime.x))
+	if ((nearTime.x <= farTime.z) && (nearTime.z <= farTime.x) && is_in == false)
 	{
+		std::cout << "TEST 2" << std::endl;
 		max_nt = std::max(nearTime.x, nearTime.z);
 		min_ft = std::min(farTime.x, farTime.z);
+		is_in  = true;
 		if (max_nt >= 1.0f || min_ft <= 0.0f)
 		{
-			std::cout << "Exit 2" << std::endl;
-			return (false);
+			std::cout << "Exit 2.1" << std::endl;
+			is_in = false;
 		}
 	}
-	else if ((nearTime.y < farTime.z) || (nearTime.z < farTime.y))
+	if ((nearTime.y <= farTime.z) && (nearTime.z <= farTime.y) && is_in == false)
 	{
+		std::cout << "TEST 3" << std::endl;
 		max_nt = std::max(nearTime.y, nearTime.z);
 		min_ft = std::min(farTime.y, farTime.z);
+		is_in  = true;
 		if (max_nt >= 1.0f || min_ft <= 0.0f)
 		{
-			std::cout << "Exit 3" << std::endl;
-			return (false);
+			std::cout << "Exit 3.1" << std::endl;
+			is_in = false;
 		}
 	}
-	else
+	if (is_in == false)
 	{
 		std::cout << "Exit 4" << std::endl;
 		return (false);
@@ -193,15 +199,15 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 			   (nearTime.y > farTime.z) || (nearTime.z > farTime.y);
 	if (is_in == false)
 	{
-		std::cout << "Exit 1" << std::endl;
+	//	std::cout << "Exit 1" << std::endl;
 		return (is_in);
 	}
 	max_nt = CollisionBox::_max_vec3(nearTime);
-	max_ft = CollisionBox::_min_vec3(farTime);
-	is_in  = (max_nt >= 1 || max_ft <= 0) ? false : true;
+	min_ft = CollisionBox::_min_vec3(farTime);
+	is_in  = (max_nt >= 1.0f || min_ft <= 0.0f) ? false : true;
 	if (res == nullptr || res == NULL || is_in == false)
 	{
-		std::cout << "Exit 2" << std::endl;
+	//	std::cout << "Exit 2" << std::endl;
 		return (is_in);
 	}*/
 	std::memset(res, 0, sizeof(Resolution));
@@ -222,7 +228,7 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 		else
 			res->normal = glm::vec3(0.0f, 0.0f, -sign.z);
 	}
-	std::cout << "Exit 3" << std::endl;
+	std::cout << "Exit 5" << std::endl;
 	return (true);
 }
 
