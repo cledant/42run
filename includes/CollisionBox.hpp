@@ -53,7 +53,7 @@ class CollisionBox
 		bool IsBoxInBox(CollisionBox const &box, Resolution *res) const;
 		bool IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 							glm::vec3 const &padding, Resolution *res) const;
-		bool IsBoxInBoxSweep(glm::vec3 const &pt, glm::vec3 const &delta,
+		bool IsBoxInBoxSweep(CollisionBox const &box, glm::vec3 const &delta,
 							 SweepResolution *s_res) const;
 
 		class InitException : public GeneralException

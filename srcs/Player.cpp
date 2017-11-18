@@ -16,7 +16,8 @@ Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, glm::vec3 const &size,
 			   ThirdPersonCamera const *cam, Texture const *tex) :
 		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size),
-		_cb(pos, size), _pos(pos), _vel(glm::vec3({0.0f, 0.0f, 0.0f})),
+		_cb(pos, size), _delta(glm::vec3({0.0f, 0.0f, 0.0f})), _pos(pos),
+		_vel(glm::vec3({0.0f, 0.0f, 0.0f})),
 		_acc(glm::vec3({0.0f, 0.0f, 0.0f})), _mass(1.0f)
 {
 	static_cast<void>(this->_mass);
@@ -25,6 +26,16 @@ Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 
 Player::~Player(void)
 {
+}
+
+glm::vec3 const &Player::getDelta(void) const
+{
+	return (this->_delta);
+}
+
+glm::vec3 const &Player::getOldPos(void) const
+{
+	return (this->_old_pos);
 }
 
 glm::vec3 const &Player::getPos(void) const
@@ -42,6 +53,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 	float velocity = 0.05f;
 	bool  toogle   = false;
 
+	this->_old_pos = this->_pos;
 	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
 	{
@@ -75,6 +87,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			this->_pos += -velocity * this->_cam->getWorldUp();
 			toogle = true;
 		}
+		this->_delta = this->_pos - this->_old_pos;
 		if (toogle == true)
 			return (true);
 	}

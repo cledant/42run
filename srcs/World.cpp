@@ -181,12 +181,14 @@ bool World::should_be_updated(float time)
 
 void World::_check_collisions(void)
 {
-	CollisionBox::Resolution res;
-	bool out = true;
+	CollisionBox::SweepResolution res;
+	bool                          out = true;
 
 	for (auto it = this->_collision_check_list.begin(); it != this->_collision_check_list.end(); ++it)
 	{
-		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().IsBoxInBox((*it)->getCollisionBox(), &res)) == true)
+		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
+				IsBoxInBoxSweep((*it)->getCollisionBox(),
+								reinterpret_cast<Player *>(this->_active)->getDelta(), &res)) == true)
 		{
 			out = false;
 			std::cout << "I'm in something" << std::endl;

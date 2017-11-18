@@ -39,6 +39,8 @@ class Player : public IInteractive, public IEntity, public ICollidable
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;
 
+		glm::vec3 const &getDelta(void) const;
+		glm::vec3 const &getOldPos(void) const;
 		glm::vec3 const &getPos(void) const;
 
 		CollisionBox const &getCollisionBox(void) const;
@@ -57,6 +59,8 @@ class Player : public IInteractive, public IEntity, public ICollidable
 		ThirdPersonCamera const *_cam;
 		Cubemap                 _model;
 		CollisionBox            _cb;
+		glm::vec3               _delta;
+		glm::vec3               _old_pos;
 		glm::vec3               _pos;
 		glm::vec3               _vel;
 		glm::vec3               _acc;
