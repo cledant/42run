@@ -138,40 +138,42 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	float     max_nt;
 	float     min_ft;
 
-	(void) res;
 	scale = 1.0f / delta;
 	sign.x = this->_sign(scale.x);
 	sign.y = this->_sign(scale.y);
 	sign.z = this->_sign(scale.z);
 	nearTime = (this->_pos - sign * (this->_half_size + padding) - pt) * scale;
 	farTime  = (this->_pos + sign * (this->_half_size + padding) - pt) * scale;
-	std::cout << "=============" << std::endl;
-	std::cout << "sign X = " << sign.x << std::endl;
-	std::cout << "sign Y = " << sign.y << std::endl;
-	std::cout << "sign Z = " << sign.z << std::endl;
-	std::cout << "nearTime X = " << nearTime.x << std::endl;
-	std::cout << "nearTime Y = " << nearTime.y << std::endl;
-	std::cout << "nearTime Z = " << nearTime.z << std::endl;
-	std::cout << "farTime X = " << farTime.x << std::endl;
-	std::cout << "farTime Y = " << farTime.y << std::endl;
-	std::cout << "farTime Z = " << farTime.z << std::endl;
-	std::cout << "=============" << std::endl;
-
 	if ((nearTime.x > farTime.z) || (nearTime.z > farTime.x) ||
 		(nearTime.x > farTime.y) || (nearTime.y > farTime.x) ||
 		(nearTime.y > farTime.z) || (nearTime.z > farTime.y))
 	{
-//		std::cout << "OUT" << std::endl;
 		return (false);
 	}
-	max_nt = CollisionBox::_max_vec3(nearTime);
-	min_ft = CollisionBox::_min_vec3(farTime);
+	max_nt     = CollisionBox::_max_vec3(nearTime);
+	min_ft     = CollisionBox::_min_vec3(farTime);
 	if (max_nt >= 1.0f || min_ft <= 0.0f)
-	{
-//		std::cout << "OUT" << std::endl;
 		return (false);
+	if (res == nullptr || res == NULL)
+		return (true);
+	std::memset(res, 0, sizeof(Resolution));
+	if (nearTime.x > nearTime.y)
+	{
+		if (nearTime.x > nearTime.z)
+			res->normal.x = -sign.x;
+		else
+			res->normal.z = -sign.z;
 	}
-//	std::cout << "IN" << std::endl;
+	else
+	{
+		if (nearTime.y > nearTime.z)
+			res->normal.y = -sign.y;
+		else
+			res->normal.z = -sign.z;
+	}
+	res->time  = std::clamp(max_nt, 0.0f, 1.0f);
+	res->delta = res->time * delta;
+	res->pos   = pt + res->delta;
 	return (true);
 }
 
