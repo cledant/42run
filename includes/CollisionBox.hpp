@@ -84,6 +84,7 @@ class CollisionBox
 							   glm::vec3 const &d, glm::vec3 const &p) const;
 
 		static float _max_vec3(glm::vec3 const &vec);
+		static float _min_vec3(glm::vec3 const &vec);
 };
 
 #endif

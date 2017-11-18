@@ -183,6 +183,7 @@ void World::_check_collisions(void)
 {
 	CollisionBox::SweepResolution res;
 	bool                          out = true;
+	size_t                        i   = 0;
 
 	for (auto it = this->_collision_check_list.begin(); it != this->_collision_check_list.end(); ++it)
 	{
@@ -191,8 +192,9 @@ void World::_check_collisions(void)
 								reinterpret_cast<Player *>(this->_active)->getDelta(), &res)) == true)
 		{
 			out = false;
-			std::cout << "I'm in something" << std::endl;
+			std::cout << "I'm in something : " << i << std::endl;
 		}
+		i++;
 	}
 	if (out == true)
 	{
