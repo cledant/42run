@@ -94,6 +94,8 @@ class World
 		float                        _input_mouse_timer;
 
 		void _check_collisions(void);
+		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
+									  CollisionBox::SweepResolution const *res);
 };
 
 #endif

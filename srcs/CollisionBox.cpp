@@ -150,8 +150,8 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	{
 		return (false);
 	}
-	max_nt     = CollisionBox::_max_vec3(nearTime);
-	min_ft     = CollisionBox::_min_vec3(farTime);
+	max_nt = CollisionBox::_max_vec3(nearTime);
+	min_ft = CollisionBox::_min_vec3(farTime);
 	if (max_nt >= 1.0f || min_ft <= 0.0f)
 		return (false);
 	if (res == nullptr || res == NULL)
@@ -171,7 +171,21 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 		else
 			res->normal.z = -sign.z;
 	}
-	res->time  = std::clamp(max_nt, 0.0f, 1.0f);
+	std::cout << "--------------" << std::endl;
+	std::cout << "nt all axis" << std::endl;
+	std::cout << nearTime.x << std::endl;
+	std::cout << nearTime.y << std::endl;
+	std::cout << nearTime.z << std::endl;
+	std::cout << "ft all axis" << std::endl;
+	std::cout << farTime.x << std::endl;
+	std::cout << farTime.y << std::endl;
+	std::cout << farTime.z << std::endl;
+	std::cout << "max_nt" << std::endl;
+	std::cout << max_nt << std::endl;
+	std::cout << "res time" << std::endl;
+	std::cout << res->time << std::endl;
+	res->time = std::clamp(max_nt, 0.0f, 1.0f);
+	std::cout << "--------------" << std::endl;
 	res->delta = res->time * delta;
 	res->pos   = pt + res->delta;
 	return (true);
@@ -200,13 +214,13 @@ bool CollisionBox::IsBoxInBoxSweep(CollisionBox const &box, glm::vec3 const &del
 		s_res->time = std::clamp(s_res->res.time - (1.0e-8f), 0.0f, 1.0f);
 		s_res->pos  = box.getPos() + delta * s_res->time;
 		dir = glm::normalize(delta);
-		s_res->pos   = s_res->pos + dir * box.getHalfSize();
-		s_res->pos.x = std::clamp(s_res->pos.x, this->_pos.x - this->_half_size.x,
-								  this->_pos.x + this->_half_size.x);
-		s_res->pos.y = std::clamp(s_res->pos.y, this->_pos.y - this->_half_size.y,
-								  this->_pos.y + this->_half_size.y);
-		s_res->pos.z = std::clamp(s_res->pos.z, this->_pos.z - this->_half_size.z,
-								  this->_pos.z + this->_half_size.z);
+		s_res->res.pos   = s_res->pos + dir * box.getHalfSize();
+		s_res->res.pos.x = std::clamp(s_res->res.pos.x, this->_pos.x - this->_half_size.x,
+									  this->_pos.x + this->_half_size.x);
+		s_res->res.pos.y = std::clamp(s_res->res.pos.y, this->_pos.y - this->_half_size.y,
+									  this->_pos.y + this->_half_size.y);
+		s_res->res.pos.z = std::clamp(s_res->res.pos.z, this->_pos.z - this->_half_size.z,
+									  this->_pos.z + this->_half_size.z);
 		return (true);
 	}
 	s_res->pos  = box.getPos() + delta;

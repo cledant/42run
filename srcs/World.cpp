@@ -45,15 +45,15 @@ void World::update(void)
 {
 	std::vector<IEntity *>::iterator it;
 
-	if (this->_active == nullptr)
-		this->_camera.update_third_person(this->_input.mouse_exclusive, glm::vec3({0.0f, 0.0f, 0.0f}));
-	else
-		this->_camera.update_third_person(this->_input.mouse_exclusive,
-										  reinterpret_cast<Player *>(this->_active)->getPos());
+
 	if (this->_window.resized == true)
 		this->updatePerspective(this->_fov);
-	this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
-	if (this->_active != nullptr)
+	if (this->_active == nullptr)
+	{
+		this->_camera.update_third_person(this->_input.mouse_exclusive, glm::vec3({0.0f, 0.0f, 0.0f}));
+		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
+	}
+	else
 	{
 		if (this->_active->update_mouse_interaction(this->_input, this->_window,
 													this->_camera.getPos(), std::vector<glm::vec3 const *>{
@@ -67,12 +67,15 @@ void World::update(void)
 			this->_input_timer       = 0.0f;
 		else if (this->_input_timer < 1.0f)
 			this->_input_timer += this->_tick;
+		this->_check_collisions();
 		reinterpret_cast<Player *>(this->_active)->update(0.0f);
+		this->_camera.update_third_person(this->_input.mouse_exclusive,
+										  reinterpret_cast<Player *>(this->_active)->getPos());
+		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
+		reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
 	}
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
 		(*it)->update(this->_delta_tick);
-	if (this->_active != nullptr)
-		this->_check_collisions();
 }
 
 void World::render(void)
@@ -182,8 +185,6 @@ bool World::should_be_updated(float time)
 void World::_check_collisions(void)
 {
 	CollisionBox::SweepResolution res;
-	bool                          out = true;
-	size_t                        i   = 0;
 
 	for (auto it = this->_collision_check_list.begin(); it != this->_collision_check_list.end(); ++it)
 	{
@@ -191,15 +192,57 @@ void World::_check_collisions(void)
 				IsBoxInBoxSweep((*it)->getCollisionBox(),
 								reinterpret_cast<Player *>(this->_active)->getDelta(), &res)) == true)
 		{
-			out = false;
-			std::cout << "I'm in something : " << i << std::endl;
+			std::cout << "============" << std::endl;
+			std::cout << "Delta" << std::endl;
+			std::cout << reinterpret_cast<Player *>(this->_active)->getDelta().x << std::endl;
+			std::cout << reinterpret_cast<Player *>(this->_active)->getDelta().y << std::endl;
+			std::cout << reinterpret_cast<Player *>(this->_active)->getDelta().z << std::endl;
+			std::cout << "============" << std::endl;
+			this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
+										   (*it)->getCollisionBox(), &res);
+			break;
 		}
-		i++;
 	}
-	if (out == true)
-	{
-		std::cout << "I'm in nothing" << std::endl;
-	}
+}
+
+void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
+									 CollisionBox::SweepResolution const *res)
+{
+	std::cout << "============" << std::endl;
+	std::cout << "PLAYER pos" << std::endl;
+	std::cout << player->getPos().x << std::endl;
+	std::cout << player->getPos().y << std::endl;
+	std::cout << player->getPos().z << std::endl;
+	std::cout << "PLAYER half size" << std::endl;
+	std::cout << player->getCollisionBox().getHalfSize().x << std::endl;
+	std::cout << player->getCollisionBox().getHalfSize().y << std::endl;
+	std::cout << player->getCollisionBox().getHalfSize().z << std::endl;
+	std::cout << "BOX pos" << std::endl;
+	std::cout << box.getPos().x << std::endl;
+	std::cout << box.getPos().y << std::endl;
+	std::cout << box.getPos().z << std::endl;
+	std::cout << "BOX half size" << std::endl;
+	std::cout << box.getHalfSize().x << std::endl;
+	std::cout << box.getHalfSize().y << std::endl;
+	std::cout << box.getHalfSize().z << std::endl;
+	std::cout << "RESOLUTION" << std::endl;
+	std::cout << "Sweep pos" << std::endl;
+	std::cout << res->pos.x << std::endl;
+	std::cout << res->pos.x << std::endl;
+	std::cout << res->pos.x << std::endl;
+	std::cout << "Hit pos" << std::endl;
+	std::cout << res->res.pos.x << std::endl;
+	std::cout << res->res.pos.y << std::endl;
+	std::cout << res->res.pos.z << std::endl;
+	std::cout << "Hit delta" << std::endl;
+	std::cout << res->res.delta.x << std::endl;
+	std::cout << res->res.delta.y << std::endl;
+	std::cout << res->res.delta.z << std::endl;
+	std::cout << "Hit normal" << std::endl;
+	std::cout << res->res.normal.x << std::endl;
+	std::cout << res->res.normal.y << std::endl;
+	std::cout << res->res.normal.z << std::endl;
+	std::cout << "============" << std::endl;
 }
 
 World::WorldFailException::WorldFailException(void)

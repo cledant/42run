@@ -39,6 +39,8 @@ class Player : public IInteractive, public IEntity, public ICollidable
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;
 
+		void setPos(glm::vec3 const &new_pos);
+
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getOldPos(void) const;
 		glm::vec3 const &getPos(void) const;
@@ -53,6 +55,8 @@ class Player : public IInteractive, public IEntity, public ICollidable
 									  float input_timer);
 		void update(float time);
 		void draw(void);
+
+		void update_model(float time);
 
 	private :
 

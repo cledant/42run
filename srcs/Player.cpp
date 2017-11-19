@@ -28,6 +28,11 @@ Player::~Player(void)
 {
 }
 
+void Player::setPos(glm::vec3 const &new_pos)
+{
+	this->_pos = new_pos;
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);
@@ -50,44 +55,45 @@ CollisionBox const &Player::getCollisionBox(void) const
 
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
-	float velocity = 0.05f;
+	float velocity = 0.09f;
 	bool  toogle   = false;
 
-	this->_old_pos = this->_pos;
 	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
 	{
+		this->_delta.x = 0.0f;
+		this->_delta.z = 0.0f;
+		this->_delta.y = 0.0f;
 		if (input.p_key[GLFW_KEY_W] == PRESSED)
 		{
-			this->_pos += velocity * this->_cam->getXYFront();
+			this->_delta += velocity * this->_cam->getXYFront();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_S] == PRESSED)
 		{
-			this->_pos -= velocity * this->_cam->getXYFront();
+			this->_delta -= velocity * this->_cam->getXYFront();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_D] == PRESSED)
 		{
-			this->_pos += velocity * this->_cam->getRight();
+			this->_delta += velocity * this->_cam->getRight();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_A] == PRESSED)
 		{
-			this->_pos -= velocity * this->_cam->getRight();
+			this->_delta -= velocity * this->_cam->getRight();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_R] == PRESSED)
 		{
-			this->_pos += velocity * this->_cam->getWorldUp();
+			this->_delta += velocity * this->_cam->getWorldUp();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_F] == PRESSED)
 		{
-			this->_pos += -velocity * this->_cam->getWorldUp();
+			this->_delta += -velocity * this->_cam->getWorldUp();
 			toogle = true;
 		}
-		this->_delta = this->_pos - this->_old_pos;
 		if (toogle == true)
 			return (true);
 	}
@@ -109,9 +115,15 @@ bool Player::update_mouse_interaction(Input const &input, GLFW_Window const &win
 
 void Player::update(float time)
 {
-	this->_model.update(time);
+	(void)time;
+	this->_pos += this->_delta;
 	this->_model.setPosition(this->_pos);
 	this->_cb.setPos(this->_pos);
+}
+
+void Player::update_model(float time)
+{
+	this->_model.update(time);
 }
 
 void Player::draw(void)
