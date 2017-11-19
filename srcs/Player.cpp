@@ -33,6 +33,11 @@ void Player::setPos(glm::vec3 const &new_pos)
 	this->_pos = new_pos;
 }
 
+void Player::setDelta(glm::vec3 const &new_delta)
+{
+	this->_delta = new_delta;
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);
@@ -115,7 +120,7 @@ bool Player::update_mouse_interaction(Input const &input, GLFW_Window const &win
 
 void Player::update(float time)
 {
-	(void)time;
+	(void) time;
 	this->_pos += this->_delta;
 	this->_model.setPosition(this->_pos);
 	this->_cb.setPos(this->_pos);

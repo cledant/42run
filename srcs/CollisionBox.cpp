@@ -183,8 +183,8 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	std::cout << "max_nt" << std::endl;
 	std::cout << max_nt << std::endl;
 	std::cout << "res time" << std::endl;
-	std::cout << res->time << std::endl;
 	res->time = std::clamp(max_nt, 0.0f, 1.0f);
+	std::cout << res->time << std::endl;
 	std::cout << "--------------" << std::endl;
 	res->delta = res->time * delta;
 	res->pos   = pt + res->delta;

@@ -185,30 +185,39 @@ bool World::should_be_updated(float time)
 void World::_check_collisions(void)
 {
 	CollisionBox::SweepResolution res;
+	glm::vec3                     inv_delta;
 
+	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
+	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
+	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
 	for (auto it = this->_collision_check_list.begin(); it != this->_collision_check_list.end(); ++it)
 	{
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBoxSweep((*it)->getCollisionBox(),
-								reinterpret_cast<Player *>(this->_active)->getDelta(), &res)) == true)
+								inv_delta, &res)) == true)
 		{
 			std::cout << "============" << std::endl;
-			std::cout << "Delta" << std::endl;
-			std::cout << reinterpret_cast<Player *>(this->_active)->getDelta().x << std::endl;
-			std::cout << reinterpret_cast<Player *>(this->_active)->getDelta().y << std::endl;
-			std::cout << reinterpret_cast<Player *>(this->_active)->getDelta().z << std::endl;
+			std::cout << "Inv Delta" << std::endl;
+			std::cout << inv_delta.x << std::endl;
+			std::cout << inv_delta.y << std::endl;
+			std::cout << inv_delta.z << std::endl;
 			std::cout << "============" << std::endl;
 			this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
-										   (*it)->getCollisionBox(), &res);
+										   (*it)->getCollisionBox(), inv_delta, &res);
 			break;
 		}
 	}
 }
 
 void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
+									 glm::vec3 const &inv_delta,
 									 CollisionBox::SweepResolution const *res)
 {
+	glm::vec3 new_delta;
+
 	std::cout << "============" << std::endl;
+	std::cout << "RES TIME pos" << std::endl;
+	std::cout << res->res.time << std::endl;
 	std::cout << "PLAYER pos" << std::endl;
 	std::cout << player->getPos().x << std::endl;
 	std::cout << player->getPos().y << std::endl;
@@ -217,6 +226,10 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 	std::cout << player->getCollisionBox().getHalfSize().x << std::endl;
 	std::cout << player->getCollisionBox().getHalfSize().y << std::endl;
 	std::cout << player->getCollisionBox().getHalfSize().z << std::endl;
+	std::cout << "PLAYER delta" << std::endl;
+	std::cout << player->getDelta().x << std::endl;
+	std::cout << player->getDelta().y << std::endl;
+	std::cout << player->getDelta().z << std::endl;
 	std::cout << "BOX pos" << std::endl;
 	std::cout << box.getPos().x << std::endl;
 	std::cout << box.getPos().y << std::endl;
@@ -242,6 +255,19 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 	std::cout << res->res.normal.x << std::endl;
 	std::cout << res->res.normal.y << std::endl;
 	std::cout << res->res.normal.z << std::endl;
+	std::cout << "Inv Delta" << std::endl;
+	std::cout << inv_delta.x << std::endl;
+	std::cout << inv_delta.y << std::endl;
+	std::cout << inv_delta.z << std::endl;
+	new_delta = res->res.delta;
+	new_delta.x = -new_delta.x;
+	new_delta.y = -new_delta.y;
+	new_delta.z = -new_delta.z;
+	player->setDelta(new_delta);
+	std::cout << "PLAYER delta 2" << std::endl;
+	std::cout << player->getDelta().x << std::endl;
+	std::cout << player->getDelta().y << std::endl;
+	std::cout << player->getDelta().z << std::endl;
 	std::cout << "============" << std::endl;
 }
 

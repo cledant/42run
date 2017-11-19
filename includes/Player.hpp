@@ -40,6 +40,7 @@ class Player : public IInteractive, public IEntity, public ICollidable
 		Player &operator=(const Player &rhs) = delete;
 
 		void setPos(glm::vec3 const &new_pos);
+		void setDelta(glm::vec3 const &new_delta);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getOldPos(void) const;

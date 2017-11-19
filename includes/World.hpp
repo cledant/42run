@@ -95,6 +95,7 @@ class World
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
+									  glm::vec3 const &inv_delta,
 									  CollisionBox::SweepResolution const *res);
 };
 
