@@ -171,7 +171,7 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 		else
 			res->normal.z = -sign.z;
 	}
-	std::cout << "--------------" << std::endl;
+/*	std::cout << "--------------" << std::endl;
 	std::cout << "pt" << std::endl;
 	std::cout << pt.x << std::endl;
 	std::cout << pt.y << std::endl;
@@ -198,10 +198,10 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	std::cout << farTime.z << std::endl;
 	std::cout << "max_nt" << std::endl;
 	std::cout << max_nt << std::endl;
-	std::cout << "res time" << std::endl;
+	std::cout << "res time" << std::endl;*/
 	res->time = std::clamp(max_nt, 0.0f, 1.0f);
-	std::cout << res->time << std::endl;
-	std::cout << "--------------" << std::endl;
+//	std::cout << res->time << std::endl;
+//	std::cout << "--------------" << std::endl;
 	res->delta = res->time * delta;
 	res->pos   = pt + res->delta;
 	return (true);

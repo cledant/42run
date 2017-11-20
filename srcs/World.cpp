@@ -217,7 +217,7 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 
 	(void) box;
 	(void) inv_delta;
-	std::cout << "============" << std::endl;
+/*	std::cout << "============" << std::endl;
 	std::cout << "RES TIME pos" << std::endl;
 	std::cout << res->res.time << std::endl;
 	std::cout << "PLAYER pos" << std::endl;
@@ -260,17 +260,26 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 	std::cout << "Inv Delta" << std::endl;
 	std::cout << inv_delta.x << std::endl;
 	std::cout << inv_delta.y << std::endl;
-	std::cout << inv_delta.z << std::endl;
+	std::cout << inv_delta.z << std::endl;*/
 
 	new_delta.x = !isnan(-res->res.delta.x) ? -res->res.delta.x : 0.0f;
 	new_delta.y = !isnan(-res->res.delta.y) ? -res->res.delta.y : 0.0f;
 	new_delta.z = !isnan(-res->res.delta.z) ? -res->res.delta.z : 0.0f;
+	if (res->res.normal.y != 0.0f)
+		new_delta.y += (res->res.normal.y < 0.0f) ? (player->getCollisionBox().getHalfSize().y * 0.01) :
+					   -(player->getCollisionBox().getHalfSize().y * 0.01);
+	else if (res->res.normal.x != 0.0f)
+		new_delta.x += (res->res.normal.x < 0.0f) ? (player->getCollisionBox().getHalfSize().x * 0.01) :
+					   -(player->getCollisionBox().getHalfSize().x * 0.01);
+	else if (res->res.normal.z != 0.0f)
+		new_delta.z += (res->res.normal.z < 0.0f) ? (player->getCollisionBox().getHalfSize().z * 0.01) :
+					   -(player->getCollisionBox().getHalfSize().z * 0.01);
 	player->setDelta(new_delta);
-	std::cout << "PLAYER delta 2" << std::endl;
+/*	std::cout << "PLAYER delta 2" << std::endl;
 	std::cout << player->getDelta().x << std::endl;
 	std::cout << player->getDelta().y << std::endl;
 	std::cout << player->getDelta().z << std::endl;
-	std::cout << "============" << std::endl;
+	std::cout << "============" << std::endl;*/
 }
 
 World::WorldFailException::WorldFailException(void)
