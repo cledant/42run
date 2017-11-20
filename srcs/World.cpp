@@ -20,7 +20,7 @@ World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 		_fov(45.0f), _max_fps(max_fps),
 		_max_frame_skip(max_frame_skip), _next_update_tick(0.0f),
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
-		_input_timer(0.0f), _input_mouse_timer(0.0f)
+		_input_timer(0.0f), _input_mouse_timer(0.0f), _gravity(glm::vec3(0.0f, -10.0f, 0.0f))
 {
 	if (max_frame_skip == 0)
 		throw World::WorldFailException();
@@ -67,6 +67,7 @@ void World::update(void)
 			this->_input_timer       = 0.0f;
 		else if (this->_input_timer < 1.0f)
 			this->_input_timer += this->_tick;
+		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_delta_tick);
 		this->_check_collisions();
 		reinterpret_cast<Player *>(this->_active)->update(0.0f);
 		this->_camera.update_third_person(this->_input.mouse_exclusive,

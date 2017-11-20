@@ -21,6 +21,7 @@
 # include "IEntity.hpp"
 # include "IInteractive.hpp"
 # include "ICollidable.hpp"
+# include "IGravity.hpp"
 # include "ThirdPersonCamera.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
@@ -28,7 +29,8 @@
 # include <vector>
 # include <fstream>
 
-class Player : public IInteractive, public IEntity, public ICollidable
+class Player : public IInteractive, public IEntity, public ICollidable,
+			   public IGravity
 {
 	public :
 
@@ -46,18 +48,33 @@ class Player : public IInteractive, public IEntity, public ICollidable
 		glm::vec3 const &getOldPos(void) const;
 		glm::vec3 const &getPos(void) const;
 
+		void update_model(float time);
+
+		/*
+		 * Interface ICollidable
+		 */
 		CollisionBox const &getCollisionBox(void) const;
 
+		/*
+ 		* Interface IInteractive
+ 		*/
 		bool update_keyboard_interaction(Input const &input,
 										 float input_timer);
 		bool update_mouse_interaction(Input const &input,
 									  GLFW_Window const &win, glm::vec3 const &origin,
 									  std::vector<glm::vec3 const *> const &axes,
 									  float input_timer);
+
+		/*
+		 * Interface IEntity
+		 */
 		void update(float time);
 		void draw(void);
 
-		void update_model(float time);
+		/*
+		 * Interface IGravity
+		 */
+		void update_gravity(glm::vec3 const &vec_gravity, float delta);
 
 	private :
 

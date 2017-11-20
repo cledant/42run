@@ -92,6 +92,7 @@ class World
 		size_t                       _skip_loop;
 		float                        _input_timer;
 		float                        _input_mouse_timer;
+		glm::vec3                    _gravity;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,

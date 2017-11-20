@@ -53,6 +53,11 @@ glm::vec3 const &Player::getPos(void) const
 	return (this->_pos);
 }
 
+void Player::update_model(float time)
+{
+	this->_model.update(time);
+}
+
 CollisionBox const &Player::getCollisionBox(void) const
 {
 	return (this->_cb);
@@ -126,12 +131,13 @@ void Player::update(float time)
 	this->_cb.setPos(this->_pos);
 }
 
-void Player::update_model(float time)
-{
-	this->_model.update(time);
-}
-
 void Player::draw(void)
 {
 	this->_model.draw();
+}
+
+void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
+{
+	(void) delta;
+	(void) vec_gravity;
 }

@@ -51,7 +51,7 @@ set(SOURCE_FILES
 		srcs/CollisionBox.cpp
 		srcs/ThirdPersonCamera.cpp
 		srcs/Player.cpp
-		srcs/CollidableBox.cpp)
+		srcs/CollidableBox.cpp srcs/IGravity.cpp)
 
 #OS specific libs
 if (APPLE)
