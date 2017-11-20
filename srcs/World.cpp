@@ -263,7 +263,8 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 	new_delta.x = -new_delta.x;
 	new_delta.y = -new_delta.y;
 	new_delta.z = -new_delta.z;
-	player->setDelta(new_delta);
+	if (!isnan(new_delta.x) && !isnan(new_delta.y) && !isnan(new_delta.z))
+		player->setDelta(new_delta);
 	std::cout << "PLAYER delta 2" << std::endl;
 	std::cout << player->getDelta().x << std::endl;
 	std::cout << player->getDelta().y << std::endl;
