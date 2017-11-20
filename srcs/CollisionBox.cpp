@@ -172,6 +172,22 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 			res->normal.z = -sign.z;
 	}
 	std::cout << "--------------" << std::endl;
+	std::cout << "pt" << std::endl;
+	std::cout << pt.x << std::endl;
+	std::cout << pt.y << std::endl;
+	std::cout << pt.z << std::endl;
+	std::cout << "padding" << std::endl;
+	std::cout << padding.x << std::endl;
+	std::cout << padding.y << std::endl;
+	std::cout << padding.z << std::endl;
+	std::cout << "scale" << std::endl;
+	std::cout << scale.x << std::endl;
+	std::cout << scale.y << std::endl;
+	std::cout << scale.z << std::endl;
+	std::cout << "sign" << std::endl;
+	std::cout << sign.x << std::endl;
+	std::cout << sign.y << std::endl;
+	std::cout << sign.z << std::endl;
 	std::cout << "nt all axis" << std::endl;
 	std::cout << nearTime.x << std::endl;
 	std::cout << nearTime.y << std::endl;
