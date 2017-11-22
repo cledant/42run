@@ -29,7 +29,8 @@
 # include <vector>
 # include <fstream>
 
-# define VELOCITY 0.1f
+# define VELOCITY 100.0f
+# define FRICTION 0.1f
 
 class Player : public IInteractive, public IEntity, public ICollidable,
 			   public IGravity
@@ -47,6 +48,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setDelta(glm::vec3 const &new_delta);
 		void setSurfaceCollisionBox(CollisionBox const &cb);
 		void setOnSurface(bool flag);
+		void setVelocity(glm::vec3 const &vel);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getPos(void) const;

@@ -294,6 +294,7 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 		player->setSurfaceCollisionBox(box);
 		player->setOnSurface(true);
 	}
+	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 /*	std::cout << "PLAYER delta 2" << std::endl;
 	std::cout << player->getDelta().x << std::endl;
 	std::cout << player->getDelta().y << std::endl;

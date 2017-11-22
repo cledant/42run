@@ -52,6 +52,11 @@ void Player::setOnSurface(bool flag)
 	this->_on_surface = flag;
 }
 
+void Player::setVelocity(glm::vec3 const &vel)
+{
+	this->_vel = vel;
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);
@@ -85,33 +90,32 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
 	{
-		this->_delta.x = 0.0f;
-		this->_delta.z = 0.0f;
-		this->_delta.y = 0.0f;
+		this->_acc.x = 0.0f;
+		this->_acc.z = 0.0f;
+		this->_acc.y = 0.0f;
 		if (input.p_key[GLFW_KEY_W] == PRESSED)
 		{
-			this->_delta += velocity * this->_cam->getXYFront();
+			this->_acc += velocity * this->_cam->getXYFront();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_S] == PRESSED)
 		{
-			this->_delta -= velocity * this->_cam->getXYFront();
+			this->_acc -= velocity * this->_cam->getXYFront();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_D] == PRESSED)
 		{
-			this->_delta += velocity * this->_cam->getRight();
+			this->_acc += velocity * this->_cam->getRight();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_A] == PRESSED)
 		{
-			this->_delta -= velocity * this->_cam->getRight();
+			this->_acc -= velocity * this->_cam->getRight();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_on_surface)
 		{
-			this->_delta += velocity * 10.0f * this->_cam->getWorldUp();
-			//		this->_delta += velocity * 10.0f * this->_cam->getXYFront();
+			this->_acc += velocity * 2.0f * this->_cam->getWorldUp();
 			toogle = true;
 			this->_on_surface = false;
 			this->_delay_jump = true;
@@ -150,15 +154,14 @@ void Player::draw(void)
 
 void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 {
-	(void) delta;
-	(void) vec_gravity;
-	static float const velocity = VELOCITY;
-
 	if (!this->_cb.IsBoxOnBox(this->_surface_cb) || !this->_on_surface)
 	{
 		this->_on_surface = false;
 		if (!this->_delay_jump)
-			this->_delta += -velocity * 1.0f * this->_cam->getWorldUp();
+			this->_acc += vec_gravity;
 		this->_delay_jump = false;
 	}
+	this->_vel += this->_acc * delta;
+	this->_vel *= std::pow(FRICTION, delta);
+	this->_delta = this->_vel * delta;
 }
