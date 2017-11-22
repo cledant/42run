@@ -23,12 +23,14 @@ CollisionBox::~CollisionBox(void)
 
 CollisionBox::CollisionBox(CollisionBox const &src)
 {
-	this->_pos = src.getPos();
+	this->_pos       = src.getPos();
+	this->_half_size = src.getHalfSize();
 }
 
 CollisionBox &CollisionBox::operator=(CollisionBox const &rhs)
 {
-	this->_pos = rhs.getPos();
+	this->_pos       = rhs.getPos();
+	this->_half_size = rhs.getHalfSize();
 	return (*this);
 }
 
@@ -150,8 +152,8 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	{
 		return (false);
 	}
-	max_nt = CollisionBox::_max_vec3(nearTime);
-	min_ft = CollisionBox::_min_vec3(farTime);
+	max_nt     = CollisionBox::_max_vec3(nearTime);
+	min_ft     = CollisionBox::_min_vec3(farTime);
 	if (max_nt >= 1.0f || min_ft <= 0.0f)
 		return (false);
 	if (res == nullptr || res == NULL)
@@ -199,7 +201,7 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 	std::cout << "max_nt" << std::endl;
 	std::cout << max_nt << std::endl;
 	std::cout << "res time" << std::endl;*/
-	res->time = std::clamp(max_nt, 0.0f, 1.0f);
+	res->time  = std::clamp(max_nt, 0.0f, 1.0f);
 //	std::cout << res->time << std::endl;
 //	std::cout << "--------------" << std::endl;
 	res->delta = res->time * delta;
@@ -242,6 +244,18 @@ bool CollisionBox::IsBoxInBoxSweep(CollisionBox const &box, glm::vec3 const &del
 	s_res->pos  = box.getPos() + delta;
 	s_res->time = 1.0f;
 	return (false);
+}
+
+bool CollisionBox::IsBoxOnBox(CollisionBox const &box) const
+{
+	glm::vec3 d;
+	glm::vec3 p;
+
+	d = box.getPos() - this->_pos;
+	p = (this->_half_size + box.getHalfSize()) - glm::abs(d);
+	if (p.x <= 0.0f || p.z <= 0.0f)
+		return (false);
+	return (true);
 }
 
 float CollisionBox::_sign(float nb)

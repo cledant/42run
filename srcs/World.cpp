@@ -276,6 +276,11 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 		new_delta.z += (res->res.normal.z < 0.0f) ? (player->getCollisionBox().getHalfSize().z * 0.01) :
 					   -(player->getCollisionBox().getHalfSize().z * 0.01);
 	player->setDelta(new_delta);
+	if (res->res.normal.y < 0.0f)
+	{
+		player->setSurfaceCollisionBox(box);
+		player->setOnSurface(true);
+	}
 /*	std::cout << "PLAYER delta 2" << std::endl;
 	std::cout << player->getDelta().x << std::endl;
 	std::cout << player->getDelta().y << std::endl;

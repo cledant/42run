@@ -87,7 +87,7 @@ static void init_program(World **world, oGL_module &oGL,
 						 glm::vec3({0.1f, 0.2f, 0.1f}), &(oGL.getTexture("TestTex")));
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 0.0f}),
-								glm::vec3({1.0f, 0.2f, 1.0f}),
+								glm::vec3({50.0f, 0.2f, 50.0f}),
 								&(oGL.getTexture("TestTex")));
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 2.0f}),

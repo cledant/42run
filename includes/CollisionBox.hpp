@@ -55,6 +55,7 @@ class CollisionBox
 							glm::vec3 const &padding, Resolution *res) const;
 		bool IsBoxInBoxSweep(CollisionBox const &box, glm::vec3 const &delta,
 							 SweepResolution *s_res) const;
+		bool IsBoxOnBox(CollisionBox const &box) const;
 
 		class InitException : public GeneralException
 		{

@@ -18,7 +18,9 @@ Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size),
 		_cb(pos, size), _delta(glm::vec3({0.0f, 0.0f, 0.0f})), _pos(pos),
 		_vel(glm::vec3({0.0f, 0.0f, 0.0f})),
-		_acc(glm::vec3({0.0f, 0.0f, 0.0f})), _mass(1.0f)
+		_acc(glm::vec3({0.0f, 0.0f, 0.0f})), _mass(1.0f), _on_surface(false),
+		_surface_cb(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0.0f, 0.0f, 0.0f}),
+		_delay_jump(false)
 {
 	static_cast<void>(this->_mass);
 	this->update(1.0f);
@@ -36,6 +38,16 @@ void Player::setPos(glm::vec3 const &new_pos)
 void Player::setDelta(glm::vec3 const &new_delta)
 {
 	this->_delta = new_delta;
+}
+
+void Player::setSurfaceCollisionBox(CollisionBox const &cb)
+{
+	this->_surface_cb = cb;
+}
+
+void Player::setOnSurface(bool flag)
+{
+	this->_on_surface = flag;
 }
 
 glm::vec3 const &Player::getDelta(void) const
@@ -65,8 +77,8 @@ CollisionBox const &Player::getCollisionBox(void) const
 
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
-	float velocity = 0.09f;
-	bool  toogle   = false;
+	static float velocity = 0.5f;
+	bool         toogle   = false;
 
 	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
@@ -94,15 +106,12 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			this->_delta -= velocity * this->_cam->getRight();
 			toogle = true;
 		}
-		if (input.p_key[GLFW_KEY_R] == PRESSED)
+		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_on_surface)
 		{
-			this->_delta += velocity * this->_cam->getWorldUp();
+			this->_delta += velocity * 5.0f * this->_cam->getWorldUp();
 			toogle = true;
-		}
-		if (input.p_key[GLFW_KEY_F] == PRESSED)
-		{
-			this->_delta += -velocity * this->_cam->getWorldUp();
-			toogle = true;
+			this->_on_surface = false;
+			this->_delay_jump = true;
 		}
 		if (toogle == true)
 			return (true);
@@ -140,4 +149,13 @@ void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 {
 	(void) delta;
 	(void) vec_gravity;
+	static float velocity = 0.5f;
+
+	if (!this->_cb.IsBoxOnBox(this->_surface_cb) || !this->_on_surface)
+	{
+		this->_on_surface = false;
+		if (!this->_delay_jump)
+			this->_delta += -velocity * 0.05f * this->_cam->getWorldUp();
+		this->_delay_jump = false;
+	}
 }

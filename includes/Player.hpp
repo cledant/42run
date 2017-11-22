@@ -43,6 +43,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 
 		void setPos(glm::vec3 const &new_pos);
 		void setDelta(glm::vec3 const &new_delta);
+		void setSurfaceCollisionBox(CollisionBox const &cb);
+		void setOnSurface(bool flag);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getOldPos(void) const;
@@ -87,6 +89,9 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		glm::vec3               _vel;
 		glm::vec3               _acc;
 		float                   _mass;
+		bool                    _on_surface;
+		CollisionBox            _surface_cb;
+		bool                    _delay_jump;
 };
 
 #endif

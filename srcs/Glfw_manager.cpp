@@ -182,7 +182,7 @@ void Glfw_manager::update_events(void)
 	delta_time = time - this->_last_time;
 	this->_last_time = time;
 	glfwPollEvents();
-	if (this->_input.timer > 0.5f && this->_input.p_key[GLFW_KEY_SPACE] == PRESSED)
+	if (this->_input.timer > 0.5f && this->_input.p_key[GLFW_KEY_P] == PRESSED)
 		this->toogle_mouse_exclusive();
 	if (this->_input.timer < 1.0f)
 		this->_input.timer += delta_time;
