@@ -60,8 +60,8 @@ static void init_oGL(oGL_module &oGL)
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
 }
 
-static void init_program(World **world, oGL_module &oGL,
-						 Glfw_manager &manager, Ui **ui)
+static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
+							 World **world)
 {
 	std::vector<std::string> const skybox_files
 										   {
@@ -73,16 +73,12 @@ static void init_program(World **world, oGL_module &oGL,
 												   "./textures/skybox/front.jpg",
 										   };
 
-	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
-	manager.init_input_callback();
-	init_oGL(oGL);
 	(*world) = new World(manager.getInput(), manager.getWindow(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
-	(*ui)    = new Ui(manager.getWindow());
 	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
 						  glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
-//	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
-//							 glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
+							 glm::vec3(10.0f, 3.0f, 10.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	(*world)->add_Player(&(oGL.getShader("cubemap")), glm::vec3({0.0f, 1.0f, 0.0f}),
 						 glm::vec3({0.1f, 0.2f, 0.1f}), &(oGL.getTexture("TestTex")));
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
@@ -103,6 +99,18 @@ static void init_program(World **world, oGL_module &oGL,
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
 					   glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.05f, 0.05f, 0.05f));*/
+}
+
+static void init_program(World **world, oGL_module &oGL,
+						 Glfw_manager &manager, Ui **ui)
+{
+
+
+	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
+	manager.init_input_callback();
+	init_oGL(oGL);
+	load_debug_level(manager, oGL, world);
+	(*ui) = new Ui(manager.getWindow());
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
 }
