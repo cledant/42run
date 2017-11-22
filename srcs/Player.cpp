@@ -17,14 +17,11 @@ Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   ThirdPersonCamera const *cam, Texture const *tex) :
 		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size),
 		_cb(pos, size), _delta(glm::vec3({0.0f, 0.0f, 0.0f})), _pos(pos),
-		_vel(glm::vec3({0.0f, 0.0f, 0.0f})),
-		_acc(glm::vec3({0.0f, 0.0f, 0.0f})), _mass(1.0f), _on_surface(false),
-		_surface_cb(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0.0f, 0.0f, 0.0f}),
-		_delay_jump(false), _cur_jump(2), _max_jump(2)
+		_vel(glm::vec3({0.0f, 0.0f, 0.0f})), _acc(glm::vec3({0.0f, 0.0f, 0.0f})),
+		_on_surface(false), _surface_cb(glm::vec3{0.0f, 0.0f, 0.0f},
+										glm::vec3{0.0f, 0.0f, 0.0f}),
+		_delay_jump(false), _friction(0.00001f), _force(100.f)
 {
-	(void) this->_cur_jump;
-	(void) this->_max_jump;
-	static_cast<void>(this->_mass);
 	this->update(1.0f);
 }
 
@@ -84,8 +81,7 @@ CollisionBox const &Player::getCollisionBox(void) const
 
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
-	static float const velocity = VELOCITY;
-	bool               toogle   = false;
+	bool toogle = false;
 
 	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
@@ -95,27 +91,27 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		this->_acc.y = 0.0f;
 		if (input.p_key[GLFW_KEY_W] == PRESSED)
 		{
-			this->_acc += velocity * this->_cam->getXYFront();
+			this->_acc += this->_force * this->_cam->getXYFront();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_S] == PRESSED)
 		{
-			this->_acc -= velocity * this->_cam->getXYFront();
+			this->_acc -= this->_force * this->_cam->getXYFront();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_D] == PRESSED)
 		{
-			this->_acc += velocity * this->_cam->getRight();
+			this->_acc += this->_force * this->_cam->getRight();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_A] == PRESSED)
 		{
-			this->_acc -= velocity * this->_cam->getRight();
+			this->_acc -= this->_force * this->_cam->getRight();
 			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_on_surface)
 		{
-			this->_acc += velocity * 2.0f * this->_cam->getWorldUp();
+			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
 			toogle = true;
 			this->_on_surface = false;
 			this->_delay_jump = true;
@@ -162,6 +158,6 @@ void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 		this->_delay_jump = false;
 	}
 	this->_vel += this->_acc * delta;
-	this->_vel *= std::pow(FRICTION, delta);
+	this->_vel *= std::pow(this->_friction, delta);
 	this->_delta = this->_vel * delta;
 }

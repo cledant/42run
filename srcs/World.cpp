@@ -20,7 +20,7 @@ World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 		_fov(45.0f), _max_fps(max_fps),
 		_max_frame_skip(max_frame_skip), _next_update_tick(0.0f),
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
-		_input_timer(0.0f), _input_mouse_timer(0.0f), _gravity(glm::vec3(0.0f, -10.0f, 0.0f))
+		_input_timer(0.0f), _input_mouse_timer(0.0f), _gravity(glm::vec3(0.0f, -50.0f, 0.0f))
 {
 	if (max_frame_skip == 0)
 		throw World::WorldFailException();

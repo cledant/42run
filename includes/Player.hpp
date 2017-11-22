@@ -29,9 +29,6 @@
 # include <vector>
 # include <fstream>
 
-# define VELOCITY 100.0f
-# define FRICTION 0.1f
-
 class Player : public IInteractive, public IEntity, public ICollidable,
 			   public IGravity
 {
@@ -91,12 +88,11 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		glm::vec3               _pos;
 		glm::vec3               _vel;
 		glm::vec3               _acc;
-		float                   _mass;
 		bool                    _on_surface;
 		CollisionBox            _surface_cb;
 		bool                    _delay_jump;
-		size_t                  _cur_jump;
-		size_t                  _max_jump;
+		float                   _friction;
+		float                   _force;
 };
 
 #endif
