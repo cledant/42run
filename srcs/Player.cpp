@@ -77,8 +77,8 @@ CollisionBox const &Player::getCollisionBox(void) const
 
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
-	static float velocity = 0.5f;
-	bool         toogle   = false;
+	static float const velocity = VELOCITY;
+	bool               toogle   = false;
 
 	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
@@ -108,7 +108,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		}
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_on_surface)
 		{
-			this->_delta += velocity * 5.0f * this->_cam->getWorldUp();
+			this->_delta += velocity * 10.0f * this->_cam->getWorldUp();
 			toogle = true;
 			this->_on_surface = false;
 			this->_delay_jump = true;
@@ -149,13 +149,13 @@ void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 {
 	(void) delta;
 	(void) vec_gravity;
-	static float velocity = 0.5f;
+	static float const velocity = VELOCITY;
 
 	if (!this->_cb.IsBoxOnBox(this->_surface_cb) || !this->_on_surface)
 	{
 		this->_on_surface = false;
 		if (!this->_delay_jump)
-			this->_delta += -velocity * 0.05f * this->_cam->getWorldUp();
+			this->_delta += -velocity * 1.0f * this->_cam->getWorldUp();
 		this->_delay_jump = false;
 	}
 }

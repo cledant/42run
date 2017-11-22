@@ -29,6 +29,8 @@
 # include <vector>
 # include <fstream>
 
+# define VELOCITY 0.1f
+
 class Player : public IInteractive, public IEntity, public ICollidable,
 			   public IGravity
 {

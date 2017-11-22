@@ -205,7 +205,6 @@ void World::_check_collisions(void)
 			std::cout << "============" << std::endl;*/
 			this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
 										   (*it)->getCollisionBox(), inv_delta, &res);
-			break;
 		}
 	}
 }
