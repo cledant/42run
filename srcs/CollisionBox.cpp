@@ -173,37 +173,7 @@ bool CollisionBox::IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
 		else
 			res->normal.z = -sign.z;
 	}
-/*	std::cout << "--------------" << std::endl;
-	std::cout << "pt" << std::endl;
-	std::cout << pt.x << std::endl;
-	std::cout << pt.y << std::endl;
-	std::cout << pt.z << std::endl;
-	std::cout << "padding" << std::endl;
-	std::cout << padding.x << std::endl;
-	std::cout << padding.y << std::endl;
-	std::cout << padding.z << std::endl;
-	std::cout << "scale" << std::endl;
-	std::cout << scale.x << std::endl;
-	std::cout << scale.y << std::endl;
-	std::cout << scale.z << std::endl;
-	std::cout << "sign" << std::endl;
-	std::cout << sign.x << std::endl;
-	std::cout << sign.y << std::endl;
-	std::cout << sign.z << std::endl;
-	std::cout << "nt all axis" << std::endl;
-	std::cout << nearTime.x << std::endl;
-	std::cout << nearTime.y << std::endl;
-	std::cout << nearTime.z << std::endl;
-	std::cout << "ft all axis" << std::endl;
-	std::cout << farTime.x << std::endl;
-	std::cout << farTime.y << std::endl;
-	std::cout << farTime.z << std::endl;
-	std::cout << "max_nt" << std::endl;
-	std::cout << max_nt << std::endl;
-	std::cout << "res time" << std::endl;*/
 	res->time  = std::clamp(max_nt, 0.0f, 1.0f);
-//	std::cout << res->time << std::endl;
-//	std::cout << "--------------" << std::endl;
 	res->delta = res->time * delta;
 	res->pos   = pt + res->delta;
 	return (true);

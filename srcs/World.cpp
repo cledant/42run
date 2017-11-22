@@ -209,13 +209,6 @@ void World::_check_collisions(void)
 				ptr = *it;
 				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
 			}
-/*			std::cout << "============" << std::endl;
-			std::cout << "Inv Delta" << std::endl;
-			std::cout << inv_delta.x << std::endl;
-			std::cout << inv_delta.y << std::endl;
-			std::cout << inv_delta.z << std::endl;
-			std::cout << "============" << std::endl;*/
-
 		}
 	}
 	if (ptr != nullptr)
@@ -227,47 +220,6 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 									 CollisionBox::SweepResolution const &res)
 {
 	glm::vec3 new_delta;
-
-/*	std::cout << "============" << std::endl;
-	std::cout << "RES TIME pos" << std::endl;
-	std::cout << res->res.time << std::endl;
-	std::cout << "PLAYER pos" << std::endl;
-	std::cout << player->getPos().x << std::endl;
-	std::cout << player->getPos().y << std::endl;
-	std::cout << player->getPos().z << std::endl;
-	std::cout << "PLAYER half size" << std::endl;
-	std::cout << player->getCollisionBox().getHalfSize().x << std::endl;
-	std::cout << player->getCollisionBox().getHalfSize().y << std::endl;
-	std::cout << player->getCollisionBox().getHalfSize().z << std::endl;
-	std::cout << "PLAYER delta" << std::endl;
-	std::cout << player->getDelta().x << std::endl;
-	std::cout << player->getDelta().y << std::endl;
-	std::cout << player->getDelta().z << std::endl;
-	std::cout << "BOX pos" << std::endl;
-	std::cout << box.getPos().x << std::endl;
-	std::cout << box.getPos().y << std::endl;
-	std::cout << box.getPos().z << std::endl;
-	std::cout << "BOX half size" << std::endl;
-	std::cout << box.getHalfSize().x << std::endl;
-	std::cout << box.getHalfSize().y << std::endl;
-	std::cout << box.getHalfSize().z << std::endl;
-	std::cout << "RESOLUTION" << std::endl;
-	std::cout << "Sweep pos" << std::endl;
-	std::cout << res->pos.x << std::endl;
-	std::cout << res->pos.x << std::endl;
-	std::cout << res->pos.x << std::endl;
-	std::cout << "Hit pos" << std::endl;
-	std::cout << res->res.pos.x << std::endl;
-	std::cout << res->res.pos.y << std::endl;
-	std::cout << res->res.pos.z << std::endl;
-	std::cout << "Hit delta" << std::endl;
-	std::cout << res->res.delta.x << std::endl;
-	std::cout << res->res.delta.y << std::endl;
-	std::cout << res->res.delta.z << std::endl;
-	std::cout << "Hit normal" << std::endl;
-	std::cout << res->res.normal.x << std::endl;
-	std::cout << res->res.normal.y << std::endl;
-	std::cout << res->res.normal.z << std::endl;*/
 
 	new_delta.x = !isnan(-res.res.delta.x) ? -res.res.delta.x : 0.0f;
 	new_delta.y = !isnan(-res.res.delta.y) ? -res.res.delta.y : 0.0f;
@@ -288,11 +240,6 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 		player->setOnSurface(true);
 	}
 	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
-/*	std::cout << "PLAYER delta 2" << std::endl;
-	std::cout << player->getDelta().x << std::endl;
-	std::cout << player->getDelta().y << std::endl;
-	std::cout << player->getDelta().z << std::endl;
-	std::cout << "============" << std::endl;*/
 }
 
 World::WorldFailException::WorldFailException(void)
