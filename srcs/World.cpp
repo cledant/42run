@@ -187,6 +187,8 @@ void World::_check_collisions(void)
 {
 	CollisionBox::SweepResolution res;
 	glm::vec3                     inv_delta;
+	CollisionBox::SweepResolution nearest;
+	CollidableBox                 *ptr = nullptr;
 
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
@@ -197,21 +199,33 @@ void World::_check_collisions(void)
 				IsBoxInBoxSweep((*it)->getCollisionBox(),
 								inv_delta, &res)) == true)
 		{
+			if (ptr == nullptr)
+			{
+				ptr = *it;
+				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+			}
+			else if (res.time < nearest.time)
+			{
+				ptr = *it;
+				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+			}
 /*			std::cout << "============" << std::endl;
 			std::cout << "Inv Delta" << std::endl;
 			std::cout << inv_delta.x << std::endl;
 			std::cout << inv_delta.y << std::endl;
 			std::cout << inv_delta.z << std::endl;
 			std::cout << "============" << std::endl;*/
-			this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
-										   (*it)->getCollisionBox(), inv_delta, &res);
+
 		}
 	}
+	if (ptr != nullptr)
+		this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
+									   (*ptr).getCollisionBox(), inv_delta, nearest);
 }
 
 void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 									 glm::vec3 const &inv_delta,
-									 CollisionBox::SweepResolution const *res)
+									 CollisionBox::SweepResolution const &res)
 {
 	glm::vec3 new_delta;
 
@@ -262,20 +276,20 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 	std::cout << inv_delta.y << std::endl;
 	std::cout << inv_delta.z << std::endl;*/
 
-	new_delta.x = !isnan(-res->res.delta.x) ? -res->res.delta.x : 0.0f;
-	new_delta.y = !isnan(-res->res.delta.y) ? -res->res.delta.y : 0.0f;
-	new_delta.z = !isnan(-res->res.delta.z) ? -res->res.delta.z : 0.0f;
-	if (res->res.normal.y != 0.0f)
-		new_delta.y += (res->res.normal.y < 0.0f) ? (player->getCollisionBox().getHalfSize().y * 0.01) :
+	new_delta.x = !isnan(-res.res.delta.x) ? -res.res.delta.x : 0.0f;
+	new_delta.y = !isnan(-res.res.delta.y) ? -res.res.delta.y : 0.0f;
+	new_delta.z = !isnan(-res.res.delta.z) ? -res.res.delta.z : 0.0f;
+	if (res.res.normal.y != 0.0f)
+		new_delta.y += (res.res.normal.y < 0.0f) ? (player->getCollisionBox().getHalfSize().y * 0.01) :
 					   -(player->getCollisionBox().getHalfSize().y * 0.01);
-	else if (res->res.normal.x != 0.0f)
-		new_delta.x += (res->res.normal.x < 0.0f) ? (player->getCollisionBox().getHalfSize().x * 0.01) :
+	else if (res.res.normal.x != 0.0f)
+		new_delta.x += (res.res.normal.x < 0.0f) ? (player->getCollisionBox().getHalfSize().x * 0.01) :
 					   -(player->getCollisionBox().getHalfSize().x * 0.01);
-	else if (res->res.normal.z != 0.0f)
-		new_delta.z += (res->res.normal.z < 0.0f) ? (player->getCollisionBox().getHalfSize().z * 0.01) :
+	else if (res.res.normal.z != 0.0f)
+		new_delta.z += (res.res.normal.z < 0.0f) ? (player->getCollisionBox().getHalfSize().z * 0.01) :
 					   -(player->getCollisionBox().getHalfSize().z * 0.01);
 	player->setDelta(new_delta);
-	if (res->res.normal.y < 0.0f)
+	if (res.res.normal.y < 0.0f)
 	{
 		player->setSurfaceCollisionBox(box);
 		player->setOnSurface(true);

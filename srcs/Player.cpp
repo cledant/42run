@@ -20,8 +20,10 @@ Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		_vel(glm::vec3({0.0f, 0.0f, 0.0f})),
 		_acc(glm::vec3({0.0f, 0.0f, 0.0f})), _mass(1.0f), _on_surface(false),
 		_surface_cb(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0.0f, 0.0f, 0.0f}),
-		_delay_jump(false)
+		_delay_jump(false), _cur_jump(2), _max_jump(2)
 {
+	(void) this->_cur_jump;
+	(void) this->_max_jump;
 	static_cast<void>(this->_mass);
 	this->update(1.0f);
 }
@@ -55,14 +57,14 @@ glm::vec3 const &Player::getDelta(void) const
 	return (this->_delta);
 }
 
-glm::vec3 const &Player::getOldPos(void) const
-{
-	return (this->_old_pos);
-}
-
 glm::vec3 const &Player::getPos(void) const
 {
 	return (this->_pos);
+}
+
+bool Player::getOnSurface(void) const
+{
+	return (this->_on_surface);
 }
 
 void Player::update_model(float time)
@@ -109,6 +111,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_on_surface)
 		{
 			this->_delta += velocity * 10.0f * this->_cam->getWorldUp();
+			//		this->_delta += velocity * 10.0f * this->_cam->getXYFront();
 			toogle = true;
 			this->_on_surface = false;
 			this->_delay_jump = true;
