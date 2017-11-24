@@ -26,6 +26,8 @@ Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 
 Sprite::~Sprite(void)
 {
+	oGL_module::oGL_delete_vao(this->_vao);
+	oGL_module::oGL_delete_vbo(this->_vbo);
 }
 
 void Sprite::setPosition(glm::vec3 const &pos)
@@ -61,8 +63,6 @@ GLuint Sprite::moveVBO(void)
 
 void Sprite::update(float time)
 {
-	glm::mat4 model;
-
 	static_cast<void>(time);
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
 		this->_tex == nullptr)
@@ -70,10 +70,8 @@ void Sprite::update(float time)
 		std::cout << "Warning : Can't update Sprite" << std::endl;
 		return;
 	}
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, this->_pos);
-	model = glm::scale(model, this->_scale);
-	this->_total = *(this->_perspec_mult_view) * model;
+	this->_total = *(this->_perspec_mult_view) *
+				   glm::scale(glm::translate(glm::mat4(1.0f), this->_pos), this->_scale);
 }
 
 void Sprite::draw(void)
@@ -98,10 +96,10 @@ void Sprite::draw(void)
 
 void Sprite::_allocate_set_GL_ressources(void)
 {
+	this->_vbo = oGL_module::oGL_create_vbo(sizeof(GLfloat) * 5 * 6, &(Sprite::_vertices));
 	this->_vao = oGL_module::oGL_create_vao();
-	this->_vbo = oGL_module::oGL_create_vbo(sizeof(GLfloat) * 5 * 6, &(this->_vertices));
-	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3, sizeof(GLfloat) * 3, 0);
-	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 1, 2, sizeof(GLfloat) * 2, sizeof(GLfloat) * 3);
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3, sizeof(GLfloat) * 5, 0);
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 1, 2, sizeof(GLfloat) * 5, sizeof(GLfloat) * 3);
 }
 
 Sprite::InitException::InitException(void)
@@ -115,13 +113,13 @@ Sprite::InitException::~InitException(void) throw()
 
 float Sprite::_vertices[] =
 			  {
-					  0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-					  1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-					  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+					  0.0f, -1.0f, -1.0f, 0.0f, 0.0f,
+					  0.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+					  0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
 
-					  1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-					  1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-					  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+					  0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+					  0.0f, 1.0f, -1.0f, 1.0f, 0.0f,
+					  0.0f, -1.0f, -1.0f, 0.0f, 0.0f
 			  };
 
-size_t Sprite::_nb_faces = 2;
+size_t Sprite::_nb_faces = 12;

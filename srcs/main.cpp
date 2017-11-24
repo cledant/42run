@@ -81,6 +81,16 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 												   "./textures/skybox/front.jpg",
 										   };
 
+/*	std::vector<std::string> const skybox_files
+										   {
+												   "./textures/sprites/reimu.png",
+												   "./textures/sprites/reimu.png",
+												   "./textures/sprites/reimu.png",
+												   "./textures/sprites/reimu.png",
+												   "./textures/sprites/reimu.png",
+												   "./textures/sprites/reimu.png",
+										   };*/
+
 	(*world) = new World(manager.getInput(), manager.getWindow(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
 	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
