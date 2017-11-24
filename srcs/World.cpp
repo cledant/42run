@@ -123,13 +123,14 @@ IEntity *World::add_Prop(Shader const *shader, Model const *model,
 	return (ptr);
 }
 
-IInteractive *World::add_Player(Shader const *shader, glm::vec3 const &pos,
-								glm::vec3 const &size, Texture const *tex)
+IInteractive *World::add_Player(Shader const *cb_shader, Shader const *shader, glm::vec3 const &pos,
+								glm::vec3 const &size, Texture const *cb_tex, Texture const *tex,
+								glm::ivec2 const &sprite, bool draw_cb)
 {
 	IInteractive *ptr;
 
-	ptr = new Player(shader, &(this->_perspec_mult_view), pos, size,
-					 &(this->_camera), tex);
+	ptr = new Player(cb_shader, shader, &(this->_perspec_mult_view), pos, size,
+					 &(this->_camera), cb_tex, tex, sprite, draw_cb);
 	this->_active = ptr;
 	return (ptr);
 }

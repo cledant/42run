@@ -85,8 +85,10 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 						  glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
 	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(10.0f, 3.0f, 10.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	(*world)->add_Player(&(oGL.getShader("cubemap")), glm::vec3({0.0f, 1.0f, 0.0f}),
-						 glm::vec3({0.1f, 0.2f, 0.1f}), &(oGL.getTexture("TestTex")));
+	(*world)->add_Player(&(oGL.getShader("cubemap")), &(oGL.getShader("sprite")),
+						 glm::vec3({0.0f, 1.0f, 0.0f}), glm::vec3({0.1f, 0.2f, 0.1f}),
+						 &(oGL.getTexture("TestTex")), &(oGL.getTexture("sprite_reimu")),
+						 glm::ivec2(10, 8), false);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 0.0f}),
 								glm::vec3({50.0f, 0.2f, 50.0f}),

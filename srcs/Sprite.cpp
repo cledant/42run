@@ -67,7 +67,7 @@ void Sprite::update(float time)
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
 		this->_tex == nullptr)
 	{
-		std::cout << "Warning : Can't update Cubemap" << std::endl;
+		std::cout << "Warning : Can't update Sprite" << std::endl;
 		return;
 	}
 	model = glm::mat4(1.0f);

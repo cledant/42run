@@ -15,6 +15,7 @@
 
 # include "oGL_module.hpp"
 # include "Cubemap.hpp"
+# include "Sprite.hpp"
 # include "GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"
@@ -34,9 +35,11 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 {
 	public :
 
-		Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
+		Player(Shader const *cb_shader, Shader const *shader,
+			   glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, glm::vec3 const &size,
-			   ThirdPersonCamera const *cam, Texture const *tex);
+			   ThirdPersonCamera const *cam, Texture const *cb_tex,
+			   Texture const *tex, glm::ivec2 sprite, bool draw_cb);
 		virtual ~Player(void);
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;
@@ -82,7 +85,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 	private :
 
 		ThirdPersonCamera const *_cam;
-		Cubemap                 _model;
+		Sprite                  _model;
+		Cubemap                 _cb_model;
 		CollisionBox            _cb;
 		glm::vec3               _delta;
 		glm::vec3               _pos;
@@ -93,6 +97,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		bool                    _delay_jump;
 		float                   _friction;
 		float                   _force;
+		bool                    _draw_cb;
 };
 
 #endif

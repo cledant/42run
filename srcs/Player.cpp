@@ -12,15 +12,18 @@
 
 #include "Player.hpp"
 
-Player::Player(Shader const *shader, glm::mat4 const *perspec_mult_view,
+Player::Player(Shader const *cb_shader, Shader const *shader,
+			   glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, glm::vec3 const &size,
-			   ThirdPersonCamera const *cam, Texture const *tex) :
-		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size),
+			   ThirdPersonCamera const *cam, Texture const *cb_tex,
+			   Texture const *tex, glm::ivec2 sprite, bool draw_cb) :
+		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size, sprite.x, sprite.y),
+		_cb_model(cb_shader, perspec_mult_view, cb_tex, pos, size),
 		_cb(pos, size), _delta(glm::vec3({0.0f, 0.0f, 0.0f})), _pos(pos),
 		_vel(glm::vec3({0.0f, 0.0f, 0.0f})), _acc(glm::vec3({0.0f, 0.0f, 0.0f})),
 		_on_surface(false), _surface_cb(glm::vec3{0.0f, 0.0f, 0.0f},
 										glm::vec3{0.0f, 0.0f, 0.0f}),
-		_delay_jump(false), _friction(0.00001f), _force(100.f)
+		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb)
 {
 	this->update(1.0f);
 }
@@ -71,6 +74,7 @@ bool Player::getOnSurface(void) const
 
 void Player::update_model(float time)
 {
+	this->_cb_model.update(time);
 	this->_model.update(time);
 }
 
@@ -139,12 +143,15 @@ void Player::update(float time)
 {
 	(void) time;
 	this->_pos += this->_delta;
+	this->_cb_model.setPosition(this->_pos);
 	this->_model.setPosition(this->_pos);
 	this->_cb.setPos(this->_pos);
 }
 
 void Player::draw(void)
 {
+	if (this->_draw_cb)
+		this->_cb_model.draw();
 	this->_model.draw();
 }
 

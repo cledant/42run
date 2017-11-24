@@ -54,8 +54,9 @@ class World
 		IEntity *add_Prop(Shader const *shader, Model const *model,
 						  glm::vec3 const &pos, glm::vec3 const &orientation,
 						  glm::vec3 const &scale);
-		IInteractive *add_Player(Shader const *shader, glm::vec3 const &pos,
-								 glm::vec3 const &size, Texture const *tex);
+		IInteractive *add_Player(Shader const *cb_shader, Shader const *shader, glm::vec3 const &pos,
+								 glm::vec3 const &size, Texture const *cb_tex, Texture const *tex,
+								 glm::ivec2 const &sprite, bool draw_cb);
 		IEntity *add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 								   glm::vec3 const &size, Texture const *tex);
 		void setActiveInteractive(IInteractive *ptr);
