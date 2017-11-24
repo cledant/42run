@@ -53,6 +53,8 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/prop/prop.fs");
 	oGL.add_shader("fontset", "./shaders/fontset/fontset.vs",
 				   "./shaders/fontset/fontset.fs");
+	oGL.add_shader("sprites", "./shaders/sprites/sprites.vs",
+				   "./shaders/sprites/sprites.fs");
 	oGL.add_texture("TestTex",
 					{"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
 					Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
@@ -85,7 +87,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 						  glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
 	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(10.0f, 3.0f, 10.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	(*world)->add_Player(&(oGL.getShader("cubemap")), &(oGL.getShader("sprite")),
+	(*world)->add_Player(&(oGL.getShader("cubemap")), &(oGL.getShader("sprites")),
 						 glm::vec3({0.0f, 1.0f, 0.0f}), glm::vec3({0.1f, 0.2f, 0.1f}),
 						 &(oGL.getTexture("TestTex")), &(oGL.getTexture("sprite_reimu")),
 						 glm::ivec2(10, 8), false);
