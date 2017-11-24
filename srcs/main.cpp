@@ -58,6 +58,12 @@ static void init_oGL(oGL_module &oGL)
 					Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	oGL.add_model("Alice", "./models/Alice/Alice.obj");
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
+	oGL.add_texture("sprite_reimu",
+					{"./textures/sprites/reimu.png"},
+					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
+	oGL.add_texture("sprite_marisa",
+					{"./textures/sprites/marisa.png"},
+					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
 }
 
 static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,

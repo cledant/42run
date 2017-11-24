@@ -14,13 +14,14 @@
 
 #include "Texture.hpp"
 
-Texture::Texture(void) : _name(""), _tex_id(0), _type(TEX_DIFFUSE)
+Texture::Texture(void) : _name(""), _tex_id(0), _type(TEX_DIFFUSE), _tex_w(0),
+						 _tex_h(0), _tex_nb_chan(0)
 {
 }
 
 Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 				 Texture::t_tex_gl_type gl_type, Texture::t_tex_type type) :
-		_name(name), _tex_id(0), _type(type)
+		_name(name), _tex_id(0), _type(type), _tex_w(0), _tex_h(0), _tex_nb_chan(0)
 {
 	switch (gl_type)
 	{
@@ -28,7 +29,8 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 			this->_tex_id = Texture::_load_cubemap(files);
 			break;
 		case TEX_FLAT :
-			this->_tex_id = Texture::_load_flat(files);
+			this->_tex_id = Texture::_load_flat(files, &(this->_tex_w),
+												&(this->_tex_h), &(this->_tex_nb_chan));
 			break;
 		default :
 			throw TypeException();
@@ -38,7 +40,7 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 
 Texture::Texture(std::string const &name, const void *buffer,
 				 glm::ivec2 const &size, Texture::t_tex_type type) :
-		_name(name), _tex_id(0), _type(type)
+		_name(name), _tex_id(0), _type(type), _tex_w(0), _tex_h(0), _tex_nb_chan(0)
 {
 	switch (type)
 	{
@@ -56,7 +58,8 @@ Texture::~Texture(void)
 	glDeleteTextures(1, &(this->_tex_id));
 }
 
-Texture::Texture(Texture &&src) : _name(""), _tex_id(0), _type(TEX_DIFFUSE)
+Texture::Texture(Texture &&src) : _name(""), _tex_id(0), _type(TEX_DIFFUSE), _tex_w(0),
+								  _tex_h(0), _tex_nb_chan(0)
 {
 	this->_name   = src.getName();
 	this->_tex_id = src.moveTexture();
@@ -84,6 +87,21 @@ GLuint Texture::getTextureID(void) const
 Texture::t_tex_type Texture::getTextureType(void) const
 {
 	return (this->_type);
+}
+
+int Texture::getTexW(void) const
+{
+	return (this->_tex_w);
+}
+
+int Texture::getTexH(void) const
+{
+	return (this->_tex_h);
+}
+
+int Texture::getTexChannel(void) const
+{
+	return (this->_tex_nb_chan);
 }
 
 GLuint Texture::moveTexture(void)
@@ -148,7 +166,8 @@ GLuint Texture::_load_cubemap(std::vector<std::string> const &files)
 	return (tex_id);
 }
 
-GLuint Texture::_load_flat(std::vector<std::string> const &files)
+GLuint Texture::_load_flat(std::vector<std::string> const &files,
+						   int *w, int *h, int *chan)
 {
 	GLuint        tex_id;
 	int           tex_w;
@@ -181,6 +200,12 @@ GLuint Texture::_load_flat(std::vector<std::string> const &files)
 		glTexImage2D(GL_TEXTURE_2D, 0, format,
 					 tex_w, tex_h, 0, format, GL_UNSIGNED_BYTE, data);
 		stbi_image_free(data);
+		if (!w)
+			*w    = tex_w;
+		if (!h)
+			*h    = tex_h;
+		if (!chan)
+			*chan = tex_nb_chan;
 	}
 	else
 	{

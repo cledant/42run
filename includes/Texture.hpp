@@ -55,6 +55,10 @@ class Texture
 		std::string const &getName(void) const;
 		GLuint getTextureID(void) const;
 		Texture::t_tex_type getTextureType(void) const;
+		int getTexW(void) const;
+		int getTexH(void) const;
+		int getTexChannel(void) const;
+
 		GLuint moveTexture(void);
 
 		class FileOpenException : public GeneralException
@@ -110,10 +114,14 @@ class Texture
 
 		std::string _name;
 		GLuint      _tex_id;
-		t_tex_type	_type;
+		t_tex_type  _type;
+		int         _tex_w;
+		int         _tex_h;
+		int         _tex_nb_chan;
 
 		static GLuint _load_cubemap(std::vector<std::string> const &files);
-		static GLuint _load_flat(std::vector<std::string> const &files);
+		static GLuint _load_flat(std::vector<std::string> const &files,
+								 int *w, int *h, int *chan);
 		static GLuint _load_glyph(const void *buffer, int tex_w, int tex_h);
 };
 
