@@ -59,7 +59,7 @@ class Sprite : public IEntity
 
 	private :
 
-		Shader const    *shader;
+		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;
 		Texture const   *_tex;
 		size_t          _sprites_per_line;
@@ -69,6 +69,8 @@ class Sprite : public IEntity
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;
+
+		void _allocate_set_GL_ressources(void);
 
 		static float  _vertices[];
 		static size_t _nb_faces;
