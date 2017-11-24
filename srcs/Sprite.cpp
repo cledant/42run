@@ -113,13 +113,13 @@ Sprite::InitException::~InitException(void) throw()
 
 float Sprite::_vertices[] =
 			  {
-					  0.0f, -1.0f, -1.0f, 1.0f, 1.0f,
-					  0.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+					  0.0f, -1.0f, -1.0f, 0.10f, 0.125f,
+					  0.0f, -1.0f, 1.0f, 0.0f, 0.125f,
 					  0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
 
 					  0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-					  0.0f, 1.0f, -1.0f, 1.0f, 0.0f,
-					  0.0f, -1.0f, -1.0f, 1.0f, 1.0f
+					  0.0f, 1.0f, -1.0f, 0.10f, 0.0f,
+					  0.0f, -1.0f, -1.0f, 0.10f, 0.125f
 			  };
 
 size_t Sprite::_nb_faces = 6;
