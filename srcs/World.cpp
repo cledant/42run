@@ -73,6 +73,7 @@ void World::update(void)
 		this->_camera.update_third_person(this->_input.mouse_exclusive,
 										  reinterpret_cast<Player *>(this->_active)->getPos());
 		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
+		reinterpret_cast<Player *>(this->_active)->setSpriteYaw(this->_camera.getYaw());
 		reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
 	}
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)

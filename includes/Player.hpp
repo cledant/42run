@@ -49,6 +49,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setSurfaceCollisionBox(CollisionBox const &cb);
 		void setOnSurface(bool flag);
 		void setVelocity(glm::vec3 const &vel);
+		void setSpriteYaw(float yaw);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getPos(void) const;

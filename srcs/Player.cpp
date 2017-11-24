@@ -57,6 +57,11 @@ void Player::setVelocity(glm::vec3 const &vel)
 	this->_vel = vel;
 }
 
+void Player::setSpriteYaw(float yaw)
+{
+	this->_model.setYaw(yaw);
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);

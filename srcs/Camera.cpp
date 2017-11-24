@@ -78,6 +78,16 @@ glm::vec3 const &Camera::getXYFront(void) const
 	return (this->_xy_front);
 }
 
+float Camera::getYaw(void) const
+{
+	return (this->_yaw);
+}
+
+float Camera::getPitch(void) const
+{
+	return (this->_pitch);
+}
+
 void Camera::_update_from_keyboard_input(void)
 {
 	float velocity;
@@ -116,11 +126,11 @@ void Camera::_update_vector_matrix(void)
 	this->_front.z = sin(glm::radians(this->_yaw)) *
 					 cos(glm::radians(this->_pitch));
 	glm::normalize(this->_front);
-	this->_right = glm::normalize(glm::cross(this->_front, this->_world_up));
-	this->_up    = glm::normalize(glm::cross(this->_right, this->_front));
+	this->_right      = glm::normalize(glm::cross(this->_front, this->_world_up));
+	this->_up         = glm::normalize(glm::cross(this->_right, this->_front));
 	this->_xy_front.x = this->_front.x;
 	this->_xy_front.z = this->_front.z;
-	this->_xy_front = glm::normalize(this->_xy_front);
+	this->_xy_front   = glm::normalize(this->_xy_front);
 }
 
 Camera::CameraFailException::CameraFailException(void)

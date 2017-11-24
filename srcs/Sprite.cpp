@@ -17,7 +17,7 @@ Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   size_t sprites_per_lines, size_t lines_of_sprites) :
 		_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(tex),
 		_sprites_per_line(sprites_per_lines), _lines_of_sprites(lines_of_sprites),
-		_pos(pos), _scale(scale)
+		_pos(pos), _scale(scale), _yaw(0.0f)
 {
 	if (shader == nullptr || perspec_mult_view == nullptr || tex == nullptr)
 		throw InitException::InitException();
@@ -38,6 +38,11 @@ void Sprite::setPosition(glm::vec3 const &pos)
 void Sprite::setScale(glm::vec3 const &scale)
 {
 	this->_scale = scale;
+}
+
+void Sprite::setYaw(float yaw)
+{
+	this->_yaw = yaw;
 }
 
 glm::mat4 const &Sprite::getTotalMatrix(void) const
@@ -63,6 +68,8 @@ GLuint Sprite::moveVBO(void)
 
 void Sprite::update(float time)
 {
+	glm::mat4 model;
+
 	static_cast<void>(time);
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
 		this->_tex == nullptr)
@@ -70,8 +77,11 @@ void Sprite::update(float time)
 		std::cout << "Warning : Can't update Sprite" << std::endl;
 		return;
 	}
-	this->_total = *(this->_perspec_mult_view) *
-				   glm::scale(glm::translate(glm::mat4(1.0f), this->_pos), this->_scale);
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, this->_pos);
+	model = glm::scale(model, this->_scale);
+	model = glm::rotate(model, glm::radians(-this->_yaw), glm::vec3({0.0f, 1.0f, 0.0f}));
+	this->_total = *(this->_perspec_mult_view) * model;
 }
 
 void Sprite::draw(void)

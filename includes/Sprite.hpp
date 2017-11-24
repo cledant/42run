@@ -38,6 +38,7 @@ class Sprite : public IEntity
 
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);
+		void setYaw(float yaw);
 
 		glm::mat4 const &getTotalMatrix(void) const;
 		GLuint moveVAO(void);
@@ -69,6 +70,7 @@ class Sprite : public IEntity
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;
+		float 			_yaw;
 
 		void _allocate_set_GL_ressources(void);
 
