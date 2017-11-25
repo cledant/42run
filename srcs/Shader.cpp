@@ -92,6 +92,11 @@ void Shader::setVec3(GLint uniform_id, glm::vec3 const &float3) const
 	glUniform3fv(uniform_id, 1, reinterpret_cast<const GLfloat *>(&float3));
 }
 
+void Shader::setVec2(GLint uniform_id, glm::vec2 const &float2) const
+{
+	glUniform2fv(uniform_id, 1, reinterpret_cast<const GLfloat *>(&float2));
+}
+
 GLuint Shader::_load_shader(std::string const &path, GLenum type)
 {
 	std::string content;

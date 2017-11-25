@@ -41,6 +41,8 @@ class Shader
 					 glm::mat4 const &mat4) const;
 		void setVec3(GLint uniform_id,
 					 glm::vec3 const &vec3) const;
+		void setVec2(GLint uniform_id,
+					 glm::vec2 const &vec3) const;
 
 		class FileOpenException : public GeneralException
 		{

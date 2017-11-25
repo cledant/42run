@@ -39,6 +39,8 @@ class Sprite : public IEntity
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);
 		void setYaw(float yaw);
+		void setSpriteX(size_t pos_x);
+		void setSpriteY(size_t pos_y );
 
 		glm::mat4 const &getTotalMatrix(void) const;
 		GLuint moveVAO(void);
@@ -76,6 +78,7 @@ class Sprite : public IEntity
 		size_t          _sprite_x;
 		size_t          _sprite_y;
 		size_t          _nb_walk_frame;
+		glm::vec2		_offset;
 
 		void _allocate_set_GL_ressources(void);
 };
