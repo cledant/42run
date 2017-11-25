@@ -39,6 +39,7 @@ World::~World(void)
 
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
 		delete *it;
+	delete this->_active;
 }
 
 void World::update(void)
