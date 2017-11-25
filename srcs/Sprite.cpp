@@ -22,13 +22,13 @@ Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		_sprite_y(0), _nb_walk_frame(nb_walk_frame), _offset(glm::vec2({0.0f, 0.0f}))
 {
 	float list_vertices[] = {
-			0.0f, -1.0f, -1.0f, this->_sprite_tex_pos.y, this->_sprite_tex_pos.x,
-			0.0f, -1.0f, 1.0f, 0.0f, this->_sprite_tex_pos.x,
+			0.0f, -1.0f, -1.0f, this->_sprite_tex_pos.x, this->_sprite_tex_pos.y,
+			0.0f, -1.0f, 1.0f, 0.0f, this->_sprite_tex_pos.y,
 			0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
 
 			0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, -1.0f, this->_sprite_tex_pos.y, 0.0f,
-			0.0f, -1.0f, -1.0f, this->_sprite_tex_pos.y, this->_sprite_tex_pos.x
+			0.0f, 1.0f, -1.0f, this->_sprite_tex_pos.x, 0.0f,
+			0.0f, -1.0f, -1.0f, this->_sprite_tex_pos.x, this->_sprite_tex_pos.y
 	};
 
 	if (shader == nullptr || perspec_mult_view == nullptr || tex == nullptr)

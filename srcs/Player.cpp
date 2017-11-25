@@ -204,11 +204,11 @@ void Player::_set_sprite_direction(void)
 	else if (this->_axis.x == 0 && this->_axis.y == 1)
 		this->_dir = Player::RIGHT;
 	else if (this->_axis.x == -1 && this->_axis.y == 1)
-		this->_dir = Player::FRONT_RIGHT;
-	else if (this->_axis.x == -1 && this->_axis.y == -1)
 		this->_dir = Player::FRONT_LEFT;
+	else if (this->_axis.x == -1 && this->_axis.y == -1)
+		this->_dir = Player::FRONT_RIGHT;
 	else if (this->_axis.x == 1 && this->_axis.y == 1)
-		this->_dir = Player::BACK_RIGHT;
-	else if (this->_axis.x == 1 && this->_axis.y == -1)
 		this->_dir = Player::BACK_LEFT;
+	else if (this->_axis.x == 1 && this->_axis.y == -1)
+		this->_dir = Player::BACK_RIGHT;
 }
