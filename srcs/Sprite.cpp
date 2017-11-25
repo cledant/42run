@@ -14,13 +14,26 @@
 
 Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   Texture const *tex, glm::vec3 const &pos, glm::vec3 const &scale,
-			   size_t sprites_per_lines, size_t lines_of_sprites) :
+			   glm::vec4 const &sprite_tex_size_offset, size_t nb_walk_frame) :
 		_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(tex),
-		_sprites_per_line(sprites_per_lines), _lines_of_sprites(lines_of_sprites),
-		_pos(pos), _scale(scale), _yaw(0.0f)
+		_sprite_tex_pos({sprite_tex_size_offset.x, sprite_tex_size_offset.y}),
+		_sprite_tex_offset({sprite_tex_size_offset.z, sprite_tex_size_offset.w}),
+		_pos(pos), _scale(scale), _yaw(0.0f), _nb_faces(6), _sprite_x(0),
+		_sprite_y(0), _nb_walk_frame(nb_walk_frame)
 {
+	float list_vertices[] = {
+			0.0f, -1.0f, -1.0f, this->_sprite_tex_pos.y, this->_sprite_tex_pos.x,
+			0.0f, -1.0f, 1.0f, 0.0f, this->_sprite_tex_pos.x,
+			0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+
+			0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, -1.0f, this->_sprite_tex_pos.y, 0.0f,
+			0.0f, -1.0f, -1.0f, this->_sprite_tex_pos.y, this->_sprite_tex_pos.x
+	};
+
 	if (shader == nullptr || perspec_mult_view == nullptr || tex == nullptr)
 		throw InitException::InitException();
+	std::memcpy(&(this->_vertices), &list_vertices, sizeof(float) * 30);
 	this->_allocate_set_GL_ressources();
 }
 
@@ -120,16 +133,3 @@ Sprite::InitException::InitException(void)
 Sprite::InitException::~InitException(void) throw()
 {
 }
-
-float Sprite::_vertices[] =
-			  {
-					  0.0f, -1.0f, -1.0f, 0.10f, 0.125f,
-					  0.0f, -1.0f, 1.0f, 0.0f, 0.125f,
-					  0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-
-					  0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-					  0.0f, 1.0f, -1.0f, 0.10f, 0.0f,
-					  0.0f, -1.0f, -1.0f, 0.10f, 0.125f
-			  };
-
-size_t Sprite::_nb_faces = 6;

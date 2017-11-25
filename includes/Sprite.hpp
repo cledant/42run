@@ -29,7 +29,7 @@ class Sprite : public IEntity
 
 		Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   Texture const *tex, glm::vec3 const &pos, glm::vec3 const &scale,
-			   size_t sprites_per_lines, size_t lines_of_sprites);
+			   glm::vec4 const &sprite_tex_size_offset, size_t nb_walk_frame);
 		virtual ~Sprite(void);
 		Sprite(Sprite const &src) = delete;
 		Sprite &operator=(Sprite const &rhs) = delete;
@@ -63,19 +63,21 @@ class Sprite : public IEntity
 		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;
 		Texture const   *_tex;
-		size_t          _sprites_per_line;
-		size_t          _lines_of_sprites;
+		glm::vec2       _sprite_tex_pos;
+		glm::vec2       _sprite_tex_offset;
 		GLuint          _vao;
 		GLuint          _vbo;
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;
-		float 			_yaw;
+		float           _yaw;
+		float           _vertices[30];
+		size_t          _nb_faces;
+		size_t          _sprite_x;
+		size_t          _sprite_y;
+		size_t          _nb_walk_frame;
 
 		void _allocate_set_GL_ressources(void);
-
-		static float  _vertices[];
-		static size_t _nb_faces;
 };
 
 #endif

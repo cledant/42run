@@ -39,7 +39,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			   glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, glm::vec3 const &size,
 			   ThirdPersonCamera const *cam, Texture const *cb_tex,
-			   Texture const *tex, glm::ivec2 sprite, bool draw_cb);
+			   Texture const *tex, glm::vec4 const &sprite_tex_size_offset,
+			   size_t nb_walk_frame, bool draw_cb);
 		virtual ~Player(void);
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;

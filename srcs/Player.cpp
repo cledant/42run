@@ -16,8 +16,10 @@ Player::Player(Shader const *cb_shader, Shader const *shader,
 			   glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, glm::vec3 const &size,
 			   ThirdPersonCamera const *cam, Texture const *cb_tex,
-			   Texture const *tex, glm::ivec2 sprite, bool draw_cb) :
-		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size, sprite.x, sprite.y),
+			   Texture const *tex, glm::vec4 const &sprite_tex_size_offset,
+			   size_t nb_walk_frame, bool draw_cb) :
+		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size,
+						  sprite_tex_size_offset, nb_walk_frame),
 		_cb_model(cb_shader, perspec_mult_view, cb_tex, pos, size),
 		_cb(pos, size), _delta(glm::vec3({0.0f, 0.0f, 0.0f})), _pos(pos),
 		_vel(glm::vec3({0.0f, 0.0f, 0.0f})), _acc(glm::vec3({0.0f, 0.0f, 0.0f})),

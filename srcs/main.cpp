@@ -100,7 +100,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	(*world)->add_Player(&(oGL.getShader("cubemap")), &(oGL.getShader("sprites")),
 						 glm::vec3({0.0f, 1.0f, 0.0f}), glm::vec3({0.1f, 0.2f, 0.1f}),
 						 &(oGL.getTexture("TestTex")), &(oGL.getTexture("sprite_marisa")),
-						 glm::ivec2(10, 8), false);
+						 glm::vec4(0.125f, 0.10f, 0.0f, 0.0f), 4, false);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 0.0f}),
 								glm::vec3({50.0f, 0.2f, 50.0f}),
