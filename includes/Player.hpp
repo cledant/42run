@@ -35,6 +35,18 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 {
 	public :
 
+		typedef enum e_player_dir
+		{
+			BACK = 0,
+			BACK_RIGHT = 1,
+			RIGHT = 2,
+			FRONT_RIGHT = 3,
+			FRONT = 4,
+			FRONT_LEFT = 5,
+			LEFT = 6,
+			BACK_LEFT = 7,
+		} t_player_dir;
+
 		Player(Shader const *cb_shader, Shader const *shader,
 			   glm::mat4 const *perspec_mult_view,
 			   glm::vec3 const &pos, glm::vec3 const &size,
@@ -100,6 +112,10 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		float                   _friction;
 		float                   _force;
 		bool                    _draw_cb;
+		t_player_dir			_dir;
+		glm::ivec2				_axis;
+
+		void _set_sprite_direction(void);
 };
 
 #endif

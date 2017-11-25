@@ -25,7 +25,8 @@ Player::Player(Shader const *cb_shader, Shader const *shader,
 		_vel(glm::vec3({0.0f, 0.0f, 0.0f})), _acc(glm::vec3({0.0f, 0.0f, 0.0f})),
 		_on_surface(false), _surface_cb(glm::vec3{0.0f, 0.0f, 0.0f},
 										glm::vec3{0.0f, 0.0f, 0.0f}),
-		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb)
+		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb),
+		_dir(Player::BACK), _axis(glm::ivec2{0, 0})
 {
 	this->update(1.0f);
 }
@@ -92,33 +93,44 @@ CollisionBox const &Player::getCollisionBox(void) const
 
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
-	bool toogle = false;
+	bool toogle     = false;
+	bool change_dir = false;
 
 	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
 	{
-		this->_acc.x = 0.0f;
-		this->_acc.z = 0.0f;
-		this->_acc.y = 0.0f;
+		this->_acc.x  = 0.0f;
+		this->_acc.z  = 0.0f;
+		this->_acc.y  = 0.0f;
+		this->_axis.x = 0;
+		this->_axis.y = 0;
 		if (input.p_key[GLFW_KEY_W] == PRESSED)
 		{
 			this->_acc += this->_force * this->_cam->getXYFront();
-			toogle = true;
+			this->_axis.x += 1;
+			toogle     = true;
+			change_dir = true;
 		}
 		if (input.p_key[GLFW_KEY_S] == PRESSED)
 		{
 			this->_acc -= this->_force * this->_cam->getXYFront();
-			toogle = true;
+			this->_axis.x -= 1;
+			toogle     = true;
+			change_dir = true;
 		}
 		if (input.p_key[GLFW_KEY_D] == PRESSED)
 		{
 			this->_acc += this->_force * this->_cam->getRight();
-			toogle = true;
+			this->_axis.y += 1;
+			toogle     = true;
+			change_dir = true;
 		}
 		if (input.p_key[GLFW_KEY_A] == PRESSED)
 		{
 			this->_acc -= this->_force * this->_cam->getRight();
-			toogle = true;
+			this->_axis.y -= 1;
+			toogle     = true;
+			change_dir = true;
 		}
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_on_surface)
 		{
@@ -127,6 +139,8 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			this->_on_surface = false;
 			this->_delay_jump = true;
 		}
+		if (change_dir)
+			this->_set_sprite_direction();
 		if (toogle == true)
 			return (true);
 	}
@@ -153,6 +167,7 @@ void Player::update(float time)
 	this->_cb_model.setPosition(this->_pos);
 	this->_model.setPosition(this->_pos);
 	this->_cb.setPos(this->_pos);
+	this->_model.setSpriteY(this->_dir);
 }
 
 void Player::draw(void)
@@ -174,4 +189,26 @@ void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 	this->_vel += this->_acc * delta;
 	this->_vel *= std::pow(this->_friction, delta);
 	this->_delta = this->_vel * delta;
+}
+
+void Player::_set_sprite_direction(void)
+{
+	if (this->_axis.x == 0 && this->_axis.y == 0)
+		return;
+	else if (this->_axis.x == 1 && this->_axis.y == 0)
+		this->_dir = Player::BACK;
+	else if (this->_axis.x == -1 && this->_axis.y == 0)
+		this->_dir = Player::FRONT;
+	else if (this->_axis.x == 0 && this->_axis.y == -1)
+		this->_dir = Player::LEFT;
+	else if (this->_axis.x == 0 && this->_axis.y == 1)
+		this->_dir = Player::RIGHT;
+	else if (this->_axis.x == -1 && this->_axis.y == 1)
+		this->_dir = Player::FRONT_RIGHT;
+	else if (this->_axis.x == -1 && this->_axis.y == -1)
+		this->_dir = Player::FRONT_LEFT;
+	else if (this->_axis.x == 1 && this->_axis.y == 1)
+		this->_dir = Player::BACK_RIGHT;
+	else if (this->_axis.x == 1 && this->_axis.y == -1)
+		this->_dir = Player::BACK_LEFT;
 }

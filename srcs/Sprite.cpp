@@ -43,8 +43,7 @@ Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		std::cout << e.what() << std::endl;
 		throw InitException::InitException();
 	}
-
-
+	(void) this->_nb_walk_frame;
 }
 
 Sprite::~Sprite(void)
