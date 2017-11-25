@@ -82,6 +82,11 @@ glm::mat4 const &Sprite::getTotalMatrix(void) const
 	return (this->_total);
 }
 
+size_t Sprite::getNbOfWalkFrame(void) const
+{
+	return (this->_nb_walk_frame);
+}
+
 GLuint Sprite::moveVAO(void)
 {
 	GLuint tmp = this->_vao;

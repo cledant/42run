@@ -13,12 +13,15 @@
 #ifndef PLAYER_HPP
 # define PLAYER_HPP
 
+# define GLM_ENABLE_EXPERIMENTAL
+
 # include "oGL_module.hpp"
 # include "Cubemap.hpp"
 # include "Sprite.hpp"
 # include "GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"
+# include "glm/gtx/norm.hpp"
 # include "IEntity.hpp"
 # include "IInteractive.hpp"
 # include "ICollidable.hpp"
@@ -37,14 +40,14 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 
 		typedef enum e_player_dir
 		{
-			BACK = 0,
-			BACK_RIGHT = 1,
-			RIGHT = 2,
+			BACK        = 0,
+			BACK_RIGHT  = 1,
+			RIGHT       = 2,
 			FRONT_RIGHT = 3,
-			FRONT = 4,
-			FRONT_LEFT = 5,
-			LEFT = 6,
-			BACK_LEFT = 7,
+			FRONT       = 4,
+			FRONT_LEFT  = 5,
+			LEFT        = 6,
+			BACK_LEFT   = 7,
 		} t_player_dir;
 
 		Player(Shader const *cb_shader, Shader const *shader,
@@ -112,8 +115,9 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		float                   _friction;
 		float                   _force;
 		bool                    _draw_cb;
-		t_player_dir			_dir;
-		glm::ivec2				_axis;
+		t_player_dir            _dir;
+		glm::ivec2              _axis;
+		float                   _total_walked;
 
 		void _set_sprite_direction(void);
 };

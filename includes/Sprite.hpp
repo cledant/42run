@@ -41,6 +41,7 @@ class Sprite : public IEntity
 		void setSpriteY(size_t pos_y);
 
 		glm::mat4 const &getTotalMatrix(void) const;
+		size_t getNbOfWalkFrame(void) const;
 		GLuint moveVAO(void);
 		GLuint moveVBO(void);
 

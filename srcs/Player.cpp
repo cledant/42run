@@ -26,7 +26,7 @@ Player::Player(Shader const *cb_shader, Shader const *shader,
 		_on_surface(false), _surface_cb(glm::vec3{0.0f, 0.0f, 0.0f},
 										glm::vec3{0.0f, 0.0f, 0.0f}),
 		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb),
-		_dir(Player::BACK), _axis(glm::ivec2{0, 0})
+		_dir(Player::BACK), _axis(glm::ivec2{0, 0}), _total_walked(0.0f)
 {
 	this->update(1.0f);
 }
@@ -164,10 +164,13 @@ void Player::update(float time)
 {
 	(void) time;
 	this->_pos += this->_delta;
+	this->_total_walked += glm::l2Norm(this->_delta);
 	this->_cb_model.setPosition(this->_pos);
 	this->_model.setPosition(this->_pos);
 	this->_cb.setPos(this->_pos);
 	this->_model.setSpriteY(this->_dir);
+	this->_model.setSpriteX(static_cast<size_t>(this->_total_walked) %
+							this->_model.getNbOfWalkFrame());
 }
 
 void Player::draw(void)
@@ -200,9 +203,9 @@ void Player::_set_sprite_direction(void)
 	else if (this->_axis.x == -1 && this->_axis.y == 0)
 		this->_dir = Player::FRONT;
 	else if (this->_axis.x == 0 && this->_axis.y == -1)
-		this->_dir = Player::LEFT;
-	else if (this->_axis.x == 0 && this->_axis.y == 1)
 		this->_dir = Player::RIGHT;
+	else if (this->_axis.x == 0 && this->_axis.y == 1)
+		this->_dir = Player::LEFT;
 	else if (this->_axis.x == -1 && this->_axis.y == 1)
 		this->_dir = Player::FRONT_LEFT;
 	else if (this->_axis.x == -1 && this->_axis.y == -1)
