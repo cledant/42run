@@ -243,6 +243,7 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 		player->setSurfaceCollisionBox(box);
 		player->setOnSurface(true);
 		player->setCurJumpToMax();
+		player->setCurHooverTimeToMax();
 	}
 	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 }
