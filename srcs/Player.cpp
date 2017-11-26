@@ -27,7 +27,8 @@ Player::Player(Shader const *cb_shader, Shader const *shader,
 										glm::vec3{0.0f, 0.0f, 0.0f}),
 		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb),
 		_dir(Player::BACK), _axis(glm::ivec2{0, 0}), _total_walked(0.0f),
-		_cur_jump(2), _max_jump(2)
+		_cur_jump(2), _max_jump(2), _hoover(true), _cur_hoover_time(10.0f),
+		_max_hoover_time(10.0f), _gravity(true)
 {
 	this->update(1.0f);
 }
@@ -71,6 +72,16 @@ void Player::setCurJumpToMax(void)
 	this->_cur_jump = this->_max_jump;
 }
 
+void Player::setCurHooverTimeToMax(void)
+{
+	this->_cur_hoover_time = this->_max_hoover_time;
+}
+
+void Player::setSubjectToGravity(bool value)
+{
+	this->_gravity = value;
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);
@@ -89,6 +100,21 @@ bool Player::getOnSurface(void) const
 size_t Player::getMaxJump(void) const
 {
 	return (this->_max_jump);
+}
+
+bool Player::getHoover(void) const
+{
+	return (this->_hoover);
+}
+
+float Player::getMaxHoover(void) const
+{
+	return (this->_max_hoover_time);
+}
+
+bool Player::getSubjectToGravity(void) const
+{
+	return (this->_gravity);
 }
 
 void Player::update_model(float time)
@@ -143,12 +169,11 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			toogle     = true;
 			change_dir = true;
 		}
-		if (input.p_key[GLFW_KEY_SPACE] == PRESSED &&
-			this->_cur_jump)
+		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_cur_jump)
 		{
 			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
 			toogle = true;
-			const_cast<Input&>(input).p_key[GLFW_KEY_SPACE] = RELEASED;
+			const_cast<Input &>(input).p_key[GLFW_KEY_SPACE] = RELEASED;
 			this->_on_surface = false;
 			this->_delay_jump = true;
 			(this->_cur_jump)--;
