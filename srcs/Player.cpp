@@ -26,7 +26,8 @@ Player::Player(Shader const *cb_shader, Shader const *shader,
 		_on_surface(false), _surface_cb(glm::vec3{0.0f, 0.0f, 0.0f},
 										glm::vec3{0.0f, 0.0f, 0.0f}),
 		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb),
-		_dir(Player::BACK), _axis(glm::ivec2{0, 0}), _total_walked(0.0f)
+		_dir(Player::BACK), _axis(glm::ivec2{0, 0}), _total_walked(0.0f),
+		_cur_jump(2), _max_jump(2)
 {
 	this->update(1.0f);
 }
@@ -65,6 +66,11 @@ void Player::setSpriteYaw(float yaw)
 	this->_model.setYaw(yaw);
 }
 
+void Player::setCurJumpToMax(void)
+{
+	this->_cur_jump = this->_max_jump;
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);
@@ -78,6 +84,11 @@ glm::vec3 const &Player::getPos(void) const
 bool Player::getOnSurface(void) const
 {
 	return (this->_on_surface);
+}
+
+size_t Player::getMaxJump(void) const
+{
+	return (this->_max_jump);
 }
 
 void Player::update_model(float time)
@@ -132,12 +143,15 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			toogle     = true;
 			change_dir = true;
 		}
-		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_on_surface)
+		if (input.p_key[GLFW_KEY_SPACE] == PRESSED &&
+			this->_cur_jump)
 		{
 			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
 			toogle = true;
+			const_cast<Input&>(input).p_key[GLFW_KEY_SPACE] = RELEASED;
 			this->_on_surface = false;
 			this->_delay_jump = true;
+			(this->_cur_jump)--;
 		}
 		if (change_dir)
 			this->_set_sprite_direction();

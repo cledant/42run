@@ -66,10 +66,12 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setOnSurface(bool flag);
 		void setVelocity(glm::vec3 const &vel);
 		void setSpriteYaw(float yaw);
+		void setCurJumpToMax(void);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getPos(void) const;
 		bool getOnSurface(void) const;
+		size_t getMaxJump(void) const;
 
 		void update_model(float time);
 
@@ -118,6 +120,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		t_player_dir            _dir;
 		glm::ivec2              _axis;
 		float                   _total_walked;
+		size_t                  _cur_jump;
+		size_t                  _max_jump;
 
 		void _set_sprite_direction(void);
 };
