@@ -12,24 +12,44 @@
 
 #include "Player.hpp"
 
-Player::Player(Shader const *cb_shader, Shader const *shader,
-			   glm::mat4 const *perspec_mult_view,
-			   glm::vec3 const &pos, glm::vec3 const &size,
-			   ThirdPersonCamera const *cam, Texture const *cb_tex,
-			   Texture const *tex, glm::vec4 const &sprite_tex_size_offset,
-			   size_t nb_walk_frame, bool draw_cb, size_t max_jump,
-			   float max_hoover_time) :
-		_cam(cam), _model(shader, perspec_mult_view, tex, pos, size,
-						  sprite_tex_size_offset, nb_walk_frame),
-		_cb_model(cb_shader, perspec_mult_view, cb_tex, pos, size),
-		_cb(pos, size), _delta(glm::vec3({0.0f, 0.0f, 0.0f})), _pos(pos),
-		_vel(glm::vec3({0.0f, 0.0f, 0.0f})), _acc(glm::vec3({0.0f, 0.0f, 0.0f})),
-		_on_surface(false), _surface_cb(glm::vec3{0.0f, 0.0f, 0.0f},
-										glm::vec3{0.0f, 0.0f, 0.0f}),
-		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb),
+Player::Params::Params(void)
+{
+	this->cb_shader              = nullptr;
+	this->shader                 = nullptr;
+	this->perspec_mult_view      = nullptr;
+	this->pos                    = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->size                   = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->cam                    = nullptr;
+	this->cb_tex                 = nullptr;
+	this->tex                    = nullptr;
+	this->sprite_tex_size_offset = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	this->nb_walk_frame          = 0;
+	this->draw_cb                = false;
+	this->max_jump               = 1;
+	this->max_hoover_time        = 2.0f;
+}
+
+Player::Params::~Params(void)
+{
+}
+
+Player::Player(Player::Params const &params) :
+		_cam(params.cam), _model(params.shader, params.perspec_mult_view,
+								 params.tex, params.pos, params.size,
+								 params.sprite_tex_size_offset,
+								 params.nb_walk_frame),
+		_cb_model(params.cb_shader, params.perspec_mult_view, params.cb_tex,
+				  params.pos, params.size),
+		_cb(params.pos, params.size), _delta(glm::vec3({0.0f, 0.0f, 0.0f})),
+		_pos(params.pos), _vel(glm::vec3({0.0f, 0.0f, 0.0f})),
+		_acc(glm::vec3({0.0f, 0.0f, 0.0f})), _on_surface(false),
+		_surface_cb(glm::vec3{0.0f, 0.0f, 0.0f},
+					glm::vec3{0.0f, 0.0f, 0.0f}), _delay_jump(false),
+		_friction(0.00001f), _force(100.f), _draw_cb(params.draw_cb),
 		_dir(Player::BACK), _axis(glm::ivec2{0, 0}), _total_walked(0.0f),
-		_cur_jump(max_jump), _max_jump(max_jump), _hoover(false),
-		_cur_hoover_time(max_hoover_time), _max_hoover_time(max_hoover_time)
+		_cur_jump(params.max_jump), _max_jump(params.max_jump), _hoover(false),
+		_cur_hoover_time(params.max_hoover_time),
+		_max_hoover_time(params.max_hoover_time)
 {
 	this->update(1.0f);
 }

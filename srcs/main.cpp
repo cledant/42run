@@ -68,9 +68,25 @@ static void init_oGL(oGL_module &oGL)
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
 }
 
+static void set_player_params(Player::Params &params, oGL_module &oGL)
+{
+	params.cb_shader              = &(oGL.getShader("cubemap"));
+	params.shader                 = &(oGL.getShader("sprites"));
+	params.pos                    = glm::vec3({0.0f, 15.0f, 0.0f});
+	params.size                   = glm::vec3({0.1f, 0.2f, 0.1f});
+	params.cb_tex                 = &(oGL.getTexture("TestTex"));
+	params.tex                    = &(oGL.getTexture("sprite_reimu"));
+	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
+	params.nb_walk_frame          = 4;
+	params.draw_cb                = false;
+	params.max_jump               = 2;
+	params.max_hoover_time        = 2.0f;
+}
+
 static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 							 World **world)
 {
+	Player::Params                 params;
 	std::vector<std::string> const skybox_files
 										   {
 												   "./textures/skybox/right.jpg",
@@ -81,16 +97,15 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 												   "./textures/skybox/front.jpg",
 										   };
 
+
+	set_player_params(params, oGL);
 	(*world) = new World(manager.getInput(), manager.getWindow(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
 	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
 						  glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
 	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(10.0f, 3.0f, 10.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	(*world)->add_Player(&(oGL.getShader("cubemap")), &(oGL.getShader("sprites")),
-						 glm::vec3({0.0f, 15.0f, 0.0f}), glm::vec3({0.1f, 0.2f, 0.1f}),
-						 &(oGL.getTexture("TestTex")), &(oGL.getTexture("sprite_reimu")),
-						 glm::vec4(0.093f, 0.125f, 0.0f, 0.0f), 4, false, 2, 2.0f);
+	(*world)->add_Player(params);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 0.0f}),
 								glm::vec3({50.0f, 0.2f, 50.0f}),

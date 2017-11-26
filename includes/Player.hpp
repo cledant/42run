@@ -50,13 +50,27 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			BACK_LEFT   = 7,
 		} t_player_dir;
 
-		Player(Shader const *cb_shader, Shader const *shader,
-			   glm::mat4 const *perspec_mult_view,
-			   glm::vec3 const &pos, glm::vec3 const &size,
-			   ThirdPersonCamera const *cam, Texture const *cb_tex,
-			   Texture const *tex, glm::vec4 const &sprite_tex_size_offset,
-			   size_t nb_walk_frame, bool draw_cb, size_t max_jump,
-			   float max_hoover_time);
+		struct Params
+		{
+			Params(void);
+			~Params(void);
+
+			Shader const            *cb_shader;
+			Shader const            *shader;
+			glm::mat4 const         *perspec_mult_view;
+			glm::vec3               pos;
+			glm::vec3               size;
+			ThirdPersonCamera const *cam;
+			Texture const           *cb_tex;
+			Texture const           *tex;
+			glm::vec4               sprite_tex_size_offset;
+			size_t                  nb_walk_frame;
+			bool                    draw_cb;
+			size_t                  max_jump;
+			float                   max_hoover_time;
+		};
+
+		Player(Player::Params const &params);
 		virtual ~Player(void);
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;
