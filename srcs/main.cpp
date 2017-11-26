@@ -81,16 +81,6 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 												   "./textures/skybox/front.jpg",
 										   };
 
-/*	std::vector<std::string> const skybox_files
-										   {
-												   "./textures/sprites/reimu.png",
-												   "./textures/sprites/reimu.png",
-												   "./textures/sprites/reimu.png",
-												   "./textures/sprites/reimu.png",
-												   "./textures/sprites/reimu.png",
-												   "./textures/sprites/reimu.png",
-										   };*/
-
 	(*world) = new World(manager.getInput(), manager.getWindow(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
 	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
@@ -100,7 +90,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	(*world)->add_Player(&(oGL.getShader("cubemap")), &(oGL.getShader("sprites")),
 						 glm::vec3({0.0f, 15.0f, 0.0f}), glm::vec3({0.1f, 0.2f, 0.1f}),
 						 &(oGL.getTexture("TestTex")), &(oGL.getTexture("sprite_reimu")),
-						 glm::vec4(0.093f, 0.125f, 0.0f, 0.0f), 4, false);
+						 glm::vec4(0.093f, 0.125f, 0.0f, 0.0f), 4, false, 2, 2.0f);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 0.0f}),
 								glm::vec3({50.0f, 0.2f, 50.0f}),

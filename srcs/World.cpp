@@ -128,12 +128,13 @@ IEntity *World::add_Prop(Shader const *shader, Model const *model,
 IInteractive *World::add_Player(Shader const *cb_shader, Shader const *shader, glm::vec3 const &pos,
 								glm::vec3 const &size, Texture const *cb_tex, Texture const *tex,
 								glm::vec4 const &sprite_tex_size_offset, size_t nb_walk_frame,
-								bool draw_cb)
+								bool draw_cb, size_t max_jump, float max_hoover_time)
 {
 	IInteractive *ptr;
 
 	ptr = new Player(cb_shader, shader, &(this->_perspec_mult_view), pos, size,
-					 &(this->_camera), cb_tex, tex, sprite_tex_size_offset, nb_walk_frame, draw_cb);
+					 &(this->_camera), cb_tex, tex, sprite_tex_size_offset, nb_walk_frame,
+					 draw_cb, max_jump, max_hoover_time);
 	this->_active = ptr;
 	return (ptr);
 }

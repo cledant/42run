@@ -55,7 +55,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			   glm::vec3 const &pos, glm::vec3 const &size,
 			   ThirdPersonCamera const *cam, Texture const *cb_tex,
 			   Texture const *tex, glm::vec4 const &sprite_tex_size_offset,
-			   size_t nb_walk_frame, bool draw_cb);
+			   size_t nb_walk_frame, bool draw_cb, size_t max_jump,
+			   float max_hoover_time);
 		virtual ~Player(void);
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;
@@ -125,9 +126,9 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		float                   _total_walked;
 		size_t                  _cur_jump;
 		size_t                  _max_jump;
-		bool 					_hoover;
-		float 					_cur_hoover_time;
-		float 					_max_hoover_time;
+		bool                    _hoover;
+		float                   _cur_hoover_time;
+		float                   _max_hoover_time;
 
 		void _set_sprite_direction(void);
 };
