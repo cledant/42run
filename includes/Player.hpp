@@ -68,15 +68,13 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setSpriteYaw(float yaw);
 		void setCurJumpToMax(void);
 		void setCurHooverTimeToMax(void);
-		void setSubjectToGravity(bool value);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getPos(void) const;
 		bool getOnSurface(void) const;
 		size_t getMaxJump(void) const;
-		bool getHoover(void) const;
-		float getMaxHoover(void) const;
-		bool getSubjectToGravity(void) const;
+		bool getCanHoover(void) const;
+		float getMaxHooverTime(void) const;
 
 		void update_model(float time);
 
@@ -130,7 +128,6 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		bool 					_hoover;
 		float 					_cur_hoover_time;
 		float 					_max_hoover_time;
-		bool 					_gravity;
 
 		void _set_sprite_direction(void);
 };

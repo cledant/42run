@@ -27,8 +27,8 @@ Player::Player(Shader const *cb_shader, Shader const *shader,
 										glm::vec3{0.0f, 0.0f, 0.0f}),
 		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb),
 		_dir(Player::BACK), _axis(glm::ivec2{0, 0}), _total_walked(0.0f),
-		_cur_jump(1), _max_jump(1), _hoover(true), _cur_hoover_time(10.0f),
-		_max_hoover_time(10.0f), _gravity(true)
+		_cur_jump(2), _max_jump(2), _hoover(true), _cur_hoover_time(10.0f),
+		_max_hoover_time(10.0f)
 {
 	this->update(1.0f);
 }
@@ -77,11 +77,6 @@ void Player::setCurHooverTimeToMax(void)
 	this->_cur_hoover_time = this->_max_hoover_time;
 }
 
-void Player::setSubjectToGravity(bool value)
-{
-	this->_gravity = value;
-}
-
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);
@@ -102,19 +97,14 @@ size_t Player::getMaxJump(void) const
 	return (this->_max_jump);
 }
 
-bool Player::getHoover(void) const
+bool Player::getCanHoover(void) const
 {
 	return (this->_hoover);
 }
 
-float Player::getMaxHoover(void) const
+float Player::getMaxHooverTime(void) const
 {
 	return (this->_max_hoover_time);
-}
-
-bool Player::getSubjectToGravity(void) const
-{
-	return (this->_gravity);
 }
 
 void Player::update_model(float time)
@@ -143,7 +133,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		this->_axis.y = 0;
 		if (input.p_key[GLFW_KEY_SPACE] == RELEASED)
 		{
-			this->_gravity = true;
+			this->_hoover = true;
 		}
 		if (input.p_key[GLFW_KEY_W] == PRESSED)
 		{
@@ -185,9 +175,9 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 
 		}
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && !this->_cur_jump &&
-			this->_max_hoover_time > 0.0f)
+			this->_cur_hoover_time > 0.0f)
 		{
-			this->_gravity = false;
+			this->_hoover = false;
 		}
 		if (change_dir)
 			this->_set_sprite_direction();
@@ -236,9 +226,11 @@ void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 	{
 		this->_on_surface = false;
 		if (!this->_delay_jump)
-			this->_acc += (this->_gravity) ? vec_gravity : (vec_gravity * 0.5f);
+			this->_acc += (this->_hoover) ? vec_gravity : (vec_gravity * 0.5f);
 		this->_delay_jump = false;
 	}
+//	if (!this->_hoover)
+
 	this->_vel += this->_acc * delta;
 	this->_vel *= std::pow(this->_friction, delta);
 	this->_delta = this->_vel * delta;
