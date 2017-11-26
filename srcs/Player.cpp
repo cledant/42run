@@ -27,7 +27,7 @@ Player::Player(Shader const *cb_shader, Shader const *shader,
 										glm::vec3{0.0f, 0.0f, 0.0f}),
 		_delay_jump(false), _friction(0.00001f), _force(100.f), _draw_cb(draw_cb),
 		_dir(Player::BACK), _axis(glm::ivec2{0, 0}), _total_walked(0.0f),
-		_cur_jump(2), _max_jump(2), _hoover(true), _cur_hoover_time(10.0f),
+		_cur_jump(1), _max_jump(1), _hoover(true), _cur_hoover_time(10.0f),
 		_max_hoover_time(10.0f), _gravity(true)
 {
 	this->update(1.0f);
@@ -141,6 +141,10 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		this->_acc.y  = 0.0f;
 		this->_axis.x = 0;
 		this->_axis.y = 0;
+		if (input.p_key[GLFW_KEY_SPACE] == RELEASED)
+		{
+			this->_gravity = true;
+		}
 		if (input.p_key[GLFW_KEY_W] == PRESSED)
 		{
 			this->_acc += this->_force * this->_cam->getXYFront();
@@ -173,10 +177,17 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		{
 			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
 			toogle = true;
-			const_cast<Input &>(input).p_key[GLFW_KEY_SPACE] = RELEASED;
+			(this->_cur_jump)--;
+			if (this->_cur_jump > 0 || this->_max_hoover_time == 0.0f)
+				const_cast<Input &>(input).p_key[GLFW_KEY_SPACE] = RELEASED;
 			this->_on_surface = false;
 			this->_delay_jump = true;
-			(this->_cur_jump)--;
+
+		}
+		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && !this->_cur_jump &&
+			this->_max_hoover_time > 0.0f)
+		{
+			this->_gravity = false;
 		}
 		if (change_dir)
 			this->_set_sprite_direction();
@@ -225,7 +236,7 @@ void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 	{
 		this->_on_surface = false;
 		if (!this->_delay_jump)
-			this->_acc += vec_gravity;
+			this->_acc += (this->_gravity) ? vec_gravity : (vec_gravity * 0.5f);
 		this->_delay_jump = false;
 	}
 	this->_vel += this->_acc * delta;
