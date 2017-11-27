@@ -28,7 +28,7 @@ Player::Params::Params(void)
 	this->max_jump               = 1;
 	this->max_hoover_time        = 2.0f;
 	this->hp                     = 10;
-	this->max_immunity           = 1.0f;
+	this->max_immunity           = 2.0f;
 }
 
 Player::Params::~Params(void)
@@ -261,6 +261,8 @@ bool Player::update_mouse_interaction(Input const &input, GLFW_Window const &win
 
 void Player::update(float time)
 {
+	static char cd = BLINK_CD;
+
 	this->_pos += this->_delta;
 	this->_total_walked += glm::l2Norm(this->_delta);
 	this->_cb_model.setPosition(this->_pos);
@@ -270,13 +272,28 @@ void Player::update(float time)
 	this->_model.setSpriteX(static_cast<size_t>(this->_total_walked) %
 							this->_model.getNbOfWalkFrame());
 	this->_cur_immunity -= time;
+	if (this->_cur_immunity > 0.0f && cd == BLINK_CD)
+	{
+		this->_display_sprite = true;
+		cd--;
+	}
+	else if (this->_cur_immunity > 0.0f)
+	{
+		this->_display_sprite = false;
+		cd--;
+	}
+	else
+		this->_display_sprite = true;
+	if (cd <= 0)
+		cd = BLINK_CD;
 }
 
 void Player::draw(void)
 {
 	if (this->_draw_cb)
 		this->_cb_model.draw();
-	this->_model.draw();
+	if (this->_display_sprite)
+		this->_model.draw();
 }
 
 void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)

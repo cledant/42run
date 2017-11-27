@@ -14,6 +14,7 @@
 # define PLAYER_HPP
 
 # define GLM_ENABLE_EXPERIMENTAL
+# define BLINK_CD 3
 
 # include "oGL_module.hpp"
 # include "Cubemap.hpp"
@@ -68,7 +69,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			bool                    draw_cb;
 			size_t                  max_jump;
 			float                   max_hoover_time;
-			size_t                  hp;
+			int                     hp;
 			float                   max_immunity;
 		};
 
@@ -154,6 +155,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		int                     _hp;
 		float                   _cur_immunity;
 		float                   _max_immunity;
+		bool                    _display_sprite;
+
 
 		void _set_sprite_direction(void);
 };
