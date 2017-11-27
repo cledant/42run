@@ -273,7 +273,8 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 		player->setCurHooverTimeToMax();
 	}
 	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
-	if (!reinterpret_cast<Player *>(this->_active)->isImmune())
+	if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
+		dmg_taken != ICollidable::Damages::NONE)
 	{
 		reinterpret_cast<Player *>(this->_active)->lowerHP(dmg_taken);
 		reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
