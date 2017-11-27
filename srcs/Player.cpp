@@ -106,11 +106,22 @@ void Player::lowerHP(ICollidable::Damages type)
 	this->_hp -= type;
 }
 
+void Player::setImmunityTimerToMax(void)
+{
+	this->_cur_immunity = this->_max_immunity;
+}
+
 bool Player::isAlive(void) const
 {
-	(void) this->_max_immunity;
-	(void) this->_cur_immunity;
 	if (this->_hp > 0)
+		return (true);
+	else
+		return (false);
+}
+
+bool Player::isImmune(void) const
+{
+	if (this->_cur_immunity > 0.0f)
 		return (true);
 	else
 		return (false);
@@ -250,7 +261,6 @@ bool Player::update_mouse_interaction(Input const &input, GLFW_Window const &win
 
 void Player::update(float time)
 {
-	(void) time;
 	this->_pos += this->_delta;
 	this->_total_walked += glm::l2Norm(this->_delta);
 	this->_cb_model.setPosition(this->_pos);
@@ -259,6 +269,7 @@ void Player::update(float time)
 	this->_model.setSpriteY(this->_dir);
 	this->_model.setSpriteX(static_cast<size_t>(this->_total_walked) %
 							this->_model.getNbOfWalkFrame());
+	this->_cur_immunity -= time;
 }
 
 void Player::draw(void)

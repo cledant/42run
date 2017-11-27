@@ -86,6 +86,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setCurJumpToMax(void);
 		void setCurHooverTimeToMax(void);
 		void lowerHP(ICollidable::Damages type);
+		void setImmunityTimerToMax(void);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getPos(void) const;
@@ -95,6 +96,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		float getMaxHooverTime(void) const;
 		int getHP(void) const;
 		bool isAlive(void) const;
+		bool isImmune(void) const;
 
 		void update_model(float time);
 

@@ -70,7 +70,7 @@ void World::update(void)
 			this->_input_timer += this->_tick;
 		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_delta_tick);
 		this->_check_collisions();
-		reinterpret_cast<Player *>(this->_active)->update(0.0f);
+		reinterpret_cast<Player *>(this->_active)->update(this->_delta_tick);
 		this->_camera.update_third_person(this->_input.mouse_exclusive,
 										  reinterpret_cast<Player *>(this->_active)->getPos());
 		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
@@ -273,7 +273,11 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 		player->setCurHooverTimeToMax();
 	}
 	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
-	reinterpret_cast<Player *>(this->_active)->lowerHP(dmg_taken);
+	if (!reinterpret_cast<Player *>(this->_active)->isImmune())
+	{
+		reinterpret_cast<Player *>(this->_active)->lowerHP(dmg_taken);
+		reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
+	}
 }
 
 World::WorldFailException::WorldFailException(void)
