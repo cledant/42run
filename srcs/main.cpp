@@ -128,10 +128,11 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 					   glm::vec3(-5.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.005f, 0.005f, 0.005f));*/
 	(*world)->add_CollidableProp(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
-								 glm::vec3(-5.0f, 1.0f, 0.0f),
+								 glm::vec3(-5.0f, 0.7f, 0.0f),
 								 glm::vec3({0.0f, 0.0f, 0.0f}),
 								 glm::vec3(0.005f, 0.005f, 0.005f),
-								 glm::vec3(0.5f, 0.5f, 0.5f),
+								 glm::vec3(0.0f, 0.1f, 0.0f),
+								 glm::vec3(0.4f, 0.35f, 0.1f),
 								 ICollidable::Damages::NONE);
 }
 

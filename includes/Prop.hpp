@@ -29,7 +29,7 @@ class Prop : public IEntity
 
 		Prop(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			 Model const *model, glm::vec3 const &pos, glm::vec3 const &orientation,
-			 glm::vec3 const &scale);
+			 glm::vec3 const &scale, glm::vec3 const &offset);
 		virtual ~Prop(void);
 		Prop(Prop const &src) = delete;
 		Prop &operator=(Prop const &rhs) = delete;
@@ -39,6 +39,7 @@ class Prop : public IEntity
 		void setYaw(GLfloat yaw);
 		void setPitch(GLfloat pitch);
 		void setRoll(GLfloat roll);
+		void setOffset(glm::vec3 const &offset);
 
 		glm::mat4 const &getTotalMatrix(void) const;
 
@@ -67,6 +68,7 @@ class Prop : public IEntity
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;
+		glm::vec3       _offset;
 };
 
 #endif

@@ -115,12 +115,12 @@ IEntity *World::add_Cubemap(Shader const *shader,
 
 IEntity *World::add_Prop(Shader const *shader, Model const *model,
 						 glm::vec3 const &pos, glm::vec3 const &orientation,
-						 glm::vec3 const &scale)
+						 glm::vec3 const &scale, glm::vec3 const &offset)
 {
 	IEntity *ptr;
 
 	ptr = new Prop(shader, &(this->_perspec_mult_view), model, pos, orientation,
-				   scale);
+				   scale, offset);
 	this->_entity_list.push_back(ptr);
 	return (ptr);
 }
@@ -151,13 +151,14 @@ IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 
 IEntity *World::add_CollidableProp(Shader const *shader, Model const *model,
 								   glm::vec3 const &pos, glm::vec3 const &orientation,
-								   glm::vec3 const &scale, glm::vec3 const &half_size,
-								   ICollidable::Damages dmg)
+								   glm::vec3 const &scale, glm::vec3 const &offset,
+								   glm::vec3 const &half_size, ICollidable::Damages dmg)
 {
 	IEntity *ptr;
 
 	ptr = new CollidableProp(shader, &(this->_perspec_mult_view), model, pos,
-							 orientation, scale, CollisionBox(pos, half_size), dmg);
+							 orientation, scale, offset, CollisionBox(pos, half_size),
+							 dmg);
 	this->_entity_list.push_back(ptr);
 	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));
 	return (ptr);

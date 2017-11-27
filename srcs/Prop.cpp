@@ -14,10 +14,10 @@
 
 Prop::Prop(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		   Model const *model, glm::vec3 const &pos, glm::vec3 const &orientation,
-		   glm::vec3 const &scale) :
+		   glm::vec3 const &scale, glm::vec3 const &offset) :
 		_shader(shader), _perspec_mult_view(perspec_mult_view), _model(model),
 		_yaw(orientation.x), _pitch(orientation.y), _roll(orientation.z),
-		_pos(pos), _scale(scale)
+		_pos(pos), _scale(scale), _offset(offset)
 {
 	this->update(0.0f);
 }
@@ -44,7 +44,7 @@ void Prop::update(float time)
 	model = glm::translate(model, glm::vec3({-this->_model->getCenter().x * this->_scale.x,
 											 -this->_model->getCenter().y * this->_scale.y,
 											 -this->_model->getCenter().z * this->_scale.z}));
-	model = glm::translate(model, this->_pos);
+	model = glm::translate(model, (this->_pos + this->_offset));
 	model = glm::scale(model, this->_scale);
 	this->_total = *(this->_perspec_mult_view) * model;
 }
@@ -109,6 +109,11 @@ void Prop::setPitch(GLfloat pitch)
 void Prop::setRoll(GLfloat roll)
 {
 	this->_roll = roll;
+}
+
+void Prop::setOffset(glm::vec3 const &offset)
+{
+	this->_offset = offset;
 }
 
 glm::mat4 const &Prop::getTotalMatrix(void) const

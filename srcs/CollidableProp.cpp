@@ -15,8 +15,9 @@
 CollidableProp::CollidableProp(Shader const *shader, glm::mat4 const *perspec_mult_view,
 							   Model const *model, glm::vec3 const &pos,
 							   glm::vec3 const &orientation, glm::vec3 const &scale,
-							   CollisionBox const &cb, ICollidable::Damages dmg) :
-		Prop(shader, perspec_mult_view, model, pos, orientation, scale),
+							   glm::vec3 const &offset, CollisionBox const &cb,
+							   ICollidable::Damages dmg) :
+		Prop(shader, perspec_mult_view, model, pos, orientation, scale, offset),
 		_cb(cb), _dmg(dmg)
 {
 	this->update(0.0f);
