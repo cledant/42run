@@ -202,6 +202,14 @@ bool World::should_be_updated(float time)
 	return (false);
 }
 
+std::string const &World::getStrPlayerHP(void)
+{
+	this->_str_hp = (this->_active == nullptr) ? "0" :
+					std::to_string(reinterpret_cast<Player *>(this->_active)->getHP());
+	return (this->_str_hp);
+
+}
+
 void World::_check_collisions(void)
 {
 	CollisionBox::SweepResolution res;

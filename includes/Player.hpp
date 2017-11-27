@@ -68,6 +68,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			bool                    draw_cb;
 			size_t                  max_jump;
 			float                   max_hoover_time;
+			size_t                  hp;
+			float                   max_immunity;
 		};
 
 		Player(Player::Params const &params);
@@ -83,6 +85,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setSpriteYaw(float yaw);
 		void setCurJumpToMax(void);
 		void setCurHooverTimeToMax(void);
+		void lowerHp(ICollidable::Damages type);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getPos(void) const;
@@ -90,6 +93,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		size_t getMaxJump(void) const;
 		bool getCanHoover(void) const;
 		float getMaxHooverTime(void) const;
+		size_t getHP(void) const;
 
 		void update_model(float time);
 
@@ -144,6 +148,9 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		bool                    _hoover;
 		float                   _cur_hoover_time;
 		float                   _max_hoover_time;
+		size_t                  _hp;
+		float                   _cur_immunity;
+		float                   _max_immunity;
 
 		void _set_sprite_direction(void);
 };

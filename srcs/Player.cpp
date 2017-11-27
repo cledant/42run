@@ -27,6 +27,8 @@ Player::Params::Params(void)
 	this->draw_cb                = false;
 	this->max_jump               = 1;
 	this->max_hoover_time        = 2.0f;
+	this->hp                     = 10;
+	this->max_immunity           = 1.0f;
 }
 
 Player::Params::~Params(void)
@@ -49,7 +51,8 @@ Player::Player(Player::Params const &params) :
 		_dir(Player::BACK), _axis(glm::ivec2{0, 0}), _total_walked(0.0f),
 		_cur_jump(params.max_jump), _max_jump(params.max_jump), _hoover(false),
 		_cur_hoover_time(params.max_hoover_time),
-		_max_hoover_time(params.max_hoover_time)
+		_max_hoover_time(params.max_hoover_time), _hp(params.hp),
+		_cur_immunity(0.0f), _max_immunity(params.max_immunity)
 {
 	this->update(1.0f);
 }
@@ -126,6 +129,11 @@ bool Player::getCanHoover(void) const
 float Player::getMaxHooverTime(void) const
 {
 	return (this->_max_hoover_time);
+}
+
+size_t Player::getHP(void) const
+{
+	return (this->_hp);
 }
 
 void Player::update_model(float time)

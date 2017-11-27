@@ -69,6 +69,8 @@ class World
 		void reset_skip_loop(void);
 		bool should_be_updated(float time);
 
+		std::string const &getStrPlayerHP(void);
+
 		class WorldFailException : public GeneralException
 		{
 			public :
@@ -98,6 +100,7 @@ class World
 		float                      _input_timer;
 		float                      _input_mouse_timer;
 		glm::vec3                  _gravity;
+		std::string                _str_hp;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,

@@ -34,6 +34,11 @@ static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 40.0f,
 								  0.5f));
+			ui.drawText("roboto", "Player Life : " + world.getStrPlayerHP(),
+						glm::vec3(0.4f, 0.4f, 0.4f),
+						glm::vec3(10.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) - 80.0f,
+								  0.5f));
 			manager.swap_buffers();
 			if (manager.should_window_be_closed() == true)
 				manager.destroy_window();
@@ -133,7 +138,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 								 glm::vec3(0.005f, 0.005f, 0.005f),
 								 glm::vec3(0.0f, 0.1f, 0.0f),
 								 glm::vec3(0.4f, 0.35f, 0.1f),
-								 ICollidable::Damages::NONE);
+								 ICollidable::Damages::HALF);
 }
 
 static void init_program(World **world, oGL_module &oGL,
