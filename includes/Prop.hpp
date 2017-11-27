@@ -34,14 +34,19 @@ class Prop : public IEntity
 		Prop(Prop const &src) = delete;
 		Prop &operator=(Prop const &rhs) = delete;
 
-		void update(float time);
-		void draw(void);
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);
 		void setYaw(GLfloat yaw);
 		void setPitch(GLfloat pitch);
 		void setRoll(GLfloat roll);
+
 		glm::mat4 const &getTotalMatrix(void) const;
+
+		/*
+		 * Interface IEntity
+		 */
+		void update(float time);
+		void draw(void);
 
 		class InitException : public GeneralException
 		{
@@ -51,7 +56,7 @@ class Prop : public IEntity
 				virtual        ~InitException(void) throw();
 		};
 
-	private :
+	protected :
 
 		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;

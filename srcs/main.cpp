@@ -122,7 +122,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 								&(oGL.getTexture("TestTex")),
 								ICollidable::Damages::NONE);
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
-					   glm::vec3(5.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
+					   glm::vec3(-7.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.005f, 0.005f, 0.005f));
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
 					   glm::vec3(-5.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
