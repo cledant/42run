@@ -33,9 +33,15 @@ class CollidableBox : public IEntity, public ICollidable
 
 		glm::vec3 const &getPos(void) const;
 
+		/*
+		 * Interface ICollidable
+		 */
 		CollisionBox const &getCollisionBox(void) const;
 		Damages getDamages(void) const;
 
+		/*
+		 * Interface IEntity
+		 */
 		void update(float time);
 		void draw(void);
 

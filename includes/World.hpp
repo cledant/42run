@@ -28,6 +28,7 @@
 # include "ThirdPersonCamera.hpp"
 # include "Player.hpp"
 # include "CollidableBox.hpp"
+# include "CollidableProp.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
 # include <iostream>
@@ -58,6 +59,9 @@ class World
 		IEntity *add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 								   glm::vec3 const &size, Texture const *tex,
 								   ICollidable::Damages dmg);
+		IEntity *add_CollidableProp(Shader const *shader, glm::vec3 const &pos,
+									glm::vec3 const &size, Model const *model,
+									ICollidable::Damages dmg);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);
@@ -74,25 +78,25 @@ class World
 
 	private :
 
-		std::vector<IEntity *>       _entity_list;
-		std::vector<CollidableBox *> _collision_check_list;
-		IInteractive                 *_active;
-		Input const                  &_input;
-		GLFW_Window const            &_window;
-		glm::mat4                    _perspective;
-		ThirdPersonCamera            _camera;
-		glm::mat4                    _perspec_mult_view;
-		float                        _fov;
-		float                        _max_fps;
-		size_t                       _max_frame_skip;
-		float                        _tick;
-		float                        _next_update_tick;
-		float                        _last_update_tick;
-		float                        _delta_tick;
-		size_t                       _skip_loop;
-		float                        _input_timer;
-		float                        _input_mouse_timer;
-		glm::vec3                    _gravity;
+		std::vector<IEntity *>     _entity_list;
+		std::vector<ICollidable *> _collision_check_list;
+		IInteractive               *_active;
+		Input const                &_input;
+		GLFW_Window const          &_window;
+		glm::mat4                  _perspective;
+		ThirdPersonCamera          _camera;
+		glm::mat4                  _perspec_mult_view;
+		float                      _fov;
+		float                      _max_fps;
+		size_t                     _max_frame_skip;
+		float                      _tick;
+		float                      _next_update_tick;
+		float                      _last_update_tick;
+		float                      _delta_tick;
+		size_t                     _skip_loop;
+		float                      _input_timer;
+		float                      _input_mouse_timer;
+		glm::vec3                  _gravity;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
