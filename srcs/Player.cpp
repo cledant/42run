@@ -101,6 +101,21 @@ void Player::setCurHooverTimeToMax(void)
 	this->_cur_hoover_time = this->_max_hoover_time;
 }
 
+void Player::lowerHP(ICollidable::Damages type)
+{
+	this->_hp -= type;
+}
+
+bool Player::isAlive(void) const
+{
+	(void) this->_max_immunity;
+	(void) this->_cur_immunity;
+	if (this->_hp > 0)
+		return (true);
+	else
+		return (false);
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);
@@ -131,7 +146,7 @@ float Player::getMaxHooverTime(void) const
 	return (this->_max_hoover_time);
 }
 
-size_t Player::getHP(void) const
+int Player::getHP(void) const
 {
 	return (this->_hp);
 }

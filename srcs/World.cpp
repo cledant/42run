@@ -216,6 +216,7 @@ void World::_check_collisions(void)
 	glm::vec3                     inv_delta;
 	CollisionBox::SweepResolution nearest;
 	ICollidable                   *ptr = nullptr;
+	ICollidable::Damages          dmg  = ICollidable::Damages::NONE;
 
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
@@ -230,21 +231,24 @@ void World::_check_collisions(void)
 			{
 				ptr = *it;
 				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+				dmg = (*it)->getDamages();
 			}
 			else if (res.time < nearest.time)
 			{
 				ptr = *it;
 				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+				dmg = (*it)->getDamages();
 			}
 		}
 	}
 	if (ptr != nullptr)
 		this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
-									   (*ptr).getCollisionBox(), nearest);
+									   (*ptr).getCollisionBox(), nearest, dmg);
 }
 
 void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
-									 CollisionBox::SweepResolution const &res)
+									 CollisionBox::SweepResolution const &res,
+									 ICollidable::Damages dmg_taken)
 {
 	glm::vec3 new_delta;
 
@@ -269,6 +273,7 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 		player->setCurHooverTimeToMax();
 	}
 	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+	reinterpret_cast<Player *>(this->_active)->lowerHP(dmg_taken);
 }
 
 World::WorldFailException::WorldFailException(void)
