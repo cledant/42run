@@ -148,19 +148,21 @@ IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 	return (ptr);
 }
 
-/*
-IEntity *World::add_CollidableProp(Shader const *shader, glm::vec3 const &pos,
-								   glm::vec3 const &size, Model const *model,
+
+IEntity *World::add_CollidableProp(Shader const *shader, Model const *model,
+								   glm::vec3 const &pos, glm::vec3 const &orientation,
+								   glm::vec3 const &scale, glm::vec3 const &half_size,
 								   ICollidable::Damages dmg)
 {
 	IEntity *ptr;
 
-	ptr = new CollidableProp(shader, &(this->_perspec_mult_view), pos, size, tex, dmg);
+	ptr = new CollidableProp(shader, &(this->_perspec_mult_view), model, pos,
+							 orientation, scale, CollisionBox(pos, half_size), dmg);
 	this->_entity_list.push_back(ptr);
-	this->_collision_check_list.push_back(reinterpret_cast<CollidableBox *>(ptr));
+	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));
 	return (ptr);
 }
-*/
+
 void World::setActiveInteractive(IInteractive *ptr)
 {
 	this->_active = ptr;
