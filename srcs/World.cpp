@@ -137,11 +137,12 @@ IInteractive *World::add_Player(Player::Params &params)
 }
 
 IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
-								  glm::vec3 const &size, Texture const *tex)
+								  glm::vec3 const &size, Texture const *tex,
+								  ICollidable::Damages dmg)
 {
 	IEntity *ptr;
 
-	ptr = new CollidableBox(shader, &(this->_perspec_mult_view), pos, size, tex);
+	ptr = new CollidableBox(shader, &(this->_perspec_mult_view), pos, size, tex, dmg);
 	this->_entity_list.push_back(ptr);
 	this->_collision_check_list.push_back(reinterpret_cast<CollidableBox *>(ptr));
 	return (ptr);

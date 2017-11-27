@@ -97,6 +97,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		 * Interface ICollidable
 		 */
 		CollisionBox const &getCollisionBox(void) const;
+		ICollidable::Damages getDamages(void) const;
 
 		/*
  		* Interface IInteractive

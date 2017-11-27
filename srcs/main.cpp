@@ -75,7 +75,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL)
 	params.pos                    = glm::vec3({0.0f, 15.0f, 0.0f});
 	params.size                   = glm::vec3({0.1f, 0.2f, 0.1f});
 	params.cb_tex                 = &(oGL.getTexture("TestTex"));
-	params.tex                    = &(oGL.getTexture("sprite_reimu"));
+	params.tex                    = &(oGL.getTexture("sprite_marisa"));
 	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
 	params.nb_walk_frame          = 4;
 	params.draw_cb                = false;
@@ -109,21 +109,24 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 0.0f}),
 								glm::vec3({50.0f, 0.2f, 50.0f}),
-								&(oGL.getTexture("TestTex")));
+								&(oGL.getTexture("TestTex")),
+								ICollidable::Damages::NONE);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 2.0f}),
 								glm::vec3({1.0f, 1.0f, 0.2f}),
-								&(oGL.getTexture("TestTex")));
+								&(oGL.getTexture("TestTex")),
+								ICollidable::Damages::NONE);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 13.0f, 0.0f}),
 								glm::vec3({1.0f, 1.0f, 1.0f}),
-								&(oGL.getTexture("TestTex")));
-/*	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
-					   glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
-					   glm::vec3(0.05f, 0.05f, 0.05f));
+								&(oGL.getTexture("TestTex")),
+								ICollidable::Damages::NONE);
+	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
+					   glm::vec3(5.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
+					   glm::vec3(0.005f, 0.005f, 0.005f));
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
-					   glm::vec3(-5.0f, 0.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
-					   glm::vec3(0.05f, 0.05f, 0.05f));*/
+					   glm::vec3(-5.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
+					   glm::vec3(0.005f, 0.005f, 0.005f));
 }
 
 static void init_program(World **world, oGL_module &oGL,

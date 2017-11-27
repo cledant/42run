@@ -14,9 +14,9 @@
 
 CollidableBox::CollidableBox(Shader const *shader, glm::mat4 const *perspec_mult_view,
 							 glm::vec3 const &pos, glm::vec3 const &size,
-							 Texture const *tex) :
+							 Texture const *tex, ICollidable::Damages dmg) :
 		_model(shader, perspec_mult_view, tex, pos, size), _cb(pos, size),
-		_pos(pos)
+		_pos(pos), _dmg(dmg)
 {
 	this->update(1.0f);
 }
@@ -33,6 +33,11 @@ glm::vec3 const &CollidableBox::getPos(void) const
 CollisionBox const &CollidableBox::getCollisionBox(void) const
 {
 	return (this->_cb);
+}
+
+ICollidable::Damages CollidableBox::getDamages(void) const
+{
+	return (this->_dmg);
 }
 
 void CollidableBox::update(float time)

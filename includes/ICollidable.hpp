@@ -19,12 +19,21 @@ class ICollidable
 {
 	public :
 
+		enum Damages
+		{
+			NONE          = 0,
+			HALF          = 1,
+			SINGLE        = 2,
+			INSTANT_DEATH = 10000,
+		};
+
 		ICollidable(void);
 		virtual ~ICollidable(void);
 		ICollidable(ICollidable const &src) = delete;
 		ICollidable &operator=(ICollidable const &rhs) = delete;
 
 		virtual CollisionBox const &getCollisionBox(void) const = 0;
+		virtual Damages getDamages(void) const = 0;
 };
 
 #endif

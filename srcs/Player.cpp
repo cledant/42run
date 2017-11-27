@@ -139,6 +139,11 @@ CollisionBox const &Player::getCollisionBox(void) const
 	return (this->_cb);
 }
 
+ICollidable::Damages Player::getDamages(void) const
+{
+	return (ICollidable::Damages::NONE);
+}
+
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
 	bool toogle     = false;
