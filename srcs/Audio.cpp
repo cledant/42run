@@ -29,6 +29,7 @@ void Audio::loadSound(std::string const &name, std::string const &file)
 	sf::SoundBuffer buff;
 	sf::Sound       sound;
 
+	std::cout << "Loading : " + file << std::endl;
 	if (!buff.loadFromFile(file))
 		throw Audio::FileOpenException(name);
 	sound.setBuffer(buff);

@@ -13,6 +13,7 @@
 #include "Glfw_manager.hpp"
 #include "World.hpp"
 #include "Ui.hpp"
+#include "Audio.hpp"
 
 static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 {
@@ -141,14 +142,20 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 								 ICollidable::Damages::HALF);
 }
 
-static void init_program(World **world, oGL_module &oGL,
-						 Glfw_manager &manager, Ui **ui)
+static void init_audio(Audio &audio)
 {
+	audio.loadSound("marisa_theme", "./sounds/musics/marisa_theme.wav");
+	audio.loadSound("reimu_theme", "./sounds/musics/reimu_theme.wav");
+	audio.loadSound("damage", "./sounds/effects/damage.wav");
+}
 
-
+static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
+						 Ui **ui, Audio &audio)
+{
 	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
 	manager.init_input_callback();
 	init_oGL(oGL);
+	init_audio(audio);
 	load_debug_level(manager, oGL, world);
 	(*ui) = new Ui(manager.getWindow());
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
@@ -159,12 +166,13 @@ static void run_program(Glfw_manager &manager)
 {
 
 	oGL_module oGL;
+	Audio      audio;
 	Ui         *ui    = nullptr;
 	World      *world = nullptr;
 
 	try
 	{
-		init_program(&world, oGL, manager, &ui);
+		init_program(&world, oGL, manager, &ui, audio);
 	}
 	catch (std::exception &e)
 	{
