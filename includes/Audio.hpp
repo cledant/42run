@@ -50,8 +50,8 @@ class Audio
 		std::map<std::string, sf::SoundBuffer> _buffer_list;
 		std::map<std::string, sf::Sound>       _sound_list;
 
-		bool _getSoundBuffer(std::string const &name, sf::SoundBuffer *buff);
-		bool _getSound(std::string const &name, sf::Sound *buff);
+		bool _getSoundBuffer(std::string const &name, sf::SoundBuffer **buff);
+		bool _getSound(std::string const &name, sf::Sound **buff);
 };
 
 #endif

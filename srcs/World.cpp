@@ -278,6 +278,7 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 	{
 		reinterpret_cast<Player *>(this->_active)->lowerHP(dmg_taken);
 		reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
+		reinterpret_cast<Player *>(this->_active)->playSound("damage");
 	}
 }
 

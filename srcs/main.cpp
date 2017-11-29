@@ -74,7 +74,7 @@ static void init_oGL(oGL_module &oGL)
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
 }
 
-static void set_player_params(Player::Params &params, oGL_module &oGL)
+static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &audio)
 {
 	params.cb_shader              = &(oGL.getShader("cubemap"));
 	params.shader                 = &(oGL.getShader("sprites"));
@@ -87,10 +87,11 @@ static void set_player_params(Player::Params &params, oGL_module &oGL)
 	params.draw_cb                = false;
 	params.max_jump               = 2;
 	params.max_hoover_time        = 2.0f;
+	params.audio                  = &audio;
 }
 
 static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
-							 World **world)
+							 World **world, Audio &audio)
 {
 	Player::Params                 params;
 	std::vector<std::string> const skybox_files
@@ -104,7 +105,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 										   };
 
 
-	set_player_params(params, oGL);
+	set_player_params(params, oGL, audio);
 	(*world) = new World(manager.getInput(), manager.getWindow(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
 	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
@@ -144,8 +145,8 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 
 static void init_audio(Audio &audio)
 {
-	audio.loadSound("marisa_theme", "./sounds/musics/marisa_theme.wav");
-	audio.loadSound("reimu_theme", "./sounds/musics/reimu_theme.wav");
+//	audio.loadSound("marisa_theme", "./sounds/musics/marisa_theme.wav");
+//	audio.loadSound("reimu_theme", "./sounds/musics/reimu_theme.wav");
 	audio.loadSound("damage", "./sounds/effects/damage.wav");
 }
 
@@ -156,7 +157,7 @@ static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
 	manager.init_input_callback();
 	init_oGL(oGL);
 	init_audio(audio);
-	load_debug_level(manager, oGL, world);
+	load_debug_level(manager, oGL, world, audio);
 	(*ui) = new Ui(manager.getWindow());
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);

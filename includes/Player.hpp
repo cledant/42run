@@ -30,6 +30,7 @@
 # include "ThirdPersonCamera.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
+#include "Audio.hpp"
 # include <iostream>
 # include <vector>
 # include <fstream>
@@ -71,6 +72,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			float                   max_hoover_time;
 			int                     hp;
 			float                   max_immunity;
+			Audio                   *audio;
 		};
 
 		Player(Player::Params const &params);
@@ -98,6 +100,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		int getHP(void) const;
 		bool isAlive(void) const;
 		bool isImmune(void) const;
+		void playSound(std::string const &name);
 
 		void update_model(float time);
 
@@ -156,6 +159,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		float                   _cur_immunity;
 		float                   _max_immunity;
 		bool                    _display_sprite;
+		Audio                   *_audio;
 
 
 		void _set_sprite_direction(void);

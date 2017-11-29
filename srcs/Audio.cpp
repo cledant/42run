@@ -28,20 +28,24 @@ void Audio::loadSound(std::string const &name, std::string const &file)
 {
 	sf::SoundBuffer buff;
 	sf::Sound       sound;
+	sf::SoundBuffer *sb = nullptr;
+	sf::Sound       *s  = nullptr;
 
 	std::cout << "Loading : " + file << std::endl;
 	if (!buff.loadFromFile(file))
-		throw Audio::FileOpenException(name);
-	sound.setBuffer(buff);
+		throw Audio::FileOpenException(file);
 	this->_buffer_list.insert(std::pair<std::string, sf::SoundBuffer>(name, buff));
 	this->_sound_list.insert(std::pair<std::string, sf::Sound>(name, sound));
+	std::cout << this->_getSoundBuffer(name, &sb) << std::endl;
+	std::cout << this->_getSound(name, &s) << std::endl;
+	s->setBuffer(*sb);
 }
 
 void Audio::playSound(std::string const &name)
 {
 	sf::Sound *sound = nullptr;
 
-	if (!this->_getSound(name, sound))
+	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
 		return;
@@ -53,7 +57,7 @@ void Audio::stopSound(std::string const &name)
 {
 	sf::Sound *sound = nullptr;
 
-	if (!this->_getSound(name, sound))
+	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
 		return;
@@ -65,7 +69,7 @@ void Audio::pauseSound(std::string const &name)
 {
 	sf::Sound *sound = nullptr;
 
-	if (!this->_getSound(name, sound))
+	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
 		return;
@@ -77,7 +81,7 @@ void Audio::setLoop(std::string const &name, bool value)
 {
 	sf::Sound *sound = nullptr;
 
-	if (!this->_getSound(name, sound))
+	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
 		return;
@@ -89,7 +93,7 @@ void Audio::setVolume(std::string const &name, float value)
 {
 	sf::Sound *sound = nullptr;
 
-	if (!this->_getSound(name, sound))
+	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
 		return;
@@ -97,47 +101,41 @@ void Audio::setVolume(std::string const &name, float value)
 	sound->setVolume(value);
 }
 
-bool Audio::_getSoundBuffer(std::string const &name, sf::SoundBuffer *buff)
+bool Audio::_getSoundBuffer(std::string const &name, sf::SoundBuffer **buff)
 {
 	std::map<std::string, sf::SoundBuffer>::iterator it;
 
 	if ((it = this->_buffer_list.find(name)) == this->_buffer_list.end())
 	{
-		if (name.compare(it->first) == 0)
-		{
-			buff = nullptr;
-			return (false);
-		}
+		*buff = nullptr;
+		return (false);
 	}
-	buff    = &(it->second);
+	*buff   = &(it->second);
 	return (true);
 }
 
-bool Audio::_getSound(std::string const &name, sf::Sound *buff)
+bool Audio::_getSound(std::string const &name, sf::Sound **buff)
 {
 	std::map<std::string, sf::Sound>::iterator it;
 
 	if ((it = this->_sound_list.find(name)) == this->_sound_list.end())
 	{
-		if (name.compare(it->first) == 0)
-		{
-			buff = nullptr;
-			return (false);
-		}
+		*buff = nullptr;
+		return (false);
 	}
-	buff    = &(it->second);
+	*buff   = &(it->second);
 	return (true);
 }
 
 Audio::FileOpenException::FileOpenException(std::string const &path)
 {
-	this->_msg = "Texture : Failed to find to open file : ";
+	this->_msg = "Audio : Failed to find to open file : ";
 	this->_msg += path.c_str();
 }
 
 Audio::FileOpenException::FileOpenException(void)
 {
-	this->_msg = "Texture : Failed to find to open file";
+	this->_msg = "Audio : Failed to find to open file";
 }
 
 Audio::FileOpenException::~FileOpenException(void) throw()

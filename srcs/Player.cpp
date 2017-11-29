@@ -29,6 +29,7 @@ Player::Params::Params(void)
 	this->max_hoover_time        = 2.0f;
 	this->hp                     = 10;
 	this->max_immunity           = 2.0f;
+	this->audio                  = nullptr;
 }
 
 Player::Params::~Params(void)
@@ -52,7 +53,7 @@ Player::Player(Player::Params const &params) :
 		_cur_jump(params.max_jump), _max_jump(params.max_jump), _hoover(false),
 		_cur_hoover_time(params.max_hoover_time),
 		_max_hoover_time(params.max_hoover_time), _hp(params.hp),
-		_cur_immunity(0.0f), _max_immunity(params.max_immunity)
+		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio)
 {
 	this->update(1.0f);
 }
@@ -125,6 +126,16 @@ bool Player::isImmune(void) const
 		return (true);
 	else
 		return (false);
+}
+
+void Player::playSound(std::string const &name)
+{
+	if (this->_audio == nullptr)
+	{
+		std::cout << "No Audio class provided !" << std::endl;
+		return;
+	}
+	this->_audio->playSound(name);
 }
 
 glm::vec3 const &Player::getDelta(void) const
