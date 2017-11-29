@@ -16,3 +16,6 @@
 [submodule "freetype"]
 	path = freetype
 	url = git://git.sv.nongnu.org/freetype/freetype2.git
+[submodule "SFML"]
+	path = SFML
+	url = https://github.com/SFML/SFML.git
