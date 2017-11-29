@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.8)
 project(42run)
 
+#Setup cpp version and flags
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+if (APPLE)
+	set(CMAKE_C_FLAGS "-stdlib=libc++")
+	set(CMAKE_CXX_FLAGS "-stdlib=libc++")
+endif ()
+
 #Setup Glad
 set(GLAD_API "gl=4.1")
 add_subdirectory(glad ${CMAKE_BINARY_DIR}/glad/build)
@@ -19,21 +28,26 @@ add_subdirectory(assimp ${CMAKE_BINARY_DIR}/assimp/build)
 add_subdirectory(freetype ${CMAKE_BINARY_DIR}/freetype/build)
 
 #Setup SFML Audio Lib
-#option(BUILD_SHARED_LIBS "" FALSE)
-#option(SFML_BUILD_WINDOW "" FALSE)
-#option(SFML_BUILD_GRAPHICS "" FALSE)
-#option(SFML_BUILD_NETWORK "" FALSE)
-#option(SFML_BUILD_DOC "" FALSE)
-#add_subdirectory(SFML ${CMAKE_BINARY_DIR}/SFML/build)
+option(BUILD_SHARED_LIBS "" FALSE)
+option(SFML_BUILD_WINDOW "" FALSE)
+option(SFML_BUILD_GRAPHICS "" FALSE)
+option(SFML_BUILD_NETWORK "" FALSE)
+option(SFML_BUILD_DOC "" FALSE)
+add_subdirectory(SFML ${CMAKE_BINARY_DIR}/SFML/build)
 
 #Setup 42Run
-set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Werror -Wextra -O2")
+if (APPLE)
+	set(CMAKE_CXX_FLAGS "-stdlib=libc++ -Wall -Werror -Wextra -O2")
+else ()
+	set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra -O2")
+endif ()
 include_directories(includes glm stb glad/build/includes glfw/include/GLFW assimp/include
-		assimp/build/include freetype/include)
+		assimp/build/include freetype/include SFML/include)
 link_directories(${CMAKE_BINARY_DIR}/glad/build
 		${CMAKE_BINARY_DIR}/glfw/build/src
 		${CMAKE_BINARY_DIR}/assimp/build/code
-		${CMAKE_BINARY_DIR}/freetype/build)
+		${CMAKE_BINARY_DIR}/freetype/build
+		${CMAKE_BINARY_DIR}/SFML/build/lib)
 set(SOURCE_FILES
 		srcs/Camera.cpp
 		srcs/Cubemap.cpp
@@ -73,7 +87,7 @@ if (APPLE)
 endif ()
 
 add_executable(42run ${SOURCE_FILES})
-target_link_libraries(42run glad glfw assimp freetype ${EXTRA_LIBS})
+target_link_libraries(42run glad glfw assimp freetype sfml-audio sfml-system ${EXTRA_LIBS})
 file(COPY shaders DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY textures DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY models DESTINATION ${CMAKE_BINARY_DIR})
