@@ -36,8 +36,8 @@ void Audio::loadSound(std::string const &name, std::string const &file)
 		throw Audio::FileOpenException(file);
 	this->_buffer_list.insert(std::pair<std::string, sf::SoundBuffer>(name, buff));
 	this->_sound_list.insert(std::pair<std::string, sf::Sound>(name, sound));
-	std::cout << this->_getSoundBuffer(name, &sb) << std::endl;
-	std::cout << this->_getSound(name, &s) << std::endl;
+	this->_getSoundBuffer(name, &sb);
+	this->_getSound(name, &s);
 	s->setBuffer(*sb);
 }
 
