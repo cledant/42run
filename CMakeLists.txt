@@ -75,7 +75,8 @@ set(SOURCE_FILES
 		srcs/CollidableBox.cpp
 		srcs/IGravity.cpp
 		srcs/Sprite.cpp
-		srcs/CollidableProp.cpp)
+		srcs/CollidableProp.cpp
+		srcs/Audio.cpp)
 
 #OS specific libs
 if (APPLE)
