@@ -18,9 +18,16 @@ add_subdirectory(assimp ${CMAKE_BINARY_DIR}/assimp/build)
 #Setup FreeType
 add_subdirectory(freetype ${CMAKE_BINARY_DIR}/freetype/build)
 
+#Setup SFML Audio Lib
+#option(BUILD_SHARED_LIBS "" FALSE)
+#option(SFML_BUILD_WINDOW "" FALSE)
+#option(SFML_BUILD_GRAPHICS "" FALSE)
+#option(SFML_BUILD_NETWORK "" FALSE)
+#option(SFML_BUILD_DOC "" FALSE)
+#add_subdirectory(SFML ${CMAKE_BINARY_DIR}/SFML/build)
+
 #Setup 42Run
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra -O2")
+set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Werror -Wextra -O2")
 include_directories(includes glm stb glad/build/includes glfw/include/GLFW assimp/include
 		assimp/build/include freetype/include)
 link_directories(${CMAKE_BINARY_DIR}/glad/build
@@ -51,7 +58,10 @@ set(SOURCE_FILES
 		srcs/CollisionBox.cpp
 		srcs/ThirdPersonCamera.cpp
 		srcs/Player.cpp
-		srcs/CollidableBox.cpp srcs/IGravity.cpp srcs/Sprite.cpp srcs/CollidableProp.cpp)
+		srcs/CollidableBox.cpp
+		srcs/IGravity.cpp
+		srcs/Sprite.cpp
+		srcs/CollidableProp.cpp)
 
 #OS specific libs
 if (APPLE)
