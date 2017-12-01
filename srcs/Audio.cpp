@@ -29,16 +29,14 @@ void Audio::loadSound(std::string const &name, std::string const &file)
 	sf::SoundBuffer buff;
 	sf::Sound       sound;
 	sf::SoundBuffer *sb = nullptr;
-	sf::Sound       *s  = nullptr;
 
 	std::cout << "Loading : " + file << std::endl;
 	if (!buff.loadFromFile(file))
 		throw Audio::FileOpenException(file);
 	this->_buffer_list.insert(std::pair<std::string, sf::SoundBuffer>(name, buff));
-	this->_sound_list.insert(std::pair<std::string, sf::Sound>(name, sound));
 	this->_getSoundBuffer(name, &sb);
-	this->_getSound(name, &s);
-	s->setBuffer(*sb);
+	sound.setBuffer(*sb);
+	this->_sound_list.insert(std::pair<std::string, sf::Sound>(name, sound));
 }
 
 void Audio::playSound(std::string const &name)

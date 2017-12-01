@@ -148,6 +148,7 @@ static void init_audio(Audio &audio)
 //	audio.loadSound("marisa_theme", "./sounds/musics/marisa_theme.wav");
 //	audio.loadSound("reimu_theme", "./sounds/musics/reimu_theme.wav");
 	audio.loadSound("damage", "./sounds/effects/damage.wav");
+	audio.loadSound("jump", "./sounds/effects/jump.wav");
 }
 
 static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,

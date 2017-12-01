@@ -243,6 +243,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 				const_cast<Input &>(input).p_key[GLFW_KEY_SPACE] = RELEASED;
 			this->_on_surface = false;
 			this->_delay_jump = true;
+			this->_audio->playSound("jump");
 		}
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && !this->_cur_jump &&
 			this->_cur_hoover_time > 0.0f)
