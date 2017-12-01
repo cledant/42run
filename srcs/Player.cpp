@@ -57,7 +57,6 @@ Player::Player(Player::Params const &params) :
 		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio),
 		_theme(params.theme)
 {
-	(void) this->_theme;
 	this->update(1.0f);
 }
 
