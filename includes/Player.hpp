@@ -102,6 +102,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		bool isAlive(void) const;
 		bool isImmune(void) const;
 		void playSound(std::string const &name);
+		void playTheme(Audio::theme_list slot);
+		void playSetTheme(void);
 
 		void update_model(float time);
 

@@ -22,6 +22,8 @@ Audio::~Audio(void)
 
 	for (it = this->_sound_list.begin(); it != this->_sound_list.end(); ++it)
 		it->second.stop();
+	for (size_t i = 0; i < THEME_ARRAY_LENGTH; ++i)
+		this->_theme[i].stop();
 }
 
 void Audio::loadSound(std::string const &name, std::string const &file,
@@ -101,25 +103,43 @@ void Audio::setVolumeSound(std::string const &name, float value)
 	}
 	sound->setVolume(value);
 }
-/*
-void Audio::loadTheme(std::string const &file, t_theme_list slot,
+
+void Audio::loadTheme(std::string const &file, Audio::theme_list slot,
 					  bool loop, float volume)
 {
-	sf::SoundBuffer buff;
-	sf::Sound       sound;
-	sf::SoundBuffer *sb = nullptr;
 
 	std::cout << "Loading : " + file << std::endl;
-	if (!buff.loadFromFile(file))
+	if (!this->_theme[slot].openFromFile(file))
 		throw Audio::FileOpenException(file);
-	this->_buffer_list.insert(std::pair<std::string, sf::SoundBuffer>(name, buff));
-	this->_getSoundBuffer(name, &sb);
-	sound.setBuffer(*sb);
-	sound.setVolume(volume);
-	sound.setLoop(loop);
-	this->_sound_list.insert(std::pair<std::string, sf::Sound>(name, sound));
+	this->_theme[slot].setVolume(volume);
+	this->_theme[slot].setLoop(loop);
 }
-*/
+
+void Audio::playTheme(Audio::theme_list slot)
+{
+	this->_theme[slot].play();
+}
+
+void Audio::stopTheme(Audio::theme_list slot)
+{
+	this->_theme[slot].stop();
+}
+
+void Audio::pauseTheme(Audio::theme_list slot)
+{
+	this->_theme[slot].pause();
+}
+
+void Audio::setLoopTheme(Audio::theme_list slot, bool value)
+{
+	this->_theme[slot].setLoop(value);
+}
+
+void Audio::setVolumeTheme(Audio::theme_list slot, float value)
+{
+	this->_theme[slot].setVolume(value);
+}
+
 bool Audio::_getSoundBuffer(std::string const &name, sf::SoundBuffer **buff)
 {
 	std::map<std::string, sf::SoundBuffer>::iterator it;
@@ -158,5 +178,14 @@ Audio::FileOpenException::FileOpenException(void)
 }
 
 Audio::FileOpenException::~FileOpenException(void) throw()
+{
+}
+
+Audio::InvalidThemeSlotException::InvalidThemeSlotException(void)
+{
+	this->_msg = "Audio : Invalid Theme Slot";
+}
+
+Audio::InvalidThemeSlotException::~InvalidThemeSlotException(void) throw()
 {
 }

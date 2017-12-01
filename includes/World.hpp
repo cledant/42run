@@ -101,6 +101,7 @@ class World
 		float                      _input_mouse_timer;
 		glm::vec3                  _gravity;
 		std::string                _str_hp;
+		bool                       _first_run_theme;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,

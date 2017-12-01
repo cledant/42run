@@ -141,6 +141,26 @@ void Player::playSound(std::string const &name)
 	this->_audio->playSound(name);
 }
 
+void Player::playTheme(Audio::theme_list slot)
+{
+	if (this->_audio == nullptr)
+	{
+		std::cout << "No Audio class provided !" << std::endl;
+		return;
+	}
+	this->_audio->playTheme(slot);
+}
+
+void Player::playSetTheme(void)
+{
+	if (this->_audio == nullptr)
+	{
+		std::cout << "No Audio class provided !" << std::endl;
+		return;
+	}
+	this->_audio->playTheme(this->_theme);
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);

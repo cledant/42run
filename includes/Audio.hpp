@@ -21,14 +21,19 @@
 # include <iostream>
 # include <map>
 
+# define THEME_ARRAY_LENGTH 5
+
 class Audio
 {
 	public :
 
 		enum theme_list
 		{
-			THEME_1,
-			THEME_2,
+			THEME_1 = 0,
+			THEME_2 = 1,
+			THEME_3 = 2,
+			THEME_4 = 3,
+			THEME_5 = 4,
 		};
 
 		Audio(void);
@@ -48,8 +53,8 @@ class Audio
 		void playTheme(Audio::theme_list slot);
 		void stopTheme(Audio::theme_list slot);
 		void pauseTheme(Audio::theme_list slot);
-		void setLoopTheme(std::string const &name, bool value);
-		void setVolumeTheme(std::string const &name, float value);
+		void setLoopTheme(Audio::theme_list slot, bool value);
+		void setVolumeTheme(Audio::theme_list slot, float value);
 
 		class FileOpenException : public GeneralException
 		{
@@ -60,12 +65,20 @@ class Audio
 				virtual ~FileOpenException(void) throw();
 		};
 
+		class InvalidThemeSlotException : public GeneralException
+		{
+			public :
+
+				explicit InvalidThemeSlotException(void);
+				virtual ~InvalidThemeSlotException(void) throw();
+		};
+
 	private :
 
 		std::map<std::string, sf::SoundBuffer> _buffer_list;
 		std::map<std::string, sf::Sound>       _sound_list;
-		sf::Music                              _theme_1;
-		sf::Music                              _theme_2;
+		sf::Music                              _theme[THEME_ARRAY_LENGTH];
+
 
 		bool _getSoundBuffer(std::string const &name, sf::SoundBuffer **buff);
 		bool _getSound(std::string const &name, sf::Sound **buff);
