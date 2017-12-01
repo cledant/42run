@@ -49,6 +49,15 @@ float Glfw_manager::getTime(void)
 	return (static_cast<float>(glfwGetTime()));
 }
 
+bool Glfw_manager::isFirstGamepadConnected(void)
+{
+	if (!glfwJoystickPresent(GLFW_JOYSTICK_1))
+		return (false);
+	if (!glfwJoystickIsGamepad(GLFW_JOYSTICK_1))
+		return (false);
+	return (true);
+}
+
 Input const &Glfw_manager::getInput(void) const
 {
 	return (this->_input);

@@ -39,6 +39,7 @@ class Glfw_manager
 		static void close_manager(void);
 		static size_t getActiveWindowNumber(void);
 		static float getTime(void);
+		static bool isFirstGamepadConnected(void);
 
 		Input const &getInput(void) const;
 		GLFW_Window const &getWindow(void) const;
