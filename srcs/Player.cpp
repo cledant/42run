@@ -161,6 +161,16 @@ void Player::playSetTheme(void)
 	this->_audio->playTheme(this->_theme);
 }
 
+void Player::stopSetTheme(void)
+{
+	if (this->_audio == nullptr)
+	{
+		std::cout << "No Audio class provided !" << std::endl;
+		return;
+	}
+	this->_audio->stopTheme(this->_theme);
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);
@@ -214,10 +224,10 @@ ICollidable::Damages Player::getDamages(void) const
 
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
-	bool toogle     = false;
-	bool change_dir = false;
+	bool        toogle       = false;
+	bool        change_dir   = false;
+	static bool sound_toogle = true;
 
-	static_cast<void>(input_timer);
 	if (this->_cam != nullptr)
 	{
 		this->_acc.x  = 0.0f;
@@ -233,29 +243,43 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		{
 			this->_acc += this->_force * this->_cam->getXYFront();
 			this->_axis.x += 1;
-			toogle     = true;
 			change_dir = true;
 		}
 		if (input.p_key[GLFW_KEY_S] == PRESSED)
 		{
 			this->_acc -= this->_force * this->_cam->getXYFront();
 			this->_axis.x -= 1;
-			toogle     = true;
 			change_dir = true;
 		}
 		if (input.p_key[GLFW_KEY_D] == PRESSED)
 		{
 			this->_acc += this->_force * this->_cam->getRight();
 			this->_axis.y += 1;
-			toogle     = true;
 			change_dir = true;
 		}
 		if (input.p_key[GLFW_KEY_A] == PRESSED)
 		{
 			this->_acc -= this->_force * this->_cam->getRight();
 			this->_axis.y -= 1;
-			toogle     = true;
 			change_dir = true;
+		}
+		if (input.p_key[GLFW_KEY_M] == PRESSED && input_timer >= 1.0f)
+		{
+			/*
+			 * Using playTheme could result to micro-freeze thus using SetVolumeTheme
+			 */
+			if (sound_toogle)
+			{
+				this->_audio->setVolumeTheme(this->_theme, 0.0f);
+				sound_toogle = false;
+			}
+			else
+			{
+				this->_audio->setVolumeTheme(this->_theme, THEME_VOLUME);
+				this->_audio->setOffsetTheme(this->_theme, sf::Time());
+				sound_toogle = true;
+			}
+			toogle = true;
 		}
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_cur_jump)
 		{

@@ -140,6 +140,16 @@ void Audio::setVolumeTheme(Audio::theme_list slot, float value)
 	this->_theme[slot].setVolume(value);
 }
 
+sf::Music::Status Audio::getThemeStatus(Audio::theme_list slot)
+{
+	return (this->_theme[slot].getStatus());
+}
+
+void Audio::setOffsetTheme(Audio::theme_list slot, sf::Time const &off)
+{
+	this->_theme[slot].setPlayingOffset(off);
+}
+
 bool Audio::_getSoundBuffer(std::string const &name, sf::SoundBuffer **buff)
 {
 	std::map<std::string, sf::SoundBuffer>::iterator it;

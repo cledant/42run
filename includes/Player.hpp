@@ -14,7 +14,6 @@
 # define PLAYER_HPP
 
 # define GLM_ENABLE_EXPERIMENTAL
-# define BLINK_CD 3
 
 # include "oGL_module.hpp"
 # include "Cubemap.hpp"
@@ -34,6 +33,10 @@
 # include <iostream>
 # include <vector>
 # include <fstream>
+
+# define BLINK_CD 3
+# define THEME_VOLUME 100.0f
+# define EFFECT_VOLUME 75.0f
 
 class Player : public IInteractive, public IEntity, public ICollidable,
 			   public IGravity
@@ -104,6 +107,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void playSound(std::string const &name);
 		void playTheme(Audio::theme_list slot);
 		void playSetTheme(void);
+		void stopSetTheme(void);
 
 		void update_model(float time);
 

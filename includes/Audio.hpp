@@ -55,6 +55,9 @@ class Audio
 		void pauseTheme(Audio::theme_list slot);
 		void setLoopTheme(Audio::theme_list slot, bool value);
 		void setVolumeTheme(Audio::theme_list slot, float value);
+		void setOffsetTheme(Audio::theme_list slot, sf::Time const &off);
+
+		sf::Music::Status getThemeStatus(Audio::theme_list slot);
 
 		class FileOpenException : public GeneralException
 		{

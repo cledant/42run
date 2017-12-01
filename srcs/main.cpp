@@ -146,10 +146,10 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 
 static void init_audio(Audio &audio)
 {
-	audio.loadSound("damage", "./sounds/effects/damage.wav", false, 75.0f);
-	audio.loadSound("jump", "./sounds/effects/jump.wav", false, 75.0f);
-	audio.loadTheme("./sounds/musics/reimu_theme.wav", Audio::THEME_1, true, 100.0f);
-	audio.loadTheme("./sounds/musics/marisa_theme.wav", Audio::THEME_2, true, 100.0f);
+	audio.loadSound("damage", "./sounds/effects/damage.wav", false, EFFECT_VOLUME);
+	audio.loadSound("jump", "./sounds/effects/jump.wav", false, EFFECT_VOLUME);
+	audio.loadTheme("./sounds/musics/reimu_theme.wav", Audio::THEME_1, true, THEME_VOLUME);
+	audio.loadTheme("./sounds/musics/marisa_theme.wav", Audio::THEME_2, true, THEME_VOLUME);
 }
 
 static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
