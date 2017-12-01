@@ -30,7 +30,7 @@
 # include "ThirdPersonCamera.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
-#include "Audio.hpp"
+# include "Audio.hpp"
 # include <iostream>
 # include <vector>
 # include <fstream>
@@ -73,6 +73,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			int                     hp;
 			float                   max_immunity;
 			Audio                   *audio;
+			Audio::theme_list       theme;
 		};
 
 		Player(Player::Params const &params);
@@ -160,7 +161,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		float                   _max_immunity;
 		bool                    _display_sprite;
 		Audio                   *_audio;
-
+		Audio::theme_list       _theme;
 
 		void _set_sprite_direction(void);
 };

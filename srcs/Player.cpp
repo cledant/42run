@@ -30,6 +30,7 @@ Player::Params::Params(void)
 	this->hp                     = 10;
 	this->max_immunity           = 2.0f;
 	this->audio                  = nullptr;
+	this->theme                  = Audio::THEME_1;
 }
 
 Player::Params::~Params(void)
@@ -53,8 +54,10 @@ Player::Player(Player::Params const &params) :
 		_cur_jump(params.max_jump), _max_jump(params.max_jump), _hoover(false),
 		_cur_hoover_time(params.max_hoover_time),
 		_max_hoover_time(params.max_hoover_time), _hp(params.hp),
-		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio)
+		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio),
+		_theme(params.theme)
 {
+	(void) this->_theme;
 	this->update(1.0f);
 }
 

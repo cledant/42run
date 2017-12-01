@@ -24,7 +24,8 @@ Audio::~Audio(void)
 		it->second.stop();
 }
 
-void Audio::loadSound(std::string const &name, std::string const &file)
+void Audio::loadSound(std::string const &name, std::string const &file,
+					  bool loop, float volume)
 {
 	sf::SoundBuffer buff;
 	sf::Sound       sound;
@@ -36,6 +37,8 @@ void Audio::loadSound(std::string const &name, std::string const &file)
 	this->_buffer_list.insert(std::pair<std::string, sf::SoundBuffer>(name, buff));
 	this->_getSoundBuffer(name, &sb);
 	sound.setBuffer(*sb);
+	sound.setVolume(volume);
+	sound.setLoop(loop);
 	this->_sound_list.insert(std::pair<std::string, sf::Sound>(name, sound));
 }
 
@@ -75,7 +78,7 @@ void Audio::pauseSound(std::string const &name)
 	sound->pause();
 }
 
-void Audio::setLoop(std::string const &name, bool value)
+void Audio::setLoopSound(std::string const &name, bool value)
 {
 	sf::Sound *sound = nullptr;
 
@@ -87,7 +90,7 @@ void Audio::setLoop(std::string const &name, bool value)
 	sound->setLoop(value);
 }
 
-void Audio::setVolume(std::string const &name, float value)
+void Audio::setVolumeSound(std::string const &name, float value)
 {
 	sf::Sound *sound = nullptr;
 
@@ -98,7 +101,25 @@ void Audio::setVolume(std::string const &name, float value)
 	}
 	sound->setVolume(value);
 }
+/*
+void Audio::loadTheme(std::string const &file, t_theme_list slot,
+					  bool loop, float volume)
+{
+	sf::SoundBuffer buff;
+	sf::Sound       sound;
+	sf::SoundBuffer *sb = nullptr;
 
+	std::cout << "Loading : " + file << std::endl;
+	if (!buff.loadFromFile(file))
+		throw Audio::FileOpenException(file);
+	this->_buffer_list.insert(std::pair<std::string, sf::SoundBuffer>(name, buff));
+	this->_getSoundBuffer(name, &sb);
+	sound.setBuffer(*sb);
+	sound.setVolume(volume);
+	sound.setLoop(loop);
+	this->_sound_list.insert(std::pair<std::string, sf::Sound>(name, sound));
+}
+*/
 bool Audio::_getSoundBuffer(std::string const &name, sf::SoundBuffer **buff)
 {
 	std::map<std::string, sf::SoundBuffer>::iterator it;
