@@ -264,10 +264,9 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		}
 		if (input.p_key[GLFW_KEY_M] == PRESSED && input_timer >= 1.0f)
 		{
-			/*
-			 * Using playTheme could result to micro-freeze thus using SetVolumeTheme
-			 */
-			if (sound_toogle)
+			if (this->_audio->getThemeStatus(this->_theme) == sf::Music::Stopped)
+				this->playSetTheme();
+			else if (sound_toogle)
 			{
 				this->_audio->setVolumeTheme(this->_theme, 0.0f);
 				sound_toogle = false;
