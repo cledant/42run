@@ -61,18 +61,28 @@ void World::update(void)
 	}
 	else
 	{
-		if (this->_active->update_mouse_interaction(this->_input, this->_window,
-													this->_camera.getPos(), std::vector<glm::vec3 const *>{
-						&(this->_camera.getFront()), &(this->_camera.getUp()),
-						&(this->_camera.getRight())}, this->_input_mouse_timer) == true)
-			this->_input_mouse_timer = 0.0f;
-		else if (this->_input_mouse_timer < 1.0f)
-			this->_input_mouse_timer += this->_tick;
-		if (this->_active->update_keyboard_interaction(this->_input,
-													   this->_input_timer) == true)
-			this->_input_timer       = 0.0f;
-		else if (this->_input_timer < 1.0f)
-			this->_input_timer += this->_tick;
+		if (!reinterpret_cast<Player *>(this->_active)->getGamepad())
+		{
+			if (this->_active->update_mouse_interaction(this->_input, this->_window,
+														this->_camera.getPos(), std::vector<glm::vec3 const *>{
+							&(this->_camera.getFront()), &(this->_camera.getUp()),
+							&(this->_camera.getRight())}, this->_input_mouse_timer) == true)
+				this->_input_mouse_timer = 0.0f;
+			else if (this->_input_mouse_timer < 1.0f)
+				this->_input_mouse_timer += this->_tick;
+			if (this->_active->update_keyboard_interaction(this->_input,
+														   this->_input_timer) == true)
+				this->_input_timer       = 0.0f;
+			else if (this->_input_timer < INPUT_REPEAT_TIMER)
+				this->_input_timer += this->_tick;
+		}
+		else
+		{
+			if (this->_active->update_gamepad_interaction(this->_input_timer) == true)
+				this->_input_timer = 0.0f;
+			else if (this->_input_timer < INPUT_REPEAT_TIMER)
+				this->_input_timer += this->_tick;
+		}
 		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_delta_tick);
 		this->_check_collisions();
 		reinterpret_cast<Player *>(this->_active)->update(this->_delta_tick);

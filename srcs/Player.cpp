@@ -270,7 +270,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			this->_axis.y -= 1;
 			change_dir = true;
 		}
-		if (input.p_key[GLFW_KEY_M] == PRESSED && input_timer >= 1.0f)
+		if (input.p_key[GLFW_KEY_M] == PRESSED && input_timer >= INPUT_REPEAT_TIMER)
 		{
 			if (this->_audio->getThemeStatus(this->_theme) == sf::Music::Stopped)
 				this->playSetTheme();
@@ -326,7 +326,94 @@ bool Player::update_mouse_interaction(Input const &input, GLFW_Window const &win
 
 bool Player::update_gamepad_interaction(float input_timer)
 {
-	(void) input_timer;
+	bool        toogle       = false;
+	bool        change_dir   = false;
+	static bool sound_toogle = true;
+
+	this->_acc.x  = 0.0f;
+	this->_acc.z  = 0.0f;
+	this->_acc.y  = 0.0f;
+	this->_axis.x = 0;
+	this->_axis.y = 0;
+	if (!Glfw_manager::isGamepad1Connected())
+	{
+		std::cout << "Player : Gamepad is no more connected" << std::endl;
+		return (false);
+	}
+	if (this->_cam != nullptr)
+	{
+		std::memset(&this->_g_state, 0, sizeof(GLFWgamepadstate));
+		Glfw_manager::getGamepad1State(&this->_g_state);
+		if (this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_RELEASE)
+		{
+			this->_hoover = false;
+		}
+		if (this->_g_state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] <= -DEAD_ZONE)
+		{
+			this->_acc += this->_force * this->_cam->getXYFront();
+			this->_axis.x += 1;
+			change_dir = true;
+		}
+		if (this->_g_state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] >= DEAD_ZONE)
+		{
+			this->_acc -= this->_force * this->_cam->getXYFront();
+			this->_axis.x -= 1;
+			change_dir = true;
+		}
+		if (this->_g_state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] >= DEAD_ZONE)
+		{
+			this->_acc += this->_force * this->_cam->getRight();
+			this->_axis.y += 1;
+			change_dir = true;
+		}
+		if (this->_g_state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] <= -DEAD_ZONE)
+		{
+			this->_acc -= this->_force * this->_cam->getRight();
+			this->_axis.y -= 1;
+			change_dir = true;
+		}
+		if (this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_TRIANGLE] == GLFW_PRESS &&
+			input_timer >= INPUT_REPEAT_TIMER)
+		{
+			if (this->_audio->getThemeStatus(this->_theme) == sf::Music::Stopped)
+				this->playSetTheme();
+			else if (sound_toogle)
+			{
+				this->_audio->setVolumeTheme(this->_theme, 0.0f);
+				sound_toogle = false;
+			}
+			else
+			{
+				this->_audio->setVolumeTheme(this->_theme, THEME_VOLUME);
+				this->_audio->setOffsetTheme(this->_theme, sf::Time());
+				sound_toogle = true;
+			}
+			toogle = true;
+		}
+		if (this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_PRESS &&
+			this->_cur_jump && input_timer >= DOUBLE_JUMP_REPEAT_TIMER)
+		{
+			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
+			toogle = true;
+			(this->_cur_jump)--;
+			if (this->_cur_jump > 0 || this->_max_hoover_time == 0.0f)
+				this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] = GLFW_RELEASE;
+			this->_on_surface = false;
+			this->_delay_jump = true;
+			this->_audio->playSound("jump");
+		}
+		if (this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_PRESS &&
+			!this->_cur_jump && this->_cur_hoover_time > 0.0f)
+		{
+			this->_hoover = true;
+		}
+		if (change_dir)
+			this->_set_sprite_direction();
+		if (toogle == true)
+			return (true);
+	}
+	else
+		std::cout << "Player : Can't update keyboard interaction" << std::endl;
 	return (false);
 }
 

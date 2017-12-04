@@ -37,6 +37,9 @@
 # define BLINK_CD 3
 # define THEME_VOLUME 100.0f
 # define EFFECT_VOLUME 75.0f
+# define DEAD_ZONE 0.25f
+# define INPUT_REPEAT_TIMER 1.0f
+# define DOUBLE_JUMP_REPEAT_TIMER 0.5f
 
 class Player : public IInteractive, public IEntity, public ICollidable,
 			   public IGravity
@@ -171,6 +174,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		Audio                   *_audio;
 		Audio::theme_list       _theme;
 		bool                    _gamepad;
+		GLFWgamepadstate        _g_state;
 
 		void _set_sprite_direction(void);
 };
