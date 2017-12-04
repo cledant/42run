@@ -19,3 +19,6 @@
 [submodule "SFML"]
 	path = SFML
 	url = https://github.com/SFML/SFML.git
+[submodule "ControllerConfigFiles"]
+	path = ControllerConfigFiles
+	url = https://github.com/gabomdq/SDL_GameControllerDB.git

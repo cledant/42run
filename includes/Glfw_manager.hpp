@@ -78,6 +78,15 @@ class Glfw_manager
 				virtual ~WindowFailException(void) throw();
 		};
 
+		class FileOpenException : public GeneralException
+		{
+			public :
+
+				explicit FileOpenException(void);
+				explicit FileOpenException(std::string const &path);
+				virtual ~FileOpenException(void) throw();
+		};
+
 	private :
 
 

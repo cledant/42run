@@ -63,6 +63,27 @@ void Glfw_manager::getGamepad1State(GLFWgamepadstate *state)
 	glfwGetGamepadState(GLFW_JOYSTICK_1, state);
 }
 
+void Glfw_manager::updateGamepadMapping(std::string const &file)
+{
+	std::fstream fs;
+	std::string  content;
+
+	std::cout << "Loading : " << file << std::endl;
+	try
+	{
+		fs.exceptions(std::fstream::failbit | std::fstream::badbit);
+		fs.open(file, std::fstream::in);
+		content.assign((std::istreambuf_iterator<char>(fs)),
+					   std::istreambuf_iterator<char>());
+		fs.close();
+	}
+	catch (std::exception &e)
+	{
+		throw Glfw_manager::FileOpenException(file);
+	}
+	glfwUpdateGamepadMappings(content.c_str());
+}
+
 void Glfw_manager::printJoystick1Info(void)
 {
 	char const *joy_guid = NULL;
@@ -326,6 +347,21 @@ Glfw_manager::WindowFailException::WindowFailException(void)
 
 
 Glfw_manager::WindowFailException::~WindowFailException(void) throw()
+{
+}
+
+Glfw_manager::FileOpenException::FileOpenException(std::string const &path)
+{
+	this->_msg = "Glfw_manager : Failed to find to open file : ";
+	this->_msg += path.c_str();
+}
+
+Glfw_manager::FileOpenException::FileOpenException(void)
+{
+	this->_msg = "Glfw_manager : Failed to find to open file";
+}
+
+Glfw_manager::FileOpenException::~FileOpenException(void) throw()
 {
 }
 
