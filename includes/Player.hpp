@@ -168,6 +168,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		bool                    _display_sprite;
 		Audio                   *_audio;
 		Audio::theme_list       _theme;
+		bool                    _gamepad;
 
 		void _set_sprite_direction(void);
 };

@@ -49,13 +49,44 @@ float Glfw_manager::getTime(void)
 	return (static_cast<float>(glfwGetTime()));
 }
 
-bool Glfw_manager::isFirstGamepadConnected(void)
+bool Glfw_manager::isGamepad1Connected(void)
 {
-	if (!glfwJoystickPresent(GLFW_JOYSTICK_1))
-		return (false);
-	if (!glfwJoystickIsGamepad(GLFW_JOYSTICK_1))
+	if (!glfwJoystickPresent(GLFW_JOYSTICK_1) || !glfwJoystickIsGamepad(GLFW_JOYSTICK_1))
 		return (false);
 	return (true);
+}
+
+void Glfw_manager::getGamepad1State(GLFWgamepadstate *state)
+{
+	if (!glfwJoystickPresent(GLFW_JOYSTICK_1) || !glfwJoystickIsGamepad(GLFW_JOYSTICK_1))
+		return;
+	glfwGetGamepadState(GLFW_JOYSTICK_1, state);
+}
+
+void Glfw_manager::printJoystick1Info(void)
+{
+	char const *joy_guid = NULL;
+	char const *joy_name = NULL;
+
+	if (!glfwJoystickPresent(GLFW_JOYSTICK_1))
+	{
+		std::cout << "No joystick or gamepad connected" << std::endl;
+		return;
+	}
+	std::cout << "Joystick 1 : ";
+	if (!(joy_name = glfwGetJoystickName(GLFW_JOYSTICK_1)))
+		std::cout << "Unknown Joystick name : ";
+	else
+		std::cout << joy_name << " : ";
+	if (glfwJoystickIsGamepad(GLFW_JOYSTICK_1))
+		std::cout << "Is a Gamepad : ";
+	if ((joy_guid = glfwGetJoystickGUID(GLFW_JOYSTICK_1)) == NULL)
+	{
+		std::cout << "Unknowm GUID" << std::endl;
+		return;
+	}
+	else
+		std::cout << joy_guid << std::endl;
 }
 
 Input const &Glfw_manager::getInput(void) const
@@ -177,45 +208,9 @@ void Glfw_manager::init_input_callback(void)
 		}
 	};
 
-	auto gamepad_1_update_callback = [](int joystick, int event)
-	{
-		char const *joy_guid = NULL;
-		char const *joy_name = NULL;
-
-		std::cout << joystick << std::endl;
-		if (joystick != GLFW_JOYSTICK_1)
-			return;
-		if (event == GLFW_CONNECTED)
-		{
-			std::cout << "Gamepad 1 connected : ";
-			if (!(joy_name = glfwGetJoystickName(GLFW_JOYSTICK_1)))
-				std::cout << "Unknown Name" << std::endl;
-			else
-				std::cout << joy_name << std::endl;
-			if (!glfwJoystickIsGamepad(GLFW_JOYSTICK_1))
-			{
-				std::cout << "Is not a gamepad" << std::endl;
-				return;
-			}
-			if ((joy_guid = glfwGetJoystickGUID(GLFW_JOYSTICK_1)) == NULL)
-			{
-				std::cout << "Unsupported gamepad" << std::endl;
-				return;
-			}
-			if (!(glfwUpdateGamepadMappings(joy_guid)))
-			{
-				std::cout << "Error while mapping keys" << std::endl;
-				return;
-			}
-		}
-		else if (event == GLFW_DISCONNECTED)
-			std::cout << "Gamepad 1 disconnected" << std::endl;
-	};
-
 	glfwSetKeyCallback(this->_window.win, keyboard_callback);
 	glfwSetMouseButtonCallback(this->_window.win, mouse_button_callback);
 	glfwSetCursorPosCallback(this->_window.win, cursor_position_callback);
-	glfwSetJoystickCallback(gamepad_1_update_callback);
 }
 
 void Glfw_manager::update_events(void)

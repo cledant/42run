@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <Glfw_manager.hpp>
 #include "Player.hpp"
 
 Player::Params::Params(void)
@@ -57,6 +58,8 @@ Player::Player(Player::Params const &params) :
 		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio),
 		_theme(params.theme)
 {
+	Glfw_manager::printJoystick1Info();
+	this->_gamepad = Glfw_manager::isGamepad1Connected();
 	this->update(1.0f);
 }
 
