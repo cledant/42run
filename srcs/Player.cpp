@@ -117,6 +117,46 @@ void Player::setImmunityTimerToMax(void)
 	this->_cur_immunity = this->_max_immunity;
 }
 
+glm::vec3 const &Player::getDelta(void) const
+{
+	return (this->_delta);
+}
+
+glm::vec3 const &Player::getPos(void) const
+{
+	return (this->_pos);
+}
+
+bool Player::getOnSurface(void) const
+{
+	return (this->_on_surface);
+}
+
+size_t Player::getMaxJump(void) const
+{
+	return (this->_max_jump);
+}
+
+bool Player::getCanHoover(void) const
+{
+	return (this->_hoover);
+}
+
+float Player::getMaxHooverTime(void) const
+{
+	return (this->_max_hoover_time);
+}
+
+bool Player::getGamepad(void) const
+{
+	return (this->_gamepad);
+}
+
+int Player::getHP(void) const
+{
+	return (this->_hp);
+}
+
 bool Player::isAlive(void) const
 {
 	if (this->_hp > 0)
@@ -171,41 +211,6 @@ void Player::stopSetTheme(void)
 		return;
 	}
 	this->_audio->stopTheme(this->_theme);
-}
-
-glm::vec3 const &Player::getDelta(void) const
-{
-	return (this->_delta);
-}
-
-glm::vec3 const &Player::getPos(void) const
-{
-	return (this->_pos);
-}
-
-bool Player::getOnSurface(void) const
-{
-	return (this->_on_surface);
-}
-
-size_t Player::getMaxJump(void) const
-{
-	return (this->_max_jump);
-}
-
-bool Player::getCanHoover(void) const
-{
-	return (this->_hoover);
-}
-
-float Player::getMaxHooverTime(void) const
-{
-	return (this->_max_hoover_time);
-}
-
-int Player::getHP(void) const
-{
-	return (this->_hp);
 }
 
 void Player::update_model(float time)
@@ -316,6 +321,12 @@ bool Player::update_mouse_interaction(Input const &input, GLFW_Window const &win
 	static_cast<void>(origin);
 	static_cast<void>(axes);
 	static_cast<void>(input_timer);
+	return (false);
+}
+
+bool Player::update_gamepad_interaction(float input_timer)
+{
+	(void) input_timer;
 	return (false);
 }
 
