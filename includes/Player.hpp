@@ -173,7 +173,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		bool                    _display_sprite;
 		Audio                   *_audio;
 		Audio::theme_list       _theme;
-		bool                    _last_jump_button;
+		bool                    _last_jump;
 
 		void _set_sprite_direction(void);
 };

@@ -56,7 +56,7 @@ Player::Player(Player::Params const &params) :
 		_cur_hoover_time(params.max_hoover_time),
 		_max_hoover_time(params.max_hoover_time), _hp(params.hp),
 		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio),
-		_theme(params.theme), _last_jump_button(GLFW_RELEASE)
+		_theme(params.theme), _last_jump(GLFW_RELEASE)
 {
 	this->update(1.0f);
 }
@@ -280,17 +280,18 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			}
 			toogle = true;
 		}
-		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_cur_jump)
+		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && this->_cur_jump &&
+			input_timer >= DOUBLE_JUMP_REPEAT_TIMER &&
+			this->_last_jump == GLFW_RELEASE)
 		{
 			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
 			toogle = true;
 			(this->_cur_jump)--;
-			if (this->_cur_jump > 0 || this->_max_hoover_time == 0.0f)
-				const_cast<Input &>(input).p_key[GLFW_KEY_SPACE] = RELEASED;
 			this->_on_surface = false;
 			this->_delay_jump = true;
 			this->_audio->playSound("jump");
 		}
+		this->_last_jump = input.p_key[GLFW_KEY_SPACE];
 		if (input.p_key[GLFW_KEY_SPACE] == PRESSED && !this->_cur_jump &&
 			this->_cur_hoover_time > 0.0f)
 		{
@@ -378,7 +379,7 @@ bool Player::update_gamepad_interaction(GamepadState const &state, float input_t
 		}
 		if (state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_PRESS && this->_cur_jump &&
 			input_timer >= DOUBLE_JUMP_REPEAT_TIMER &&
-			this->_last_jump_button == GLFW_RELEASE)
+			this->_last_jump == GLFW_RELEASE)
 		{
 			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
 			toogle = true;
@@ -392,7 +393,7 @@ bool Player::update_gamepad_interaction(GamepadState const &state, float input_t
 		{
 			this->_hoover = true;
 		}
-		this->_last_jump_button = state.buttons[GLFW_GAMEPAD_BUTTON_CROSS];
+		this->_last_jump = state.buttons[GLFW_GAMEPAD_BUTTON_CROSS];
 		if (change_dir)
 			this->_set_sprite_direction();
 		if (toogle == true)
