@@ -39,7 +39,8 @@
 # define EFFECT_VOLUME 75.0f
 # define DEAD_ZONE 0.25f
 # define INPUT_REPEAT_TIMER 1.0f
-# define DOUBLE_JUMP_REPEAT_TIMER 0.5f
+# define DOUBLE_JUMP_FRAME 2
+# define DOUBLE_JUMP_REPEAT_TIMER (0.01667f * DOUBLE_JUMP_FRAME)
 
 class Player : public IInteractive, public IEntity, public ICollidable,
 			   public IGravity
@@ -172,6 +173,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		bool                    _display_sprite;
 		Audio                   *_audio;
 		Audio::theme_list       _theme;
+		bool                    _last_jump_button;
 
 		void _set_sprite_direction(void);
 };
