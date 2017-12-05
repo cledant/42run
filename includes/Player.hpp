@@ -104,7 +104,6 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		size_t getMaxJump(void) const;
 		bool getCanHoover(void) const;
 		float getMaxHooverTime(void) const;
-		bool getGamepad(void) const;
 		int getHP(void) const;
 		bool isAlive(void) const;
 		bool isImmune(void) const;
@@ -130,7 +129,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 									  GLFW_Window const &win, glm::vec3 const &origin,
 									  std::vector<glm::vec3 const *> const &axes,
 									  float input_timer);
-		bool update_gamepad_interaction(float input_timer);
+		bool update_gamepad_interaction(GamepadState const &state, float input_timer);
 
 		/*
 		 * Interface IEntity
@@ -173,8 +172,6 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		bool                    _display_sprite;
 		Audio                   *_audio;
 		Audio::theme_list       _theme;
-		bool                    _gamepad;
-		GLFWgamepadstate        _g_state;
 
 		void _set_sprite_direction(void);
 };

@@ -20,6 +20,7 @@
 # include "oGL_module.hpp"
 # include "Input.hpp"
 # include "Window.hpp"
+# include "Gamepad.hpp"
 # include "GeneralException.hpp"
 # include <cfenv>
 # include <iostream>
@@ -42,6 +43,7 @@ class Glfw_manager
 
 		Input const &getInput(void) const;
 		GLFW_Window const &getWindow(void) const;
+		Gamepad &getGamepad(void);
 		std::string const &getStrFps(void) const;
 		bool getMouseMode(void) const;
 
@@ -93,6 +95,7 @@ class Glfw_manager
 		float       _last_fps_time;
 		size_t      _nb_frame;
 		std::string _str_fps;
+		Gamepad     _gamepad;
 
 		static size_t _nb_active_win;
 

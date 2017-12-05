@@ -13,7 +13,8 @@
 #include "Glfw_manager.hpp"
 
 Glfw_manager::Glfw_manager(void) : _input(), _window(), _last_time(0.0f),
-								   _last_fps_time(0.0f), _nb_frame(0), _str_fps("60.0")
+								   _last_fps_time(0.0f), _nb_frame(0), _str_fps("60.0"),
+								   _gamepad(1)
 {
 }
 
@@ -57,6 +58,11 @@ Input const &Glfw_manager::getInput(void) const
 GLFW_Window const &Glfw_manager::getWindow(void) const
 {
 	return (this->_window);
+}
+
+Gamepad &Glfw_manager::getGamepad(void)
+{
+	return (this->_gamepad);
 }
 
 std::string const &Glfw_manager::getStrFps(void) const

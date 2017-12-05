@@ -53,7 +53,7 @@ void Gamepad::pollGamepads(void)
 	}
 }
 
-bool Gamepad::isGamepadConnected(unsigned char joy_nb)
+bool Gamepad::isGamepadConnected(unsigned char joy_nb) const
 {
 	if (joy_nb >= MAX_GAMEPAD)
 		return (false);
@@ -62,7 +62,7 @@ bool Gamepad::isGamepadConnected(unsigned char joy_nb)
 	return (true);
 }
 
-void Gamepad::printJoystickInfo(unsigned char joy_nb)
+void Gamepad::printJoystickInfo(unsigned char joy_nb) const
 {
 	char const *joy_guid = NULL;
 	char const *joy_name = NULL;

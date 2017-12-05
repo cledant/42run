@@ -12,9 +12,9 @@
 
 #include "World.hpp"
 
-World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
-			 float max_fps, size_t max_frame_skip) :
-		_active(nullptr), _input(input), _window(win),
+World::World(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
+			 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip) :
+		_active(nullptr), _input(input), _window(win), _gamepad(gamepad),
 		_camera(input, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), -90.0f, 0.0f),
 		_fov(45.0f), _max_fps(max_fps),
@@ -31,6 +31,8 @@ World::World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
 	this->_perspective = glm::perspective(glm::radians(this->_fov), ratio, 0.1f,
 										  400.0f);
 	this->_camera.update_third_person(true, glm::vec3{0.0f, 0.0f, 0.0f});
+	this->_enabled_gamepad = this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1);
+	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
 }
 
 World::~World(void)
@@ -47,12 +49,12 @@ void World::update(void)
 {
 	std::vector<IEntity *>::iterator it;
 
-	if (this->_first_run_theme == true && this->_active != nullptr)
+	if (this->_first_run_theme && this->_active != nullptr)
 	{
 		reinterpret_cast<Player *>(this->_active)->playSetTheme();
 		this->_first_run_theme = false;
 	}
-	if (this->_window.resized == true)
+	if (this->_window.resized)
 		this->updatePerspective(this->_fov);
 	if (this->_active == nullptr)
 	{
@@ -61,27 +63,34 @@ void World::update(void)
 	}
 	else
 	{
-		if (!reinterpret_cast<Player *>(this->_active)->getGamepad())
+		if (!this->_enabled_gamepad)
 		{
 			if (this->_active->update_mouse_interaction(this->_input, this->_window,
 														this->_camera.getPos(), std::vector<glm::vec3 const *>{
 							&(this->_camera.getFront()), &(this->_camera.getUp()),
-							&(this->_camera.getRight())}, this->_input_mouse_timer) == true)
+							&(this->_camera.getRight())}, this->_input_mouse_timer))
 				this->_input_mouse_timer = 0.0f;
 			else if (this->_input_mouse_timer < 1.0f)
 				this->_input_mouse_timer += this->_tick;
 			if (this->_active->update_keyboard_interaction(this->_input,
-														   this->_input_timer) == true)
+														   this->_input_timer))
 				this->_input_timer       = 0.0f;
 			else if (this->_input_timer < INPUT_REPEAT_TIMER)
 				this->_input_timer += this->_tick;
 		}
 		else
 		{
-			if (this->_active->update_gamepad_interaction(this->_input_timer) == true)
-				this->_input_timer = 0.0f;
-			else if (this->_input_timer < INPUT_REPEAT_TIMER)
-				this->_input_timer += this->_tick;
+			if (this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1))
+			{
+				this->_gamepad.pollGamepads();
+				if (this->_active->update_gamepad_interaction(
+						this->_gamepad.getGamepadState(GLFW_JOYSTICK_1), this->_input_timer))
+					this->_input_timer = 0.0f;
+				else if (this->_input_timer < INPUT_REPEAT_TIMER)
+					this->_input_timer += this->_tick;
+			}
+			else
+				std::cout << "Gamepad not connected anymore" << std::endl;
 		}
 		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_delta_tick);
 		this->_check_collisions();

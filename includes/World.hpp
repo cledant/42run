@@ -39,8 +39,8 @@ class World
 {
 	public :
 
-		World(Input const &input, GLFW_Window const &win, glm::vec3 cam_pos,
-			  float max_fps, size_t max_frame_skip);
+		World(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
+			  glm::vec3 cam_pos, float max_fps, size_t max_frame_skip);
 		virtual ~World(void);
 		World(World const &src) = delete;
 		World &operator=(World const &rhs) = delete;
@@ -86,6 +86,7 @@ class World
 		IInteractive               *_active;
 		Input const                &_input;
 		GLFW_Window const          &_window;
+		Gamepad                    &_gamepad;
 		glm::mat4                  _perspective;
 		ThirdPersonCamera          _camera;
 		glm::mat4                  _perspec_mult_view;
@@ -102,6 +103,7 @@ class World
 		glm::vec3                  _gravity;
 		std::string                _str_hp;
 		bool                       _first_run_theme;
+		bool                       _enabled_gamepad;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,

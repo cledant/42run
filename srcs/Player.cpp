@@ -58,8 +58,6 @@ Player::Player(Player::Params const &params) :
 		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio),
 		_theme(params.theme)
 {
-	Glfw_manager::printJoystick1Info();
-	this->_gamepad = Glfw_manager::isGamepad1Connected();
 	this->update(1.0f);
 }
 
@@ -145,11 +143,6 @@ bool Player::getCanHoover(void) const
 float Player::getMaxHooverTime(void) const
 {
 	return (this->_max_hoover_time);
-}
-
-bool Player::getGamepad(void) const
-{
-	return (this->_gamepad);
 }
 
 int Player::getHP(void) const
@@ -324,7 +317,7 @@ bool Player::update_mouse_interaction(Input const &input, GLFW_Window const &win
 	return (false);
 }
 
-bool Player::update_gamepad_interaction(float input_timer)
+bool Player::update_gamepad_interaction(GamepadState const &state, float input_timer)
 {
 	bool        toogle       = false;
 	bool        change_dir   = false;
@@ -335,44 +328,37 @@ bool Player::update_gamepad_interaction(float input_timer)
 	this->_acc.y  = 0.0f;
 	this->_axis.x = 0;
 	this->_axis.y = 0;
-	if (!Glfw_manager::isGamepad1Connected())
-	{
-		std::cout << "Player : Gamepad is no more connected" << std::endl;
-		return (false);
-	}
 	if (this->_cam != nullptr)
 	{
-		std::memset(&this->_g_state, 0, sizeof(GLFWgamepadstate));
-		Glfw_manager::getGamepad1State(&this->_g_state);
-		if (this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_RELEASE)
+		if (state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_RELEASE)
 		{
 			this->_hoover = false;
 		}
-		if (this->_g_state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] <= -DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] <= -DEAD_ZONE)
 		{
 			this->_acc += this->_force * this->_cam->getXYFront();
 			this->_axis.x += 1;
 			change_dir = true;
 		}
-		if (this->_g_state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] >= DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] >= DEAD_ZONE)
 		{
 			this->_acc -= this->_force * this->_cam->getXYFront();
 			this->_axis.x -= 1;
 			change_dir = true;
 		}
-		if (this->_g_state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] >= DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] >= DEAD_ZONE)
 		{
 			this->_acc += this->_force * this->_cam->getRight();
 			this->_axis.y += 1;
 			change_dir = true;
 		}
-		if (this->_g_state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] <= -DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] <= -DEAD_ZONE)
 		{
 			this->_acc -= this->_force * this->_cam->getRight();
 			this->_axis.y -= 1;
 			change_dir = true;
 		}
-		if (this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_TRIANGLE] == GLFW_PRESS &&
+		if (state.buttons[GLFW_GAMEPAD_BUTTON_TRIANGLE] == GLFW_PRESS &&
 			input_timer >= INPUT_REPEAT_TIMER)
 		{
 			if (this->_audio->getThemeStatus(this->_theme) == sf::Music::Stopped)
@@ -390,19 +376,20 @@ bool Player::update_gamepad_interaction(float input_timer)
 			}
 			toogle = true;
 		}
-		if (this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_PRESS &&
+		if (state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_PRESS &&
 			this->_cur_jump && input_timer >= DOUBLE_JUMP_REPEAT_TIMER)
 		{
 			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
 			toogle = true;
 			(this->_cur_jump)--;
 			if (this->_cur_jump > 0 || this->_max_hoover_time == 0.0f)
-				this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] = GLFW_RELEASE;
+				const_cast<GamepadState &>(state).buttons[GLFW_GAMEPAD_BUTTON_CROSS] =
+												GLFW_RELEASE;
 			this->_on_surface = false;
 			this->_delay_jump = true;
 			this->_audio->playSound("jump");
 		}
-		if (this->_g_state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_PRESS &&
+		if (state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_PRESS &&
 			!this->_cur_jump && this->_cur_hoover_time > 0.0f)
 		{
 			this->_hoover = true;

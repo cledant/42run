@@ -16,6 +16,7 @@
 # include "glm/glm.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
+# include "Gamepad.hpp"
 
 class IInteractive
 {
@@ -32,7 +33,8 @@ class IInteractive
 											  GLFW_Window const &win, glm::vec3 const &origin,
 											  std::vector<glm::vec3 const *> const &axes,
 											  float input_timer) = 0;
-		virtual bool update_gamepad_interaction(float input_timer) = 0;
+		virtual bool update_gamepad_interaction(GamepadState const &state,
+												float input_timer) = 0;
 };
 
 #endif

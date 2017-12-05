@@ -106,7 +106,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 
 
 	set_player_params(params, oGL, audio);
-	(*world) = new World(manager.getInput(), manager.getWindow(),
+	(*world) = new World(manager.getInput(), manager.getWindow(), manager.getGamepad(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
 	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
 						  glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
@@ -158,7 +158,7 @@ static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
 	manager.init_input_callback();
 	init_oGL(oGL);
 	init_audio(audio);
-	Glfw_manager::updateGamepadMapping("./ControllerConfigFiles/gamecontrollerdb_205.txt");
+	Gamepad::updateGamepadMapping("./ControllerConfigFiles/gamecontrollerdb_205.txt");
 	(*ui) = new Ui(manager.getWindow());
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
