@@ -37,8 +37,8 @@ class ThirdPersonCamera : public Camera
 
 		void setDistToTarget(float dist);
 
-		void update_third_person(bool mouse_exclusive_to_manager, glm::vec3 const &target_pos,
-								 bool gamepad);
+		void update_third_person(bool mouse_exclusive_to_manager,
+								 glm::vec3 const &target_pos, bool gamepad);
 
 		class ThirdPersonCameraFailException : public GeneralException
 		{

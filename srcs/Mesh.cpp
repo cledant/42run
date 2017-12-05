@@ -195,7 +195,7 @@ void Mesh::_load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_typ
 		std_str.clear();
 		std_str = this->_directory + '/';
 		std_str.append(str.C_Str());
-		if (this->_find_texture(std_str) == false)
+		if (!this->_find_texture(std_str))
 			this->_texture_list.push_back({std_str, {std_str}, Texture::TEX_FLAT, tex_type});
 	}
 }

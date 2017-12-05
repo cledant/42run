@@ -29,9 +29,9 @@ Camera::~Camera(void)
 void Camera::update(bool mouse_exclusive_to_manager)
 {
 	this->_update_cam = mouse_exclusive_to_manager;
-	if (this->_update_cam == true)
+	if (this->_update_cam)
 	{
-		if (this->_input.mouse_refreshed == true)
+		if (this->_input.mouse_refreshed)
 			this->_update_from_mouse_input();
 		this->_update_from_keyboard_input();
 		this->_view = glm::lookAt(this->_pos, this->_pos + this->_front, this->_up);
@@ -40,7 +40,7 @@ void Camera::update(bool mouse_exclusive_to_manager)
 
 void Camera::toggle_update(void)
 {
-	this->_update_cam = (true) ? false : true;
+	this->_update_cam = !this->_update_cam;
 }
 
 glm::mat4 const &Camera::getViewMatrix(void) const

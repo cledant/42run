@@ -130,15 +130,15 @@ void Sprite::draw(void)
 	GLint uniform_tex_offset_id;
 
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
-		this->_tex == nullptr || oGL_module::oGL_getUniformID(
+		this->_tex == nullptr || !oGL_module::oGL_getUniformID(
 			"uniform_mat_total", this->_shader->getShaderProgram(),
-			&uniform_mat_total_id) == false ||
-		oGL_module::oGL_getUniformID("uniform_tex_diff",
-									 this->_shader->getShaderProgram(),
-									 &uniform_tex_diff_id) == false ||
-		oGL_module::oGL_getUniformID("uniform_tex_offset",
-									 this->_shader->getShaderProgram(),
-									 &uniform_tex_offset_id) == false)
+			&uniform_mat_total_id) ||
+		!oGL_module::oGL_getUniformID("uniform_tex_diff",
+									  this->_shader->getShaderProgram(),
+									  &uniform_tex_diff_id) ||
+		!oGL_module::oGL_getUniformID("uniform_tex_offset",
+									  this->_shader->getShaderProgram(),
+									  &uniform_tex_offset_id))
 	{
 		std::cout << "Warning : Can't draw Sprite" << std::endl;
 		return;

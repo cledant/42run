@@ -16,7 +16,8 @@ Model::Model(void) : _name(""), _center({0.0f, 0.0f, 0.0f})
 {
 }
 
-Model::Model(std::string const &name, std::string const &path) : _name(name), _center({0.0f, 0.0f, 0.0f})
+Model::Model(std::string const &name, std::string const &path) : _name(name),
+																 _center({0.0f, 0.0f, 0.0f})
 {
 	std::cout << "Loading : " << path << std::endl;
 	this->_load_model(path);
@@ -92,7 +93,7 @@ void Model::_load_node(aiNode *node, const aiScene *scene, std::string const &di
 
 void Model::_calculate_center(void)
 {
-	size_t 	nb_vertex = 0;
+	size_t nb_vertex = 0;
 
 	for (size_t i = 0; i < this->_mesh_list.size(); i++)
 	{

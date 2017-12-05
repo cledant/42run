@@ -162,12 +162,12 @@ void FontSet::drawText(std::string const &str, glm::vec3 const &color,
 	GLint                                      uniform_tex;
 
 	if (this->_shader == nullptr || this->_proj_matrix == nullptr ||
-		oGL_module::oGL_getUniformID("uniform_color", this->_shader->getShaderProgram(),
-									 &uniform_color) == false ||
-		oGL_module::oGL_getUniformID("uniform_mat_proj", this->_shader->getShaderProgram(),
-									 &uniform_mat_proj) == false ||
-		oGL_module::oGL_getUniformID("uniform_tex", this->_shader->getShaderProgram(),
-									 &uniform_tex) == false)
+		!oGL_module::oGL_getUniformID("uniform_color", this->_shader->getShaderProgram(),
+									  &uniform_color) ||
+		!oGL_module::oGL_getUniformID("uniform_mat_proj", this->_shader->getShaderProgram(),
+									  &uniform_mat_proj) ||
+		!oGL_module::oGL_getUniformID("uniform_tex", this->_shader->getShaderProgram(),
+									  &uniform_tex))
 	{
 		std::cout << "Warning : Can't draw text" << std::endl;
 		return;
@@ -179,7 +179,8 @@ void FontSet::drawText(std::string const &str, glm::vec3 const &color,
 			fchar = this->_char_list.find('?');
 
 		GLfloat xpos           = pos_x + fchar->second.bearing.x * pos_scale.z;
-		GLfloat ypos           = pos_y - (fchar->second.size.y - fchar->second.bearing.y) * pos_scale.z;
+		GLfloat ypos           = pos_y - (fchar->second.size.y - fchar->second.bearing.y) *
+										 pos_scale.z;
 		GLfloat w              = fchar->second.size.x * pos_scale.z;
 		GLfloat h              = fchar->second.size.y * pos_scale.z;
 		GLfloat vertices[6][4] =
@@ -196,7 +197,8 @@ void FontSet::drawText(std::string const &str, glm::vec3 const &color,
 		this->_shader->setMat4(uniform_mat_proj, *(this->_proj_matrix));
 		this->_shader->setVec3(uniform_color, color);
 		oGL_module::oGL_set_texture(uniform_tex, 0, fchar->second.tex.getTextureID());
-		oGL_module::oGL_set_dynamic_vbo_data(this->_vao, this->_vbo, sizeof(GLfloat) * 6 * 4, vertices);
+		oGL_module::oGL_set_dynamic_vbo_data(this->_vao, this->_vbo,
+											 sizeof(GLfloat) * 6 * 4, vertices);
 		oGL_module::oGL_draw_filled(this->_vao, 6);
 		pos_x += (fchar->second.advance >> 6) * pos_scale.z;
 

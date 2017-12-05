@@ -32,7 +32,6 @@ World::World(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 											  400.0f);
 	this->_enabled_gamepad = this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1);
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
-	//this->_camera.update_third_person(true, glm::vec3{0.0f, 0.0f, 0.0f}, this->_enabled_gamepad);
 }
 
 World::~World(void)
@@ -251,8 +250,7 @@ void World::_check_collisions(void)
 	for (auto it = this->_collision_check_list.begin(); it != this->_collision_check_list.end(); ++it)
 	{
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
-				IsBoxInBoxSweep((*it)->getCollisionBox(),
-								inv_delta, &res)) == true)
+				IsBoxInBoxSweep((*it)->getCollisionBox(), inv_delta, &res)))
 		{
 			if (ptr == nullptr)
 			{

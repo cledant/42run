@@ -80,8 +80,9 @@ void Cubemap::draw(void)
 	GLint uniform_id;
 
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
-		this->_tex == nullptr || oGL_module::oGL_getUniformID("mat_total",
-															  this->_shader->getShaderProgram(), &uniform_id) == false)
+		this->_tex == nullptr || !oGL_module::oGL_getUniformID("mat_total",
+															   this->_shader->getShaderProgram(),
+															   &uniform_id))
 	{
 		std::cout << "Warning : Can't draw Cubemap" << std::endl;
 		return;

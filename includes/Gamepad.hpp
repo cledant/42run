@@ -21,7 +21,7 @@
 # include <iomanip>
 
 # define MAX_GAMEPAD 16
-# define DEAD_ZONE 0.25f
+# define MOV_DEAD_ZONE 0.25f
 # define CAM_DEAD_ZONE 0.10f
 
 typedef GLFWgamepadstate GamepadState;

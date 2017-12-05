@@ -60,8 +60,9 @@ void Simple_box::draw(void)
 	GLint uniform_id;
 
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
-		oGL_module::oGL_getUniformID("mat_total",
-									 this->_shader->getShaderProgram(), &uniform_id) == false)
+		!oGL_module::oGL_getUniformID("mat_total",
+									  this->_shader->getShaderProgram(),
+									  &uniform_id))
 	{
 		std::cout << "Warning : Can't draw Simple_box" << std::endl;
 		return;

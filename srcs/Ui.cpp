@@ -24,7 +24,7 @@ Ui::~Ui(void)
 
 void Ui::update(void)
 {
-	if (this->_win.resized == true)
+	if (this->_win.resized)
 	{
 		this->_proj_matrix = glm::ortho(0.0f, static_cast<float>(this->_win.cur_win_w),
 										0.0f, static_cast<float>(this->_win.cur_win_h));

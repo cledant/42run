@@ -69,7 +69,7 @@ bool CollisionBox::IsPointInBox(glm::vec3 const &pt, Resolution *res) const
 	d     = pt - this->_pos;
 	p     = this->_half_size - glm::abs(d);
 	is_in = (p.x <= 0.0f || p.y <= 0.0f || p.z <= 0.0f) ? false : true;
-	if (res == nullptr || res == NULL || is_in == false)
+	if (res == nullptr || res == NULL || !is_in)
 		return (is_in);
 	std::memset(res, 0, sizeof(Resolution));
 	if (p.x < p.y)
@@ -104,7 +104,7 @@ bool CollisionBox::IsBoxInBox(CollisionBox const &box, Resolution *res) const
 	d     = box.getPos() - this->_pos;
 	p     = (this->_half_size + box.getHalfSize()) - glm::abs(d);
 	is_in = (p.x <= 0.0f || p.y <= 0.0f || p.z <= 0.0f) ? false : true;
-	if (res == nullptr || res == NULL || is_in == false)
+	if (res == nullptr || res == NULL || !is_in)
 		return (is_in);
 	std::memset(res, 0, sizeof(Resolution));
 	if (p.x < p.y)
@@ -188,7 +188,7 @@ bool CollisionBox::IsBoxInBoxSweep(CollisionBox const &box, glm::vec3 const &del
 	if (delta.x == 0.0f && delta.y == 0.0f && delta.z == 0.0f)
 	{
 		s_res->pos  = box.getPos();
-		if ((this->IsBoxInBox(box, &(s_res->res))) == true)
+		if (this->IsBoxInBox(box, &(s_res->res)))
 		{
 			s_res->time = 0.0f;
 			return (true);
@@ -196,8 +196,8 @@ bool CollisionBox::IsBoxInBoxSweep(CollisionBox const &box, glm::vec3 const &del
 		s_res->time = 1.0f;
 		return (false);
 	}
-	if ((this->IsSegmentInBox(box.getPos(), delta, box.getHalfSize(),
-							  &(s_res->res))) == true)
+	if (this->IsSegmentInBox(box.getPos(), delta, box.getHalfSize(),
+							 &(s_res->res)))
 	{
 		s_res->time = glm::clamp(s_res->res.time - (1.0e-8f), 0.0f, 1.0f);
 		s_res->pos  = box.getPos() + delta * s_res->time;

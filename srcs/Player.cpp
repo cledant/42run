@@ -299,7 +299,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		}
 		if (change_dir)
 			this->_set_sprite_direction();
-		if (toogle == true)
+		if (toogle)
 			return (true);
 	}
 	else
@@ -335,25 +335,25 @@ bool Player::update_gamepad_interaction(GamepadState const &state, float input_t
 		{
 			this->_hoover = false;
 		}
-		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] <= -DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] <= -MOV_DEAD_ZONE)
 		{
 			this->_acc += this->_force * this->_cam->getXYFront();
 			this->_axis.x += 1;
 			change_dir = true;
 		}
-		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] >= DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] >= MOV_DEAD_ZONE)
 		{
 			this->_acc -= this->_force * this->_cam->getXYFront();
 			this->_axis.x -= 1;
 			change_dir = true;
 		}
-		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] >= DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] >= MOV_DEAD_ZONE)
 		{
 			this->_acc += this->_force * this->_cam->getRight();
 			this->_axis.y += 1;
 			change_dir = true;
 		}
-		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] <= -DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] <= -MOV_DEAD_ZONE)
 		{
 			this->_acc -= this->_force * this->_cam->getRight();
 			this->_axis.y -= 1;
@@ -396,7 +396,7 @@ bool Player::update_gamepad_interaction(GamepadState const &state, float input_t
 		this->_last_jump = state.buttons[GLFW_GAMEPAD_BUTTON_CROSS];
 		if (change_dir)
 			this->_set_sprite_direction();
-		if (toogle == true)
+		if (toogle)
 			return (true);
 	}
 	else

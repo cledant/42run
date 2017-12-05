@@ -49,8 +49,8 @@ void ThirdPersonCamera::update_third_person(bool mouse_exclusive_to_manager,
 				this->_update_from_mouse_input();
 		}
 		this->_update_from_keyboard_input();
-		this->_view = glm::lookAt(this->_pos - this->_front * this->_dist_to_target, this->_pos + this->_front,
-								  this->_up);
+		this->_view = glm::lookAt(this->_pos - this->_front * this->_dist_to_target,
+								  this->_pos + this->_front, this->_up);
 		return;
 	}
 	if (this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1))

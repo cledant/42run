@@ -145,7 +145,7 @@ void Glfw_manager::init_input_callback(void)
 	auto cursor_position_callback = [](GLFWwindow *win, double xpos, double ypos)
 	{
 		static_cast<void>(win);
-		if (THIS_GLFW->_input.first_time == true)
+		if (THIS_GLFW->_input.first_time)
 		{
 			THIS_GLFW->_input.last_pos_x = static_cast<GLfloat>(xpos);
 			THIS_GLFW->_input.last_pos_y = static_cast<GLfloat>(ypos);
@@ -241,10 +241,9 @@ void Glfw_manager::reset_fps_counter(void)
 
 void Glfw_manager::toogle_mouse_exclusive(void)
 {
-	this->_input.mouse_exclusive = (this->_input.mouse_exclusive == true) ? false :
-								   true;
-	(this->_input.mouse_exclusive == true) ? glfwSetInputMode(this->_window.win,
-															  GLFW_CURSOR, GLFW_CURSOR_DISABLED) : glfwSetInputMode(
+	this->_input.mouse_exclusive = !this->_input.mouse_exclusive;
+	(this->_input.mouse_exclusive) ? glfwSetInputMode(this->_window.win, GLFW_CURSOR,
+													  GLFW_CURSOR_DISABLED) : glfwSetInputMode(
 			this->_window.win,
 			GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	this->_input.timer = 0.0f;
