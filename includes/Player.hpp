@@ -104,6 +104,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		size_t getMaxJump(void) const;
 		bool getCanHoover(void) const;
 		float getMaxHooverTime(void) const;
+		float getTotalWalked(void) const;
 		int getHP(void) const;
 		bool isAlive(void) const;
 		bool isImmune(void) const;

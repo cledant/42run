@@ -39,6 +39,11 @@ static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 80.0f,
 								  0.5f));
+			ui.drawText("roboto", "Score : " + world.getScore(),
+						glm::vec3(0.4f, 0.4f, 0.4f),
+						glm::vec3(10.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) - 120.0f,
+								  0.5f));
 			manager.swap_buffers();
 			if (manager.should_window_be_closed())
 				manager.destroy_window();

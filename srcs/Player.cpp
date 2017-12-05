@@ -145,6 +145,11 @@ float Player::getMaxHooverTime(void) const
 	return (this->_max_hoover_time);
 }
 
+float Player::getTotalWalked() const
+{
+	return (this->_total_walked);
+}
+
 int Player::getHP(void) const
 {
 	return (this->_hp);

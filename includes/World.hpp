@@ -69,6 +69,7 @@ class World
 		void reset_skip_loop(void);
 		bool should_be_updated(float time);
 
+		std::string const &getScore(void);
 		std::string const &getStrPlayerHP(void);
 
 		class WorldFailException : public GeneralException
@@ -102,6 +103,7 @@ class World
 		float                      _input_mouse_timer;
 		glm::vec3                  _gravity;
 		std::string                _str_hp;
+		std::string                _str_score;
 		bool                       _first_run_theme;
 		bool                       _enabled_gamepad;
 
