@@ -94,12 +94,16 @@ void ThirdPersonCamera::_update_from_gamepad_input(void)
 		this->_dist_to_target -= velocity;
 	if (this->_dist_to_target < 0.001f)
 		this->_dist_to_target = 0.001f;
-	this->_yaw += (this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
-				   [GLFW_GAMEPAD_AXIS_RIGHT_X] * this->_mouse_sensitivity *
-				   THIRD_CAM_GAMEPAD_SENSITIVITY);
-	this->_pitch += (this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
-					 [GLFW_GAMEPAD_AXIS_RIGHT_Y] * this->_mouse_sensitivity *
-					 THIRD_CAM_GAMEPAD_SENSITIVITY);
+	if (std::abs(this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
+				 [GLFW_GAMEPAD_AXIS_RIGHT_X]) > CAM_DEAD_ZONE)
+		this->_yaw += (this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
+					   [GLFW_GAMEPAD_AXIS_RIGHT_X] * this->_mouse_sensitivity *
+					   THIRD_CAM_GAMEPAD_SENSITIVITY);
+	if (std::abs(this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
+				 [GLFW_GAMEPAD_AXIS_RIGHT_Y]) > CAM_DEAD_ZONE)
+		this->_pitch += (this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
+						 [GLFW_GAMEPAD_AXIS_RIGHT_Y] * this->_mouse_sensitivity *
+						 THIRD_CAM_GAMEPAD_SENSITIVITY);
 	if (this->_pitch > 89.0f)
 		this->_pitch          = 89.0f;
 	if (this->_pitch < -89.0f)

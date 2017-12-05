@@ -21,7 +21,7 @@
 # include "Camera.hpp"
 # include <iostream>
 
-# define THIRD_CAM_GAMEPAD_SENSITIVITY 10.0f
+# define THIRD_CAM_GAMEPAD_SENSITIVITY 15.0f
 
 class ThirdPersonCamera : public Camera
 {
