@@ -76,7 +76,8 @@ set(SOURCE_FILES
 		srcs/IGravity.cpp
 		srcs/Sprite.cpp
 		srcs/CollidableProp.cpp
-		srcs/Audio.cpp)
+		srcs/Audio.cpp
+		srcs/Gamepad.cpp)
 
 #OS specific libs
 if (APPLE)

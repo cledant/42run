@@ -39,10 +39,6 @@ class Glfw_manager
 		static void close_manager(void);
 		static size_t getActiveWindowNumber(void);
 		static float getTime(void);
-		static bool isGamepad1Connected(void);
-		static void getGamepad1State(GLFWgamepadstate *state);
-		static void updateGamepadMapping(std::string const &file);
-		static void printJoystick1Info(void);
 
 		Input const &getInput(void) const;
 		GLFW_Window const &getWindow(void) const;
