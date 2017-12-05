@@ -21,7 +21,7 @@ static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 		if (manager.getWindow().win != nullptr)
 		{
 			world.reset_skip_loop();
-			while (world.should_be_updated(Glfw_manager::getTime()) == true)
+			while (world.should_be_updated(Glfw_manager::getTime()))
 			{
 				manager.update_events();
 				world.update();
@@ -40,7 +40,7 @@ static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 								  static_cast<float>(manager.getWindow().cur_win_h) - 80.0f,
 								  0.5f));
 			manager.swap_buffers();
-			if (manager.should_window_be_closed() == true)
+			if (manager.should_window_be_closed())
 				manager.destroy_window();
 		}
 	}

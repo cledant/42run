@@ -15,7 +15,7 @@
 World::World(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 			 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip) :
 		_active(nullptr), _input(input), _window(win), _gamepad(gamepad),
-		_camera(input, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
+		_camera(input, gamepad, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), -90.0f, 0.0f),
 		_fov(45.0f), _max_fps(max_fps),
 		_max_frame_skip(max_frame_skip), _next_update_tick(0.0f),
@@ -27,12 +27,12 @@ World::World(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 		throw World::WorldFailException();
 	GLfloat ratio = static_cast<GLfloat>(win.cur_win_w) /
 					static_cast<GLfloat>(win.cur_win_h);
-	this->_tick        = 1.0f / this->_max_fps;
-	this->_perspective = glm::perspective(glm::radians(this->_fov), ratio, 0.1f,
-										  400.0f);
-	this->_camera.update_third_person(true, glm::vec3{0.0f, 0.0f, 0.0f});
+	this->_tick            = 1.0f / this->_max_fps;
+	this->_perspective     = glm::perspective(glm::radians(this->_fov), ratio, 0.1f,
+											  400.0f);
 	this->_enabled_gamepad = this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1);
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
+	//this->_camera.update_third_person(true, glm::vec3{0.0f, 0.0f, 0.0f}, this->_enabled_gamepad);
 }
 
 World::~World(void)
@@ -58,7 +58,9 @@ void World::update(void)
 		this->updatePerspective(this->_fov);
 	if (this->_active == nullptr)
 	{
-		this->_camera.update_third_person(this->_input.mouse_exclusive, glm::vec3({0.0f, 0.0f, 0.0f}));
+		this->_camera.update_third_person(this->_input.mouse_exclusive,
+										  glm::vec3({0.0f, 0.0f, 0.0f}),
+										  this->_enabled_gamepad);
 		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
 	}
 	else
@@ -96,7 +98,8 @@ void World::update(void)
 		this->_check_collisions();
 		reinterpret_cast<Player *>(this->_active)->update(this->_delta_tick);
 		this->_camera.update_third_person(this->_input.mouse_exclusive,
-										  reinterpret_cast<Player *>(this->_active)->getPos());
+										  reinterpret_cast<Player *>(this->_active)->getPos(),
+										  this->_enabled_gamepad);
 		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
 		reinterpret_cast<Player *>(this->_active)->setSpriteYaw(this->_camera.getYaw());
 		reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
