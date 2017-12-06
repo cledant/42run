@@ -42,6 +42,9 @@ void oGL_module::oGL_display_error(void)
 		case GL_INVALID_OPERATION :
 			std::cout << "Invalid operation" << std::endl;
 			break;
+		case GL_INVALID_ENUM :
+			std::cout << "Invalid enum" << std::endl;
+			break;
 		default :
 			std::cout << "Other error" << std::endl;
 			break;

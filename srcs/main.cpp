@@ -70,6 +70,7 @@ static void init_oGL(oGL_module &oGL)
 					Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	oGL.add_model("Alice", "./models/Alice/Alice.obj");
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
+	oGL.add_model("cola", "./models/cola/cola.obj");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
@@ -146,6 +147,9 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 								 glm::vec3(0.0f, 0.1f, 0.0f),
 								 glm::vec3(0.4f, 0.35f, 0.1f),
 								 ICollidable::Damages::HALF);
+	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("cola")),
+					   glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
+					   glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 static void init_audio(Audio &audio)
