@@ -19,13 +19,23 @@ CollidableProp::CollidableProp(Shader const *shader, glm::mat4 const *perspec_mu
 							   ICollidable::Damages dmg, bool passthrough,
 							   int score_modifier) :
 		Prop(shader, perspec_mult_view, model, pos, orientation, scale, offset),
-		_cb(cb), _dmg(dmg), _passthrough(passthrough), _score_modifier(score_modifier)
+		_cb(cb), _dmg(dmg), _passthrough(passthrough), _score_modifier(score_modifier),
+		_active(true)
 {
 	this->update(0.0f);
 }
 
 CollidableProp::~CollidableProp(void)
 {
+}
+
+/*
+ * Interface ICollidable
+ */
+
+void CollidableProp::setActive(bool value)
+{
+	this->_active = value;
 }
 
 void CollidableProp::setPassthrough(bool value)
@@ -51,4 +61,9 @@ int CollidableProp::getScoreModifier(void) const
 bool CollidableProp::getPassthrough(void) const
 {
 	return (this->_passthrough);
+}
+
+bool CollidableProp::getActive(void) const
+{
+	return (this->_active);
 }

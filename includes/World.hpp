@@ -106,13 +106,15 @@ class World
 		glm::vec3                  _gravity;
 		std::string                _str_hp;
 		std::string                _str_score;
+		long int                   _score_modifier;
 		bool                       _first_run_theme;
 		bool                       _enabled_gamepad;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
 									  CollisionBox::SweepResolution const &res,
-									  ICollidable::Damages dmg_taked);
+									  ICollidable::Damages dmg_taken, int score_mod,
+									  bool passthrough);
 };
 
 #endif

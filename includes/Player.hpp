@@ -119,12 +119,14 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		 * Interface ICollidable
 		 */
 
-		virtual void setPassthrough(bool value);
+		void setPassthrough(bool value);
+		void setActive(bool value);
 
 		CollisionBox const &getCollisionBox(void) const;
-		ICollidable::Damages getDamages(void) const;
-		virtual int getScoreModifier(void) const;
-		virtual bool getPassthrough(void) const;
+		Damages getDamages(void) const;
+		int getScoreModifier(void) const;
+		bool getPassthrough(void) const;
+		bool getActive(void) const;
 
 		/*
  		* Interface IInteractive

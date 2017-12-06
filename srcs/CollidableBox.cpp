@@ -17,7 +17,8 @@ CollidableBox::CollidableBox(Shader const *shader, glm::mat4 const *perspec_mult
 							 Texture const *tex, ICollidable::Damages dmg,
 							 bool passthrough, int score_modifier) :
 		_model(shader, perspec_mult_view, tex, pos, size), _cb(pos, size),
-		_pos(pos), _dmg(dmg), _passthrough(passthrough), _score_modifier(score_modifier)
+		_pos(pos), _dmg(dmg), _passthrough(passthrough), _score_modifier(score_modifier),
+		_active(true)
 {
 	this->update(1.0f);
 }
@@ -26,9 +27,18 @@ CollidableBox::~CollidableBox(void)
 {
 }
 
+/*
+ * Interface ICollidable
+ */
+
 void CollidableBox::setPassthrough(bool value)
 {
 	this->_passthrough = value;
+}
+
+void CollidableBox::setActive(bool value)
+{
+	this->_active = value;
 }
 
 glm::vec3 const &CollidableBox::getPos(void) const
@@ -55,6 +65,15 @@ bool CollidableBox::getPassthrough(void) const
 {
 	return (this->_passthrough);
 }
+
+bool CollidableBox::getActive(void) const
+{
+	return (this->_active);
+}
+
+/*
+ * Interface IEntity
+ */
 
 void CollidableBox::update(float time)
 {

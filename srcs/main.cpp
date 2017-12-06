@@ -134,6 +134,11 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 								glm::vec3({1.0f, 1.0f, 1.0f}),
 								&(oGL.getTexture("TestTex")),
 								ICollidable::Damages::NONE, false, 0);
+	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
+								glm::vec3({0.0f, 0.0f, 5.0f}),
+								glm::vec3({1.0f, 1.0f, 0.2f}),
+								&(oGL.getTexture("TestTex")),
+								ICollidable::Damages::NONE, true, 100);
 /*	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
 					   glm::vec3(-7.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.005f, 0.005f, 0.005f));

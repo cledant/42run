@@ -226,6 +226,11 @@ void Player::setPassthrough(bool value)
 	static_cast<void>(value);
 }
 
+void Player::setActive(bool value)
+{
+	static_cast<void>(value);
+}
+
 CollisionBox const &Player::getCollisionBox(void) const
 {
 	return (this->_cb);
@@ -244,6 +249,11 @@ int Player::getScoreModifier(void) const
 bool Player::getPassthrough(void) const
 {
 	return (false);
+}
+
+bool Player::getActive(void) const
+{
+	return (true);
 }
 
 /*
