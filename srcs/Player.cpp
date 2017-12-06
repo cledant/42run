@@ -217,6 +217,15 @@ void Player::update_model(float time)
 	this->_model.update(time);
 }
 
+/*
+ * Interface ICollidable
+ */
+
+void Player::setPassthrough(bool value)
+{
+	static_cast<void>(value);
+}
+
 CollisionBox const &Player::getCollisionBox(void) const
 {
 	return (this->_cb);
@@ -226,6 +235,20 @@ ICollidable::Damages Player::getDamages(void) const
 {
 	return (ICollidable::Damages::NONE);
 }
+
+int Player::getScoreModifier(void) const
+{
+	return (0);
+}
+
+bool Player::getPassthrough(void) const
+{
+	return (false);
+}
+
+/*
+ * Interface IInteractive
+ */
 
 bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 {
@@ -409,6 +432,10 @@ bool Player::update_gamepad_interaction(GamepadState const &state, float input_t
 	return (false);
 }
 
+/*
+ * Interface IEntity
+ */
+
 void Player::update(float time)
 {
 	static char cd = BLINK_CD;
@@ -446,6 +473,10 @@ void Player::draw(void)
 		this->_model.draw();
 }
 
+/*
+ * Interface IGravity
+ */
+
 void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 {
 	if (!this->_cb.IsBoxOnBox(this->_surface_cb) || !this->_on_surface)
@@ -462,6 +493,10 @@ void Player::update_gravity(glm::vec3 const &vec_gravity, float delta)
 	this->_vel *= std::pow(this->_friction, delta);
 	this->_delta = this->_vel * delta;
 }
+
+/*
+ * Private
+ */
 
 void Player::_set_sprite_direction(void)
 {

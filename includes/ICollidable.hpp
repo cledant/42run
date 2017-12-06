@@ -32,8 +32,12 @@ class ICollidable
 		ICollidable(ICollidable const &src) = delete;
 		ICollidable &operator=(ICollidable const &rhs) = delete;
 
+		virtual void setPassthrough(bool value) = 0;
+
 		virtual CollisionBox const &getCollisionBox(void) const = 0;
 		virtual Damages getDamages(void) const = 0;
+		virtual int getScoreModifier(void) const = 0;
+		virtual bool getPassthrough(void) const = 0;
 };
 
 #endif
