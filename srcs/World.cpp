@@ -165,11 +165,13 @@ IInteractive *World::add_Player(Player::Params &params)
 
 IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 								  glm::vec3 const &size, Texture const *tex,
-								  ICollidable::Damages dmg)
+								  ICollidable::Damages dmg, bool passthrough,
+								  int score_modifier)
 {
 	IEntity *ptr;
 
-	ptr = new CollidableBox(shader, &(this->_perspec_mult_view), pos, size, tex, dmg);
+	ptr = new CollidableBox(shader, &(this->_perspec_mult_view), pos, size, tex, dmg,
+							passthrough, score_modifier);
 	this->_entity_list.push_back(ptr);
 	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));
 	return (ptr);
@@ -179,13 +181,14 @@ IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 IEntity *World::add_CollidableProp(Shader const *shader, Model const *model,
 								   glm::vec3 const &pos, glm::vec3 const &orientation,
 								   glm::vec3 const &scale, glm::vec3 const &offset,
-								   glm::vec3 const &half_size, ICollidable::Damages dmg)
+								   glm::vec3 const &half_size, ICollidable::Damages dmg,
+								   bool passthrough, int score_modifier)
 {
 	IEntity *ptr;
 
 	ptr = new CollidableProp(shader, &(this->_perspec_mult_view), model, pos,
 							 orientation, scale, offset, CollisionBox(pos, half_size),
-							 dmg);
+							 dmg, passthrough, score_modifier);
 	this->_entity_list.push_back(ptr);
 	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));
 	return (ptr);

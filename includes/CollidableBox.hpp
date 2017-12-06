@@ -26,7 +26,7 @@ class CollidableBox : public IEntity, public ICollidable
 
 		CollidableBox(Shader const *shader, glm::mat4 const *perspec_mult_view,
 					  glm::vec3 const &pos, glm::vec3 const &size, Texture const *tex,
-					  ICollidable::Damages dmg);
+					  ICollidable::Damages dmg, bool passthrough, int score_modifier);
 		virtual ~CollidableBox();
 		CollidableBox(const CollidableBox &src) = delete;
 		CollidableBox &operator=(const CollidableBox &rhs) = delete;
@@ -36,8 +36,12 @@ class CollidableBox : public IEntity, public ICollidable
 		/*
 		 * Interface ICollidable
 		 */
+		virtual void setPassthrough(bool value);
+
 		CollisionBox const &getCollisionBox(void) const;
-		Damages getDamages(void) const;
+		ICollidable::Damages getDamages(void) const;
+		virtual int getScoreModifier(void) const;
+		virtual bool getPassthrough(void) const;
 
 		/*
 		 * Interface IEntity
@@ -51,6 +55,8 @@ class CollidableBox : public IEntity, public ICollidable
 		CollisionBox         _cb;
 		glm::vec3            _pos;
 		ICollidable::Damages _dmg;
+		bool                 _passthrough;
+		int                  _score_modifier;
 };
 
 #endif

@@ -123,17 +123,17 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 								glm::vec3({0.0f, 0.0f, 0.0f}),
 								glm::vec3({50.0f, 0.2f, 50.0f}),
 								&(oGL.getTexture("TestTex")),
-								ICollidable::Damages::NONE);
+								ICollidable::Damages::NONE, false, 0);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 2.0f}),
 								glm::vec3({1.0f, 1.0f, 0.2f}),
 								&(oGL.getTexture("TestTex")),
-								ICollidable::Damages::NONE);
+								ICollidable::Damages::NONE, false, 0);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 13.0f, 0.0f}),
 								glm::vec3({1.0f, 1.0f, 1.0f}),
 								&(oGL.getTexture("TestTex")),
-								ICollidable::Damages::NONE);
+								ICollidable::Damages::NONE, false, 0);
 /*	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
 					   glm::vec3(-7.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.005f, 0.005f, 0.005f));
@@ -146,7 +146,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 								 glm::vec3(0.005f, 0.005f, 0.005f),
 								 glm::vec3(0.0f, 0.1f, 0.0f),
 								 glm::vec3(0.4f, 0.35f, 0.1f),
-								 ICollidable::Damages::HALF);
+								 ICollidable::Damages::HALF, false, 0);
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("cola")),
 					   glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.0f, 0.0f, 0.0f));

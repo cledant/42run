@@ -58,11 +58,13 @@ class World
 		IInteractive *add_Player(Player::Params &params);
 		IEntity *add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 								   glm::vec3 const &size, Texture const *tex,
-								   ICollidable::Damages dmg);
+								   ICollidable::Damages dmg, bool passthrough,
+								   int score_modifier);
 		IEntity *add_CollidableProp(Shader const *shader, Model const *model,
 									glm::vec3 const &pos, glm::vec3 const &orientation,
 									glm::vec3 const &scale, glm::vec3 const &offset,
-									glm::vec3 const &half_size, ICollidable::Damages dmg);
+									glm::vec3 const &half_size, ICollidable::Damages dmg,
+									bool passthrough, int score_modifier);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);
