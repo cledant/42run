@@ -21,10 +21,7 @@ class CollidableProp : public Prop, public ICollidable
 {
 	public :
 
-		CollidableProp(Shader const *shader, glm::mat4 const *perspec_mult_view,
-					   Model const *model, glm::vec3 const &pos,
-					   glm::vec3 const &orientation, glm::vec3 const &scale,
-					   glm::vec3 const &offset, CollisionBox const &cb,
+		CollidableProp(Prop::Params const &params, CollisionBox const &cb,
 					   ICollidable::Damages dmg, bool passthrough, int score_modifier);
 		virtual ~CollidableProp(void);
 		CollidableProp(CollidableProp const &src) = delete;

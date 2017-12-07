@@ -140,14 +140,12 @@ IEntity *World::add_Cubemap(Shader const *shader,
 	return (ptr);
 }
 
-IEntity *World::add_Prop(Shader const *shader, Model const *model,
-						 glm::vec3 const &pos, glm::vec3 const &orientation,
-						 glm::vec3 const &scale, glm::vec3 const &offset)
+IEntity *World::add_Prop(Prop::Params &params)
 {
 	IEntity *ptr;
 
-	ptr = new Prop(shader, &(this->_perspec_mult_view), model, pos, orientation,
-				   scale, offset);
+	params.perspec_mult_view = &(this->_perspec_mult_view);
+	ptr = new Prop(params);
 	this->_entity_list.push_back(ptr);
 	return (ptr);
 }
@@ -178,16 +176,14 @@ IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 }
 
 
-IEntity *World::add_CollidableProp(Shader const *shader, Model const *model,
-								   glm::vec3 const &pos, glm::vec3 const &orientation,
-								   glm::vec3 const &scale, glm::vec3 const &offset,
-								   glm::vec3 const &half_size, ICollidable::Damages dmg,
-								   bool passthrough, int score_modifier)
+IEntity *World::add_CollidableProp(Prop::Params &params, glm::vec3 const &half_size,
+								   ICollidable::Damages dmg, bool passthrough,
+								   int score_modifier)
 {
 	IEntity *ptr;
 
-	ptr = new CollidableProp(shader, &(this->_perspec_mult_view), model, pos,
-							 orientation, scale, offset, CollisionBox(pos, half_size),
+	params.perspec_mult_view = &(this->_perspec_mult_view);
+	ptr = new CollidableProp(params, CollisionBox(params.pos, half_size),
 							 dmg, passthrough, score_modifier);
 	this->_entity_list.push_back(ptr);
 	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));

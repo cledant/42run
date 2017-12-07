@@ -12,12 +12,26 @@
 
 #include "Prop.hpp"
 
-Prop::Prop(Shader const *shader, glm::mat4 const *perspec_mult_view,
-		   Model const *model, glm::vec3 const &pos, glm::vec3 const &orientation,
-		   glm::vec3 const &scale, glm::vec3 const &offset) :
-		_shader(shader), _perspec_mult_view(perspec_mult_view), _model(model),
-		_yaw(orientation.x), _pitch(orientation.y), _roll(orientation.z),
-		_pos(pos), _scale(scale), _offset(offset)
+Prop::Params::Params(void)
+{
+	this->shader            = nullptr;
+	this->perspec_mult_view = nullptr;
+	this->model             = nullptr;
+	this->pos               = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->orientation       = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->scale             = glm::vec3(1.0f, 1.0f, 1.0f);
+	this->offset            = glm::vec3(0.0f, 0.0f, 0.0f);
+}
+
+Prop::Params::~Params(void)
+{
+}
+
+Prop::Prop(Prop::Params const &params) :
+		_shader(params.shader), _perspec_mult_view(params.perspec_mult_view),
+		_model(params.model), _yaw(params.orientation.x), _pitch(params.orientation.y),
+		_roll(params.orientation.z), _pos(params.pos), _scale(params.scale),
+		_offset(params.offset)
 {
 	this->update(0.0f);
 }

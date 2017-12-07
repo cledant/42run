@@ -12,14 +12,10 @@
 
 #include "CollidableProp.hpp"
 
-CollidableProp::CollidableProp(Shader const *shader, glm::mat4 const *perspec_mult_view,
-							   Model const *model, glm::vec3 const &pos,
-							   glm::vec3 const &orientation, glm::vec3 const &scale,
-							   glm::vec3 const &offset, CollisionBox const &cb,
+CollidableProp::CollidableProp(Prop::Params const &params, CollisionBox const &cb,
 							   ICollidable::Damages dmg, bool passthrough,
 							   int score_modifier) :
-		Prop(shader, perspec_mult_view, model, pos, orientation, scale, offset),
-		_cb(cb), _dmg(dmg), _passthrough(passthrough), _score_modifier(score_modifier),
+		Prop(params), _cb(cb), _dmg(dmg), _passthrough(passthrough), _score_modifier(score_modifier),
 		_active(true)
 {
 	this->update(0.0f);

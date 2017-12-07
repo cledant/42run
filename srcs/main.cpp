@@ -99,7 +99,9 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 							 World **world, Audio &audio)
 {
-	Player::Params                 params;
+	Player::Params                 player_params;
+	Prop::Params                   prop_params;
+	Prop::Params                   damage_box_params;
 	std::vector<std::string> const skybox_files
 										   {
 												   "./textures/skybox/right.jpg",
@@ -111,14 +113,15 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 										   };
 
 
-	set_player_params(params, oGL, audio);
 	(*world) = new World(manager.getInput(), manager.getWindow(), manager.getGamepad(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
 	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
 						  glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
 	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(10.0f, 3.0f, 10.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	(*world)->add_Player(params);
+
+	set_player_params(player_params, oGL, audio);
+	(*world)->add_Player(player_params);
 	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
 								glm::vec3({0.0f, 0.0f, 0.0f}),
 								glm::vec3({50.0f, 0.2f, 50.0f}),
@@ -145,16 +148,20 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
 					   glm::vec3(-5.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.005f, 0.005f, 0.005f));*/
-	(*world)->add_CollidableProp(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
-								 glm::vec3(-5.0f, 0.7f, 0.0f),
-								 glm::vec3({0.0f, 0.0f, 0.0f}),
-								 glm::vec3(0.005f, 0.005f, 0.005f),
-								 glm::vec3(0.0f, 0.1f, 0.0f),
-								 glm::vec3(0.4f, 0.35f, 0.1f),
+
+	damage_box_params.shader = &(oGL.getShader("prop"));
+	damage_box_params.model  = &(oGL.getModel("Sakuya"));
+	damage_box_params.pos    = glm::vec3(-5.0f, 0.7f, 0.0f);
+	damage_box_params.scale  = glm::vec3(0.005f, 0.005f, 0.005f);
+	damage_box_params.offset = glm::vec3(0.0f, 0.1f, 0.0f);
+	(*world)->add_CollidableProp(damage_box_params, glm::vec3(0.4f, 0.35f, 0.1f),
 								 ICollidable::Damages::HALF, false, 0);
-	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("cola")),
-					   glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
-					   glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+	prop_params.shader = &(oGL.getShader("prop"));
+	prop_params.model  = &(oGL.getModel("cola"));
+	prop_params.pos    = glm::vec3(0.0f, 1.0f, 0.0f);
+	prop_params.scale  = glm::vec3(0.05f, 0.05f, 0.05f);
+	(*world)->add_Prop(prop_params);
 }
 
 static void init_audio(Audio &audio)

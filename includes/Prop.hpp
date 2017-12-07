@@ -27,9 +27,22 @@ class Prop : public IEntity
 {
 	public :
 
-		Prop(Shader const *shader, glm::mat4 const *perspec_mult_view,
-			 Model const *model, glm::vec3 const &pos, glm::vec3 const &orientation,
-			 glm::vec3 const &scale, glm::vec3 const &offset);
+
+		struct Params
+		{
+			Params(void);
+			~Params(void);
+
+			Shader const    *shader;
+			glm::mat4 const *perspec_mult_view;
+			Model const     *model;
+			glm::vec3       pos;
+			glm::vec3       orientation;
+			glm::vec3       scale;
+			glm::vec3       offset;
+		};
+
+		Prop(Prop::Params const &params);
 		virtual ~Prop(void);
 		Prop(Prop const &src) = delete;
 		Prop &operator=(Prop const &rhs) = delete;
