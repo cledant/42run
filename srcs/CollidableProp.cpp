@@ -12,11 +12,23 @@
 
 #include "CollidableProp.hpp"
 
-CollidableProp::CollidableProp(Prop::Params const &params, CollisionBox const &cb,
-							   ICollidable::Damages dmg, bool passthrough,
-							   int score_modifier) :
-		Prop(params), _cb(cb), _dmg(dmg), _passthrough(passthrough), _score_modifier(score_modifier),
-		_active(true)
+CollidableProp::Params::Params(void) : cb(CollisionBox(this->prop_params.pos,
+													   glm::vec3(1.0f, 1.0f, 1.0f)))
+{
+	this->dmg            = ICollidable::Damages::SINGLE;
+	this->passthrough    = false;
+	this->score_modifier = 0;
+	this->active         = true;
+}
+
+CollidableProp::Params::~Params(void)
+{
+}
+
+CollidableProp::CollidableProp(CollidableProp::Params const &params) :
+		Prop(params.prop_params), _cb(params.cb), _dmg(params.dmg),
+		_passthrough(params.passthrough), _score_modifier(params.score_modifier),
+		_active(params.active)
 {
 	this->update(0.0f);
 }

@@ -101,7 +101,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 {
 	Player::Params                 player_params;
 	Prop::Params                   prop_params;
-	Prop::Params                   damage_box_params;
+	CollidableProp::Params         damage_box_params;
 	std::vector<std::string> const skybox_files
 										   {
 												   "./textures/skybox/right.jpg",
@@ -149,13 +149,15 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 					   glm::vec3(-5.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
 					   glm::vec3(0.005f, 0.005f, 0.005f));*/
 
-	damage_box_params.shader = &(oGL.getShader("prop"));
-	damage_box_params.model  = &(oGL.getModel("Sakuya"));
-	damage_box_params.pos    = glm::vec3(-5.0f, 0.7f, 0.0f);
-	damage_box_params.scale  = glm::vec3(0.005f, 0.005f, 0.005f);
-	damage_box_params.offset = glm::vec3(0.0f, 0.1f, 0.0f);
-	(*world)->add_CollidableProp(damage_box_params, glm::vec3(0.4f, 0.35f, 0.1f),
-								 ICollidable::Damages::HALF, false, 0);
+	damage_box_params.prop_params.shader = &(oGL.getShader("prop"));
+	damage_box_params.prop_params.model  = &(oGL.getModel("Sakuya"));
+	damage_box_params.prop_params.pos    = glm::vec3(-5.0f, 0.7f, 0.0f);
+	damage_box_params.prop_params.scale  = glm::vec3(0.005f, 0.005f, 0.005f);
+	damage_box_params.prop_params.offset = glm::vec3(0.0f, 0.1f, 0.0f);
+	damage_box_params.cb                 = CollisionBox(damage_box_params.prop_params.pos,
+														glm::vec3(0.4f, 0.35f, 0.1f));
+	damage_box_params.dmg                = ICollidable::Damages::HALF;
+	(*world)->add_CollidableProp(damage_box_params);
 
 	prop_params.shader = &(oGL.getShader("prop"));
 	prop_params.model  = &(oGL.getModel("cola"));

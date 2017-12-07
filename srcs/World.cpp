@@ -176,15 +176,12 @@ IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
 }
 
 
-IEntity *World::add_CollidableProp(Prop::Params &params, glm::vec3 const &half_size,
-								   ICollidable::Damages dmg, bool passthrough,
-								   int score_modifier)
+IEntity *World::add_CollidableProp(CollidableProp::Params &params)
 {
 	IEntity *ptr;
 
-	params.perspec_mult_view = &(this->_perspec_mult_view);
-	ptr = new CollidableProp(params, CollisionBox(params.pos, half_size),
-							 dmg, passthrough, score_modifier);
+	params.prop_params.perspec_mult_view = &(this->_perspec_mult_view);
+	ptr = new CollidableProp(params);
 	this->_entity_list.push_back(ptr);
 	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));
 	return (ptr);

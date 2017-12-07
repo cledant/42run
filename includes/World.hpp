@@ -58,9 +58,7 @@ class World
 								   glm::vec3 const &size, Texture const *tex,
 								   ICollidable::Damages dmg, bool passthrough,
 								   int score_modifier);
-		IEntity *add_CollidableProp(Prop::Params &params, glm::vec3 const &half_size,
-									ICollidable::Damages dmg, bool passthrough,
-									int score_modifier);
+		IEntity *add_CollidableProp(CollidableProp::Params &params);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);

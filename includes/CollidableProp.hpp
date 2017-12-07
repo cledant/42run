@@ -21,8 +21,20 @@ class CollidableProp : public Prop, public ICollidable
 {
 	public :
 
-		CollidableProp(Prop::Params const &params, CollisionBox const &cb,
-					   ICollidable::Damages dmg, bool passthrough, int score_modifier);
+		struct Params
+		{
+			Params(void);
+			~Params(void);
+
+			Prop::Params         prop_params;
+			CollisionBox         cb;
+			ICollidable::Damages dmg;
+			bool                 passthrough;
+			int                  score_modifier;
+			bool                 active;
+		};
+
+		CollidableProp(CollidableProp::Params const &params);
 		virtual ~CollidableProp(void);
 		CollidableProp(CollidableProp const &src) = delete;
 		CollidableProp &operator=(CollidableProp const &rhs) = delete;
