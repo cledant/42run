@@ -246,10 +246,7 @@ void World::_check_collisions(void)
 	CollisionBox::SweepResolution res;
 	glm::vec3                     inv_delta;
 	CollisionBox::SweepResolution nearest;
-	ICollidable                   *ptr        = nullptr;
-	ICollidable::Damages          dmg         = ICollidable::Damages::NONE;
-	int                           score_mod   = 0;
-	bool                          passthrough = false;
+	ICollidable                   *ptr = nullptr;
 
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
@@ -259,73 +256,66 @@ void World::_check_collisions(void)
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBoxSweep((*it)->getCollisionBox(), inv_delta, &res)))
 		{
-			if (ptr == nullptr)
+			if ((*it)->getPassthrough())
+			{
+				if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
+					(*it)->getDamages() != ICollidable::Damages::NONE)
+				{
+					reinterpret_cast<Player *>(this->_active)->lowerHP((*it)->getDamages());
+					reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
+					reinterpret_cast<Player *>(this->_active)->playSound("damage");
+				}
+/*	if (score_mod > 0)
+		reinterpret_cast<Player *>(this->_active)->playSound("bonus");
+	else if (score_mod < 0)
+		reinterpret_cast<Player *>(this->_active)->playSound("malus");*/
+				this->_score_modifier += (*it)->getScoreModifier();
+			}
+			else if (ptr == nullptr)
 			{
 				ptr = *it;
 				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
-				dmg         = (*it)->getDamages();
-				score_mod   = (*it)->getScoreModifier();
-				passthrough = (*it)->getPassthrough();
 			}
 			else if (res.time < nearest.time)
 			{
 				ptr = *it;
 				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
-				dmg         = (*it)->getDamages();
-				score_mod   = (*it)->getScoreModifier();
-				passthrough = (*it)->getPassthrough();
 			}
 		}
 	}
 	if (ptr != nullptr)
 		this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
-									   (*ptr).getCollisionBox(), nearest, dmg, score_mod,
-									   passthrough);
+									   (*ptr).getCollisionBox(), nearest);
 }
 
 void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
-									 CollisionBox::SweepResolution const &res,
-									 ICollidable::Damages dmg_taken, int score_mod,
-									 bool passthrough)
+									 CollisionBox::SweepResolution const &res)
 {
 	glm::vec3 new_delta;
 
 	new_delta.x = !isnan(-res.res.delta.x) ? -res.res.delta.x : 0.0f;
 	new_delta.y = !isnan(-res.res.delta.y) ? -res.res.delta.y : 0.0f;
 	new_delta.z = !isnan(-res.res.delta.z) ? -res.res.delta.z : 0.0f;
-	if (!passthrough)
+
+	if (res.res.normal.y != 0.0f)
+		new_delta.y += (res.res.normal.y < 0.0f) ? (player->getCollisionBox().getHalfSize().y * 0.01) :
+					   -(player->getCollisionBox().getHalfSize().y * 0.01);
+	else if (res.res.normal.x != 0.0f)
+		new_delta.x += (res.res.normal.x < 0.0f) ? (player->getCollisionBox().getHalfSize().x * 0.01) :
+					   -(player->getCollisionBox().getHalfSize().x * 0.01);
+	else if (res.res.normal.z != 0.0f)
+		new_delta.z += (res.res.normal.z < 0.0f) ? (player->getCollisionBox().getHalfSize().z * 0.01) :
+					   -(player->getCollisionBox().getHalfSize().z * 0.01);
+	player->setDelta(new_delta);
+	if (res.res.normal.y < 0.0f)
 	{
-		if (res.res.normal.y != 0.0f)
-			new_delta.y += (res.res.normal.y < 0.0f) ? (player->getCollisionBox().getHalfSize().y * 0.01) :
-						   -(player->getCollisionBox().getHalfSize().y * 0.01);
-		else if (res.res.normal.x != 0.0f)
-			new_delta.x += (res.res.normal.x < 0.0f) ? (player->getCollisionBox().getHalfSize().x * 0.01) :
-						   -(player->getCollisionBox().getHalfSize().x * 0.01);
-		else if (res.res.normal.z != 0.0f)
-			new_delta.z += (res.res.normal.z < 0.0f) ? (player->getCollisionBox().getHalfSize().z * 0.01) :
-						   -(player->getCollisionBox().getHalfSize().z * 0.01);
-		player->setDelta(new_delta);
-		if (res.res.normal.y < 0.0f)
-		{
-			player->setSurfaceCollisionBox(box);
-			player->setOnSurface(true);
-			player->setCurJumpToMax();
-			player->setCurHooverTimeToMax();
-		}
-		player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+		player->setSurfaceCollisionBox(box);
+		player->setOnSurface(true);
+		player->setCurJumpToMax();
+		player->setCurHooverTimeToMax();
 	}
-	if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
-		dmg_taken != ICollidable::Damages::NONE)
-	{
-		reinterpret_cast<Player *>(this->_active)->lowerHP(dmg_taken);
-		reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
-		reinterpret_cast<Player *>(this->_active)->playSound("damage");
-	}
-/*	if (score_mod > 0)
-		reinterpret_cast<Player *>(this->_active)->playSound("bonus");
-	else if (score_mod < 0)
-		reinterpret_cast<Player *>(this->_active)->playSound("malus");*/
-	this->_score_modifier += score_mod;
+	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+
 }
 
 World::WorldFailException::WorldFailException(void)

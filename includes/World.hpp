@@ -103,9 +103,7 @@ class World
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
-									  CollisionBox::SweepResolution const &res,
-									  ICollidable::Damages dmg_taken, int score_mod,
-									  bool passthrough);
+									  CollisionBox::SweepResolution const &res);
 };
 
 #endif
