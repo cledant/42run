@@ -68,15 +68,15 @@ void World::update(void)
 		if (!this->_enabled_gamepad)
 		{
 			if (this->_active->update_mouse_interaction(this->_input, this->_window,
-														this->_camera.getPos(), std::vector < glm::vec3 const * > {
-					&(this->_camera.getFront()), &(this->_camera.getUp()),
-					&(this->_camera.getRight())}, this->_input_mouse_timer))
-			this->_input_mouse_timer = 0.0f;
+														this->_camera.getPos(), std::vector<glm::vec3 const *>{
+							&(this->_camera.getFront()), &(this->_camera.getUp()),
+							&(this->_camera.getRight())}, this->_input_mouse_timer))
+				this->_input_mouse_timer = 0.0f;
 			else if (this->_input_mouse_timer < 1.0f)
 				this->_input_mouse_timer += this->_tick;
 			if (this->_active->update_keyboard_interaction(this->_input,
 														   this->_input_timer))
-				this->_input_timer   = 0.0f;
+				this->_input_timer       = 0.0f;
 			else if (this->_input_timer < INPUT_REPEAT_TIMER)
 				this->_input_timer += this->_tick;
 		}
@@ -253,7 +253,7 @@ void World::_check_collisions(void)
 	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
 	for (auto it = this->_collision_check_list.begin(); it != this->_collision_check_list.end(); ++it)
 	{
-		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
+		if ((*it)->getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBoxSweep((*it)->getCollisionBox(), inv_delta, &res)))
 		{
 			if ((*it)->getPassthrough())
@@ -270,6 +270,7 @@ void World::_check_collisions(void)
 				else if ((*it)->getScoreModifier() < 0)
 					reinterpret_cast<Player *>(this->_active)->playSound("malus");
 				this->_score_modifier += (*it)->getScoreModifier();
+				(*it)->setActive(false);
 			}
 			else if (ptr == nullptr)
 			{

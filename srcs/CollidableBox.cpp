@@ -92,10 +92,12 @@ bool CollidableBox::getActive(void) const
 
 void CollidableBox::update(float time)
 {
-	this->_model.update(time);
+	if (this->_active)
+		this->_model.update(time);
 }
 
 void CollidableBox::draw(void)
 {
-	this->_model.draw();
+	if (this->_active)
+		this->_model.draw();
 }
