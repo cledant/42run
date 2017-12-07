@@ -54,10 +54,7 @@ class World
 							 glm::vec3 const &pos, glm::vec3 const &scale);
 		IEntity *add_Prop(Prop::Params &params);
 		IInteractive *add_Player(Player::Params &params);
-		IEntity *add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
-								   glm::vec3 const &size, Texture const *tex,
-								   ICollidable::Damages dmg, bool passthrough,
-								   int score_modifier);
+		IEntity *add_CollidableBox(CollidableBox::Params &params);
 		IEntity *add_CollidableProp(CollidableProp::Params &params);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);

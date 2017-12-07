@@ -102,6 +102,10 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	Player::Params                 player_params;
 	Prop::Params                   prop_params;
 	CollidableProp::Params         damage_box_params;
+	CollidableBox::Params          box_1;
+	CollidableBox::Params          box_2;
+	CollidableBox::Params          box_3;
+	CollidableBox::Params          box_4;
 	std::vector<std::string> const skybox_files
 										   {
 												   "./textures/skybox/right.jpg",
@@ -122,32 +126,32 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 
 	set_player_params(player_params, oGL, audio);
 	(*world)->add_Player(player_params);
-	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
-								glm::vec3({0.0f, 0.0f, 0.0f}),
-								glm::vec3({50.0f, 0.2f, 50.0f}),
-								&(oGL.getTexture("TestTex")),
-								ICollidable::Damages::NONE, false, 0);
-	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
-								glm::vec3({0.0f, 0.0f, 2.0f}),
-								glm::vec3({1.0f, 1.0f, 0.2f}),
-								&(oGL.getTexture("TestTex")),
-								ICollidable::Damages::NONE, false, 0);
-	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
-								glm::vec3({0.0f, 13.0f, 0.0f}),
-								glm::vec3({1.0f, 1.0f, 1.0f}),
-								&(oGL.getTexture("TestTex")),
-								ICollidable::Damages::NONE, false, 0);
-	(*world)->add_CollidableBox(&(oGL.getShader("cubemap")),
-								glm::vec3({0.0f, 0.0f, 5.0f}),
-								glm::vec3({1.0f, 1.0f, 0.2f}),
-								&(oGL.getTexture("TestTex")),
-								ICollidable::Damages::NONE, true, 100);
-/*	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Alice")),
-					   glm::vec3(-7.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
-					   glm::vec3(0.005f, 0.005f, 0.005f));
-	(*world)->add_Prop(&(oGL.getShader("prop")), &(oGL.getModel("Sakuya")),
-					   glm::vec3(-5.0f, 1.0f, 0.0f), glm::vec3({0.0f, 0.0f, 0.0f}),
-					   glm::vec3(0.005f, 0.005f, 0.005f));*/
+
+	box_1.shader = &(oGL.getShader("cubemap"));
+	box_1.tex    = &(oGL.getTexture("TestTex"));
+	box_1.pos    = glm::vec3({0.0f, 0.0f, 0.0f});
+	box_1.size   = glm::vec3({50.0f, 0.2f, 50.0f});
+	(*world)->add_CollidableBox(box_1);
+
+	box_2.shader = &(oGL.getShader("cubemap"));
+	box_2.tex    = &(oGL.getTexture("TestTex"));
+	box_2.pos    = glm::vec3({0.0f, 13.0f, 0.0f});
+	box_2.size   = glm::vec3({1.0f, 1.0f, 1.0f});
+	(*world)->add_CollidableBox(box_2);
+
+	box_3.shader         = &(oGL.getShader("cubemap"));
+	box_3.tex            = &(oGL.getTexture("TestTex"));
+	box_3.pos            = glm::vec3({0.0f, 0.0f, 5.0f});
+	box_3.size           = glm::vec3({1.0f, 1.0f, 0.2f});
+	box_3.passthrough    = true;
+	box_3.score_modifier = 100;
+	(*world)->add_CollidableBox(box_3);
+
+	box_4.shader = &(oGL.getShader("cubemap"));
+	box_4.tex    = &(oGL.getTexture("TestTex"));
+	box_4.pos    = glm::vec3({0.0f, 0.0f, 2.0f});
+	box_4.size   = glm::vec3({1.0f, 1.0f, 0.2f});
+	(*world)->add_CollidableBox(box_4);
 
 	damage_box_params.prop_params.shader = &(oGL.getShader("prop"));
 	damage_box_params.prop_params.model  = &(oGL.getModel("Sakuya"));

@@ -24,9 +24,23 @@ class CollidableBox : public IEntity, public ICollidable
 {
 	public :
 
-		CollidableBox(Shader const *shader, glm::mat4 const *perspec_mult_view,
-					  glm::vec3 const &pos, glm::vec3 const &size, Texture const *tex,
-					  ICollidable::Damages dmg, bool passthrough, int score_modifier);
+		struct Params
+		{
+			Params(void);
+			~Params(void);
+
+			Shader const         *shader;
+			glm::mat4 const      *perspec_mult_view;
+			Texture const        *tex;
+			glm::vec3            pos;
+			glm::vec3            size;
+			ICollidable::Damages dmg;
+			bool                 passthrough;
+			int                  score_modifier;
+			bool                 active;
+		};
+
+		CollidableBox(CollidableBox::Params const &params);
 		virtual ~CollidableBox();
 		CollidableBox(const CollidableBox &src) = delete;
 		CollidableBox &operator=(const CollidableBox &rhs) = delete;

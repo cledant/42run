@@ -12,13 +12,28 @@
 
 #include "CollidableBox.hpp"
 
-CollidableBox::CollidableBox(Shader const *shader, glm::mat4 const *perspec_mult_view,
-							 glm::vec3 const &pos, glm::vec3 const &size,
-							 Texture const *tex, ICollidable::Damages dmg,
-							 bool passthrough, int score_modifier) :
-		_model(shader, perspec_mult_view, tex, pos, size), _cb(pos, size),
-		_pos(pos), _dmg(dmg), _passthrough(passthrough), _score_modifier(score_modifier),
-		_active(true)
+CollidableBox::Params::Params(void)
+{
+	this->shader            = nullptr;
+	this->perspec_mult_view = nullptr;
+	this->tex               = nullptr;
+	this->pos               = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->size              = glm::vec3(1.0f, 1.0f, 1.0f);
+	this->dmg               = ICollidable::Damages::NONE;
+	this->passthrough       = false;
+	this->score_modifier    = 0;
+	this->active            = true;
+}
+
+CollidableBox::Params::~Params(void)
+{
+}
+
+CollidableBox::CollidableBox(CollidableBox::Params const &params) :
+		_model(params.shader, params.perspec_mult_view, params.tex,
+			   params.pos, params.size), _cb(params.pos, params.size),
+		_pos(params.pos), _dmg(params.dmg), _passthrough(params.passthrough),
+		_score_modifier(params.score_modifier), _active(params.active)
 {
 	this->update(1.0f);
 }

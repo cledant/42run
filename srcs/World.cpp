@@ -161,15 +161,12 @@ IInteractive *World::add_Player(Player::Params &params)
 	return (ptr);
 }
 
-IEntity *World::add_CollidableBox(Shader const *shader, glm::vec3 const &pos,
-								  glm::vec3 const &size, Texture const *tex,
-								  ICollidable::Damages dmg, bool passthrough,
-								  int score_modifier)
+IEntity *World::add_CollidableBox(CollidableBox::Params &params)
 {
 	IEntity *ptr;
 
-	ptr = new CollidableBox(shader, &(this->_perspec_mult_view), pos, size, tex, dmg,
-							passthrough, score_modifier);
+	params.perspec_mult_view = &(this->_perspec_mult_view);
+	ptr = new CollidableBox(params);
 	this->_entity_list.push_back(ptr);
 	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));
 	return (ptr);
