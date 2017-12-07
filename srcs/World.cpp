@@ -68,15 +68,15 @@ void World::update(void)
 		if (!this->_enabled_gamepad)
 		{
 			if (this->_active->update_mouse_interaction(this->_input, this->_window,
-														this->_camera.getPos(), std::vector<glm::vec3 const *>{
-							&(this->_camera.getFront()), &(this->_camera.getUp()),
-							&(this->_camera.getRight())}, this->_input_mouse_timer))
-				this->_input_mouse_timer = 0.0f;
+														this->_camera.getPos(), std::vector < glm::vec3 const * > {
+					&(this->_camera.getFront()), &(this->_camera.getUp()),
+					&(this->_camera.getRight())}, this->_input_mouse_timer))
+			this->_input_mouse_timer = 0.0f;
 			else if (this->_input_mouse_timer < 1.0f)
 				this->_input_mouse_timer += this->_tick;
 			if (this->_active->update_keyboard_interaction(this->_input,
 														   this->_input_timer))
-				this->_input_timer       = 0.0f;
+				this->_input_timer   = 0.0f;
 			else if (this->_input_timer < INPUT_REPEAT_TIMER)
 				this->_input_timer += this->_tick;
 		}
@@ -130,7 +130,7 @@ IEntity *World::add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 }
 
 IEntity *World::add_Cubemap(Shader const *shader,
-							std::vector<std::string> const &files,
+							std::vector <std::string> const &files,
 							glm::vec3 const &pos, glm::vec3 const &scale)
 {
 	IEntity *ptr;
@@ -265,7 +265,7 @@ void World::_check_collisions(void)
 					reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
 					reinterpret_cast<Player *>(this->_active)->playSound("damage");
 				}
-				if ((*it)->getScoreModifier() > 0)
+				else if ((*it)->getScoreModifier() > 0)
 					reinterpret_cast<Player *>(this->_active)->playSound("bonus");
 				else if ((*it)->getScoreModifier() < 0)
 					reinterpret_cast<Player *>(this->_active)->playSound("malus");
@@ -285,11 +285,12 @@ void World::_check_collisions(void)
 	}
 	if (ptr != nullptr)
 		this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
-									   (*ptr).getCollisionBox(), nearest);
+									   (*ptr).getCollisionBox(), nearest, ptr);
 }
 
 void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
-									 CollisionBox::SweepResolution const &res)
+									 CollisionBox::SweepResolution const &res,
+									 ICollidable *ptr)
 {
 	glm::vec3 new_delta;
 
@@ -315,7 +316,13 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 		player->setCurHooverTimeToMax();
 	}
 	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
-
+	if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
+		ptr->getDamages() != ICollidable::Damages::NONE)
+	{
+		reinterpret_cast<Player *>(this->_active)->lowerHP(ptr->getDamages());
+		reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
+		reinterpret_cast<Player *>(this->_active)->playSound("damage");
+	}
 }
 
 World::WorldFailException::WorldFailException(void)
