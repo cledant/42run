@@ -265,10 +265,10 @@ void World::_check_collisions(void)
 					reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
 					reinterpret_cast<Player *>(this->_active)->playSound("damage");
 				}
-/*	if (score_mod > 0)
-		reinterpret_cast<Player *>(this->_active)->playSound("bonus");
-	else if (score_mod < 0)
-		reinterpret_cast<Player *>(this->_active)->playSound("malus");*/
+				if ((*it)->getScoreModifier() > 0)
+					reinterpret_cast<Player *>(this->_active)->playSound("bonus");
+				else if ((*it)->getScoreModifier() < 0)
+					reinterpret_cast<Player *>(this->_active)->playSound("malus");
 				this->_score_modifier += (*it)->getScoreModifier();
 			}
 			else if (ptr == nullptr)

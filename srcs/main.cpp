@@ -174,6 +174,8 @@ static void init_audio(Audio &audio)
 {
 	audio.loadSound("damage", "./sounds/effects/damage.wav", false, EFFECT_VOLUME);
 	audio.loadSound("jump", "./sounds/effects/jump.wav", false, EFFECT_VOLUME);
+	audio.loadSound("bonus", "./sounds/effects/bonus.wav", false, EFFECT_VOLUME);
+	audio.loadSound("malus", "./sounds/effects/malus.wav", false, EFFECT_VOLUME);
 	audio.loadTheme("./sounds/musics/reimu_theme.wav", Audio::THEME_1, true, THEME_VOLUME);
 	audio.loadTheme("./sounds/musics/marisa_theme.wav", Audio::THEME_2, true, THEME_VOLUME);
 }

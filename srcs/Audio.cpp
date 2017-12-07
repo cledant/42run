@@ -145,6 +145,18 @@ sf::Music::Status Audio::getThemeStatus(Audio::theme_list slot)
 	return (this->_theme[slot].getStatus());
 }
 
+sf::Sound::Status Audio::getSoundStatus(std::string const &name)
+{
+	sf::Sound *sound = nullptr;
+
+	if (!this->_getSound(name, &sound))
+	{
+		std::cout << "Sound unknown : " + name << std::endl;
+		return sf::Sound::Stopped;
+	}
+	return (sound->getStatus());
+}
+
 void Audio::setOffsetTheme(Audio::theme_list slot, sf::Time const &off)
 {
 	this->_theme[slot].setPlayingOffset(off);
