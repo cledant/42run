@@ -61,6 +61,12 @@ class CollidableProp : public ICollidable, public IEntity
 		void update(float time);
 		void draw(void);
 
+		/*
+		 * Getter
+		 */
+		Prop const &getProp(void) const;
+		bool getAutoRotation(void) const;
+
 	private :
 
 		Prop                 _prop;

@@ -40,18 +40,40 @@ CollidableProp::~CollidableProp(void)
 {
 }
 
+CollidableProp::CollidableProp(CollidableProp const &src) : _prop(src.getProp()),
+															_cb(src.getCollisionBox())
+{
+	this->_dmg            = src.getDamages();
+	this->_passthrough    = src.getPassthrough();
+	this->_score_modifier = src.getScoreModifier();
+	this->_pick_up        = src.getPickUpSound();
+	this->_auto_rotation  = src.getAutoRotation();
+}
+
+CollidableProp &CollidableProp::operator=(CollidableProp const &rhs)
+{
+	this->_prop           = rhs.getProp();
+	this->_cb             = rhs.getCollisionBox();
+	this->_dmg            = rhs.getDamages();
+	this->_passthrough    = rhs.getPassthrough();
+	this->_score_modifier = rhs.getScoreModifier();
+	this->_pick_up        = rhs.getPickUpSound();
+	this->_auto_rotation  = rhs.getAutoRotation();
+	return (*this);
+}
+
 /*
  * Interface ICollidable
  */
 
-void CollidableProp::setActive(bool value)
-{
-	this->_active = value;
-}
-
 void CollidableProp::setPassthrough(bool value)
 {
 	this->_passthrough = value;
+}
+
+void CollidableProp::setActive(bool value)
+{
+	this->_active = value;
 }
 
 CollisionBox const &CollidableProp::getCollisionBox(void) const
@@ -102,4 +124,18 @@ void CollidableProp::draw(void)
 {
 	if (this->_active)
 		this->_prop.draw();
+}
+
+/*
+ * Getter
+ */
+
+Prop const &CollidableProp::getProp(void) const
+{
+	return (this->_prop);
+}
+
+bool CollidableProp::getAutoRotation(void) const
+{
+	return (this->_auto_rotation);
 }
