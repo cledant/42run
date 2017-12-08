@@ -23,7 +23,7 @@ CollidableBox::Params::Params(void)
 	this->passthrough       = false;
 	this->score_modifier    = 0;
 	this->active            = true;
-	this->pick_up           = std::string("NONE");
+	this->pick_up           = std::string("");
 }
 
 CollidableBox::Params::~Params(void)

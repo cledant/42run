@@ -19,7 +19,7 @@ CollidableProp::Params::Params(void) : cb(CollisionBox(this->prop_params.pos,
 	this->passthrough    = false;
 	this->score_modifier = 0;
 	this->active         = true;
-	this->pick_up                = std::string("NONE");
+	this->pick_up                = std::string("");
 }
 
 CollidableProp::Params::~Params(void)

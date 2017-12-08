@@ -32,7 +32,7 @@ Player::Params::Params(void)
 	this->max_immunity           = 2.0f;
 	this->audio                  = nullptr;
 	this->theme                  = Audio::THEME_1;
-	this->pick_up                = std::string("NONE");
+	this->pick_up                = std::string("");
 }
 
 Player::Params::~Params(void)

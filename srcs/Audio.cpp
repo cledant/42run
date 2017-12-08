@@ -48,6 +48,8 @@ void Audio::playSound(std::string const &name)
 {
 	sf::Sound *sound = nullptr;
 
+	if (name.size() == 0)
+		return;
 	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
@@ -60,6 +62,8 @@ void Audio::stopSound(std::string const &name)
 {
 	sf::Sound *sound = nullptr;
 
+	if (name.size() == 0)
+		return;
 	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
@@ -72,6 +76,8 @@ void Audio::pauseSound(std::string const &name)
 {
 	sf::Sound *sound = nullptr;
 
+	if (name.size() == 0)
+		return;
 	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
@@ -84,6 +90,8 @@ void Audio::setLoopSound(std::string const &name, bool value)
 {
 	sf::Sound *sound = nullptr;
 
+	if (name.size() == 0)
+		return;
 	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
@@ -96,6 +104,8 @@ void Audio::setVolumeSound(std::string const &name, float value)
 {
 	sf::Sound *sound = nullptr;
 
+	if (name.size() == 0)
+		return;
 	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
@@ -107,7 +117,6 @@ void Audio::setVolumeSound(std::string const &name, float value)
 void Audio::loadTheme(std::string const &file, Audio::theme_list slot,
 					  bool loop, float volume)
 {
-
 	std::cout << "Loading : " + file << std::endl;
 	if (!this->_theme[slot].openFromFile(file))
 		throw Audio::FileOpenException(file);
@@ -149,10 +158,12 @@ sf::Sound::Status Audio::getSoundStatus(std::string const &name)
 {
 	sf::Sound *sound = nullptr;
 
+	if (name.size() == 0)
+		return (sf::Sound::Stopped);
 	if (!this->_getSound(name, &sound))
 	{
 		std::cout << "Sound unknown : " + name << std::endl;
-		return sf::Sound::Stopped;
+		return (sf::Sound::Stopped);
 	}
 	return (sound->getStatus());
 }
