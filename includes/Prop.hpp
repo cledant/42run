@@ -47,6 +47,9 @@ class Prop : public IEntity
 		Prop(Prop const &src);
 		Prop &operator=(Prop const &rhs);
 
+		/*
+		 * Setter
+		 */
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);
 		void setYaw(GLfloat yaw);
@@ -54,10 +57,19 @@ class Prop : public IEntity
 		void setRoll(GLfloat roll);
 		void setOffset(glm::vec3 const &offset);
 
+		/*
+		 * Getter
+		 */
 		glm::mat4 const &getTotalMatrix(void) const;
-		GLfloat getYaw(void);
-		GLfloat getPitch(void);
-		GLfloat getRoll(void);
+		GLfloat getYaw(void) const;
+		GLfloat getPitch(void) const;
+		GLfloat getRoll(void) const;
+		Shader const *getShader(void) const;
+		glm::mat4 const *getPerspecMultView(void) const;
+		Model const *getModel(void) const;
+		glm::vec3 const &getPos(void) const;
+		glm::vec3 const &getScale(void) const;
+		glm::vec3 const &getOffset(void) const;
 
 		/*
 		 * Interface IEntity

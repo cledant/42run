@@ -40,6 +40,29 @@ Prop::~Prop(void)
 {
 }
 
+Prop::Prop(Prop const &src)
+{
+	*this = src;
+}
+
+Prop &Prop::operator=(Prop const &rhs)
+{
+	this->_shader            = rhs.getShader();
+	this->_perspec_mult_view = rhs.getPerspecMultView();
+	this->_model             = rhs.getModel();
+	this->_yaw               = rhs.getYaw();
+	this->_pitch             = rhs.getPitch();
+	this->_roll              = rhs.getRoll();
+	this->_pos               = rhs.getPos();
+	this->_scale             = rhs.getScale();
+	this->_offset            = rhs.getOffset();
+	return (*this);
+}
+
+/*
+ * Interface IEntity
+ */
+
 void Prop::update(float time)
 {
 	glm::mat4 model;
@@ -100,6 +123,10 @@ void Prop::draw(void)
 	}
 }
 
+/*
+ * Setter
+ */
+
 void Prop::setPosition(glm::vec3 const &pos)
 {
 	this->_pos = pos;
@@ -130,24 +157,58 @@ void Prop::setOffset(glm::vec3 const &offset)
 	this->_offset = offset;
 }
 
+/*
+ * Getter
+ */
+
 glm::mat4 const &Prop::getTotalMatrix(void) const
 {
 	return (this->_total);
 }
 
-GLfloat Prop::getYaw(void)
+GLfloat Prop::getYaw(void) const
 {
 	return (this->_yaw);
 }
 
-GLfloat Prop::getPitch(void)
+GLfloat Prop::getPitch(void) const
 {
 	return (this->_pitch);
 }
 
-GLfloat Prop::getRoll(void)
+GLfloat Prop::getRoll(void) const
 {
 	return (this->_roll);
+}
+
+Shader const *Prop::getShader(void) const
+{
+	return (this->_shader);
+}
+
+glm::mat4 const *Prop::getPerspecMultView(void) const
+{
+	return (this->_perspec_mult_view);
+}
+
+Model const *Prop::getModel(void) const
+{
+	return (this->_model);
+}
+
+glm::vec3 const &Prop::getPos(void) const
+{
+	return (this->_pos);
+}
+
+glm::vec3 const &Prop::getScale(void) const
+{
+	return (this->_scale);
+}
+
+glm::vec3 const &Prop::getOffset(void) const
+{
+	return (this->_offset);
 }
 
 Prop::InitException::InitException(void)
