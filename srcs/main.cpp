@@ -100,7 +100,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 							 World **world, Audio &audio)
 {
 	Player::Params                 player_params;
-	Prop::Params                   prop_params;
+	CollidableProp::Params         bonus_params;
 	CollidableProp::Params         damage_box_params;
 	CollidableBox::Params          box_1;
 	CollidableBox::Params          box_2;
@@ -163,11 +163,16 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	damage_box_params.dmg                = ICollidable::Damages::HALF;
 	(*world)->add_CollidableProp(damage_box_params);
 
-	prop_params.shader = &(oGL.getShader("prop"));
-	prop_params.model  = &(oGL.getModel("cola"));
-	prop_params.pos    = glm::vec3(0.0f, 1.0f, 0.0f);
-	prop_params.scale  = glm::vec3(0.05f, 0.05f, 0.05f);
-	(*world)->add_Prop(prop_params);
+	bonus_params.prop_params.shader = &(oGL.getShader("prop"));
+	bonus_params.prop_params.model  = &(oGL.getModel("cola"));
+	bonus_params.prop_params.pos    = glm::vec3(0.0f, 0.5f, 0.0f);
+	bonus_params.prop_params.scale  = glm::vec3(0.015f, 0.015f, 0.015f);
+	bonus_params.cb                 = CollisionBox(bonus_params.prop_params.pos,
+												   glm::vec3(0.07f, 0.07f, 0.07f));
+	bonus_params.dmg                = ICollidable::Damages::NONE;
+	bonus_params.passthrough        = true;
+	bonus_params.score_modifier     = 1000;
+	(*world)->add_CollidableProp(bonus_params);
 }
 
 static void init_audio(Audio &audio)
