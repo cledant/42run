@@ -55,6 +55,9 @@ class Prop : public IEntity
 		void setOffset(glm::vec3 const &offset);
 
 		glm::mat4 const &getTotalMatrix(void) const;
+		GLfloat getYaw(void);
+		GLfloat getPitch(void);
+		GLfloat getRoll(void);
 
 		/*
 		 * Interface IEntity

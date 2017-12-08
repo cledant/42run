@@ -34,6 +34,7 @@ class CollidableProp : public ICollidable, public IEntity
 			int                  score_modifier;
 			bool                 active;
 			std::string          pick_up;
+			bool                 auto_rotation;
 		};
 
 		CollidableProp(CollidableProp::Params const &params);
@@ -69,6 +70,7 @@ class CollidableProp : public ICollidable, public IEntity
 		int                  _score_modifier;
 		bool                 _active;
 		std::string          _pick_up;
+		bool                 _auto_rotation;
 };
 
 #endif

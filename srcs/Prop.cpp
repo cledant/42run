@@ -52,13 +52,13 @@ void Prop::update(float time)
 		return;
 	}
 	model = glm::mat4(1.0f);
+	model = glm::translate(model, (this->_pos + this->_offset));
 	model = glm::rotate(model, glm::radians(this->_yaw), glm::vec3({0.0f, 1.0f, 0.0f}));
 	model = glm::rotate(model, glm::radians(this->_pitch), glm::vec3({1.0f, 0.0f, 0.0f}));
 	model = glm::rotate(model, glm::radians(this->_roll), glm::vec3({0.0f, 0.0f, 1.0f}));
 	model = glm::translate(model, glm::vec3({-this->_model->getCenter().x * this->_scale.x,
 											 -this->_model->getCenter().y * this->_scale.y,
 											 -this->_model->getCenter().z * this->_scale.z}));
-	model = glm::translate(model, (this->_pos + this->_offset));
 	model = glm::scale(model, this->_scale);
 	this->_total = *(this->_perspec_mult_view) * model;
 }
@@ -71,10 +71,10 @@ void Prop::draw(void)
 
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
 		this->_model == nullptr ||
-		oGL_module::oGL_getUniformID("uniform_mat_total", this->_shader->getShaderProgram(),
-									 &uniform_mat_total_id) == false ||
-		oGL_module::oGL_getUniformID("uniform_tex_diff", this->_shader->getShaderProgram(),
-									 &uniform_tex_diff_id) == false)
+		!oGL_module::oGL_getUniformID("uniform_mat_total", this->_shader->getShaderProgram(),
+									  &uniform_mat_total_id) ||
+		!oGL_module::oGL_getUniformID("uniform_tex_diff", this->_shader->getShaderProgram(),
+									  &uniform_tex_diff_id))
 	{
 		std::cout << "Warning : Can't draw Cubemap" << std::endl;
 		return;
@@ -133,6 +133,21 @@ void Prop::setOffset(glm::vec3 const &offset)
 glm::mat4 const &Prop::getTotalMatrix(void) const
 {
 	return (this->_total);
+}
+
+GLfloat Prop::getYaw(void)
+{
+	return (this->_yaw);
+}
+
+GLfloat Prop::getPitch(void)
+{
+	return (this->_pitch);
+}
+
+GLfloat Prop::getRoll(void)
+{
+	return (this->_roll);
 }
 
 Prop::InitException::InitException(void)

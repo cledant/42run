@@ -164,16 +164,18 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	damage_box_params.dmg                = ICollidable::Damages::HALF;
 	(*world)->add_CollidableProp(damage_box_params);
 
-	bonus_params.prop_params.shader = &(oGL.getShader("prop"));
-	bonus_params.prop_params.model  = &(oGL.getModel("cola"));
-	bonus_params.prop_params.pos    = glm::vec3(0.0f, 0.5f, 0.0f);
-	bonus_params.prop_params.scale  = glm::vec3(0.015f, 0.015f, 0.015f);
-	bonus_params.cb                 = CollisionBox(bonus_params.prop_params.pos,
-												   glm::vec3(0.07f, 0.07f, 0.07f));
-	bonus_params.dmg                = ICollidable::Damages::NONE;
-	bonus_params.pick_up            = std::string("bonus");
-	bonus_params.passthrough        = true;
-	bonus_params.score_modifier     = 1000;
+	bonus_params.prop_params.shader      = &(oGL.getShader("prop"));
+	bonus_params.prop_params.model       = &(oGL.getModel("cola"));
+	bonus_params.prop_params.pos         = glm::vec3(0.0f, 0.5f, 0.0f);
+	bonus_params.prop_params.scale       = glm::vec3(0.015f, 0.015f, 0.015f);
+	bonus_params.prop_params.orientation = glm::vec3(0.0f, 20.0f, 0.0f);
+	bonus_params.cb                      = CollisionBox(bonus_params.prop_params.pos,
+														glm::vec3(0.07f, 0.07f, 0.07f));
+	bonus_params.dmg                     = ICollidable::Damages::NONE;
+	bonus_params.pick_up                 = std::string("bonus");
+	bonus_params.passthrough             = true;
+	bonus_params.score_modifier          = 1000;
+	bonus_params.auto_rotation           = true;
 	(*world)->add_CollidableProp(bonus_params);
 }
 

@@ -19,7 +19,8 @@ CollidableProp::Params::Params(void) : cb(CollisionBox(this->prop_params.pos,
 	this->passthrough    = false;
 	this->score_modifier = 0;
 	this->active         = true;
-	this->pick_up                = std::string("");
+	this->pick_up        = std::string("");
+	this->auto_rotation  = false;
 }
 
 CollidableProp::Params::~Params(void)
@@ -29,7 +30,8 @@ CollidableProp::Params::~Params(void)
 CollidableProp::CollidableProp(CollidableProp::Params const &params) :
 		_prop(params.prop_params), _cb(params.cb), _dmg(params.dmg),
 		_passthrough(params.passthrough), _score_modifier(params.score_modifier),
-		_active(params.active), _pick_up(params.pick_up)
+		_active(params.active), _pick_up(params.pick_up),
+		_auto_rotation(params.auto_rotation)
 {
 	this->update(0.0f);
 }
@@ -89,7 +91,11 @@ std::string const &CollidableProp::getPickUpSound(void) const
 void CollidableProp::update(float time)
 {
 	if (this->_active)
+	{
+		if (this->_auto_rotation)
+			this->_prop.setYaw(this->_prop.getYaw() + time * 50.f);
 		this->_prop.update(time);
+	}
 }
 
 void CollidableProp::draw(void)
