@@ -44,6 +44,28 @@ CollidableBox::~CollidableBox(void)
 {
 }
 
+CollidableBox::CollidableBox(CollidableBox &&src) : _model(std::move(src.getCubemap())),
+													_cb(src.getCollisionBox())
+{
+	this->_pos         = src.getPos();
+	this->_dmg         = src.getDamages();
+	this->_passthrough = src.getPassthrough();
+	this->_active      = src.getActive();
+	this->_pick_up     = src.getPickUpSound();
+}
+
+CollidableBox &CollidableBox::operator=(CollidableBox &&rhs)
+{
+	this->_model       = std::move(rhs.getCubemap());
+	this->_cb          = rhs.getCollisionBox();
+	this->_pos         = rhs.getPos();
+	this->_dmg         = rhs.getDamages();
+	this->_passthrough = rhs.getPassthrough();
+	this->_active      = rhs.getActive();
+	this->_pick_up     = rhs.getPickUpSound();
+	return (*this);
+}
+
 /*
  * Interface ICollidable
  */
@@ -56,11 +78,6 @@ void CollidableBox::setPassthrough(bool value)
 void CollidableBox::setActive(bool value)
 {
 	this->_active = value;
-}
-
-glm::vec3 const &CollidableBox::getPos(void) const
-{
-	return (this->_pos);
 }
 
 CollisionBox const &CollidableBox::getCollisionBox(void) const
@@ -107,4 +124,18 @@ void CollidableBox::draw(void)
 {
 	if (this->_active)
 		this->_model.draw();
+}
+
+/*
+ * Getter
+ */
+
+Cubemap &CollidableBox::getCubemap(void)
+{
+	return (this->_model);
+}
+
+glm::vec3 const &CollidableBox::getPos(void) const
+{
+	return (this->_pos);
 }

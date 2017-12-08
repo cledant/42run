@@ -48,8 +48,6 @@ class CollidableBox : public IEntity, public ICollidable
 		CollidableBox(CollidableBox &&src);
 		CollidableBox &operator=(CollidableBox &&rhs);
 
-		glm::vec3 const &getPos(void) const;
-
 		/*
 		 * Interface ICollidable
 		 */
@@ -68,6 +66,12 @@ class CollidableBox : public IEntity, public ICollidable
 		 */
 		void update(float time);
 		void draw(void);
+
+		/*
+ 		* Getter
+		*/
+		glm::vec3 const &getPos(void) const;
+		Cubemap &getCubemap(void);
 
 	private :
 
