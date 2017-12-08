@@ -42,6 +42,27 @@ class Room : public ICollidable, public IEntity
 		Room(Room &&src);
 		Room &operator=(Room &&rhs);
 
+		/*
+		 * IEntity
+		 */
+
+		void update(float time);
+		void draw(void);
+
+		/*
+		 * ICollidable
+		 */
+
+		void setPassthrough(bool value);
+		void setActive(bool value);
+
+		CollisionBox const &getCollisionBox(void) const;
+		Damages getDamages(void) const;
+		int getScoreModifier(void) const;
+		bool getPassthrough(void) const;
+		bool getActive(void) const;
+		std::string const &getPickUpSound(void) const;
+
 	private :
 
 		CollisionBox  _room_cb;
