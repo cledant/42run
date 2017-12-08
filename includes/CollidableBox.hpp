@@ -45,6 +45,8 @@ class CollidableBox : public IEntity, public ICollidable
 		virtual ~CollidableBox();
 		CollidableBox(const CollidableBox &src) = delete;
 		CollidableBox &operator=(const CollidableBox &rhs) = delete;
+		CollidableBox(CollidableBox &&src);
+		CollidableBox &operator=(CollidableBox &&rhs);
 
 		glm::vec3 const &getPos(void) const;
 

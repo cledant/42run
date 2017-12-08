@@ -62,6 +62,29 @@ Cubemap::~Cubemap(void)
 	oGL_module::oGL_delete_vbo(this->_vbo);
 }
 
+Cubemap::Cubemap(Cubemap &&src)
+{
+	*this = std::move(src);
+}
+
+Cubemap &Cubemap::operator=(Cubemap &&src)
+{
+	this->_shader            = src.getShader();
+	this->_perspec_mult_view = src.getPerspecMultView();
+	this->_tex               = src.moveTexture();
+	this->_vbo               = src.moveVBO();
+	this->_vao               = src.moveVAO();
+	this->_pos               = src.getPos();
+	this->_scale             = src.getScale();
+	this->_total             = src.getTotalMatrix();
+	this->_src_tex           = src.getSrcTex();
+	return (*this);
+}
+
+/*
+ * Interface IEntity
+ */
+
 void Cubemap::update(float time)
 {
 	static_cast<void>(time);
@@ -93,6 +116,10 @@ void Cubemap::draw(void)
 								 Cubemap::_nb_faces);
 }
 
+/*
+ * Setter
+ */
+
 void Cubemap::setPosition(glm::vec3 const &pos)
 {
 	this->_pos = pos;
@@ -103,10 +130,70 @@ void Cubemap::setScale(glm::vec3 const &scale)
 	this->_scale = scale;
 }
 
+/*
+ * Getter
+ */
+
 glm::mat4 const &Cubemap::getTotalMatrix(void) const
 {
 	return (this->_total);
 }
+
+Shader const *Cubemap::getShader(void) const
+{
+	return (this->_shader);
+}
+
+glm::mat4 const *Cubemap::getPerspecMultView(void) const
+{
+	return (this->_perspec_mult_view);
+}
+
+Texture const *Cubemap::moveTexture(void)
+{
+	Texture const *tmp;
+
+	tmp = this->_tex;
+	this->_tex = nullptr;
+	return (tmp);
+}
+
+GLuint Cubemap::moveVAO(void)
+{
+	GLuint tmp;
+
+	tmp = this->_vao;
+	this->_vao = 0;
+	return (tmp);
+}
+
+GLuint Cubemap::moveVBO(void)
+{
+	GLuint tmp;
+
+	tmp = this->_vbo;
+	this->_vbo = 0;
+	return (tmp);
+}
+
+glm::vec3 const &Cubemap::getPos(void) const
+{
+	return (this->_pos);
+}
+
+glm::vec3 const &Cubemap::getScale(void) const
+{
+	return (this->_scale);
+}
+
+Cubemap::t_tex_source Cubemap::getSrcTex() const
+{
+	return (this->_src_tex);
+}
+
+/*
+ * Private
+ */
 
 void Cubemap::_oGL_alloc(void)
 {

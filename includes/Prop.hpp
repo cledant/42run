@@ -44,8 +44,8 @@ class Prop : public IEntity
 
 		Prop(Prop::Params const &params);
 		virtual ~Prop(void);
-		Prop(Prop const &src) = delete;
-		Prop &operator=(Prop const &rhs) = delete;
+		Prop(Prop const &src);
+		Prop &operator=(Prop const &rhs);
 
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);

@@ -39,8 +39,8 @@ class CollidableProp : public ICollidable, public IEntity
 
 		CollidableProp(CollidableProp::Params const &params);
 		virtual ~CollidableProp(void);
-		CollidableProp(CollidableProp const &src) = delete;
-		CollidableProp &operator=(CollidableProp const &rhs) = delete;
+		CollidableProp(CollidableProp const &src);
+		CollidableProp &operator=(CollidableProp const &rhs);
 
 		/*
 		 * Interface ICollidable
