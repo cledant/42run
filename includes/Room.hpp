@@ -37,20 +37,20 @@ class Room : public ICollidable, public IEntity
 
 		Room(Room::Params const &params);
 		virtual ~Room(void);
-		Room(Room const &src) const = delete;
-		Room &operator=(Room const &rhs) const = delete;
+		Room(Room const &src) = delete;
+		Room &operator=(Room const &rhs) = delete;
 		Room(Room &&src);
 		Room &operator=(Room &&rhs);
 
 		/*
-		 * IEntity
+		 * Interface IEntity
 		 */
 
 		void update(float time);
 		void draw(void);
 
 		/*
-		 * ICollidable
+		 * Interface ICollidable
 		 */
 
 		void setPassthrough(bool value);
@@ -63,6 +63,15 @@ class Room : public ICollidable, public IEntity
 		bool getActive(void) const;
 		std::string const &getPickUpSound(void) const;
 
+		/*
+		 * Getter
+		 */
+		CollidableBox &getFloor(void);
+		CollidableBox &getRoof(void);
+		CollidableBox &getRightWall(void);
+		CollidableBox &getLeftWall(void);
+		CollidableBox &getFrontWall(void);
+
 	private :
 
 		CollisionBox  _room_cb;
@@ -71,6 +80,7 @@ class Room : public ICollidable, public IEntity
 		CollidableBox _right_wall;
 		CollidableBox _left_wall;
 		CollidableBox _front_wall;
+		std::string   _pick_up;
 };
 
 #endif
