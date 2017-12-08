@@ -16,8 +16,9 @@
 # include "Prop.hpp"
 # include "CollisionBox.hpp"
 # include "ICollidable.hpp"
+# include "IEntity.hpp"
 
-class CollidableProp : public Prop, public ICollidable
+class CollidableProp : public ICollidable, public IEntity
 {
 	public :
 
@@ -51,8 +52,15 @@ class CollidableProp : public Prop, public ICollidable
 		bool getPassthrough(void) const;
 		bool getActive(void) const;
 
+		/*
+		 * Interface IEntity
+		 */
+		void update(float time);
+		void draw(void);
+
 	private :
 
+		Prop                 _prop;
 		CollisionBox         _cb;
 		ICollidable::Damages _dmg;
 		bool                 _passthrough;

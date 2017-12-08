@@ -26,7 +26,7 @@ CollidableProp::Params::~Params(void)
 }
 
 CollidableProp::CollidableProp(CollidableProp::Params const &params) :
-		Prop(params.prop_params), _cb(params.cb), _dmg(params.dmg),
+		_prop(params.prop_params), _cb(params.cb), _dmg(params.dmg),
 		_passthrough(params.passthrough), _score_modifier(params.score_modifier),
 		_active(params.active)
 {
@@ -74,4 +74,20 @@ bool CollidableProp::getPassthrough(void) const
 bool CollidableProp::getActive(void) const
 {
 	return (this->_active);
+}
+
+/*
+ * Interface IEntity
+ */
+
+void CollidableProp::update(float time)
+{
+	if (this->_active)
+		this->_prop.update(time);
+}
+
+void CollidableProp::draw(void)
+{
+	if (this->_active)
+		this->_prop.draw();
 }
