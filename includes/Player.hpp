@@ -33,6 +33,7 @@
 # include <iostream>
 # include <vector>
 # include <fstream>
+# include <string>
 
 # define BLINK_CD 3
 # define THEME_VOLUME 100.0f
@@ -80,6 +81,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			float                   max_immunity;
 			Audio                   *audio;
 			Audio::theme_list       theme;
+			std::string             pick_up;
 		};
 
 		Player(Player::Params const &params);
@@ -127,6 +129,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		int getScoreModifier(void) const;
 		bool getPassthrough(void) const;
 		bool getActive(void) const;
+		std::string const &getPickUpSound(void) const;
 
 		/*
  		* Interface IInteractive
@@ -181,6 +184,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		Audio                   *_audio;
 		Audio::theme_list       _theme;
 		bool                    _last_jump;
+		std::string             _pick_up;
 
 		void _set_sprite_direction(void);
 };

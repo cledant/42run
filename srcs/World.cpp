@@ -130,7 +130,7 @@ IEntity *World::add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 }
 
 IEntity *World::add_Cubemap(Shader const *shader,
-							std::vector <std::string> const &files,
+							std::vector<std::string> const &files,
 							glm::vec3 const &pos, glm::vec3 const &scale)
 {
 	IEntity *ptr;
@@ -265,10 +265,7 @@ void World::_check_collisions(void)
 					reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
 					reinterpret_cast<Player *>(this->_active)->playSound("damage");
 				}
-				else if ((*it)->getScoreModifier() > 0)
-					reinterpret_cast<Player *>(this->_active)->playSound("bonus");
-				else if ((*it)->getScoreModifier() < 0)
-					reinterpret_cast<Player *>(this->_active)->playSound("malus");
+				reinterpret_cast<Player *>(this->_active)->playSound((*it)->getPickUpSound());
 				this->_score_modifier += (*it)->getScoreModifier();
 				(*it)->setActive(false);
 			}

@@ -38,6 +38,7 @@ class CollidableBox : public IEntity, public ICollidable
 			bool                 passthrough;
 			int                  score_modifier;
 			bool                 active;
+			std::string          pick_up;
 		};
 
 		CollidableBox(CollidableBox::Params const &params);
@@ -58,6 +59,7 @@ class CollidableBox : public IEntity, public ICollidable
 		int getScoreModifier(void) const;
 		bool getPassthrough(void) const;
 		bool getActive(void) const;
+		std::string const &getPickUpSound(void) const;
 
 		/*
 		 * Interface IEntity
@@ -74,6 +76,7 @@ class CollidableBox : public IEntity, public ICollidable
 		bool                 _passthrough;
 		int                  _score_modifier;
 		bool                 _active;
+		std::string          _pick_up;
 };
 
 #endif

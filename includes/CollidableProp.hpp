@@ -33,6 +33,7 @@ class CollidableProp : public ICollidable, public IEntity
 			bool                 passthrough;
 			int                  score_modifier;
 			bool                 active;
+			std::string          pick_up;
 		};
 
 		CollidableProp(CollidableProp::Params const &params);
@@ -51,6 +52,7 @@ class CollidableProp : public ICollidable, public IEntity
 		int getScoreModifier(void) const;
 		bool getPassthrough(void) const;
 		bool getActive(void) const;
+		std::string const &getPickUpSound(void) const;
 
 		/*
 		 * Interface IEntity
@@ -66,6 +68,7 @@ class CollidableProp : public ICollidable, public IEntity
 		bool                 _passthrough;
 		int                  _score_modifier;
 		bool                 _active;
+		std::string          _pick_up;
 };
 
 #endif

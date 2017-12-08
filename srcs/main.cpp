@@ -144,7 +144,8 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	box_3.pos            = glm::vec3({0.0f, 0.0f, 5.0f});
 	box_3.size           = glm::vec3({1.0f, 1.0f, 0.2f});
 	box_3.passthrough    = true;
-	box_3.score_modifier = 100;
+	box_3.pick_up        = std::string("malus");
+	box_3.score_modifier = -500;
 	(*world)->add_CollidableBox(box_3);
 
 	box_4.shader = &(oGL.getShader("cubemap"));
@@ -170,6 +171,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	bonus_params.cb                 = CollisionBox(bonus_params.prop_params.pos,
 												   glm::vec3(0.07f, 0.07f, 0.07f));
 	bonus_params.dmg                = ICollidable::Damages::NONE;
+	bonus_params.pick_up            = std::string("bonus");
 	bonus_params.passthrough        = true;
 	bonus_params.score_modifier     = 1000;
 	(*world)->add_CollidableProp(bonus_params);

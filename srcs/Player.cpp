@@ -32,6 +32,7 @@ Player::Params::Params(void)
 	this->max_immunity           = 2.0f;
 	this->audio                  = nullptr;
 	this->theme                  = Audio::THEME_1;
+	this->pick_up                = std::string("NONE");
 }
 
 Player::Params::~Params(void)
@@ -56,7 +57,7 @@ Player::Player(Player::Params const &params) :
 		_cur_hoover_time(params.max_hoover_time),
 		_max_hoover_time(params.max_hoover_time), _hp(params.hp),
 		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio),
-		_theme(params.theme), _last_jump(GLFW_RELEASE)
+		_theme(params.theme), _last_jump(GLFW_RELEASE), _pick_up(params.pick_up)
 {
 	this->update(1.0f);
 }
@@ -255,6 +256,11 @@ bool Player::getPassthrough(void) const
 bool Player::getActive(void) const
 {
 	return (true);
+}
+
+std::string const &Player::getPickUpSound(void) const
+{
+	return (this->_pick_up);
 }
 
 /*

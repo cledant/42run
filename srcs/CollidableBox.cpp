@@ -23,6 +23,7 @@ CollidableBox::Params::Params(void)
 	this->passthrough       = false;
 	this->score_modifier    = 0;
 	this->active            = true;
+	this->pick_up           = std::string("NONE");
 }
 
 CollidableBox::Params::~Params(void)
@@ -33,7 +34,8 @@ CollidableBox::CollidableBox(CollidableBox::Params const &params) :
 		_model(params.shader, params.perspec_mult_view, params.tex,
 			   params.pos, params.size), _cb(params.pos, params.size),
 		_pos(params.pos), _dmg(params.dmg), _passthrough(params.passthrough),
-		_score_modifier(params.score_modifier), _active(params.active)
+		_score_modifier(params.score_modifier), _active(params.active),
+		_pick_up(params.pick_up)
 {
 	this->update(1.0f);
 }
@@ -84,6 +86,11 @@ bool CollidableBox::getPassthrough(void) const
 bool CollidableBox::getActive(void) const
 {
 	return (this->_active);
+}
+
+std::string const &CollidableBox::getPickUpSound(void) const
+{
+	return (this->_pick_up);
 }
 
 /*

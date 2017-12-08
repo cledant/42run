@@ -14,6 +14,7 @@
 # define ICOLLIDABLE_HPP
 
 # include "CollisionBox.hpp"
+# include <string>
 
 class ICollidable
 {
@@ -40,6 +41,7 @@ class ICollidable
 		virtual int getScoreModifier(void) const = 0;
 		virtual bool getPassthrough(void) const = 0;
 		virtual bool getActive(void) const = 0;
+		virtual std::string const &getPickUpSound(void) const = 0;
 };
 
 #endif

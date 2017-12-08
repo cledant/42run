@@ -19,6 +19,7 @@ CollidableProp::Params::Params(void) : cb(CollisionBox(this->prop_params.pos,
 	this->passthrough    = false;
 	this->score_modifier = 0;
 	this->active         = true;
+	this->pick_up                = std::string("NONE");
 }
 
 CollidableProp::Params::~Params(void)
@@ -28,7 +29,7 @@ CollidableProp::Params::~Params(void)
 CollidableProp::CollidableProp(CollidableProp::Params const &params) :
 		_prop(params.prop_params), _cb(params.cb), _dmg(params.dmg),
 		_passthrough(params.passthrough), _score_modifier(params.score_modifier),
-		_active(params.active)
+		_active(params.active), _pick_up(params.pick_up)
 {
 	this->update(0.0f);
 }
@@ -74,6 +75,11 @@ bool CollidableProp::getPassthrough(void) const
 bool CollidableProp::getActive(void) const
 {
 	return (this->_active);
+}
+
+std::string const &CollidableProp::getPickUpSound(void) const
+{
+	return (this->_pick_up);
 }
 
 /*
