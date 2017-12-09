@@ -29,6 +29,7 @@
 # include "Player.hpp"
 # include "CollidableBox.hpp"
 # include "CollidableProp.hpp"
+# include "Room.hpp"
 # include "Window.hpp"
 # include "Input.hpp"
 # include <iostream>
@@ -56,6 +57,7 @@ class World
 		IInteractive *add_Player(Player::Params &params);
 		IEntity *add_CollidableBox(CollidableBox::Params &params);
 		IEntity *add_CollidableProp(CollidableProp::Params &params);
+		IEntity *add_Room(Room::Params &params);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);

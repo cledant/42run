@@ -184,6 +184,20 @@ IEntity *World::add_CollidableProp(CollidableProp::Params &params)
 	return (ptr);
 }
 
+IEntity *World::add_Room(Room::Params &params)
+{
+	IEntity *ptr;
+
+	params.floor.perspec_mult_view = &(this->_perspec_mult_view);
+	params.roof.perspec_mult_view = &(this->_perspec_mult_view);
+	params.right_wall.perspec_mult_view = &(this->_perspec_mult_view);
+	params.left_wall.perspec_mult_view = &(this->_perspec_mult_view);
+	params.front_wall.perspec_mult_view = &(this->_perspec_mult_view);
+	ptr = new Room(params);
+	this->_entity_list.push_back(ptr);
+	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));
+	return (ptr);}
+
 void World::setActiveInteractive(IInteractive *ptr)
 {
 	this->_active = ptr;

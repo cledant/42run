@@ -106,6 +106,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	CollidableBox::Params          box_2;
 	CollidableBox::Params          box_3;
 	CollidableBox::Params          box_4;
+	Room::Params                   room_params;
 	std::vector<std::string> const skybox_files
 										   {
 												   "./textures/skybox/right.jpg",
@@ -177,6 +178,18 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	bonus_params.score_modifier          = 1000;
 	bonus_params.auto_rotation           = true;
 	(*world)->add_CollidableProp(bonus_params);
+
+/*	room_params.floor.shader      = &(oGL.getShader("cubemap"));
+	room_params.floor.tex         = &(oGL.getTexture("TestTex"));
+	room_params.roof.shader       = &(oGL.getShader("cubemap"));
+	room_params.roof.tex          = &(oGL.getTexture("TestTex"));
+	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.right_wall.tex    = &(oGL.getTexture("TestTex"));
+	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
+	room_params.left_wall.tex     = &(oGL.getTexture("TestTex"));
+	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.front_wall.tex    = &(oGL.getTexture("TestTex"));
+	(*world)->add_Room(room_params);*/
 }
 
 static void init_audio(Audio &audio)
