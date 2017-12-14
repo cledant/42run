@@ -34,6 +34,24 @@ CollisionBox &CollisionBox::operator=(CollisionBox const &rhs)
 	return (*this);
 }
 
+/*
+ * Interface ITranslatable
+ */
+
+void CollisionBox::translateObject(glm::vec3 const &vec)
+{
+	this->_pos += vec;
+}
+
+void CollisionBox::scaleObject(glm::vec3 const &vec)
+{
+	this->_half_size *= vec;
+}
+
+/*
+ * Setter
+ */
+
 void CollisionBox::setPos(glm::vec3 const &pos)
 {
 	this->_pos = pos;
@@ -44,6 +62,10 @@ void CollisionBox::setHalfSize(glm::vec3 const &half_size)
 	this->_half_size = half_size;
 }
 
+/*
+ * Getter
+ */
+
 glm::vec3 const &CollisionBox::getPos(void) const
 {
 	return (this->_pos);
@@ -53,6 +75,10 @@ glm::vec3 const &CollisionBox::getHalfSize(void) const
 {
 	return (this->_half_size);
 }
+
+/*
+ * Collision Functions
+ */
 
 /*
  * If IsPointInBox is given nullptr or NULL as param for res, it will

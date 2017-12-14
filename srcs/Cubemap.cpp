@@ -82,6 +82,20 @@ Cubemap &Cubemap::operator=(Cubemap &&src)
 }
 
 /*
+ * Interface ITranslatable
+ */
+
+void Cubemap::translateObject(glm::vec3 const &vec)
+{
+	this->_pos += vec;
+}
+
+void Cubemap::scaleObject(glm::vec3 const &vec)
+{
+	this->_scale *= vec;
+}
+
+/*
  * Interface IEntity
  */
 

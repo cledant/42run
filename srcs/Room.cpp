@@ -13,13 +13,23 @@
 #include "Room.hpp"
 
 Room::Params::Params(void) : room_cb(CollisionBox(glm::vec3(0.0f, 0.0f, 0.0f),
-												  glm::vec3(0.5f, 0.5f, 0.5f))),
+												  glm::vec3(0.6f, 0.6f, 0.6f))),
 							 floor(CollidableBox::Params()),
 							 roof(CollidableBox::Params()),
 							 right_wall(CollidableBox::Params()),
 							 left_wall(CollidableBox::Params()),
 							 front_wall(CollidableBox::Params())
 {
+	this->floor.pos = glm::vec3(0.0f, -0.5f, 0.0f);
+	this->floor.size = glm::vec3(1.0f, 0.1f, 1.0f);
+	this->roof.pos = glm::vec3(0.0f, 0.5f, 0.0f);
+	this->roof.size = glm::vec3(1.0f, 0.1f, 1.0f);
+	this->right_wall.pos = glm::vec3(0.0f, 0.0f, 0.5f);
+	this->right_wall.size = glm::vec3(1.0f, 1.0f, 0.1f);
+	this->left_wall.pos = glm::vec3(1.0f, 0.0f, -0.5f);
+	this->left_wall.size = glm::vec3(1.0f, 1.0f, 0.1f);
+	this->front_wall.pos = glm::vec3(0.5f, 0.0f, 0.0f);
+	this->front_wall.size = glm::vec3(0.1f, 1.0f, 1.0f);
 }
 
 Room::Params::~Params(void)
@@ -58,6 +68,28 @@ Room &Room::operator=(Room &&rhs)
 }
 
 /*
+ * Interface ITranslatable
+ */
+
+void Room::translateObject(glm::vec3 const &vec)
+{
+	this->_floor.translateObject(vec);
+	this->_roof.translateObject(vec);
+	this->_right_wall.translateObject(vec);
+	this->_left_wall.translateObject(vec);
+	this->_front_wall.translateObject(vec);
+}
+
+void Room::scaleObject(glm::vec3 const &vec)
+{
+	this->_floor.scaleObject(vec);
+	this->_roof.scaleObject(vec);
+	this->_right_wall.scaleObject(vec);
+	this->_left_wall.scaleObject(vec);
+	this->_front_wall.scaleObject(vec);
+}
+
+/*
  * Interface IEntity
  */
 void Room::update(float time)
@@ -76,8 +108,8 @@ void Room::draw(void)
 	this->_roof.draw();
 	this->_right_wall.draw();
 	this->_left_wall.draw();
-	if (this->_front_wall.getActive())
-		this->_front_wall.draw();
+//	if (this->_front_wall.getActive())
+//		this->_front_wall.draw();
 }
 
 /*

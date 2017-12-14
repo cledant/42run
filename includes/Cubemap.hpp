@@ -19,8 +19,9 @@
 #include "Camera.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "ITranslatable.hpp"
 
-class Cubemap : public IEntity
+class Cubemap : public IEntity, public ITranslatable
 {
 	public :
 
@@ -41,6 +42,13 @@ class Cubemap : public IEntity
 		Cubemap &operator=(Cubemap const &rhs) = delete;
 		Cubemap(Cubemap &&src);
 		Cubemap &operator=(Cubemap &&rhs);
+
+		/*
+ 		* Interface ITranslatable
+ 		*/
+
+		void translateObject(glm::vec3 const &vec);
+		void scaleObject(glm::vec3 const &vec);
 
 		/*
 		 * Interface IEntity

@@ -16,11 +16,12 @@
 #include "GeneralException.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "ITranslatable.hpp"
 #include <iostream>
 #include <memory>
 #include <algorithm>
 
-class CollisionBox
+class CollisionBox : public ITranslatable
 {
 	public :
 
@@ -44,11 +45,28 @@ class CollisionBox
 		CollisionBox &operator=(CollisionBox const &rhs);
 		virtual ~CollisionBox(void);
 
+		/*
+		 * Interface ITranslatable
+		 */
+
+		void translateObject(glm::vec3 const &vec);
+		void scaleObject(glm::vec3 const &vec);
+
+		/*
+		 * Setter
+		 */
 		void setPos(glm::vec3 const &pos);
 		void setHalfSize(glm::vec3 const &pos);
+
+		/*
+		 * Getter
+		 */
 		glm::vec3 const &getPos(void) const;
 		glm::vec3 const &getHalfSize(void) const;
 
+		/*
+		 * Collision Functions
+		 */
 		bool IsPointInBox(glm::vec3 const &pt, Resolution *res) const;
 		bool IsBoxInBox(CollisionBox const &box, Resolution *res) const;
 		bool IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,

@@ -15,10 +15,11 @@
 
 # include "ICollidable.hpp"
 # include "IEntity.hpp"
+# include "ITranslatable.hpp"
 # include "CollidableBox.hpp"
 # include "CollidableProp.hpp"
 
-class Room : public ICollidable, public IEntity
+class Room : public ICollidable, public IEntity, public ITranslatable
 {
 	public :
 
@@ -41,6 +42,13 @@ class Room : public ICollidable, public IEntity
 		Room &operator=(Room const &rhs) = delete;
 		Room(Room &&src);
 		Room &operator=(Room &&rhs);
+
+		/*
+		 * Interface ITranslatable
+		 */
+
+		void translateObject(glm::vec3 const &vec);
+		void scaleObject(glm::vec3 const &vec);
 
 		/*
 		 * Interface IEntity

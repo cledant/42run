@@ -19,8 +19,9 @@
 # include "glm/glm.hpp"
 # include "IEntity.hpp"
 # include "ICollidable.hpp"
+# include "ITranslatable.hpp"
 
-class CollidableBox : public IEntity, public ICollidable
+class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 {
 	public :
 
@@ -47,6 +48,13 @@ class CollidableBox : public IEntity, public ICollidable
 		CollidableBox &operator=(const CollidableBox &rhs) = delete;
 		CollidableBox(CollidableBox &&src);
 		CollidableBox &operator=(CollidableBox &&rhs);
+
+		/*
+		 * Interface ITranslatable
+		 */
+
+		void translateObject(glm::vec3 const &vec);
+		void scaleObject(glm::vec3 const &vec);
 
 		/*
 		 * Interface ICollidable

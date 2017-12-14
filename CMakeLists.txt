@@ -77,7 +77,7 @@ set(SOURCE_FILES
 		srcs/Sprite.cpp
 		srcs/CollidableProp.cpp
 		srcs/Audio.cpp
-		srcs/Gamepad.cpp srcs/Room.cpp)
+		srcs/Gamepad.cpp srcs/Room.cpp srcs/ITranslatable.cpp)
 
 #OS specific libs
 if (APPLE)

@@ -67,6 +67,23 @@ CollidableBox &CollidableBox::operator=(CollidableBox &&rhs)
 }
 
 /*
+ * Interface ITranslatable
+ */
+
+void CollidableBox::translateObject(glm::vec3 const &vec)
+{
+	this->_pos += vec;
+	this->_model.translateObject(vec);
+	this->_cb.translateObject(vec);
+}
+
+void CollidableBox::scaleObject(glm::vec3 const &vec)
+{
+	this->_model.scaleObject(vec);
+	this->_cb.scaleObject(vec);
+}
+
+/*
  * Interface ICollidable
  */
 
