@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   WorldSelect.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/02 12:14:31 by cledant           #+#    #+#             */
-/*   Updated: 2017/09/24 13:31:34 by cledant          ###   ########.fr       */
+/*   Created: 2017/08/31 15:03:35 by cledant           #+#    #+#             */
+/*   Updated: 2017/09/23 17:30:23 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef WORLDSELECT_HPP
+# define WORLDSELECT_HPP
+
 #include "Glfw_manager.hpp"
-#include "WorldSelect.hpp"
+#include "World.hpp"
+#include "Ui.hpp"
 
-int main(void)
-{
-	Glfw_manager manager;
+void run_debug_world(Glfw_manager &manager);
 
-	try
-	{
-		Glfw_manager::run_manager();
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl;
-		return (0);
-	}
-	run_debug_world(manager);
-	std::cout << "Close manager" << std::endl;
-	Glfw_manager::close_manager();
-	return (0);
-}
+#endif
