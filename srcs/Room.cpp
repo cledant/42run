@@ -13,7 +13,7 @@
 #include "Room.hpp"
 
 Room::Params::Params(void) : room_cb(CollisionBox(glm::vec3(0.0f, 0.0f, 0.0f),
-												  glm::vec3(1.1f, 1.1f, 1.0f))),
+												  glm::vec3(1.1f, 1.1f, 1.1f))),
 							 floor(CollidableBox::Params()),
 							 roof(CollidableBox::Params()),
 							 right_wall(CollidableBox::Params()),
