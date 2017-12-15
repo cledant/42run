@@ -13,10 +13,12 @@
 #ifndef WORLDSELECT_HPP
 # define WORLDSELECT_HPP
 
-#include "Glfw_manager.hpp"
-#include "World.hpp"
-#include "Ui.hpp"
+# include "Glfw_manager.hpp"
+# include "World.hpp"
+# include "RunnerWorld.hpp"
+# include "Ui.hpp"
 
 void run_debug_world(Glfw_manager &manager);
+void run_runner_world(Glfw_manager &manager);
 
 #endif

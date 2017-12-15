@@ -80,7 +80,9 @@ set(SOURCE_FILES
 		srcs/Gamepad.cpp
 		srcs/Room.cpp
 		srcs/ITranslatable.cpp
-		srcs/DebugWorld.cpp)
+		srcs/InitDebugWorld.cpp
+		srcs/RunnerWorld.cpp
+		srcs/InitRunnerWorld.cpp)
 
 #OS specific libs
 if (APPLE)
