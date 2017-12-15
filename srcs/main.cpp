@@ -191,7 +191,8 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.tex    = &(oGL.getTexture("TestTex"));
 	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
-	room->translateObject(glm::vec3(2.0f, 2.0f, 2.0f));
+	room->translateObject(glm::vec3(4.0f, 3.0f, 4.0f));
+	room->scaleObject(glm::vec3(2.0f, 2.0f, 2.0f));
 }
 
 static void init_audio(Audio &audio)

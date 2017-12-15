@@ -72,6 +72,12 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		std::string const &getPickUpSound(void) const;
 
 		/*
+		 * Setter
+		 */
+
+		void 	activeFrontWall(bool value);
+
+		/*
 		 * Getter
 		 */
 		CollidableBox &getFloor(void);
