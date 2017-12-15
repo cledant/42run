@@ -53,8 +53,12 @@ class RunnerWorld
 		void reset_skip_loop(void);
 		bool should_be_updated(float time);
 
+		/*
+		 * Getter
+		 */
 		std::string const &getScore(void);
 		std::string const &getStrPlayerHP(void);
+		bool getShouldEnd(void) const;
 
 		class RunnerWorldFailException : public GeneralException
 		{
@@ -91,6 +95,7 @@ class RunnerWorld
 		long int               _score_modifier;
 		bool                   _first_run_theme;
 		bool                   _enabled_gamepad;
+		bool                   _should_end;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,

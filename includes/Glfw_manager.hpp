@@ -59,6 +59,7 @@ class Glfw_manager
 		void calculate_fps(void);
 		void reset_fps_counter(void);
 		void toogle_mouse_exclusive(void);
+		void triggerWindowClose(void);
 
 		class InitFailException : public GeneralException
 		{

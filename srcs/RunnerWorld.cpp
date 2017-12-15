@@ -13,7 +13,7 @@
 #include "RunnerWorld.hpp"
 
 RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
-			 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip) :
+						 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip) :
 		_active(nullptr), _input(input), _window(win), _gamepad(gamepad),
 		_camera(input, gamepad, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), -90.0f, 0.0f),
@@ -22,7 +22,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
 		_input_timer(0.0f), _input_mouse_timer(0.0f),
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
-		_score_modifier(0), _first_run_theme(true)
+		_score_modifier(0), _first_run_theme(true), _should_end(false)
 {
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
@@ -134,15 +134,16 @@ IEntity *RunnerWorld::add_Room(Room::Params &params)
 {
 	IEntity *ptr;
 
-	params.floor.perspec_mult_view = &(this->_perspec_mult_view);
-	params.roof.perspec_mult_view = &(this->_perspec_mult_view);
+	params.floor.perspec_mult_view      = &(this->_perspec_mult_view);
+	params.roof.perspec_mult_view       = &(this->_perspec_mult_view);
 	params.right_wall.perspec_mult_view = &(this->_perspec_mult_view);
-	params.left_wall.perspec_mult_view = &(this->_perspec_mult_view);
+	params.left_wall.perspec_mult_view  = &(this->_perspec_mult_view);
 	params.front_wall.perspec_mult_view = &(this->_perspec_mult_view);
 	ptr = new Room(params);
 	this->_entity_list.push_back(ptr);
 	this->_room_list.push_back(dynamic_cast<Room *>(ptr));
-	return (ptr);}
+	return (ptr);
+}
 
 void RunnerWorld::setActiveInteractive(IInteractive *ptr)
 {
@@ -182,6 +183,10 @@ bool RunnerWorld::should_be_updated(float time)
 	return (false);
 }
 
+/*
+ * Getter
+ */
+
 std::string const &RunnerWorld::getScore(void)
 {
 
@@ -201,16 +206,35 @@ std::string const &RunnerWorld::getStrPlayerHP(void)
 	return (this->_str_hp);
 }
 
+bool RunnerWorld::getShouldEnd(void) const
+{
+	return (this->_should_end);
+}
+
 void RunnerWorld::_check_collisions(void)
 {
 	CollisionBox::SweepResolution res;
+	CollisionBox::Resolution res_box;
 	glm::vec3                     inv_delta;
 	CollisionBox::SweepResolution nearest;
-	ICollidable                   *ptr = nullptr;
+	ICollidable                   *ptr      = nullptr;
+	Room                          *cur_room = nullptr;
 
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
 	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
+	{
+		if ((*it)->getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
+				IsBoxInBox((*it)->getCollisionBox(), &res_box)))
+			cur_room = *it;
+	}
+	if (cur_room == nullptr)
+	{
+		this->_should_end = true;
+		return ;
+	}
+
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 	{
 		if ((*it)->getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
@@ -247,8 +271,8 @@ void RunnerWorld::_check_collisions(void)
 }
 
 void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &box,
-									 CollisionBox::SweepResolution const &res,
-									 ICollidable *ptr)
+										   CollisionBox::SweepResolution const &res,
+										   ICollidable *ptr)
 {
 	glm::vec3 new_delta;
 

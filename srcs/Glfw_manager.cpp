@@ -249,6 +249,11 @@ void Glfw_manager::toogle_mouse_exclusive(void)
 	this->_input.timer = 0.0f;
 }
 
+void Glfw_manager::triggerWindowClose(void)
+{
+	glfwSetWindowShouldClose(this->_window.win, GLFW_TRUE);
+}
+
 void Glfw_manager::_window_creation_callback_setup(void)
 {
 	auto close_callback = [](GLFWwindow *win)

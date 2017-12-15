@@ -44,6 +44,8 @@ static void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 								  static_cast<float>(manager.getWindow().cur_win_h) - 120.0f,
 								  0.5f));
 			manager.swap_buffers();
+			if (world.getShouldEnd())
+				manager.triggerWindowClose();
 			if (manager.should_window_be_closed())
 				manager.destroy_window();
 		}
@@ -80,17 +82,17 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 {
 	params.cb_shader              = &(oGL.getShader("cubemap"));
 	params.shader                 = &(oGL.getShader("sprites"));
-	params.pos                    = glm::vec3({0.0f, 15.0f, 0.0f});
+	params.pos                    = glm::vec3({0.0f, 1.0f, 0.0f});
 	params.size                   = glm::vec3({0.1f, 0.2f, 0.1f});
 	params.cb_tex                 = &(oGL.getTexture("TestTex"));
-	params.tex                    = &(oGL.getTexture("sprite_marisa"));
+	params.tex                    = &(oGL.getTexture("sprite_reimu"));
 	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
 	params.nb_walk_frame          = 4;
 	params.draw_cb                = false;
 	params.max_jump               = 2;
 	params.max_hoover_time        = 2.0f;
 	params.audio                  = &audio;
-	params.theme                  = Audio::THEME_2;
+	params.theme                  = Audio::THEME_1;
 }
 
 static void load_runner(Glfw_manager &manager, oGL_module &oGL,
@@ -117,8 +119,7 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.tex    = &(oGL.getTexture("TestTex"));
 	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
-	room->translateObject(glm::vec3(4.0f, 2.0f, 2.0f));
-	room->scaleObject(glm::vec3(1.0f, 1.0f, 1.0f));
+	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));
 }
 
 static void init_audio(Audio &audio)
