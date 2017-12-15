@@ -237,7 +237,7 @@ void RunnerWorld::_check_collisions(void)
 	this->_check_collidable_box(cur_room->getRoof(), &nearest, inv_delta, &ptr);
 	this->_check_collidable_box(cur_room->getRightWall(), &nearest, inv_delta, &ptr);
 	this->_check_collidable_box(cur_room->getLeftWall(), &nearest, inv_delta, &ptr);
-	if (!cur_room->getFrontWall().getPassthrough())
+	if (cur_room->getFrontWall().getActive())
 		this->_check_collidable_box(cur_room->getFrontWall(), &nearest, inv_delta, &ptr);
 	if (ptr != nullptr)
 		this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
