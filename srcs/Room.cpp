@@ -22,16 +22,12 @@ Room::Params::Params(void) : room_cb(CollisionBox(glm::vec3(0.0f, 0.0f, 0.0f),
 {
 	this->floor.pos  = glm::vec3(0.0f, -1.0f, 0.0f);
 	this->floor.size = glm::vec3(1.1f, 0.1f, 1.1f);
-
 	this->roof.pos  = glm::vec3(0.0f, 1.0f, 0.0f);
 	this->roof.size = glm::vec3(1.1f, 0.1f, 1.1f);
-
 	this->right_wall.pos  = glm::vec3(0.0f, 0.0f, 1.0f);
 	this->right_wall.size = glm::vec3(1.1f, 0.9f, 0.1f);
-
 	this->left_wall.pos  = glm::vec3(0.0f, 0.0f, -1.0f);
 	this->left_wall.size = glm::vec3(1.1f, 0.9f, 0.1f);
-
 	this->front_wall.pos  = glm::vec3(1.0f, 0.0f, 0.0f);
 	this->front_wall.size = glm::vec3(0.1f, 0.9f, 0.9f);
 }
@@ -87,7 +83,7 @@ void Room::translateObject(glm::vec3 const &vec)
 
 void Room::scaleObject(glm::vec3 const &vec)
 {
-	glm::vec3 tr = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 tr = glm::vec3(1.0f, 1.0f, 1.0f) - vec;
 
 	this->_room_cb.scaleObject(vec);
 	this->_floor.scaleObject(vec);
@@ -95,9 +91,6 @@ void Room::scaleObject(glm::vec3 const &vec)
 	this->_right_wall.scaleObject(vec);
 	this->_left_wall.scaleObject(vec);
 	this->_front_wall.scaleObject(vec);
-
-	tr -= vec;
-
 	this->_floor.translateObject(glm::vec3(0.0f, tr.y, 0.0f));
 	this->_roof.translateObject(glm::vec3(0.0f, -tr.y, 0.0f));
 	this->_right_wall.translateObject(glm::vec3(0.0f, 0.0f, -tr.z));
@@ -159,7 +152,7 @@ int Room::getScoreModifier(void) const
 
 bool Room::getPassthrough(void) const
 {
-	return (false);
+	return (true);
 }
 
 bool Room::getActive(void) const
