@@ -101,6 +101,10 @@ class RunnerWorld
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
 									  CollisionBox::SweepResolution const &res,
 									  ICollidable *ptr);
+		void _check_collidable_box(CollidableBox &cb,
+								   CollisionBox::SweepResolution *nearest,
+								   glm::vec3 const &inv_delta,
+								   ICollidable **ptr);
 };
 
 #endif
