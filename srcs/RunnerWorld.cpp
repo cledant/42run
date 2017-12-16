@@ -308,7 +308,7 @@ void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &b
 		player->setCurHooverTimeToMax();
 	}
 	else
-		player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+		player->setVelocityXZtoZero();
 	if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
 		ptr->getDamages() != ICollidable::Damages::NONE)
 	{

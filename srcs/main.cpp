@@ -26,8 +26,8 @@ int main(void)
 		std::cout << e.what() << std::endl;
 		return (0);
 	}
-	run_debug_world(manager);
-//	run_runner_world(manager);
+//	run_debug_world(manager);
+	run_runner_world(manager);
 	std::cout << "Close manager" << std::endl;
 	Glfw_manager::close_manager();
 	return (0);
