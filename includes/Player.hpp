@@ -94,6 +94,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setSurfaceCollisionBox(CollisionBox const &cb);
 		void setOnSurface(bool flag);
 		void setVelocity(glm::vec3 const &vel);
+		void setVelocityYtoZero(void);
+		void setVelocityXZtoZero(void);
 		void setSpriteYaw(float yaw);
 		void setCurJumpToMax(void);
 		void setCurHooverTimeToMax(void);

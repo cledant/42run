@@ -322,12 +322,14 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 	player->setDelta(new_delta);
 	if (res.res.normal.y < 0.0f)
 	{
+		player->setVelocityYtoZero();
 		player->setSurfaceCollisionBox(box);
 		player->setOnSurface(true);
 		player->setCurJumpToMax();
 		player->setCurHooverTimeToMax();
 	}
-	player->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+	else
+		player->setVelocityXZtoZero();
 	if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
 		ptr->getDamages() != ICollidable::Damages::NONE)
 	{

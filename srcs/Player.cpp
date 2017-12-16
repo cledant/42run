@@ -91,6 +91,17 @@ void Player::setVelocity(glm::vec3 const &vel)
 	this->_vel = vel;
 }
 
+void Player::setVelocityYtoZero(void)
+{
+	this->_vel.y = 0.0f;
+}
+
+void Player::setVelocityXZtoZero(void)
+{
+	this->_vel.x = 0.0f;
+	this->_vel.z = 0.0f;
+}
+
 void Player::setSpriteYaw(float yaw)
 {
 	this->_model.setYaw(yaw);
