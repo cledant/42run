@@ -75,7 +75,7 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		 * Setter
 		 */
 
-		void 	activeFrontWall(bool value);
+		void activeFrontWall(bool value);
 
 		/*
 		 * Getter

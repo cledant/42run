@@ -233,50 +233,21 @@ void RunnerWorld::_check_collisions(void)
 		this->_should_end = true;
 		return;
 	}
-	this->_check_collidable_box(cur_room->getFloor(), &nearest, inv_delta, &ptr);
-	this->_check_collidable_box(cur_room->getRoof(), &nearest, inv_delta, &ptr);
-	this->_check_collidable_box(cur_room->getRightWall(), &nearest, inv_delta, &ptr);
-	this->_check_collidable_box(cur_room->getLeftWall(), &nearest, inv_delta, &ptr);
-	if (cur_room->getFrontWall().getActive())
-		this->_check_collidable_box(cur_room->getFrontWall(), &nearest, inv_delta, &ptr);
-	if (ptr != nullptr)
-		this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
-									   (*ptr).getCollisionBox(), nearest, ptr);
-
-
-/*	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 	{
-		if ((*it)->getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
-				IsBoxInBoxSweep((*it)->getCollisionBox(), inv_delta, &res)))
+		if ((*it)->getActive())
 		{
-			if ((*it)->getPassthrough())
-			{
-				if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
-					(*it)->getDamages() != ICollidable::Damages::NONE)
-				{
-					reinterpret_cast<Player *>(this->_active)->lowerHP((*it)->getDamages());
-					reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
-					reinterpret_cast<Player *>(this->_active)->playSound("damage");
-				}
-				reinterpret_cast<Player *>(this->_active)->playSound((*it)->getPickUpSound());
-				this->_score_modifier += (*it)->getScoreModifier();
-				(*it)->setActive(false);
-			}
-			else if (ptr == nullptr)
-			{
-				ptr = *it;
-				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
-			}
-			else if (res.time < nearest.time)
-			{
-				ptr = *it;
-				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
-			}
+			this->_check_collidable_box((*it)->getFloor(), &nearest, inv_delta, &ptr);
+			this->_check_collidable_box((*it)->getRoof(), &nearest, inv_delta, &ptr);
+			this->_check_collidable_box((*it)->getRightWall(), &nearest, inv_delta, &ptr);
+			this->_check_collidable_box((*it)->getLeftWall(), &nearest, inv_delta, &ptr);
+			if ((*it)->getFrontWall().getActive())
+				this->_check_collidable_box((*it)->getFrontWall(), &nearest, inv_delta, &ptr);
 		}
 	}
 	if (ptr != nullptr)
 		this->_resolve_sweep_collision(reinterpret_cast<Player *>(this->_active),
-									   (*ptr).getCollisionBox(), nearest, ptr);*/
+									   (*ptr).getCollisionBox(), nearest, ptr);
 }
 
 void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &box,
