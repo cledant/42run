@@ -32,7 +32,7 @@ Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 	};
 
 	if (shader == nullptr || perspec_mult_view == nullptr || tex == nullptr)
-		throw InitException::InitException();
+		throw Sprite::InitException();
 	std::memcpy(&(this->_vertices), &list_vertices, sizeof(float) * 30);
 	try
 	{
@@ -41,7 +41,7 @@ Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl;
-		throw InitException::InitException();
+		throw Sprite::InitException();
 	}
 	(void) this->_nb_walk_frame;
 }

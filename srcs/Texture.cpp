@@ -33,7 +33,7 @@ Texture::Texture(std::string const &name, std::vector<std::string> const &files,
 												&(this->_tex_h), &(this->_tex_nb_chan));
 			break;
 		default :
-			throw TypeException();
+			throw Texture::TypeException();
 			break;
 	}
 }
@@ -48,7 +48,7 @@ Texture::Texture(std::string const &name, const void *buffer,
 			this->_tex_id = Texture::_load_glyph(buffer, size.x, size.y);
 			break;
 		default :
-			throw TypeException();
+			throw Texture::TypeException();
 			break;
 	}
 }

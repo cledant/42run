@@ -306,9 +306,9 @@ void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 {
 	glm::vec3 new_delta;
 
-	new_delta.x = !isnan(-res.res.delta.x) ? -res.res.delta.x : 0.0f;
-	new_delta.y = !isnan(-res.res.delta.y) ? -res.res.delta.y : 0.0f;
-	new_delta.z = !isnan(-res.res.delta.z) ? -res.res.delta.z : 0.0f;
+	new_delta.x = !std::isnan(-res.res.delta.x) ? -res.res.delta.x : 0.0f;
+	new_delta.y = !std::isnan(-res.res.delta.y) ? -res.res.delta.y : 0.0f;
+	new_delta.z = !std::isnan(-res.res.delta.z) ? -res.res.delta.z : 0.0f;
 
 	if (res.res.normal.y != 0.0f)
 		new_delta.y += (res.res.normal.y < 0.0f) ? (player->getCollisionBox().getHalfSize().y * 0.01) :
