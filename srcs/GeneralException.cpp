@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GeneralException.hpp"
+#include "Exceptions/GeneralException.hpp"
 
 GeneralException::GeneralException(void)
 {

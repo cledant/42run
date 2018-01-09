@@ -13,11 +13,11 @@
 #ifndef PROP_HPP
 # define PROP_HPP
 
-# include "IEntity.hpp"
-# include "oGL_module.hpp"
-# include "Model.hpp"
-# include "Shader.hpp"
-# include "GeneralException.hpp"
+# include "Interfaces/IEntity.hpp"
+# include "OpenGL/oGL_module.hpp"
+# include "Model/Model.hpp"
+# include "OpenGL/Shader.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include "glm/gtc/matrix_transform.hpp"
 # include "glm/glm.hpp"
 # include <iostream>

@@ -17,11 +17,11 @@
 
 # include "glad/glad.h"
 # include "glfw3.h"
-# include "oGL_module.hpp"
+# include "OpenGL/oGL_module.hpp"
 # include "Input.hpp"
 # include "Window.hpp"
 # include "Gamepad.hpp"
-# include "GeneralException.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include <cfenv>
 # include <iostream>
 # include <sstream>

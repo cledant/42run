@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ICollidable.hpp"
+#include "Interfaces/ICollidable.hpp"
 
 ICollidable::ICollidable(void)
 {

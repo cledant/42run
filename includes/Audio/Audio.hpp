@@ -16,7 +16,7 @@
 # include "SFML/Audio/Sound.hpp"
 # include "SFML/Audio/SoundBuffer.hpp"
 # include "SFML/Audio/Music.hpp"
-# include "GeneralException.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include <string>
 # include <iostream>
 # include <map>

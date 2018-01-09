@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Window.hpp"
+#include "WindowManager/Window.hpp"
 
 GLFW_Window::GLFW_Window(void)
 {

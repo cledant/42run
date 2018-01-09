@@ -13,7 +13,7 @@
 #ifndef ICOLLIDABLE_HPP
 # define ICOLLIDABLE_HPP
 
-# include "CollisionBox.hpp"
+# include "GameEntity/CollisionBox.hpp"
 # include <string>
 
 class ICollidable

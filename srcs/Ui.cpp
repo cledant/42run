@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Ui.hpp"
+#include "UI/Ui.hpp"
 
 Ui::Ui(GLFW_Window const &win) : _win(win)
 {

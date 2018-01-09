@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   CollidableBox.hpp                                  :+:      :+:    :+:   */
+/*   CollidableProp.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/15 15:03:35 by cledant           #+#    #+#             */
-/*   Updated: 2017/11/15 17:30:23 by cledant          ###   ########.fr       */
+/*   Created: 2017/11/06 09:38:15 by cledant           #+#    #+#             */
+/*   Updated: 2017/11/06 09:38:15 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLLIDABLEBOX_HPP
-# define COLLIDABLEBOX_HPP
+#ifndef COLLIDABLEPROP_HPP
+# define COLLIDABLEPROP_HPP
 
-# include "oGL_module.hpp"
-# include "Cubemap.hpp"
-# include "GeneralException.hpp"
-# include "glm/glm.hpp"
-# include "IEntity.hpp"
-# include "ICollidable.hpp"
-# include "ITranslatable.hpp"
+# include "Prop.hpp"
+# include "CollisionBox.hpp"
+# include "Interfaces/ICollidable.hpp"
+# include "Interfaces/IEntity.hpp"
 
-class CollidableBox : public IEntity, public ICollidable, public ITranslatable
+class CollidableProp : public ICollidable, public IEntity
 {
 	public :
 
@@ -30,31 +27,20 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 			Params(void);
 			~Params(void);
 
-			Shader const         *shader;
-			glm::mat4 const      *perspec_mult_view;
-			Texture const        *tex;
-			glm::vec3            pos;
-			glm::vec3            size;
+			Prop::Params         prop_params;
+			CollisionBox         cb;
 			ICollidable::Damages dmg;
 			bool                 passthrough;
 			int                  score_modifier;
 			bool                 active;
 			std::string          pick_up;
+			bool                 auto_rotation;
 		};
 
-		CollidableBox(CollidableBox::Params const &params);
-		virtual ~CollidableBox();
-		CollidableBox(const CollidableBox &src) = delete;
-		CollidableBox &operator=(const CollidableBox &rhs) = delete;
-		CollidableBox(CollidableBox &&src);
-		CollidableBox &operator=(CollidableBox &&rhs);
-
-		/*
-		 * Interface ITranslatable
-		 */
-
-		void translateObject(glm::vec3 const &vec);
-		void scaleObject(glm::vec3 const &vec);
+		CollidableProp(CollidableProp::Params const &params);
+		virtual ~CollidableProp(void);
+		CollidableProp(CollidableProp const &src);
+		CollidableProp &operator=(CollidableProp const &rhs);
 
 		/*
 		 * Interface ICollidable
@@ -76,21 +62,21 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 		void draw(void);
 
 		/*
- 		* Getter
-		*/
-		glm::vec3 const &getPos(void) const;
-		Cubemap &getCubemap(void);
+		 * Getter
+		 */
+		Prop const &getProp(void) const;
+		bool getAutoRotation(void) const;
 
 	private :
 
-		Cubemap              _model;
+		Prop                 _prop;
 		CollisionBox         _cb;
-		glm::vec3            _pos;
 		ICollidable::Damages _dmg;
 		bool                 _passthrough;
 		int                  _score_modifier;
 		bool                 _active;
 		std::string          _pick_up;
+		bool                 _auto_rotation;
 };
 
 #endif

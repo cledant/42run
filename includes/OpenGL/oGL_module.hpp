@@ -17,8 +17,8 @@
 # include "glfw3.h"
 # include "Shader.hpp"
 # include "Texture.hpp"
-# include "Model.hpp"
-# include "GeneralException.hpp"
+# include "Model/Model.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include <iostream>
 # include <vector>
 

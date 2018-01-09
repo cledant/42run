@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Camera.hpp"
+#include "Cameras/Camera.hpp"
 
 Camera::Camera(Input const &input, glm::vec3 const &pos, glm::vec3 const &world_up,
 			   glm::vec3 const &front, GLfloat yaw, GLfloat pitch) :

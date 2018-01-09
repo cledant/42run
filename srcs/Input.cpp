@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Input.hpp"
+#include "WindowManager/Input.hpp"
 
 Input::Input(void) :
 		p_key(1024, RELEASED), p_mouse(32, RELEASED), last_pos_x(0.0f), last_pos_y(0.0f), x_offset(0.0f),

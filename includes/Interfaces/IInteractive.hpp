@@ -14,9 +14,9 @@
 # define IINTERACTIVE_HPP
 
 # include "glm/glm.hpp"
-# include "Window.hpp"
-# include "Input.hpp"
-# include "Gamepad.hpp"
+# include "WindowManager/Window.hpp"
+# include "WindowManager/Input.hpp"
+# include "WindowManager/Gamepad.hpp"
 
 class IInteractive
 {

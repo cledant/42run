@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ITranslatable.hpp"
+#include "Interfaces/ITranslatable.hpp"
 
 ITranslatable::ITranslatable(void)
 {

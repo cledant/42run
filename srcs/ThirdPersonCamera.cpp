@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ThirdPersonCamera.hpp"
+#include "Cameras/ThirdPersonCamera.hpp"
 
 ThirdPersonCamera::ThirdPersonCamera(Input const &input, Gamepad const &gamepad,
 									 glm::vec3 const &target_pos, float dist_to_target,

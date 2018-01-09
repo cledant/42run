@@ -13,11 +13,11 @@
 #ifndef ROOM_HPP
 # define ROOM_HPP
 
-# include "ICollidable.hpp"
-# include "IEntity.hpp"
-# include "ITranslatable.hpp"
-# include "CollidableBox.hpp"
-# include "CollidableProp.hpp"
+# include "Interfaces/ICollidable.hpp"
+# include "Interfaces/IEntity.hpp"
+# include "Interfaces/ITranslatable.hpp"
+# include "GameEntity/CollidableBox.hpp"
+# include "GameEntity/CollidableProp.hpp"
 
 class Room : public ICollidable, public IEntity, public ITranslatable
 {

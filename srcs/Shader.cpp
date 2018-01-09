@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Shader.hpp"
+#include "OpenGL/Shader.hpp"
 
 Shader::Shader(void) : _name(""), _shader_program(0)
 {

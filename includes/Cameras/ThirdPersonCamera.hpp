@@ -13,12 +13,12 @@
 #ifndef THIRDPERSONCAMERA_HPP
 # define THIRDPERSONCAMERA_HPP
 
-# include "Input.hpp"
-# include "Gamepad.hpp"
-# include "GeneralException.hpp"
+# include "WindowManager/Input.hpp"
+# include "WindowManager/Gamepad.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"
-# include "Camera.hpp"
+# include "Cameras/Camera.hpp"
 # include <iostream>
 
 # define THIRD_CAM_GAMEPAD_SENSITIVITY 15.0f

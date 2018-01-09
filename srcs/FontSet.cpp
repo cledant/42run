@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FontSet.hpp"
+#include "UI/FontSet.hpp"
 
 FontSet::FontSet(Shader const *shader, glm::mat4 const *proj_mat,
 				 std::string const &name, std::string const &font_path, size_t size) :

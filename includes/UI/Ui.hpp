@@ -14,7 +14,7 @@
 # define UI_HPP
 
 # include "glad/glad.h"
-# include "Window.hpp"
+# include "WindowManager/Window.hpp"
 # include "FontSet.hpp"
 # include <vector>
 # include <string>

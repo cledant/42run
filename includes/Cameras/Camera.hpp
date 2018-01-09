@@ -13,8 +13,8 @@
 #ifndef CAMERA_HPP
 # define CAMERA_HPP
 
-# include "Input.hpp"
-# include "GeneralException.hpp"
+# include "WindowManager/Input.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"
 # include <iostream>

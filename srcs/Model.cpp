@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Model.hpp"
+#include "Model/Model.hpp"
 
 Model::Model(void) : _name(""), _center({0.0f, 0.0f, 0.0f})
 {

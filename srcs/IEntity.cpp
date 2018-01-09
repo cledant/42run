@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IEntity.hpp"
+#include "Interfaces/IEntity.hpp"
 
 IEntity::IEntity(void)
 {

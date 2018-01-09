@@ -14,7 +14,7 @@
 # define GAMEPAD_HPP
 
 # include "glfw3.h"
-# include "GeneralException.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include <fstream>
 # include <iostream>
 # include <sstream>

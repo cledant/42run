@@ -18,8 +18,8 @@
 # include "assimp/Importer.hpp"
 # include "assimp/scene.h"
 # include "assimp/postprocess.h"
-# include "Texture.hpp"
-# include "GeneralException.hpp"
+# include "OpenGL/Texture.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include "glm/glm.hpp"
 # include <iostream>
 # include <vector>

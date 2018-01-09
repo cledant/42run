@@ -13,13 +13,13 @@
 #ifndef CUBEMAP_HPP
 # define CUBEMAP_HPP
 
-#include "IEntity.hpp"
-#include "oGL_module.hpp"
-#include "Texture.hpp"
-#include "Camera.hpp"
+#include "Interfaces/IEntity.hpp"
+#include "OpenGL/oGL_module.hpp"
+#include "OpenGL/Texture.hpp"
+#include "Cameras/Camera.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "ITranslatable.hpp"
+#include "Interfaces/ITranslatable.hpp"
 
 class Cubemap : public IEntity, public ITranslatable
 {

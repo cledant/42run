@@ -13,10 +13,10 @@
 #ifndef COLLISIONBOX_HPP
 # define COLLISIONBOX_HPP
 
-#include "GeneralException.hpp"
+#include "Exceptions/GeneralException.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "ITranslatable.hpp"
+#include "Interfaces/ITranslatable.hpp"
 #include <iostream>
 #include <memory>
 #include <algorithm>

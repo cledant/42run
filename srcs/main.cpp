@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Glfw_manager.hpp"
-#include "WorldSelect.hpp"
+#include "WindowManager/Glfw_manager.hpp"
+#include "Utility/WorldSelect.hpp"
 
 int main(void)
 {

@@ -15,7 +15,7 @@
 
 # include "glad/glad.h"
 # include "glfw3.h"
-# include "GeneralException.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "stb_image.h"
 # include <iostream>

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RunnerWorld.hpp"
+#include "Runner/RunnerWorld.hpp"
 
 RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 						 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip) :

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Glfw_manager.hpp"
+#include "WindowManager/Glfw_manager.hpp"
 
 Glfw_manager::Glfw_manager(void) : _input(), _window(), _last_time(0.0f),
 								   _last_fps_time(0.0f), _nb_frame(0), _str_fps("60.0"),

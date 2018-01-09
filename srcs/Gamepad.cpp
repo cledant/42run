@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Gamepad.hpp"
+#include "WindowManager/Gamepad.hpp"
 
 Gamepad::Gamepad(size_t refreshed_gamepad_nb) : _refreshed_gamepad_nb(refreshed_gamepad_nb)
 {

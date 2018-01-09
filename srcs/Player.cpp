@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <Glfw_manager.hpp>
-#include "Player.hpp"
+#include <WindowManager/Glfw_manager.hpp>
+#include "GameEntity/Player.hpp"
 
 Player::Params::Params(void)
 {

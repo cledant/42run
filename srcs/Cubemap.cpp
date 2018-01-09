@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Cubemap.hpp"
+#include "GameEntity/Cubemap.hpp"
 
 Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 				 std::vector<std::string> const &files, glm::vec3 const &pos,

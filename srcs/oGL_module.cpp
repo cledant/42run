@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "oGL_module.hpp"
+#include "OpenGL/oGL_module.hpp"
 
 oGL_module::oGL_module(void)
 {

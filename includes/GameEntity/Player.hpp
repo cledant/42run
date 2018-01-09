@@ -15,21 +15,21 @@
 
 # define GLM_ENABLE_EXPERIMENTAL
 
-# include "oGL_module.hpp"
-# include "Cubemap.hpp"
-# include "Sprite.hpp"
-# include "GeneralException.hpp"
+# include "OpenGL/oGL_module.hpp"
+# include "GameEntity/Cubemap.hpp"
+# include "GameEntity/Sprite.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"
 # include "glm/gtx/norm.hpp"
-# include "IEntity.hpp"
-# include "IInteractive.hpp"
-# include "ICollidable.hpp"
-# include "IGravity.hpp"
-# include "ThirdPersonCamera.hpp"
-# include "Window.hpp"
-# include "Input.hpp"
-# include "Audio.hpp"
+# include "Interfaces/IEntity.hpp"
+# include "Interfaces/IInteractive.hpp"
+# include "Interfaces/ICollidable.hpp"
+# include "Interfaces/IGravity.hpp"
+# include "Cameras/ThirdPersonCamera.hpp"
+# include "WindowManager/Window.hpp"
+# include "WindowManager/Input.hpp"
+# include "Audio/Audio.hpp"
 # include <iostream>
 # include <vector>
 # include <fstream>

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IInteractive.hpp"
+#include "Interfaces/IInteractive.hpp"
 
 IInteractive::IInteractive(void)
 {

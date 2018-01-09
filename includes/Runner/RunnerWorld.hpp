@@ -13,22 +13,22 @@
 #ifndef RUNNERWORLD_HPP
 # define RUNNERWORLD_HPP
 
-# include "oGL_module.hpp"
-# include "GeneralException.hpp"
+# include "OpenGL/oGL_module.hpp"
+# include "Exceptions/GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"
-# include "IEntity.hpp"
-# include "IInteractive.hpp"
-# include "ICollidable.hpp"
-# include "CollisionBox.hpp"
-# include "Shader.hpp"
-# include "ThirdPersonCamera.hpp"
-# include "Player.hpp"
-# include "CollidableBox.hpp"
-# include "CollidableProp.hpp"
-# include "Room.hpp"
-# include "Window.hpp"
-# include "Input.hpp"
+# include "Interfaces/IEntity.hpp"
+# include "Interfaces/IInteractive.hpp"
+# include "Interfaces/ICollidable.hpp"
+# include "GameEntity/CollisionBox.hpp"
+# include "OpenGL/Shader.hpp"
+# include "Cameras/ThirdPersonCamera.hpp"
+# include "GameEntity/Player.hpp"
+# include "GameEntity/CollidableBox.hpp"
+# include "GameEntity/CollidableProp.hpp"
+# include "GameEntity/Room.hpp"
+# include "WindowManager/Window.hpp"
+# include "WindowManager/Input.hpp"
 # include <iostream>
 # include <vector>
 # include <fstream>

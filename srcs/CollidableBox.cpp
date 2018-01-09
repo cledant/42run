@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "CollidableBox.hpp"
+#include "GameEntity/CollidableBox.hpp"
 
 CollidableBox::Params::Params(void)
 {

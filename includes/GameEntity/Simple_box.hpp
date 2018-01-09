@@ -13,9 +13,9 @@
 #ifndef SIMPLE_BOX_HPP
 # define SIMPLE_BOX_HPP
 
-#include "IEntity.hpp"
-#include "oGL_module.hpp"
-#include "Camera.hpp"
+#include "Interfaces/IEntity.hpp"
+#include "OpenGL/oGL_module.hpp"
+#include "Cameras/Camera.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 

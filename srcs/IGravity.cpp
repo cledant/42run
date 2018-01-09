@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IGravity.hpp"
+#include "Interfaces/IGravity.hpp"
 
 IGravity::IGravity(void)
 {

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Mesh.hpp"
-#include "oGL_module.hpp"
+#include "Model/Mesh.hpp"
+#include "OpenGL/oGL_module.hpp"
 
 Mesh::Mesh(void) : _vao(0), _vbo(0), _ebo(0), _directory(".")
 {
