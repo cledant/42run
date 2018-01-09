@@ -21,7 +21,8 @@ option(GLFW_INSTALL "" OFF)
 add_subdirectory(glfw ${CMAKE_BINARY_DIR}/glfw/build)
 
 #Setup Assimp
-option(BUILD_SHARED_LIBS "" OFF)
+set(BUILD_SHARED_LIBS OFF)
+set(ASSIMP_NO_EXPORT ON)
 add_subdirectory(assimp ${CMAKE_BINARY_DIR}/assimp/build)
 
 #Setup FreeType
