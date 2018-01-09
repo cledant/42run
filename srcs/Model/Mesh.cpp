@@ -17,14 +17,15 @@ Mesh::Mesh(void) : _vao(0), _vbo(0), _ebo(0), _directory(".")
 {
 }
 
-Mesh::Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory) :
+Mesh::Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory,
+		   std::map<std::string, Texture> &texture_list) :
 		_vao(0), _vbo(0), _ebo(0), _directory(directory)
 {
 	if (mesh == NULL)
 		throw Mesh::InvalidMeshException();
 	this->_load_mesh(mesh);
 	this->_load_indice(mesh);
-	this->_load_material(mesh, scene);
+	this->_load_material(mesh, scene, texture_list);
 	try
 	{
 		this->_allocate_set_GL_ressources();
@@ -48,24 +49,24 @@ Mesh::~Mesh(void)
 
 Mesh::Mesh(Mesh &&src)
 {
-	this->_indice_list  = src.getIndiceList();
-	this->_vertex_list  = src.getVertexList();
-	this->_vao          = src.moveVAO();
-	this->_vbo          = src.moveVBO();
-	this->_ebo          = src.moveEBO();
-	this->_texture_list = src.moveTextureList();
-	this->_directory    = src.getDirectory();
+	this->_indice_list       = src.getIndiceList();
+	this->_vertex_list       = src.getVertexList();
+	this->_vao               = src.moveVAO();
+	this->_vbo               = src.moveVBO();
+	this->_ebo               = src.moveEBO();
+	this->_texture_name_list = src.getTextureNameList();
+	this->_directory         = src.getDirectory();
 }
 
 Mesh &Mesh::operator=(Mesh &&rhs)
 {
-	this->_indice_list  = rhs.getIndiceList();
-	this->_vertex_list  = rhs.getVertexList();
-	this->_vao          = rhs.moveVAO();
-	this->_vbo          = rhs.moveVBO();
-	this->_ebo          = rhs.moveEBO();
-	this->_texture_list = rhs.moveTextureList();
-	this->_directory    = rhs.getDirectory();
+	this->_indice_list       = rhs.getIndiceList();
+	this->_vertex_list       = rhs.getVertexList();
+	this->_vao               = rhs.moveVAO();
+	this->_vbo               = rhs.moveVBO();
+	this->_ebo               = rhs.moveEBO();
+	this->_texture_name_list = rhs.getTextureNameList();
+	this->_directory         = rhs.getDirectory();
 	return (*this);
 }
 
@@ -74,9 +75,9 @@ std::vector<Mesh::Vertex> const &Mesh::getVertexList(void) const
 	return (this->_vertex_list);
 }
 
-std::vector<Texture> const &Mesh::getTextureList(void) const
+std::map<std::string, Texture::t_tex_type> const &Mesh::getTextureNameList(void) const
 {
-	return (this->_texture_list);
+	return (this->_texture_name_list);
 }
 
 std::vector<unsigned int> const &Mesh::getIndiceList(void) const
@@ -116,11 +117,6 @@ GLuint Mesh::moveEBO(void)
 
 	this->_ebo = 0;
 	return (tmp);
-}
-
-std::vector<Texture> Mesh::moveTextureList(void)
-{
-	return (std::move(this->_texture_list));
 }
 
 void Mesh::_load_mesh(aiMesh *mesh)
@@ -172,19 +168,21 @@ void Mesh::_load_indice(aiMesh *mesh)
 	}
 }
 
-void Mesh::_load_material(aiMesh *mesh, const aiScene *scene)
+void Mesh::_load_material(aiMesh *mesh, const aiScene *scene,
+						  std::map<std::string, Texture> &texture_list)
 {
 	aiMaterial *mat = NULL;
 
 	if ((mat = scene->mMaterials[mesh->mMaterialIndex]) == NULL)
 		throw Mesh::InvalidMaterialException();
-	this->_load_texture(mat, aiTextureType_DIFFUSE, Texture::TEX_DIFFUSE);
-	this->_load_texture(mat, aiTextureType_SPECULAR, Texture::TEX_SPECULAR);
-	this->_load_texture(mat, aiTextureType_HEIGHT, Texture::TEX_NORMAL);
-	this->_load_texture(mat, aiTextureType_AMBIENT, Texture::TEX_HEIGHT);
+	this->_load_texture(mat, aiTextureType_DIFFUSE, Texture::TEX_DIFFUSE, texture_list);
+	this->_load_texture(mat, aiTextureType_SPECULAR, Texture::TEX_SPECULAR, texture_list);
+	this->_load_texture(mat, aiTextureType_HEIGHT, Texture::TEX_NORMAL, texture_list);
+	this->_load_texture(mat, aiTextureType_AMBIENT, Texture::TEX_HEIGHT, texture_list);
 }
 
-void Mesh::_load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_type tex_type)
+void Mesh::_load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_type tex_type,
+						 std::map<std::string, Texture> &texture_list)
 {
 	aiString    str;
 	std::string std_str;
@@ -195,20 +193,19 @@ void Mesh::_load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_typ
 		std_str.clear();
 		std_str = this->_directory + '/';
 		std_str.append(str.C_Str());
-		if (!this->_find_texture(std_str))
-			this->_texture_list.push_back({std_str, {std_str}, Texture::TEX_FLAT, tex_type});
+		this->_texture_name_list.insert(
+				std::pair<std::string, Texture::t_tex_type>(std_str, tex_type));
+		if (!this->_find_texture(std_str, texture_list))
+			texture_list.insert(std::pair<std::string, Texture>(std_str,
+																{std_str, {std_str}, Texture::TEX_FLAT, tex_type}));
 	}
 }
 
-bool Mesh::_find_texture(std::string const &name) const
+bool Mesh::_find_texture(std::string const &name,
+						 std::map<std::string, Texture> const &texture_list) const
 {
-	std::vector<Texture>::const_iterator it;
-
-	for (it = this->_texture_list.begin(); it != this->_texture_list.end(); ++it)
-	{
-		if (it->getName().compare(name) == 0)
-			return (true);
-	}
+	if (texture_list.find(name) == texture_list.end())
+		return (true);
 	return (false);
 }
 

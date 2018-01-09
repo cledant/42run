@@ -24,6 +24,7 @@
 # include "glm/glm.hpp"
 # include <iostream>
 # include <vector>
+# include <map>
 
 class Model
 {
@@ -61,9 +62,10 @@ class Model
 
 	private :
 
-		std::string       _name;
-		std::vector<Mesh> _mesh_list;
-		glm::vec3         _center;
+		std::string                    _name;
+		std::vector<Mesh>              _mesh_list;
+		std::map<std::string, Texture> _texture_list;
+		glm::vec3                      _center;
 
 		void _load_model(std::string const &path);
 		void _load_node(aiNode *node, const aiScene *scene, std::string const &directory);

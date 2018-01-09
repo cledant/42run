@@ -86,7 +86,7 @@ void Model::_load_node(aiNode *node, const aiScene *scene, std::string const &di
 	if (node == NULL)
 		throw Model::InvalidNodeException();
 	for (size_t i = 0; i < node->mNumMeshes; ++i)
-		this->_mesh_list.push_back({scene->mMeshes[node->mMeshes[i]], scene, directory});
+		this->_mesh_list.push_back({scene->mMeshes[node->mMeshes[i]], scene, directory,});
 	for (size_t j = 0; j < node->mNumChildren; ++j)
 		this->_load_node(node->mChildren[j], scene, directory);
 }

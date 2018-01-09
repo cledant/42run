@@ -23,6 +23,8 @@
 # include "glm/glm.hpp"
 # include <iostream>
 # include <vector>
+# include <map>
+# include <utility>
 
 class Mesh
 {
@@ -38,7 +40,8 @@ class Mesh
 		};
 
 		Mesh(void);
-		Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory);
+		Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory,
+			 std::map<std::string, Texture> &texture_list);
 		Mesh(Mesh const &src) = delete;
 		Mesh &operator=(Mesh const &rhs) = delete;
 		Mesh(Mesh &&src);
@@ -46,10 +49,9 @@ class Mesh
 		virtual ~Mesh(void);
 
 		std::vector<Mesh::Vertex> const &getVertexList(void) const;
-		std::vector<Texture> const &getTextureList(void) const;
 		std::vector<unsigned int> const &getIndiceList(void) const;
+		std::map<std::string, Texture::t_tex_type> const &getTextureNameList(void) const;
 		std::string const &getDirectory(void) const;
-		std::vector<Texture> moveTextureList(void);
 		GLuint getVAO(void) const;
 		GLuint moveVAO(void);
 		GLuint moveVBO(void);
@@ -81,19 +83,22 @@ class Mesh
 
 	private :
 
-		std::vector<Mesh::Vertex> _vertex_list;
-		std::vector<Texture>      _texture_list;
-		std::vector<unsigned int> _indice_list;
-		GLuint                    _vao;
-		GLuint                    _vbo;
-		GLuint                    _ebo;
-		std::string               _directory;
+		std::vector<Mesh::Vertex>                  _vertex_list;
+		std::map<std::string, Texture::t_tex_type> _texture_name_list;
+		std::vector<unsigned int>                  _indice_list;
+		GLuint                                     _vao;
+		GLuint                                     _vbo;
+		GLuint                                     _ebo;
+		std::string                                _directory;
 
 		void _load_mesh(aiMesh *mesh);
 		void _load_indice(aiMesh *mesh);
-		void _load_material(aiMesh *mesh, const aiScene *scene);
-		void _load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_type tex_type);
-		bool _find_texture(std::string const &name) const;
+		void _load_material(aiMesh *mesh, const aiScene *scene,
+							std::map<std::string, Texture> &texture_list);
+		void _load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_type tex_type,
+						   std::map<std::string, Texture> &texture_list);
+		bool _find_texture(std::string const &name,
+						   std::map<std::string, Texture> const &texture_list) const;
 		void _allocate_set_GL_ressources(void);
 };
 
