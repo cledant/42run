@@ -196,8 +196,10 @@ void Mesh::_load_texture(aiMaterial *mat, aiTextureType type, Texture::t_tex_typ
 		this->_texture_name_list.insert(
 				std::pair<std::string, Texture::t_tex_type>(std_str, tex_type));
 		if (!this->_find_texture(std_str, texture_list))
-			texture_list.insert(std::pair<std::string, Texture>(std_str,
-																{std_str, {std_str}, Texture::TEX_FLAT, tex_type}));
+		{
+			Texture tmp = {std_str, {std_str}, Texture::TEX_FLAT, tex_type};
+			texture_list.insert(std::pair<std::string, Texture>(std_str, std::move(tmp)));
+		}
 	}
 }
 
@@ -205,8 +207,8 @@ bool Mesh::_find_texture(std::string const &name,
 						 std::map<std::string, Texture> const &texture_list) const
 {
 	if (texture_list.find(name) == texture_list.end())
-		return (true);
-	return (false);
+		return (false);
+	return (true);
 }
 
 void Mesh::_allocate_set_GL_ressources(void)

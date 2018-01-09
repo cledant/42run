@@ -40,8 +40,10 @@ class Model
 
 		std::string const &getName(void) const;
 		std::vector<Mesh> const &getMeshList(void) const;
+		std::map<std::string, Texture> const &getTextureList(void) const;
 		glm::vec3 const &getCenter(void) const;
 		std::vector<Mesh> moveMeshList(void);
+		std::map<std::string, Texture> moveTextureList(void);
 
 		class FileOpenException : public GeneralException
 		{

@@ -26,16 +26,18 @@ Model::Model(std::string const &name, std::string const &path) : _name(name),
 
 Model::Model(Model &&src)
 {
-	this->_name      = src.getName();
-	this->_mesh_list = src.moveMeshList();
-	this->_center    = src.getCenter();
+	this->_name         = src.getName();
+	this->_mesh_list    = src.moveMeshList();
+	this->_center       = src.getCenter();
+	this->_texture_list = src.moveTextureList();
 }
 
 Model &Model::operator=(Model &&rhs)
 {
-	this->_name      = rhs.getName();
-	this->_mesh_list = rhs.moveMeshList();
-	this->_center    = rhs.getCenter();
+	this->_name         = rhs.getName();
+	this->_mesh_list    = rhs.moveMeshList();
+	this->_center       = rhs.getCenter();
+	this->_texture_list = rhs.moveTextureList();
 	return (*this);
 }
 
@@ -63,6 +65,16 @@ std::vector<Mesh> Model::moveMeshList()
 	return (std::move(this->_mesh_list));
 }
 
+std::map<std::string, Texture> Model::moveTextureList(void)
+{
+	return (std::move(this->_texture_list));
+}
+
+std::map<std::string, Texture> const &Model::getTextureList(void) const
+{
+	return (this->_texture_list);
+}
+
 void Model::_load_model(std::string const &path)
 {
 	Assimp::Importer importer;
@@ -86,7 +98,8 @@ void Model::_load_node(aiNode *node, const aiScene *scene, std::string const &di
 	if (node == NULL)
 		throw Model::InvalidNodeException();
 	for (size_t i = 0; i < node->mNumMeshes; ++i)
-		this->_mesh_list.push_back({scene->mMeshes[node->mMeshes[i]], scene, directory,});
+		this->_mesh_list.push_back({scene->mMeshes[node->mMeshes[i]], scene, directory,
+									this->_texture_list});
 	for (size_t j = 0; j < node->mNumChildren; ++j)
 		this->_load_node(node->mChildren[j], scene, directory);
 }

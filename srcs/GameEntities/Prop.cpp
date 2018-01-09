@@ -88,9 +88,10 @@ void Prop::update(float time)
 
 void Prop::draw(void)
 {
-	GLint  uniform_mat_total_id;
-	GLint  uniform_tex_diff_id;
-	size_t nb_tex = 0;
+	GLint                                          uniform_mat_total_id;
+	GLint                                          uniform_tex_diff_id;
+	size_t                                         nb_tex = 0;
+	std::map<std::string, Texture>::const_iterator ftex;
 
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
 		this->_model == nullptr ||
@@ -107,13 +108,15 @@ void Prop::draw(void)
 	for (size_t i = 0; i < this->_model->getMeshList().size(); ++i)
 	{
 		nb_tex = 0;
-		for (size_t j = 0; j < this->_model->getMeshList()[i].getTextureList().size(); ++j)
+		for (auto it = this->_model->getMeshList()[i].getTextureNameList().cbegin();
+			 it != this->_model->getMeshList()[i].getTextureNameList().cend(); ++it)
 		{
-			if (this->_model->getMeshList()[i].getTextureList()[j]
-						.getTextureType() == Texture::TEX_DIFFUSE)
+			if (it->second == Texture::TEX_DIFFUSE)
 			{
-				oGL_module::oGL_set_texture(uniform_tex_diff_id, nb_tex,
-											this->_model->getMeshList()[i].getTextureList()[j].getTextureID());
+				if ((ftex = this->_model->getTextureList().find(it->first))
+					!= this->_model->getTextureList().cend())
+					oGL_module::oGL_set_texture(uniform_tex_diff_id, nb_tex,
+												ftex->second.getTextureID());
 				nb_tex++;
 				break;
 			}
