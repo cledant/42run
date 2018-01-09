@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   CollidableProp.hpp                                 :+:      :+:    :+:   */
+/*   Room.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,15 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLLIDABLEPROP_HPP
-# define COLLIDABLEPROP_HPP
+#ifndef ROOM_HPP
+# define ROOM_HPP
 
-# include "Prop.hpp"
-# include "CollisionBox.hpp"
 # include "Interfaces/ICollidable.hpp"
 # include "Interfaces/IEntity.hpp"
+# include "Interfaces/ITranslatable.hpp"
+# include "CollidableBox.hpp"
+# include "CollidableProp.hpp"
 
-class CollidableProp : public ICollidable, public IEntity
+class Room : public ICollidable, public IEntity, public ITranslatable
 {
 	public :
 
@@ -27,24 +28,39 @@ class CollidableProp : public ICollidable, public IEntity
 			Params(void);
 			~Params(void);
 
-			Prop::Params         prop_params;
-			CollisionBox         cb;
-			ICollidable::Damages dmg;
-			bool                 passthrough;
-			int                  score_modifier;
-			bool                 active;
-			std::string          pick_up;
-			bool                 auto_rotation;
+			CollisionBox          room_cb;
+			CollidableBox::Params floor;
+			CollidableBox::Params roof;
+			CollidableBox::Params right_wall;
+			CollidableBox::Params left_wall;
+			CollidableBox::Params front_wall;
 		};
 
-		CollidableProp(CollidableProp::Params const &params);
-		virtual ~CollidableProp(void);
-		CollidableProp(CollidableProp const &src);
-		CollidableProp &operator=(CollidableProp const &rhs);
+		Room(Room::Params const &params);
+		virtual ~Room(void);
+		Room(Room const &src) = delete;
+		Room &operator=(Room const &rhs) = delete;
+		Room(Room &&src);
+		Room &operator=(Room &&rhs);
+
+		/*
+		 * Interface ITranslatable
+		 */
+
+		void translateObject(glm::vec3 const &vec);
+		void scaleObject(glm::vec3 const &vec);
+
+		/*
+		 * Interface IEntity
+		 */
+
+		void update(float time);
+		void draw(void);
 
 		/*
 		 * Interface ICollidable
 		 */
+
 		void setPassthrough(bool value);
 		void setActive(bool value);
 
@@ -56,27 +72,29 @@ class CollidableProp : public ICollidable, public IEntity
 		std::string const &getPickUpSound(void) const;
 
 		/*
-		 * Interface IEntity
+		 * Setter
 		 */
-		void update(float time);
-		void draw(void);
+
+		void activeFrontWall(bool value);
 
 		/*
 		 * Getter
 		 */
-		Prop const &getProp(void) const;
-		bool getAutoRotation(void) const;
+		CollidableBox &getFloor(void);
+		CollidableBox &getRoof(void);
+		CollidableBox &getRightWall(void);
+		CollidableBox &getLeftWall(void);
+		CollidableBox &getFrontWall(void);
 
 	private :
 
-		Prop                 _prop;
-		CollisionBox         _cb;
-		ICollidable::Damages _dmg;
-		bool                 _passthrough;
-		int                  _score_modifier;
-		bool                 _active;
-		std::string          _pick_up;
-		bool                 _auto_rotation;
+		CollisionBox  _room_cb;
+		CollidableBox _floor;
+		CollidableBox _roof;
+		CollidableBox _right_wall;
+		CollidableBox _left_wall;
+		CollidableBox _front_wall;
+		std::string   _pick_up;
 };
 
 #endif

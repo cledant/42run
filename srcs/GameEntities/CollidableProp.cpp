@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GameEntity/CollidableProp.hpp"
+#include "GameEntities/CollidableProp.hpp"
 
 CollidableProp::Params::Params(void) : cb(CollisionBox(this->prop_params.pos,
 													   glm::vec3(1.0f, 1.0f, 1.0f)))

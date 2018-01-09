@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Room.hpp                                           :+:      :+:    :+:   */
+/*   CollidableProp.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,16 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ROOM_HPP
-# define ROOM_HPP
+#ifndef COLLIDABLEPROP_HPP
+# define COLLIDABLEPROP_HPP
 
+# include "Prop.hpp"
+# include "Utility/CollisionBox.hpp"
 # include "Interfaces/ICollidable.hpp"
 # include "Interfaces/IEntity.hpp"
-# include "Interfaces/ITranslatable.hpp"
-# include "GameEntity/CollidableBox.hpp"
-# include "GameEntity/CollidableProp.hpp"
 
-class Room : public ICollidable, public IEntity, public ITranslatable
+class CollidableProp : public ICollidable, public IEntity
 {
 	public :
 
@@ -28,39 +27,24 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 			Params(void);
 			~Params(void);
 
-			CollisionBox          room_cb;
-			CollidableBox::Params floor;
-			CollidableBox::Params roof;
-			CollidableBox::Params right_wall;
-			CollidableBox::Params left_wall;
-			CollidableBox::Params front_wall;
+			Prop::Params         prop_params;
+			CollisionBox         cb;
+			ICollidable::Damages dmg;
+			bool                 passthrough;
+			int                  score_modifier;
+			bool                 active;
+			std::string          pick_up;
+			bool                 auto_rotation;
 		};
 
-		Room(Room::Params const &params);
-		virtual ~Room(void);
-		Room(Room const &src) = delete;
-		Room &operator=(Room const &rhs) = delete;
-		Room(Room &&src);
-		Room &operator=(Room &&rhs);
-
-		/*
-		 * Interface ITranslatable
-		 */
-
-		void translateObject(glm::vec3 const &vec);
-		void scaleObject(glm::vec3 const &vec);
-
-		/*
-		 * Interface IEntity
-		 */
-
-		void update(float time);
-		void draw(void);
+		CollidableProp(CollidableProp::Params const &params);
+		virtual ~CollidableProp(void);
+		CollidableProp(CollidableProp const &src);
+		CollidableProp &operator=(CollidableProp const &rhs);
 
 		/*
 		 * Interface ICollidable
 		 */
-
 		void setPassthrough(bool value);
 		void setActive(bool value);
 
@@ -72,29 +56,27 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		std::string const &getPickUpSound(void) const;
 
 		/*
-		 * Setter
+		 * Interface IEntity
 		 */
-
-		void activeFrontWall(bool value);
+		void update(float time);
+		void draw(void);
 
 		/*
 		 * Getter
 		 */
-		CollidableBox &getFloor(void);
-		CollidableBox &getRoof(void);
-		CollidableBox &getRightWall(void);
-		CollidableBox &getLeftWall(void);
-		CollidableBox &getFrontWall(void);
+		Prop const &getProp(void) const;
+		bool getAutoRotation(void) const;
 
 	private :
 
-		CollisionBox  _room_cb;
-		CollidableBox _floor;
-		CollidableBox _roof;
-		CollidableBox _right_wall;
-		CollidableBox _left_wall;
-		CollidableBox _front_wall;
-		std::string   _pick_up;
+		Prop                 _prop;
+		CollisionBox         _cb;
+		ICollidable::Damages _dmg;
+		bool                 _passthrough;
+		int                  _score_modifier;
+		bool                 _active;
+		std::string          _pick_up;
+		bool                 _auto_rotation;
 };
 
 #endif

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GameEntity/Sprite.hpp"
+#include "GameEntities/Sprite.hpp"
 
 Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 			   Texture const *tex, glm::vec3 const &pos, glm::vec3 const &scale,

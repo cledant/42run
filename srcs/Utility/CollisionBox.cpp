@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GameEntity/CollisionBox.hpp"
+#include "Utility/CollisionBox.hpp"
 
 CollisionBox::CollisionBox(glm::vec3 const &pos, glm::vec3 const &half_size) :
 		_pos(pos), _half_size(half_size)

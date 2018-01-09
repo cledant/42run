@@ -41,48 +41,55 @@ if (APPLE)
 else ()
 	set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra -O2")
 endif ()
-include_directories(includes glm stb glad/build/includes glfw/include/GLFW assimp/include
-		assimp/build/include freetype/include SFML/include)
+include_directories(includes
+		glm
+		stb
+		glad/build/includes
+		glfw/include/GLFW
+		assimp/include
+		assimp/build/include
+		freetype/include
+		SFML/include)
 link_directories(${CMAKE_BINARY_DIR}/glad/build
 		${CMAKE_BINARY_DIR}/glfw/build/src
 		${CMAKE_BINARY_DIR}/assimp/build/code
 		${CMAKE_BINARY_DIR}/freetype/build
 		${CMAKE_BINARY_DIR}/SFML/build/lib)
 set(SOURCE_FILES
-		srcs/Camera.cpp
-		srcs/Cubemap.cpp
-		srcs/GeneralException.cpp
-		srcs/Glfw_manager.cpp
-		srcs/IEntity.cpp
-		srcs/IInteractive.cpp
-		srcs/ICollidable.cpp
-		srcs/Input.cpp
+		srcs/Cameras/Camera.cpp
+		srcs/GameEntities/Cubemap.cpp
+		srcs/Exceptions/GeneralException.cpp
+		srcs/WindowManager/Glfw_manager.cpp
+		srcs/Interfaces/IEntity.cpp
+		srcs/Interfaces/IInteractive.cpp
+		srcs/Interfaces/ICollidable.cpp
+		srcs/WindowManager/Input.cpp
 		srcs/main.cpp
-		srcs/oGL_module.cpp
-		srcs/Shader.cpp
-		srcs/Simple_box.cpp
-		srcs/Texture.cpp
-		srcs/Window.cpp
-		srcs/World.cpp
-		srcs/Model.cpp
-		srcs/Mesh.cpp
-		srcs/Prop.cpp
-		srcs/FontSet.cpp
-		srcs/Ui.cpp
-		srcs/CollisionBox.cpp
-		srcs/ThirdPersonCamera.cpp
-		srcs/Player.cpp
-		srcs/CollidableBox.cpp
-		srcs/IGravity.cpp
-		srcs/Sprite.cpp
-		srcs/CollidableProp.cpp
-		srcs/Audio.cpp
-		srcs/Gamepad.cpp
-		srcs/Room.cpp
-		srcs/ITranslatable.cpp
-		srcs/InitDebugWorld.cpp
-		srcs/RunnerWorld.cpp
-		srcs/InitRunnerWorld.cpp)
+		srcs/OpenGL/oGL_module.cpp
+		srcs/OpenGL/Shader.cpp
+		srcs/GameEntities/Simple_box.cpp
+		srcs/OpenGL/Texture.cpp
+		srcs/WindowManager/Window.cpp
+		srcs/Platformer/World.cpp
+		srcs/Model/Model.cpp
+		srcs/Model/Mesh.cpp
+		srcs/GameEntities/Prop.cpp
+		srcs/UI/FontSet.cpp
+		srcs/UI/Ui.cpp
+		srcs/Utility/CollisionBox.cpp
+		srcs/Cameras/ThirdPersonCamera.cpp
+		srcs/GameEntities/Player.cpp
+		srcs/GameEntities/CollidableBox.cpp
+		srcs/Interfaces/IGravity.cpp
+		srcs/GameEntities/Sprite.cpp
+		srcs/GameEntities/CollidableProp.cpp
+		srcs/Audio/Audio.cpp
+		srcs/WindowManager/Gamepad.cpp
+		srcs/GameEntities/Room.cpp
+		srcs/Interfaces/ITranslatable.cpp
+		srcs/Platformer/InitDebugWorld.cpp
+		srcs/Runner/RunnerWorld.cpp
+		srcs/Runner/InitRunnerWorld.cpp)
 
 #OS specific libs
 if (APPLE)

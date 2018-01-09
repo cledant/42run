@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <WindowManager/Glfw_manager.hpp>
-#include "GameEntity/Player.hpp"
+#include "GameEntities/Player.hpp"
 
 Player::Params::Params(void)
 {
