@@ -17,8 +17,9 @@
 # include "Utility/CollisionBox.hpp"
 # include "Interfaces/ICollidable.hpp"
 # include "Interfaces/IEntity.hpp"
+# include "Interfaces/ITranslatable.hpp"
 
-class CollidableProp : public ICollidable, public IEntity
+class CollidableProp : public ICollidable, public IEntity, public ITranslatable
 {
 	public :
 
@@ -60,6 +61,13 @@ class CollidableProp : public ICollidable, public IEntity
 		 */
 		void update(float time);
 		void draw(void);
+
+		/*
+		 * Interface ITranslatable
+		 */
+
+		void translateObject(glm::vec3 const &vec);
+		void scaleObject(glm::vec3 const &vec);
 
 		/*
 		 * Getter

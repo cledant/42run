@@ -127,6 +127,22 @@ void CollidableProp::draw(void)
 }
 
 /*
+ * Interface ITranslatable
+ */
+
+void CollidableProp::translateObject(glm::vec3 const &vec)
+{
+	this->_prop.translateObject(vec);
+	this->_cb.translateObject(vec);
+}
+
+void CollidableProp::scaleObject(glm::vec3 const &vec)
+{
+	this->_prop.scaleObject(vec);
+	this->_cb.scaleObject(vec);
+}
+
+/*
  * Getter
  */
 

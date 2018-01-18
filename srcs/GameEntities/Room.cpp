@@ -91,6 +91,10 @@ void Room::translateObject(glm::vec3 const &vec)
 	this->_right_wall.translateObject(vec);
 	this->_left_wall.translateObject(vec);
 	this->_front_wall.translateObject(vec);
+	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
+		(*it).second->translateObject(vec);
+	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
+		(*it).second->translateObject(vec);
 }
 
 void Room::scaleObject(glm::vec3 const &vec)

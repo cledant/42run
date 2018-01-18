@@ -127,6 +127,20 @@ void Prop::draw(void)
 }
 
 /*
+ * Interface ITranslatable
+ */
+
+void Prop::translateObject(glm::vec3 const &vec)
+{
+	this->_pos += vec;
+}
+
+void Prop::scaleObject(glm::vec3 const &vec)
+{
+	this->_scale *= vec;
+}
+
+/*
  * Setter
  */
 

@@ -14,6 +14,7 @@
 # define PROP_HPP
 
 # include "Interfaces/IEntity.hpp"
+# include "Interfaces/ITranslatable.hpp"
 # include "OpenGL/oGL_module.hpp"
 # include "Model/Model.hpp"
 # include "OpenGL/Shader.hpp"
@@ -23,7 +24,7 @@
 # include <iostream>
 # include <vector>
 
-class Prop : public IEntity
+class Prop : public IEntity, public ITranslatable
 {
 	public :
 
@@ -50,6 +51,7 @@ class Prop : public IEntity
 		/*
 		 * Setter
 		 */
+
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);
 		void setYaw(GLfloat yaw);
@@ -60,6 +62,7 @@ class Prop : public IEntity
 		/*
 		 * Getter
 		 */
+
 		glm::mat4 const &getTotalMatrix(void) const;
 		GLfloat getYaw(void) const;
 		GLfloat getPitch(void) const;
@@ -74,8 +77,16 @@ class Prop : public IEntity
 		/*
 		 * Interface IEntity
 		 */
+
 		void update(float time);
 		void draw(void);
+
+		/*
+		 * Interface ITranslatable
+		 */
+
+		void translateObject(glm::vec3 const &vec);
+		void scaleObject(glm::vec3 const &vec);
 
 		class InitException : public GeneralException
 		{
