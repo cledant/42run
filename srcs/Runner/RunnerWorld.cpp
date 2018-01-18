@@ -14,7 +14,8 @@
 
 RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 						 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip) :
-		_active(nullptr), _input(input), _window(win), _gamepad(gamepad),
+		_active_room(&(this->_room_list_north)), _active(nullptr), _input(input),
+		_window(win), _gamepad(gamepad),
 		_camera(input, gamepad, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), -90.0f, 0.0f),
 		_fov(45.0f), _max_fps(max_fps),
@@ -37,18 +38,17 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 
 RunnerWorld::~RunnerWorld(void)
 {
-	static_cast<void>(this->_input);
-	std::vector<IEntity *>::iterator it;
-
-	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
+	for (auto it = this->_room_list_north.begin(); it != this->_room_list_north.end(); ++it)
+		delete *it;
+	for (auto it = this->_room_list_east.begin(); it != this->_room_list_east.end(); ++it)
+		delete *it;
+	for (auto it = this->_room_list_west.begin(); it != this->_room_list_west.end(); ++it)
 		delete *it;
 	delete this->_active;
 }
 
 void RunnerWorld::update(void)
 {
-	std::vector<IEntity *>::iterator it;
-
 	if (this->_first_run_theme && this->_active != nullptr)
 	{
 		reinterpret_cast<Player *>(this->_active)->playSetTheme();
@@ -104,19 +104,52 @@ void RunnerWorld::update(void)
 		reinterpret_cast<Player *>(this->_active)->setSpriteYaw(this->_camera.getYaw());
 		reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
 	}
-	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
+	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 		(*it)->update(this->_delta_tick);
 }
 
 void RunnerWorld::render(void)
 {
-	std::vector<IEntity *>::iterator it;
-
 	oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
-	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
+	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 		(*it)->draw();
 	if (this->_active != nullptr)
 		reinterpret_cast<Player *>(this->_active)->draw();
+}
+
+Room &RunnerWorld::addRoomTemplate(std::string const &name, Room::Params &params)
+{
+	params.floor.perspec_mult_view      = &(this->_perspec_mult_view);
+	params.roof.perspec_mult_view       = &(this->_perspec_mult_view);
+	params.right_wall.perspec_mult_view = &(this->_perspec_mult_view);
+	params.left_wall.perspec_mult_view  = &(this->_perspec_mult_view);
+	params.front_wall.perspec_mult_view = &(this->_perspec_mult_view);
+	this->_room_template_list.insert(std::pair<std::string, Room>(name, Room(params)));
+	return (this->_room_template_list[name]);
+}
+
+void RunnerWorld::addBonusToRoomTemplate(std::string const &room_name,
+										 std::string const &slot_name,
+										 CollidableProp::Params &params)
+{
+	auto it = this->_room_template_list.find(room_name);
+
+	params.prop_params.perspec_mult_view = &(this->_perspec_mult_view);
+	if (it == this->_room_template_list.end())
+		throw RunnerWorld::RoomNotFoundException();
+	(*it).second.addBonus(slot_name, params);
+}
+
+void RunnerWorld::addObstacleToRoomTemplate(std::string const &room_name,
+											std::string const &slot_name,
+											CollidableProp::Params &params)
+{
+	auto it = this->_room_template_list.find(room_name);
+
+	params.prop_params.perspec_mult_view = &(this->_perspec_mult_view);
+	if (it == this->_room_template_list.end())
+		throw RunnerWorld::RoomNotFoundException();
+	(*it).second.addObstacle(slot_name, params);
 }
 
 IInteractive *RunnerWorld::add_Player(Player::Params &params)
@@ -129,27 +162,6 @@ IInteractive *RunnerWorld::add_Player(Player::Params &params)
 	this->_active = ptr;
 	return (ptr);
 }
-
-IEntity *RunnerWorld::add_Room(Room::Params &params)
-{
-	IEntity *ptr;
-
-	params.floor.perspec_mult_view      = &(this->_perspec_mult_view);
-	params.roof.perspec_mult_view       = &(this->_perspec_mult_view);
-	params.right_wall.perspec_mult_view = &(this->_perspec_mult_view);
-	params.left_wall.perspec_mult_view  = &(this->_perspec_mult_view);
-	params.front_wall.perspec_mult_view = &(this->_perspec_mult_view);
-	ptr = new Room(params);
-	this->_entity_list.push_back(ptr);
-	this->_room_list.push_back(dynamic_cast<Room *>(ptr));
-	return (ptr);
-}
-
-void RunnerWorld::setActiveInteractive(IInteractive *ptr)
-{
-	this->_active = ptr;
-}
-
 
 void RunnerWorld::updatePerspective(float fov)
 {
@@ -211,6 +223,29 @@ bool RunnerWorld::getShouldEnd(void) const
 	return (this->_should_end);
 }
 
+/*
+ * Setter
+ */
+
+void RunnerWorld::setActiveInteractive(IInteractive *ptr)
+{
+	this->_active = ptr;
+}
+
+void RunnerWorld::setActiveRoom(enum RunnerWorld::Direction dir)
+{
+	if (dir == RunnerWorld::Direction::NORTH)
+		this->_active_room = &(this->_room_list_north);
+	else if (dir == RunnerWorld::Direction::EAST)
+		this->_active_room = &(this->_room_list_east);
+	else if (dir == RunnerWorld::Direction::WEST)
+		this->_active_room = &(this->_room_list_west);
+}
+
+/*
+ * Private
+ */
+
 void RunnerWorld::_check_collisions(void)
 {
 
@@ -222,7 +257,7 @@ void RunnerWorld::_check_collisions(void)
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
 	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
-	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
+	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 	{
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBox((*it)->getCollisionBox(), nullptr)))
@@ -233,7 +268,7 @@ void RunnerWorld::_check_collisions(void)
 		this->_should_end = true;
 		return;
 	}
-	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
+	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 	{
 		if ((*it)->getActive())
 		{
@@ -319,5 +354,14 @@ RunnerWorld::RunnerWorldFailException::RunnerWorldFailException(void)
 }
 
 RunnerWorld::RunnerWorldFailException::~RunnerWorldFailException(void) throw()
+{
+}
+
+RunnerWorld::RoomNotFoundException::RoomNotFoundException(void)
+{
+	this->_msg = "RunnerWorld : Template Room not found";
+}
+
+RunnerWorld::RoomNotFoundException::~RoomNotFoundException(void) throw()
 {
 }

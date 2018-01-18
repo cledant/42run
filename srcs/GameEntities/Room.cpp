@@ -92,9 +92,9 @@ void Room::translateObject(glm::vec3 const &vec)
 	this->_left_wall.translateObject(vec);
 	this->_front_wall.translateObject(vec);
 	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
-		(*it).second->translateObject(vec);
+		(*it).second.translateObject(vec);
 	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
-		(*it).second->translateObject(vec);
+		(*it).second.translateObject(vec);
 }
 
 void Room::scaleObject(glm::vec3 const &vec)
@@ -127,9 +127,9 @@ void Room::update(float time)
 	if (this->_front_wall.getActive())
 		this->_front_wall.update(time);
 	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
-		(*it).second->update(time);
+		(*it).second.update(time);
 	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
-		(*it).second->update(time);
+		(*it).second.update(time);
 }
 
 void Room::draw(void)
@@ -142,13 +142,13 @@ void Room::draw(void)
 		this->_front_wall.draw();
 	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
 	{
-		if ((*it).second->getActive())
-			(*it).second->draw();
+		if ((*it).second.getActive())
+			(*it).second.draw();
 	}
 	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
 	{
-		if ((*it).second->getActive())
-			(*it).second->draw();
+		if ((*it).second.getActive())
+			(*it).second.draw();
 	}
 }
 
@@ -240,7 +240,7 @@ CollidableProp &Room::getBonus(std::string const &name)
 
 	if (it == this->_list_bonuses.end())
 		throw Room::BonusNotFoundException();
-	return (*((*it).second));
+	return ((*it).second);
 }
 
 CollidableProp &Room::getObstacle(std::string const &name)
@@ -249,7 +249,7 @@ CollidableProp &Room::getObstacle(std::string const &name)
 
 	if (it == this->_list_obstacles.end())
 		throw Room::ObstacleNotFoundException();
-	return (*((*it).second));
+	return ((*it).second);
 }
 
 Room::BonusNotFoundException::BonusNotFoundException(void)

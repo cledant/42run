@@ -113,15 +113,15 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 
 	private :
 
-		CollisionBox                            _room_cb;
-		CollidableBox                           _floor;
-		CollidableBox                           _roof;
-		CollidableBox                           _right_wall;
-		CollidableBox                           _left_wall;
-		CollidableBox                           _front_wall;
-		std::string                             _pick_up;
-		std::map<std::string, CollidableProp *> _list_bonuses;
-		std::map<std::string, CollidableProp *> _list_obstacles;
+		CollisionBox                          _room_cb;
+		CollidableBox                         _floor;
+		CollidableBox                         _roof;
+		CollidableBox                         _right_wall;
+		CollidableBox                         _left_wall;
+		CollidableBox                         _front_wall;
+		std::string                           _pick_up;
+		std::map<std::string, CollidableProp> _list_bonuses;
+		std::map<std::string, CollidableProp> _list_obstacles;
 };
 
 #endif

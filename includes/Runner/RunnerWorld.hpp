@@ -53,12 +53,13 @@ class RunnerWorld
 		void update(void);
 		void render(void);
 		Room &addRoomTemplate(std::string const &name, Room::Params &params);
-		void addBonusToRoom(std::string const &room_name, std::string const &slot_name,
-							CollidableProp::Params &params);
-		void addObstacleToRoom(std::string const &room_name, std::string const &slot_name,
-							   CollidableProp::Params &params);
+		void addBonusToRoomTemplate(std::string const &room_name,
+									std::string const &slot_name,
+									CollidableProp::Params &params);
+		void addObstacleToRoomTemplate(std::string const &room_name,
+									   std::string const &slot_name,
+									   CollidableProp::Params &params);
 		IInteractive *add_Player(Player::Params &params);
-		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);
 		void reset_skip_loop(void);
@@ -76,6 +77,7 @@ class RunnerWorld
 		 * Setter
 		 */
 
+		void setActiveInteractive(IInteractive *ptr);
 		void setActiveRoom(enum RunnerWorld::Direction dir);
 
 		class RunnerWorldFailException : public GeneralException
@@ -84,6 +86,14 @@ class RunnerWorld
 
 				explicit RunnerWorldFailException(void);
 				virtual ~RunnerWorldFailException(void) throw();
+		};
+
+		class RoomNotFoundException : public GeneralException
+		{
+			public :
+
+				explicit RoomNotFoundException(void);
+				virtual ~RoomNotFoundException(void) throw();
 		};
 
 	private :
