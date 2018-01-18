@@ -127,6 +127,13 @@ void Player::setImmunityTimerToMax(void)
 	this->_cur_immunity = this->_max_immunity;
 }
 
+void Player::setScale(glm::vec3 const &scale)
+{
+	this->_model.setScale(scale);
+	this->_cb.setHalfSize({scale.x, scale.y, scale.z});
+	this->_cb_model.setScale(scale);
+}
+
 glm::vec3 const &Player::getDelta(void) const
 {
 	return (this->_delta);

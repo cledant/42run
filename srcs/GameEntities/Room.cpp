@@ -20,14 +20,14 @@ Room::Params::Params(void) : room_cb(CollisionBox(glm::vec3(0.0f, 0.0f, 0.0f),
 							 left_wall(CollidableBox::Params()),
 							 front_wall(CollidableBox::Params())
 {
-	this->floor.pos  = glm::vec3(0.0f, -1.0f, 0.0f);
-	this->floor.size = glm::vec3(1.1f, 0.1f, 1.1f);
-	this->roof.pos  = glm::vec3(0.0f, 1.0f, 0.0f);
-	this->roof.size = glm::vec3(1.1f, 0.1f, 1.1f);
+	this->floor.pos       = glm::vec3(0.0f, -1.0f, 0.0f);
+	this->floor.size      = glm::vec3(1.1f, 0.1f, 1.1f);
+	this->roof.pos        = glm::vec3(0.0f, 1.0f, 0.0f);
+	this->roof.size       = glm::vec3(1.1f, 0.1f, 1.1f);
 	this->right_wall.pos  = glm::vec3(0.0f, 0.0f, 1.0f);
 	this->right_wall.size = glm::vec3(1.1f, 0.9f, 0.1f);
-	this->left_wall.pos  = glm::vec3(0.0f, 0.0f, -1.0f);
-	this->left_wall.size = glm::vec3(1.1f, 0.9f, 0.1f);
+	this->left_wall.pos   = glm::vec3(0.0f, 0.0f, -1.0f);
+	this->left_wall.size  = glm::vec3(1.1f, 0.9f, 0.1f);
 	this->front_wall.pos  = glm::vec3(1.0f, 0.0f, 0.0f);
 	this->front_wall.size = glm::vec3(0.1f, 0.9f, 0.9f);
 }
@@ -67,6 +67,18 @@ Room &Room::operator=(Room &&rhs)
 	return (*this);
 }
 
+void Room::addBonus(std::string const &slot, CollidableProp::Params const &params)
+{
+	this->_list_bonuses.insert(std::pair<std::string, CollidableProp>
+									   (slot, CollidableProp(params)));
+}
+
+void Room::addObstacle(std::string const &slot, CollidableProp::Params const &params)
+{
+	this->_list_obstacles.insert(std::pair<std::string, CollidableProp>
+										 (slot, CollidableProp(params)));
+}
+
 /*
  * Interface ITranslatable
  */
@@ -101,6 +113,7 @@ void Room::scaleObject(glm::vec3 const &vec)
 /*
  * Interface IEntity
  */
+
 void Room::update(float time)
 {
 	this->_floor.update(time);
@@ -109,6 +122,10 @@ void Room::update(float time)
 	this->_left_wall.update(time);
 	if (this->_front_wall.getActive())
 		this->_front_wall.update(time);
+	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
+		(*it).second->update(time);
+	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
+		(*it).second->update(time);
 }
 
 void Room::draw(void)
@@ -119,6 +136,16 @@ void Room::draw(void)
 	this->_left_wall.draw();
 	if (this->_front_wall.getActive())
 		this->_front_wall.draw();
+	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
+	{
+		if ((*it).second->getActive())
+			(*it).second->draw();
+	}
+	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
+	{
+		if ((*it).second->getActive())
+			(*it).second->draw();
+	}
 }
 
 /*
@@ -201,4 +228,40 @@ CollidableBox &Room::getLeftWall(void)
 CollidableBox &Room::getFrontWall(void)
 {
 	return (this->_front_wall);
+}
+
+CollidableProp &Room::getBonus(std::string const &name)
+{
+	auto it = this->_list_bonuses.find(name);
+
+	if (it == this->_list_bonuses.end())
+		throw Room::BonusNotFoundException();
+	return (*((*it).second));
+}
+
+CollidableProp &Room::getObstacle(std::string const &name)
+{
+	auto it = this->_list_obstacles.find(name);
+
+	if (it == this->_list_obstacles.end())
+		throw Room::ObstacleNotFoundException();
+	return (*((*it).second));
+}
+
+Room::BonusNotFoundException::BonusNotFoundException(void)
+{
+	this->_msg = "Room : Bonus not found";
+}
+
+Room::BonusNotFoundException::~BonusNotFoundException(void) throw()
+{
+}
+
+Room::ObstacleNotFoundException::ObstacleNotFoundException(void)
+{
+	this->_msg = "Room : Obstacle not found";
+}
+
+Room::ObstacleNotFoundException::~ObstacleNotFoundException(void) throw()
+{
 }

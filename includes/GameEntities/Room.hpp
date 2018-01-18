@@ -43,11 +43,17 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		Room(Room &&src);
 		Room &operator=(Room &&rhs);
 
+		void addBonus(std::string const &slot, CollidableProp::Params const &params);
+		void addObstacle(std::string const &slot, CollidableProp::Params const &params);
+
 		/*
 		 * Interface ITranslatable
 		 */
 
+		// Translate also Bonuses/Obstacles in the room
 		void translateObject(glm::vec3 const &vec);
+
+		// Does not scale Bonuses/Obstacles in the room
 		void scaleObject(glm::vec3 const &vec);
 
 		/*
@@ -80,21 +86,42 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		/*
 		 * Getter
 		 */
+
 		CollidableBox &getFloor(void);
 		CollidableBox &getRoof(void);
 		CollidableBox &getRightWall(void);
 		CollidableBox &getLeftWall(void);
 		CollidableBox &getFrontWall(void);
+		CollidableProp &getBonus(std::string const &name);
+		CollidableProp &getObstacle(std::string const &name);
+
+		class BonusNotFoundException : public GeneralException
+		{
+			public :
+
+				explicit BonusNotFoundException(void);
+				virtual ~BonusNotFoundException(void) throw();
+		};
+
+		class ObstacleNotFoundException : public GeneralException
+		{
+			public :
+
+				explicit ObstacleNotFoundException(void);
+				virtual ~ObstacleNotFoundException(void) throw();
+		};
 
 	private :
 
-		CollisionBox  _room_cb;
-		CollidableBox _floor;
-		CollidableBox _roof;
-		CollidableBox _right_wall;
-		CollidableBox _left_wall;
-		CollidableBox _front_wall;
-		std::string   _pick_up;
+		CollisionBox                            _room_cb;
+		CollidableBox                           _floor;
+		CollidableBox                           _roof;
+		CollidableBox                           _right_wall;
+		CollidableBox                           _left_wall;
+		CollidableBox                           _front_wall;
+		std::string                             _pick_up;
+		std::map<std::string, CollidableProp *> _list_bonuses;
+		std::map<std::string, CollidableProp *> _list_obstacles;
 };
 
 #endif

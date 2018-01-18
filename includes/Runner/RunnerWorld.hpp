@@ -37,6 +37,13 @@ class RunnerWorld
 {
 	public :
 
+		enum Direction
+		{
+			NORTH,
+			EAST,
+			WEST
+		};
+
 		RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 					glm::vec3 cam_pos, float max_fps, size_t max_frame_skip);
 		virtual ~RunnerWorld(void);
@@ -45,7 +52,11 @@ class RunnerWorld
 
 		void update(void);
 		void render(void);
-		IEntity *add_Room(Room::Params &params);
+		Room &addRoomTemplate(std::string const &name, Room::Params &params);
+		void addBonusToRoom(std::string const &room_name, std::string const &slot_name,
+							CollidableProp::Params &params);
+		void addObstacleToRoom(std::string const &room_name, std::string const &slot_name,
+							   CollidableProp::Params &params);
 		IInteractive *add_Player(Player::Params &params);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
@@ -56,9 +67,16 @@ class RunnerWorld
 		/*
 		 * Getter
 		 */
+
 		std::string const &getScore(void);
 		std::string const &getStrPlayerHP(void);
 		bool getShouldEnd(void) const;
+
+		/*
+		 * Setter
+		 */
+
+		void setActiveRoom(enum RunnerWorld::Direction dir);
 
 		class RunnerWorldFailException : public GeneralException
 		{
@@ -70,32 +88,35 @@ class RunnerWorld
 
 	private :
 
-		std::vector<IEntity *> _entity_list;
-		std::vector<Room *>    _room_list;
-		IInteractive           *_active;
-		Input const            &_input;
-		GLFW_Window const      &_window;
-		Gamepad                &_gamepad;
-		glm::mat4              _perspective;
-		ThirdPersonCamera      _camera;
-		glm::mat4              _perspec_mult_view;
-		float                  _fov;
-		float                  _max_fps;
-		size_t                 _max_frame_skip;
-		float                  _tick;
-		float                  _next_update_tick;
-		float                  _last_update_tick;
-		float                  _delta_tick;
-		size_t                 _skip_loop;
-		float                  _input_timer;
-		float                  _input_mouse_timer;
-		glm::vec3              _gravity;
-		std::string            _str_hp;
-		std::string            _str_score;
-		long int               _score_modifier;
-		bool                   _first_run_theme;
-		bool                   _enabled_gamepad;
-		bool                   _should_end;
+		std::map<std::string, Room> _room_template_list;
+		std::vector<Room *>         _room_list_north;
+		std::vector<Room *>         _room_list_east;
+		std::vector<Room *>         _room_list_west;
+		std::vector<Room *>         *_active_room;
+		IInteractive                *_active;
+		Input const                 &_input;
+		GLFW_Window const           &_window;
+		Gamepad                     &_gamepad;
+		glm::mat4                   _perspective;
+		ThirdPersonCamera           _camera;
+		glm::mat4                   _perspec_mult_view;
+		float                       _fov;
+		float                       _max_fps;
+		size_t                      _max_frame_skip;
+		float                       _tick;
+		float                       _next_update_tick;
+		float                       _last_update_tick;
+		float                       _delta_tick;
+		size_t                      _skip_loop;
+		float                       _input_timer;
+		float                       _input_mouse_timer;
+		glm::vec3                   _gravity;
+		std::string                 _str_hp;
+		std::string                 _str_score;
+		long int                    _score_modifier;
+		bool                        _first_run_theme;
+		bool                        _enabled_gamepad;
+		bool                        _should_end;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,

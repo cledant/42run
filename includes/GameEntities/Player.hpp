@@ -101,6 +101,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setCurHooverTimeToMax(void);
 		void lowerHP(ICollidable::Damages type);
 		void setImmunityTimerToMax(void);
+		void setScale(glm::vec3 const &scale);
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getPos(void) const;

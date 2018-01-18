@@ -83,7 +83,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 	params.cb_shader              = &(oGL.getShader("cubemap"));
 	params.shader                 = &(oGL.getShader("sprites"));
 	params.pos                    = glm::vec3({0.0f, 1.0f, 0.0f});
-	params.size                   = glm::vec3({0.1f, 0.2f, 0.1f});
+	params.size                   = glm::vec3({0.3f, 0.5f, 0.3f});
 	params.cb_tex                 = &(oGL.getTexture("TestTex"));
 	params.tex                    = &(oGL.getTexture("sprite_reimu"));
 	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
@@ -104,10 +104,8 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 
 	(*world) = new RunnerWorld(manager.getInput(), manager.getWindow(), manager.getGamepad(),
 							   glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
-
 	set_player_params(player_params, oGL, audio);
 	(*world)->add_Player(player_params);
-
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
 	room_params.floor.tex         = &(oGL.getTexture("TestTex"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
@@ -118,10 +116,11 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	room_params.left_wall.tex     = &(oGL.getTexture("TestTex"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.tex    = &(oGL.getTexture("TestTex"));
-	room_params.front_wall.active = false;
+//	room_params.front_wall.active = false;
+	room_params.front_wall.active = true;
 	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
-	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));
-	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
+	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
+/*	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
 	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));
 	room->translateObject(glm::vec3(6.6f, 0.0f, 0.0f));
 	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
@@ -130,7 +129,7 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	room_params.front_wall.active = true;
 	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
 	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));
-	room->translateObject(glm::vec3(19.8f, 0.0f, 0.0f));
+	room->translateObject(glm::vec3(19.8f, 0.0f, 0.0f));*/
 }
 
 static void init_audio(Audio &audio)
