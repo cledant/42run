@@ -21,7 +21,7 @@ Player::Params::Params(void)
 	this->pos                    = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->size                   = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->cam                    = nullptr;
-	this->cb_tex                 = nullptr;
+	this->cb_model               = nullptr;
 	this->tex                    = nullptr;
 	this->sprite_tex_size_offset = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 	this->nb_walk_frame          = 0;
@@ -44,7 +44,7 @@ Player::Player(Player::Params const &params) :
 								 params.tex, params.pos, params.size,
 								 params.sprite_tex_size_offset,
 								 params.nb_walk_frame),
-		_cb_model(params.cb_shader, params.perspec_mult_view, params.cb_tex,
+		_cb_model(params.cb_shader, params.perspec_mult_view, params.cb_model,
 				  params.pos, params.size),
 		_cb(params.pos, params.size), _delta(glm::vec3({0.0f, 0.0f, 0.0f})),
 		_pos(params.pos), _vel(glm::vec3({0.0f, 0.0f, 0.0f})),

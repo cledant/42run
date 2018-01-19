@@ -70,7 +70,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 			glm::vec3               pos;
 			glm::vec3               size;
 			ThirdPersonCamera const *cam;
-			Texture const           *cb_tex;
+			Model const             *cb_model;
 			Texture const           *tex;
 			glm::vec4               sprite_tex_size_offset;
 			size_t                  nb_walk_frame;

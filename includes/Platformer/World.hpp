@@ -50,8 +50,7 @@ class World
 		void render(void);
 		IEntity *add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 								glm::vec3 const &scale);
-		IEntity *add_Cubemap(Shader const *shader,
-							 std::vector<std::string> const &files,
+		IEntity *add_Cubemap(Shader const *shader, Model const *model,
 							 glm::vec3 const &pos, glm::vec3 const &scale);
 		IEntity *add_Prop(Prop::Params &params);
 		IInteractive *add_Player(Player::Params &params);

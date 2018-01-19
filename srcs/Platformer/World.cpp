@@ -129,13 +129,12 @@ IEntity *World::add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 	return (ptr);
 }
 
-IEntity *World::add_Cubemap(Shader const *shader,
-							std::vector<std::string> const &files,
+IEntity *World::add_Cubemap(Shader const *shader, Model const *model,
 							glm::vec3 const &pos, glm::vec3 const &scale)
 {
 	IEntity *ptr;
 
-	ptr = new Cubemap(shader, &(this->_perspec_mult_view), files, pos, scale);
+	ptr = new Cubemap(shader, &(this->_perspec_mult_view), model, pos, scale);
 	this->_entity_list.push_back(ptr);
 	return (ptr);
 }
@@ -188,15 +187,16 @@ IEntity *World::add_Room(Room::Params &params)
 {
 	IEntity *ptr;
 
-	params.floor.perspec_mult_view = &(this->_perspec_mult_view);
-	params.roof.perspec_mult_view = &(this->_perspec_mult_view);
+	params.floor.perspec_mult_view      = &(this->_perspec_mult_view);
+	params.roof.perspec_mult_view       = &(this->_perspec_mult_view);
 	params.right_wall.perspec_mult_view = &(this->_perspec_mult_view);
-	params.left_wall.perspec_mult_view = &(this->_perspec_mult_view);
+	params.left_wall.perspec_mult_view  = &(this->_perspec_mult_view);
 	params.front_wall.perspec_mult_view = &(this->_perspec_mult_view);
 	ptr = new Room(params);
 	this->_entity_list.push_back(ptr);
 	this->_collision_check_list.push_back(dynamic_cast<ICollidable *>(ptr));
-	return (ptr);}
+	return (ptr);
+}
 
 void World::setActiveInteractive(IInteractive *ptr)
 {
