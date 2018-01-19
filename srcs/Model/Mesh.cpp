@@ -182,7 +182,7 @@ void Mesh::_load_mesh(float const *array, size_t size)
 {
 	struct Mesh::Vertex tmp;
 
-	for (size_t i = 0; i < size; ++i)
+	for (size_t i = 0; i < (size * 3); i += 3)
 	{
 		std::memset(&tmp, 0, sizeof(Mesh::Vertex));
 		tmp.Position.x = array[i];
