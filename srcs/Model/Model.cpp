@@ -16,6 +16,20 @@ Model::Model(void) : _name(""), _center({0.0f, 0.0f, 0.0f})
 {
 }
 
+Model::Model(std::string const &name, float const *array, size_t size,
+			 std::vector<std::string> const &files, Texture::t_tex_gl_type gl_type,
+			 Texture::t_tex_type type)
+{
+	std::cout << "Loading : " << name << std::endl;
+	this->_texture_list.insert(std::pair<std::string, Texture>("tex1",
+															   Texture(name, files,
+																	   gl_type,
+																	   type)));
+	this->_mesh_list.push_back(Mesh(array, size, type, "tex1"));
+	this->_name = name;
+	this->_calculate_center();
+}
+
 Model::Model(std::string const &name, std::string const &path) : _name(name),
 																 _center({0.0f, 0.0f, 0.0f})
 {

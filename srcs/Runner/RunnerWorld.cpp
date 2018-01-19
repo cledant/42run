@@ -34,6 +34,9 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 											  400.0f);
 	this->_enabled_gamepad = this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1);
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
+	this->_room_list_north.reserve(20);
+	this->_room_list_east.reserve(20);
+	this->_room_list_west.reserve(20);
 }
 
 RunnerWorld::~RunnerWorld(void)
@@ -154,6 +157,20 @@ void RunnerWorld::addObstacleToRoomTemplate(std::string const &room_name,
 
 void RunnerWorld::generateRoomListNorth(void)
 {
+	auto it = this->_room_list_north[0];
+	*it = this->_room_template_list["NormalRoomEmpty"];
+	auto it = this->_room_list_north[1];
+	*it = this->_room_template_list["NormalRoomEmpty"];
+	auto it = this->_room_list_north[2];
+	*it = this->_room_template_list["NormalRoomEmpty"];
+	auto it = this->_room_list_north[3];
+	*it = this->_room_template_list["NormalRoomBonusOnly"];
+	auto it = this->_room_list_north[4];
+	*it = this->_room_template_list["NormalRoomBonusOnly"];
+	auto it = this->_room_list_north[5];
+	*it = this->_room_template_list["NormalRoomBonusOnly"];
+	auto it = this->_room_list_north[6];
+	*it = this->_room_template_list["NormalRoomBonusOnly"];
 }
 
 IInteractive *RunnerWorld::add_Player(Player::Params &params)

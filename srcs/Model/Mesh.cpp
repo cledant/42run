@@ -17,6 +17,28 @@ Mesh::Mesh(void) : _vao(0), _vbo(0), _ebo(0), _directory(".")
 {
 }
 
+Mesh::Mesh(float const *array, size_t size, Texture::t_tex_type type,
+		   std::string const &name) :
+		_vao(0), _vbo(0), _ebo(0), _directory(".")
+{
+	if (array == nullptr)
+		throw Mesh::InvalidMeshException();
+	this->_texture_name_list.insert(std::pair<std::string, Texture::t_tex_type>(name, type));
+	this->_load_mesh(array, size);
+	try
+	{
+		this->_allocate_set_GL_ressources();
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+		oGL_module::oGL_delete_vao(this->_vao);
+		oGL_module::oGL_delete_vbo(this->_vbo);
+		oGL_module::oGL_delete_vbo(this->_ebo);
+		throw Mesh::GLInitException();
+	}
+}
+
 Mesh::Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory,
 		   std::map<std::string, Texture> &texture_list) :
 		_vao(0), _vbo(0), _ebo(0), _directory(directory)
@@ -152,6 +174,20 @@ void Mesh::_load_mesh(aiMesh *mesh)
 			tmp.TexCoords.x = mesh->mTextureCoords[0][i].x;
 			tmp.TexCoords.y = mesh->mTextureCoords[0][i].y;
 		}
+		this->_vertex_list.push_back(tmp);
+	}
+}
+
+void Mesh::_load_mesh(float const *array, size_t size)
+{
+	struct Mesh::Vertex tmp;
+
+	for (size_t i = 0; i < size; ++i)
+	{
+		std::memset(&tmp, 0, sizeof(Mesh::Vertex));
+		tmp.Position.x = array[i];
+		tmp.Position.y = array[i + 1];
+		tmp.Position.z = array[i + 2];
 		this->_vertex_list.push_back(tmp);
 	}
 }

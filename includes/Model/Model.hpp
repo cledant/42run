@@ -31,6 +31,9 @@ class Model
 	public :
 
 		Model(void);
+		Model(std::string const &name, float const *array, size_t size,
+			  std::vector<std::string> const &files, Texture::t_tex_gl_type gl_type,
+			  Texture::t_tex_type type);
 		Model(std::string const &name, std::string const &path);
 		Model(Model const &src) = delete;
 		Model &operator=(Model const &rhs) = delete;

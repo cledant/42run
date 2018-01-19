@@ -40,6 +40,8 @@ class Mesh
 		};
 
 		Mesh(void);
+		Mesh(float const *array, size_t size, Texture::t_tex_type type,
+			 std::string const &name);
 		Mesh(aiMesh *mesh, const aiScene *scene, std::string const &directory,
 			 std::map<std::string, Texture> &texture_list);
 		Mesh(Mesh const &src) = delete;
@@ -92,6 +94,7 @@ class Mesh
 		std::string                                _directory;
 
 		void _load_mesh(aiMesh *mesh);
+		void _load_mesh(float const *array, size_t size);
 		void _load_indice(aiMesh *mesh);
 		void _load_material(aiMesh *mesh, const aiScene *scene,
 							std::map<std::string, Texture> &texture_list);
