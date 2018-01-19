@@ -13,71 +13,30 @@
 #include "GameEntities/Cubemap.hpp"
 
 Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-				 std::vector<std::string> const &files, glm::vec3 const &pos,
-				 glm::vec3 const &scale) :
-		_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(nullptr),
-		_vbo(0), _vao(0), _pos(pos), _scale(scale), _src_tex(Cubemap::INTERNAL)
+				 Model const *model, glm::vec3 const &pos, glm::vec3 const &scale) :
+		_shader(shader), _perspec_mult_view(perspec_mult_view), _model(model),
+		_pos(pos), _scale(scale)
 {
-	try
-	{
-		this->_oGL_alloc();
-		this->_tex = new Texture("tex_cubemap", files, Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl;
-		oGL_module::oGL_delete_vao(this->_vao);
-		oGL_module::oGL_delete_vbo(this->_vbo);
-		delete _tex;
-		throw Cubemap::InitException();
-	}
-	this->update(0.0f);
-}
-
-Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-				 Texture const *tex, glm::vec3 const &pos,
-				 glm::vec3 const &scale) :
-		_shader(shader), _perspec_mult_view(perspec_mult_view), _tex(tex),
-		_vbo(0), _vao(0), _pos(pos), _scale(scale), _src_tex(Cubemap::EXTERNAL)
-{
-	try
-	{
-		this->_oGL_alloc();
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl;
-		oGL_module::oGL_delete_vao(this->_vao);
-		oGL_module::oGL_delete_vbo(this->_vbo);
-		throw Cubemap::InitException();
-	}
 	this->update(0.0f);
 }
 
 Cubemap::~Cubemap(void)
 {
-	if (this->_src_tex == Cubemap::INTERNAL)
-		delete this->_tex;
-	oGL_module::oGL_delete_vao(this->_vao);
-	oGL_module::oGL_delete_vbo(this->_vbo);
 }
 
-Cubemap::Cubemap(Cubemap &&src)
+Cubemap::Cubemap(Cubemap const &src)
 {
-	*this = std::move(src);
+	*this = src;
 }
 
-Cubemap &Cubemap::operator=(Cubemap &&src)
+Cubemap &Cubemap::operator=(Cubemap const &rhs)
 {
-	this->_shader            = src.getShader();
-	this->_perspec_mult_view = src.getPerspecMultView();
-	this->_tex               = src.moveTexture();
-	this->_vbo               = src.moveVBO();
-	this->_vao               = src.moveVAO();
-	this->_pos               = src.getPos();
-	this->_scale             = src.getScale();
-	this->_total             = src.getTotalMatrix();
-	this->_src_tex           = src.getSrcTex();
+	this->_shader            = rhs.getShader();
+	this->_perspec_mult_view = rhs.getPerspecMultView();
+	this->_model             = rhs.getModel();
+	this->_pos               = rhs.getPos();
+	this->_scale             = rhs.getScale();
+	this->_total             = rhs.getTotalMatrix();
 	return (*this);
 }
 
@@ -103,7 +62,7 @@ void Cubemap::update(float time)
 {
 	static_cast<void>(time);
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
-		this->_tex == nullptr)
+		this->_model == nullptr)
 	{
 		std::cout << "Warning : Can't update Cubemap" << std::endl;
 		return;
@@ -114,20 +73,23 @@ void Cubemap::update(float time)
 
 void Cubemap::draw(void)
 {
-	GLint uniform_id;
+	GLint                                          uniform_mat_total_id = 0;
+	std::map<std::string, Texture>::const_iterator ftex;
 
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr ||
-		this->_tex == nullptr || !oGL_module::oGL_getUniformID("mat_total",
-															   this->_shader->getShaderProgram(),
-															   &uniform_id))
+		this->_model == nullptr || !oGL_module::oGL_getUniformID("mat_total",
+																 this->_shader->getShaderProgram(),
+																 &uniform_mat_total_id))
 	{
 		std::cout << "Warning : Can't draw Cubemap" << std::endl;
 		return;
 	}
 	this->_shader->use();
-	this->_shader->setMat4(uniform_id, this->_total);
-	oGL_module::oGL_draw_cubemap(this->_vao, this->_tex->getTextureID(),
-								 Cubemap::_nb_faces);
+	this->_shader->setMat4(uniform_mat_total_id, this->_total);
+	auto it = this->_model->getTextureList().find("tex1");
+	oGL_module::oGL_draw_cubemap(this->_model->getMeshList()[0].getVAO(),
+								 it->second.getTextureID(),
+								 Cubemap::nb_faces);
 }
 
 /*
@@ -158,37 +120,16 @@ Shader const *Cubemap::getShader(void) const
 	return (this->_shader);
 }
 
+Model const *Cubemap::getModel(void) const
+{
+	return (this->_model);
+}
+
 glm::mat4 const *Cubemap::getPerspecMultView(void) const
 {
 	return (this->_perspec_mult_view);
 }
 
-Texture const *Cubemap::moveTexture(void)
-{
-	Texture const *tmp;
-
-	tmp = this->_tex;
-	this->_tex = nullptr;
-	return (tmp);
-}
-
-GLuint Cubemap::moveVAO(void)
-{
-	GLuint tmp;
-
-	tmp = this->_vao;
-	this->_vao = 0;
-	return (tmp);
-}
-
-GLuint Cubemap::moveVBO(void)
-{
-	GLuint tmp;
-
-	tmp = this->_vbo;
-	this->_vbo = 0;
-	return (tmp);
-}
 
 glm::vec3 const &Cubemap::getPos(void) const
 {
@@ -200,24 +141,6 @@ glm::vec3 const &Cubemap::getScale(void) const
 	return (this->_scale);
 }
 
-Cubemap::t_tex_source Cubemap::getSrcTex() const
-{
-	return (this->_src_tex);
-}
-
-/*
- * Private
- */
-
-void Cubemap::_oGL_alloc(void)
-{
-	this->_vbo = oGL_module::oGL_create_vbo(sizeof(float) * 6 * 3 * 6,
-											static_cast<void *>(Cubemap::_vertices));
-	this->_vao = oGL_module::oGL_create_vao();
-	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
-									   sizeof(GLfloat) * 3, 0);
-}
-
 Cubemap::InitException::InitException(void)
 {
 	this->_msg = "Cubemap : Object initialization failed";
@@ -227,7 +150,7 @@ Cubemap::InitException::~InitException(void) throw()
 {
 }
 
-float            Cubemap::_vertices[] =
+float            Cubemap::vertices[] =
 						 {
 								 -1.0f, 1.0f, -1.0f,
 								 -1.0f, -1.0f, -1.0f,
@@ -272,4 +195,4 @@ float            Cubemap::_vertices[] =
 								 1.0f, -1.0f, 1.0f
 						 };
 
-size_t            Cubemap::_nb_faces = 36;
+size_t            Cubemap::nb_faces = 36;

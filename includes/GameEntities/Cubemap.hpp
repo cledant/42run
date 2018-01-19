@@ -25,23 +25,11 @@ class Cubemap : public IEntity, public ITranslatable
 {
 	public :
 
-		typedef enum e_tex_source
-		{
-			EXTERNAL,
-			INTERNAL,
-		} t_tex_source;
-
 		Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-				std::vector<std::string> const &files, glm::vec3 const &pos,
-				glm::vec3 const &scale);
-		Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
-				Texture const *tex, glm::vec3 const &pos,
-				glm::vec3 const &scale);
+				Model const *model, glm::vec3 const &pos, glm::vec3 const &scale);
 		virtual ~Cubemap(void);
-		Cubemap(Cubemap const &src) = delete;
-		Cubemap &operator=(Cubemap const &rhs) = delete;
-		Cubemap(Cubemap &&src);
-		Cubemap &operator=(Cubemap &&rhs);
+		Cubemap(Cubemap const &src);
+		Cubemap &operator=(Cubemap const &rhs);
 
 		/*
  		* Interface ITranslatable
@@ -70,13 +58,10 @@ class Cubemap : public IEntity, public ITranslatable
 
 		glm::mat4 const &getTotalMatrix(void) const;
 		Shader const *getShader(void) const;
+		Model const *getModel(void) const;
 		glm::mat4 const *getPerspecMultView(void) const;
-		Texture const *moveTexture(void);
-		GLuint moveVAO(void);
-		GLuint moveVBO(void);
 		glm::vec3 const &getPos(void) const;
 		glm::vec3 const &getScale(void) const;
-		t_tex_source getSrcTex(void) const;
 
 		class InitException : public GeneralException
 		{
@@ -86,26 +71,17 @@ class Cubemap : public IEntity, public ITranslatable
 				virtual        ~InitException(void) throw();
 		};
 
+		static float  vertices[];
+		static size_t nb_faces;
+
 	private :
 
 		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;
-		Texture const   *_tex;
-		GLuint          _vbo;
-		GLuint          _vao;
+		Model const     *_model;
 		glm::vec3       _pos;
 		glm::vec3       _scale;
 		glm::mat4       _total;
-		t_tex_source    _src_tex;
-
-		static float  _vertices[];
-		static size_t _nb_faces;
-
-		/*
-		 * Private
-		 */
-
-		void _oGL_alloc(void);
 };
 
 #endif
