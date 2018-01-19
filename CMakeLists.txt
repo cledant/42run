@@ -90,7 +90,7 @@ set(SOURCE_FILES
 		srcs/Interfaces/ITranslatable.cpp
 		srcs/Platformer/InitDebugWorld.cpp
 		srcs/Runner/RunnerWorld.cpp
-		srcs/Runner/InitRunnerWorld.cpp)
+		srcs/Runner/InitRunnerWorld.cpp srcs/Runner/TemplatedRoom.cpp)
 
 #OS specific libs
 if (APPLE)

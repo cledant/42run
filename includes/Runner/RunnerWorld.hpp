@@ -52,13 +52,14 @@ class RunnerWorld
 
 		void update(void);
 		void render(void);
-		Room &addRoomTemplate(std::string const &name, Room::Params &params);
+		Room *addRoomTemplate(std::string const &name, Room::Params &params);
 		void addBonusToRoomTemplate(std::string const &room_name,
 									std::string const &slot_name,
 									CollidableProp::Params &params);
 		void addObstacleToRoomTemplate(std::string const &room_name,
 									   std::string const &slot_name,
 									   CollidableProp::Params &params);
+		void generateRoomListNorth(void);
 		IInteractive *add_Player(Player::Params &params);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);

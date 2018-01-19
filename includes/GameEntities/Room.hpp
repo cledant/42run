@@ -16,8 +16,8 @@
 # include "Interfaces/ICollidable.hpp"
 # include "Interfaces/IEntity.hpp"
 # include "Interfaces/ITranslatable.hpp"
-# include "CollidableBox.hpp"
-# include "CollidableProp.hpp"
+# include "GameEntities/CollidableBox.hpp"
+# include "GameEntities/CollidableProp.hpp"
 
 class Room : public ICollidable, public IEntity, public ITranslatable
 {
@@ -36,6 +36,7 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 			CollidableBox::Params front_wall;
 		};
 
+		Room(void);
 		Room(Room::Params const &params);
 		virtual ~Room(void);
 		Room(Room const &src) = delete;
@@ -123,5 +124,7 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		std::map<std::string, CollidableProp> _list_bonuses;
 		std::map<std::string, CollidableProp> _list_obstacles;
 };
+
+static Room::Params basic_params;
 
 #endif

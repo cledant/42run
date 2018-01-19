@@ -36,6 +36,13 @@ Room::Params::~Params(void)
 {
 }
 
+Room::Room(void) : _room_cb(basic_params.room_cb), _floor(basic_params.floor),
+				   _roof(basic_params.roof), _right_wall(basic_params.right_wall),
+				   _left_wall(basic_params.left_wall),
+				   _front_wall(basic_params.front_wall)
+{
+}
+
 Room::Room(Room::Params const &params) : _room_cb(params.room_cb), _floor(params.floor),
 										 _roof(params.roof), _right_wall(params.right_wall),
 										 _left_wall(params.left_wall),

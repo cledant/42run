@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "Utility/WorldSelect.hpp"
-
+#include "Runner/TemplatedRoom.hpp"
 
 static void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 {
@@ -100,26 +100,14 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 {
 	Player::Params player_params;
 	Room::Params   room_params;
-	Room           *room;
 
 	(*world) = new RunnerWorld(manager.getInput(), manager.getWindow(), manager.getGamepad(),
 							   glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
 	set_player_params(player_params, oGL, audio);
 	(*world)->add_Player(player_params);
-	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.tex         = &(oGL.getTexture("TestTex"));
-	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.tex          = &(oGL.getTexture("TestTex"));
-	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.tex    = &(oGL.getTexture("TestTex"));
-	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.tex     = &(oGL.getTexture("TestTex"));
-	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.front_wall.tex    = &(oGL.getTexture("TestTex"));
-//	room_params.front_wall.active = false;
-	room_params.front_wall.active = true;
-	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
-	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
+	NormalRoomEmpty(**world, oGL);
+	NormalRoomBonusOnly(**world, oGL);
+	(*world)->generateRoomListNorth();
 /*	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
 	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));
 	room->translateObject(glm::vec3(6.6f, 0.0f, 0.0f));

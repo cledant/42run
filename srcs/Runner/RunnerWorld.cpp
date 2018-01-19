@@ -117,7 +117,7 @@ void RunnerWorld::render(void)
 		reinterpret_cast<Player *>(this->_active)->draw();
 }
 
-Room &RunnerWorld::addRoomTemplate(std::string const &name, Room::Params &params)
+Room *RunnerWorld::addRoomTemplate(std::string const &name, Room::Params &params)
 {
 	params.floor.perspec_mult_view      = &(this->_perspec_mult_view);
 	params.roof.perspec_mult_view       = &(this->_perspec_mult_view);
@@ -125,7 +125,7 @@ Room &RunnerWorld::addRoomTemplate(std::string const &name, Room::Params &params
 	params.left_wall.perspec_mult_view  = &(this->_perspec_mult_view);
 	params.front_wall.perspec_mult_view = &(this->_perspec_mult_view);
 	this->_room_template_list.insert(std::pair<std::string, Room>(name, Room(params)));
-	return (this->_room_template_list[name]);
+	return (&(this->_room_template_list[name]));
 }
 
 void RunnerWorld::addBonusToRoomTemplate(std::string const &room_name,
@@ -150,6 +150,10 @@ void RunnerWorld::addObstacleToRoomTemplate(std::string const &room_name,
 	if (it == this->_room_template_list.end())
 		throw RunnerWorld::RoomNotFoundException();
 	(*it).second.addObstacle(slot_name, params);
+}
+
+void RunnerWorld::generateRoomListNorth(void)
+{
 }
 
 IInteractive *RunnerWorld::add_Player(Player::Params &params)
