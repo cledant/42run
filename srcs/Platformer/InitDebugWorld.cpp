@@ -64,9 +64,12 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/fontset/fontset.fs");
 	oGL.add_shader("sprites", "./shaders/sprites/sprites.vs",
 				   "./shaders/sprites/sprites.fs");
-	oGL.add_texture("TestTex",
-					{"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
-					Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("Skybox", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/skybox/right.jpg", "./textures/skybox/left.jpg", "./textures/skybox/top.jpg", "./textures/skybox/bottom.jpg", "./textures/skybox/back.jpg", "./textures/skybox/front.jpg"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	oGL.add_model("Alice", "./models/Alice/Alice.obj");
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
 	oGL.add_model("cola", "./models/cola/cola.obj");
@@ -84,7 +87,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 	params.shader                 = &(oGL.getShader("sprites"));
 	params.pos                    = glm::vec3({0.0f, 15.0f, 0.0f});
 	params.size                   = glm::vec3({0.1f, 0.2f, 0.1f});
-	params.cb_tex                 = &(oGL.getTexture("TestTex"));
+	params.cb_model               = &(oGL.getModel("TestBox"));
 	params.tex                    = &(oGL.getTexture("sprite_marisa"));
 	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
 	params.nb_walk_frame          = 4;
@@ -98,29 +101,19 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 							 World **world, Audio &audio)
 {
-	Player::Params                 player_params;
-	CollidableProp::Params         bonus_params;
-	CollidableProp::Params         damage_box_params;
-	CollidableBox::Params          box_1;
-	CollidableBox::Params          box_2;
-	CollidableBox::Params          box_3;
-	CollidableBox::Params          box_4;
-	Room::Params                   room_params;
-	Room                           *room;
-	std::vector<std::string> const skybox_files
-										   {
-												   "./textures/skybox/right.jpg",
-												   "./textures/skybox/left.jpg",
-												   "./textures/skybox/top.jpg",
-												   "./textures/skybox/bottom.jpg",
-												   "./textures/skybox/back.jpg",
-												   "./textures/skybox/front.jpg",
-										   };
-
+	Player::Params         player_params;
+	CollidableProp::Params bonus_params;
+	CollidableProp::Params damage_box_params;
+	CollidableBox::Params  box_1;
+	CollidableBox::Params  box_2;
+	CollidableBox::Params  box_3;
+	CollidableBox::Params  box_4;
+	Room::Params           room_params;
+	Room                   *room;
 
 	(*world) = new World(manager.getInput(), manager.getWindow(), manager.getGamepad(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
-	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), skybox_files,
+	(*world)->add_Cubemap(&(oGL.getShader("cubemap")), &(oGL.getModel("Skybox")),
 						  glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
 	(*world)->add_Simple_box(&(oGL.getShader("simple_box")),
 							 glm::vec3(10.0f, 3.0f, 10.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -129,19 +122,19 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	(*world)->add_Player(player_params);
 
 	box_1.shader = &(oGL.getShader("cubemap"));
-	box_1.tex    = &(oGL.getTexture("TestTex"));
+	box_1.model  = &(oGL.getModel("TestBox"));
 	box_1.pos    = glm::vec3({0.0f, 0.0f, 0.0f});
 	box_1.size   = glm::vec3({50.0f, 0.2f, 50.0f});
 	(*world)->add_CollidableBox(box_1);
 
 	box_2.shader = &(oGL.getShader("cubemap"));
-	box_2.tex    = &(oGL.getTexture("TestTex"));
+	box_2.model  = &(oGL.getModel("TestBox"));
 	box_2.pos    = glm::vec3({0.0f, 13.0f, 0.0f});
 	box_2.size   = glm::vec3({1.0f, 1.0f, 1.0f});
 	(*world)->add_CollidableBox(box_2);
 
 	box_3.shader         = &(oGL.getShader("cubemap"));
-	box_3.tex            = &(oGL.getTexture("TestTex"));
+	box_3.model          = &(oGL.getModel("TestBox"));
 	box_3.pos            = glm::vec3({0.0f, 0.0f, 5.0f});
 	box_3.size           = glm::vec3({1.0f, 1.0f, 0.2f});
 	box_3.passthrough    = true;
@@ -150,7 +143,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	(*world)->add_CollidableBox(box_3);
 
 	box_4.shader = &(oGL.getShader("cubemap"));
-	box_4.tex    = &(oGL.getTexture("TestTex"));
+	box_4.model  = &(oGL.getModel("TestBox"));
 	box_4.pos    = glm::vec3({0.0f, 0.0f, 2.0f});
 	box_4.size   = glm::vec3({1.0f, 1.0f, 0.2f});
 	(*world)->add_CollidableBox(box_4);
@@ -180,15 +173,15 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	(*world)->add_CollidableProp(bonus_params);
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.tex         = &(oGL.getTexture("TestTex"));
+	room_params.floor.model       = &(oGL.getModel("TestBox"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.tex          = &(oGL.getTexture("TestTex"));
+	room_params.roof.model        = &(oGL.getModel("TestBox"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.tex    = &(oGL.getTexture("TestTex"));
+	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.tex     = &(oGL.getTexture("TestTex"));
+	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.front_wall.tex    = &(oGL.getTexture("TestTex"));
+	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
 	room->translateObject(glm::vec3(4.0f, 2.0f, 2.0f));
 	room->scaleObject(glm::vec3(1.0f, 1.0f, 1.0f));

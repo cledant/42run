@@ -65,6 +65,9 @@ class oGL_module
 
 		void add_model(std::string const &name,
 					   std::string const &path);
+		void add_model(std::string const &name, float const *array, size_t size,
+					   std::vector<std::string> const &files, Texture::t_tex_gl_type gl_type,
+					   Texture::t_tex_type type);
 		Model const &getModel(std::string const &name);
 
 		void add_texture(std::string const &name,

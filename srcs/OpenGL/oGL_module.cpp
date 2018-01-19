@@ -233,6 +233,13 @@ void oGL_module::add_model(std::string const &name,
 	this->_model_list.push_back({name, path});
 }
 
+void oGL_module::add_model(std::string const &name, float const *array, size_t size,
+						   std::vector<std::string> const &files, Texture::t_tex_gl_type gl_type,
+						   Texture::t_tex_type type)
+{
+	this->_model_list.push_back({name, array, size, files, gl_type, type});
+}
+
 Model const &oGL_module::getModel(std::string const &name)
 {
 	std::vector<Model>::iterator it;
