@@ -88,9 +88,10 @@ set(SOURCE_FILES
 		srcs/WindowManager/Gamepad.cpp
 		srcs/GameEntities/Room.cpp
 		srcs/Interfaces/ITranslatable.cpp
-		srcs/Platformer/InitDebugWorld.cpp
-		srcs/Runner/RunnerWorld.cpp
-		srcs/Runner/InitRunnerWorld.cpp srcs/Runner/TemplatedRoom.cpp)
+		srcs/Platformer/InitDebugWorld.cpp)
+#		srcs/Runner/RunnerWorld.cpp
+#		srcs/Runner/InitRunnerWorld.cpp
+#		srcs/Runner/TemplatedRoom.cpp)
 
 #OS specific libs
 if (APPLE)

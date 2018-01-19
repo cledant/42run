@@ -32,7 +32,7 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 
 			Shader const         *shader;
 			glm::mat4 const      *perspec_mult_view;
-			Texture const        *tex;
+			Model const          *model;
 			glm::vec3            pos;
 			glm::vec3            size;
 			ICollidable::Damages dmg;
@@ -44,10 +44,8 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 
 		CollidableBox(CollidableBox::Params const &params);
 		virtual ~CollidableBox();
-		CollidableBox(const CollidableBox &src) = delete;
-		CollidableBox &operator=(const CollidableBox &rhs) = delete;
-		CollidableBox(CollidableBox &&src);
-		CollidableBox &operator=(CollidableBox &&rhs);
+		CollidableBox(CollidableBox const &src);
+		CollidableBox &operator=(CollidableBox const &rhs);
 
 		/*
 		 * Interface ITranslatable
@@ -79,11 +77,11 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
  		* Getter
 		*/
 		glm::vec3 const &getPos(void) const;
-		Cubemap &getCubemap(void);
+		Cubemap const &getCubemap(void) const;
 
 	private :
 
-		Cubemap              _model;
+		Cubemap              _cm;
 		CollisionBox         _cb;
 		glm::vec3            _pos;
 		ICollidable::Damages _dmg;

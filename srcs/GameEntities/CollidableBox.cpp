@@ -16,7 +16,7 @@ CollidableBox::Params::Params(void)
 {
 	this->shader            = nullptr;
 	this->perspec_mult_view = nullptr;
-	this->tex               = nullptr;
+	this->model             = nullptr;
 	this->pos               = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->size              = glm::vec3(1.0f, 1.0f, 1.0f);
 	this->dmg               = ICollidable::Damages::NONE;
@@ -31,8 +31,8 @@ CollidableBox::Params::~Params(void)
 }
 
 CollidableBox::CollidableBox(CollidableBox::Params const &params) :
-		_model(params.shader, params.perspec_mult_view, params.tex,
-			   params.pos, params.size), _cb(params.pos, params.size),
+		_cm(params.shader, params.perspec_mult_view, params.model,
+			params.pos, params.size), _cb(params.pos, params.size),
 		_pos(params.pos), _dmg(params.dmg), _passthrough(params.passthrough),
 		_score_modifier(params.score_modifier), _active(params.active),
 		_pick_up(params.pick_up)
@@ -44,8 +44,8 @@ CollidableBox::~CollidableBox(void)
 {
 }
 
-CollidableBox::CollidableBox(CollidableBox &&src) : _model(std::move(src.getCubemap())),
-													_cb(src.getCollisionBox())
+CollidableBox::CollidableBox(CollidableBox const &src) : _cm(src.getCubemap()),
+														 _cb(src.getCollisionBox())
 {
 	this->_pos         = src.getPos();
 	this->_dmg         = src.getDamages();
@@ -54,9 +54,9 @@ CollidableBox::CollidableBox(CollidableBox &&src) : _model(std::move(src.getCube
 	this->_pick_up     = src.getPickUpSound();
 }
 
-CollidableBox &CollidableBox::operator=(CollidableBox &&rhs)
+CollidableBox &CollidableBox::operator=(CollidableBox const &rhs)
 {
-	this->_model       = std::move(rhs.getCubemap());
+	this->_cm          = rhs.getCubemap();
 	this->_cb          = rhs.getCollisionBox();
 	this->_pos         = rhs.getPos();
 	this->_dmg         = rhs.getDamages();
@@ -73,13 +73,13 @@ CollidableBox &CollidableBox::operator=(CollidableBox &&rhs)
 void CollidableBox::translateObject(glm::vec3 const &vec)
 {
 	this->_pos += vec;
-	this->_model.translateObject(vec);
+	this->_cm.translateObject(vec);
 	this->_cb.translateObject(vec);
 }
 
 void CollidableBox::scaleObject(glm::vec3 const &vec)
 {
-	this->_model.scaleObject(vec);
+	this->_cm.scaleObject(vec);
 	this->_cb.scaleObject(vec);
 }
 
@@ -134,22 +134,22 @@ std::string const &CollidableBox::getPickUpSound(void) const
 void CollidableBox::update(float time)
 {
 	if (this->_active)
-		this->_model.update(time);
+		this->_cm.update(time);
 }
 
 void CollidableBox::draw(void)
 {
 	if (this->_active)
-		this->_model.draw();
+		this->_cm.draw();
 }
 
 /*
  * Getter
  */
 
-Cubemap &CollidableBox::getCubemap(void)
+Cubemap const &CollidableBox::getCubemap(void) const
 {
-	return (this->_model);
+	return (this->_cm);
 }
 
 glm::vec3 const &CollidableBox::getPos(void) const
