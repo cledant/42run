@@ -161,7 +161,7 @@ void RunnerWorld::generateRoomListNorth(void)
 
 	if (it == this->_room_template_list.end())
 		throw RunnerWorldFailException();
-	this->_room_list_north.push_back(&(it->second));
+	this->_room_list_north.push_back(new Room(it->second));
 }
 
 IInteractive *RunnerWorld::add_Player(Player::Params &params)
