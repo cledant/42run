@@ -38,7 +38,7 @@ add_subdirectory(SFML ${CMAKE_BINARY_DIR}/SFML/build)
 
 #Setup 42Run
 if (APPLE)
-	set(CMAKE_CXX_FLAGS "-stdlib=libc++ -Wall -Werror -Wextra -O2 -g")
+	set(CMAKE_CXX_FLAGS "-stdlib=libc++ -Wall -Werror -Wextra -O2")
 else ()
 	set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra -O2")
 endif ()

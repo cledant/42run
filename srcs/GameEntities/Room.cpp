@@ -18,7 +18,8 @@ Room::Params::Params(void) : room_cb(CollisionBox(glm::vec3(0.0f, 0.0f, 0.0f),
 							 roof(CollidableBox::Params()),
 							 right_wall(CollidableBox::Params()),
 							 left_wall(CollidableBox::Params()),
-							 front_wall(CollidableBox::Params())
+							 front_wall(CollidableBox::Params()),
+							 perspec_mult_view(nullptr)
 {
 	this->floor.pos       = glm::vec3(0.0f, -1.0f, 0.0f);
 	this->floor.size      = glm::vec3(1.1f, 0.1f, 1.1f);
@@ -36,14 +37,16 @@ Room::Params::~Params(void)
 {
 }
 
-Room::Room(void) : _room_cb(basic_params.room_cb), _floor(basic_params.floor),
+Room::Room(void) : _perspec_mult_view(basic_params.perspec_mult_view),
+				   _room_cb(basic_params.room_cb), _floor(basic_params.floor),
 				   _roof(basic_params.roof), _right_wall(basic_params.right_wall),
 				   _left_wall(basic_params.left_wall),
 				   _front_wall(basic_params.front_wall), _pick_up("")
 {
 }
 
-Room::Room(Room::Params const &params) : _room_cb(params.room_cb), _floor(params.floor),
+Room::Room(Room::Params const &params) : _perspec_mult_view(params.perspec_mult_view),
+										 _room_cb(params.room_cb), _floor(params.floor),
 										 _roof(params.roof), _right_wall(params.right_wall),
 										 _left_wall(params.left_wall),
 										 _front_wall(params.front_wall), _pick_up("")
@@ -54,7 +57,8 @@ Room::~Room(void)
 {
 }
 
-Room::Room(Room const &src) : _room_cb(src.getCollisionBox()),
+Room::Room(Room const &src) : _perspec_mult_view(src.getPerspecMultView()),
+							  _room_cb(src.getCollisionBox()),
 							  _floor(src.getFloor()),
 							  _roof(src.getRoof()),
 							  _right_wall(src.getRightWall()),
@@ -66,24 +70,27 @@ Room::Room(Room const &src) : _room_cb(src.getCollisionBox()),
 
 Room &Room::operator=(Room const &rhs)
 {
-	this->_room_cb    = rhs.getCollisionBox();
-	this->_floor      = rhs.getFloor();
-	this->_roof       = rhs.getRoof();
-	this->_right_wall = rhs.getRightWall();
-	this->_left_wall  = rhs.getLeftWall();
-	this->_front_wall = rhs.getFrontWall();
-	this->_pick_up    = "";
+	this->_room_cb           = rhs.getCollisionBox();
+	this->_floor             = rhs.getFloor();
+	this->_roof              = rhs.getRoof();
+	this->_right_wall        = rhs.getRightWall();
+	this->_left_wall         = rhs.getLeftWall();
+	this->_front_wall        = rhs.getFrontWall();
+	this->_pick_up           = "";
+	this->_perspec_mult_view = rhs.getPerspecMultView();
 	return (*this);
 }
 
-void Room::addBonus(std::string const &slot, CollidableProp::Params const &params)
+void Room::addBonus(std::string const &slot, CollidableProp::Params &params)
 {
+	params.prop_params.perspec_mult_view = this->_perspec_mult_view;
 	this->_list_bonuses.insert(std::pair<std::string, CollidableProp>
 									   (slot, CollidableProp(params)));
 }
 
-void Room::addObstacle(std::string const &slot, CollidableProp::Params const &params)
+void Room::addObstacle(std::string const &slot, CollidableProp::Params &params)
 {
+	params.prop_params.perspec_mult_view = this->_perspec_mult_view;
 	this->_list_obstacles.insert(std::pair<std::string, CollidableProp>
 										 (slot, CollidableProp(params)));
 }
@@ -259,6 +266,11 @@ CollidableProp &Room::getObstacle(std::string const &name)
 	if (it == this->_list_obstacles.end())
 		throw Room::ObstacleNotFoundException();
 	return ((*it).second);
+}
+
+glm::mat4 const *Room::getPerspecMultView(void) const
+{
+	return (this->_perspec_mult_view);
 }
 
 Room::BonusNotFoundException::BonusNotFoundException(void)

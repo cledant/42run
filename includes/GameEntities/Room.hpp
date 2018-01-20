@@ -34,6 +34,7 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 			CollidableBox::Params right_wall;
 			CollidableBox::Params left_wall;
 			CollidableBox::Params front_wall;
+			glm::mat4 const       *perspec_mult_view;
 		};
 
 		Room(void);
@@ -42,8 +43,8 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		Room(Room const &src);
 		Room &operator=(Room const &rhs);
 
-		void addBonus(std::string const &slot, CollidableProp::Params const &params);
-		void addObstacle(std::string const &slot, CollidableProp::Params const &params);
+		void addBonus(std::string const &slot, CollidableProp::Params &params);
+		void addObstacle(std::string const &slot, CollidableProp::Params &params);
 
 		/*
 		 * Interface ITranslatable
@@ -93,6 +94,7 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		CollidableBox const &getFrontWall(void) const;
 		CollidableProp &getBonus(std::string const &name);
 		CollidableProp &getObstacle(std::string const &name);
+		glm::mat4 const *getPerspecMultView(void) const;
 
 		class BonusNotFoundException : public GeneralException
 		{
@@ -112,6 +114,7 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 
 	private :
 
+		glm::mat4 const                       *_perspec_mult_view;
 		CollisionBox                          _room_cb;
 		CollidableBox                         _floor;
 		CollidableBox                         _roof;

@@ -127,6 +127,7 @@ Room *RunnerWorld::addRoomTemplate(std::string const &name, Room::Params &params
 	params.right_wall.perspec_mult_view = &(this->_perspec_mult_view);
 	params.left_wall.perspec_mult_view  = &(this->_perspec_mult_view);
 	params.front_wall.perspec_mult_view = &(this->_perspec_mult_view);
+	params.perspec_mult_view            = &(this->_perspec_mult_view);
 	this->_room_template_list.insert(std::pair<std::string, Room>(name, Room(params)));
 	return (&(this->_room_template_list[name]));
 }

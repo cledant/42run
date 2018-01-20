@@ -130,7 +130,6 @@ glm::mat4 const *Cubemap::getPerspecMultView(void) const
 	return (this->_perspec_mult_view);
 }
 
-
 glm::vec3 const &Cubemap::getPos(void) const
 {
 	return (this->_pos);
