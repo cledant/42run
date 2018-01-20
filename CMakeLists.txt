@@ -38,7 +38,7 @@ add_subdirectory(SFML ${CMAKE_BINARY_DIR}/SFML/build)
 
 #Setup 42Run
 if (APPLE)
-	set(CMAKE_CXX_FLAGS "-stdlib=libc++ -Wall -Werror -Wextra -O2")
+	set(CMAKE_CXX_FLAGS "-stdlib=libc++ -Wall -Werror -Wextra -O2 -g")
 else ()
 	set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra -O2")
 endif ()
@@ -88,10 +88,10 @@ set(SOURCE_FILES
 		srcs/WindowManager/Gamepad.cpp
 		srcs/GameEntities/Room.cpp
 		srcs/Interfaces/ITranslatable.cpp
-		srcs/Platformer/InitDebugWorld.cpp)
-#		srcs/Runner/RunnerWorld.cpp
-#		srcs/Runner/InitRunnerWorld.cpp
-#		srcs/Runner/TemplatedRoom.cpp)
+		srcs/Platformer/InitDebugWorld.cpp
+		srcs/Runner/RunnerWorld.cpp
+		srcs/Runner/InitRunnerWorld.cpp
+		srcs/Runner/TemplatedRoom.cpp)
 
 #OS specific libs
 if (APPLE)

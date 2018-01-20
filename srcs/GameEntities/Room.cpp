@@ -39,14 +39,14 @@ Room::Params::~Params(void)
 Room::Room(void) : _room_cb(basic_params.room_cb), _floor(basic_params.floor),
 				   _roof(basic_params.roof), _right_wall(basic_params.right_wall),
 				   _left_wall(basic_params.left_wall),
-				   _front_wall(basic_params.front_wall)
+				   _front_wall(basic_params.front_wall), _pick_up("")
 {
 }
 
 Room::Room(Room::Params const &params) : _room_cb(params.room_cb), _floor(params.floor),
 										 _roof(params.roof), _right_wall(params.right_wall),
 										 _left_wall(params.left_wall),
-										 _front_wall(params.front_wall)
+										 _front_wall(params.front_wall), _pick_up("")
 {
 }
 
@@ -54,23 +54,25 @@ Room::~Room(void)
 {
 }
 
-Room::Room(Room &&src) : _room_cb(src.getCollisionBox()),
-						 _floor(std::move(src.getFloor())),
-						 _roof(std::move(src.getRoof())),
-						 _right_wall(std::move(src.getRightWall())),
-						 _left_wall(std::move(src.getLeftWall())),
-						 _front_wall(std::move(src.getFrontWall()))
+Room::Room(Room const &src) : _room_cb(src.getCollisionBox()),
+							  _floor(src.getFloor()),
+							  _roof(src.getRoof()),
+							  _right_wall(src.getRightWall()),
+							  _left_wall(src.getLeftWall()),
+							  _front_wall(src.getFrontWall()),
+							  _pick_up("")
 {
 }
 
-Room &Room::operator=(Room &&rhs)
+Room &Room::operator=(Room const &rhs)
 {
 	this->_room_cb    = rhs.getCollisionBox();
-	this->_floor      = std::move(rhs.getFloor());
-	this->_roof       = std::move(rhs.getRoof());
-	this->_right_wall = std::move(rhs.getRightWall());
-	this->_left_wall  = std::move(rhs.getLeftWall());
-	this->_front_wall = std::move(rhs.getFrontWall());
+	this->_floor      = rhs.getFloor();
+	this->_roof       = rhs.getRoof();
+	this->_right_wall = rhs.getRightWall();
+	this->_left_wall  = rhs.getLeftWall();
+	this->_front_wall = rhs.getFrontWall();
+	this->_pick_up    = "";
 	return (*this);
 }
 
@@ -216,27 +218,27 @@ void Room::activeFrontWall(bool value)
  * Getter
  */
 
-CollidableBox &Room::getFloor(void)
+CollidableBox const &Room::getFloor(void) const
 {
 	return (this->_floor);
 }
 
-CollidableBox &Room::getRoof(void)
+CollidableBox const &Room::getRoof(void) const
 {
 	return (this->_roof);
 }
 
-CollidableBox &Room::getRightWall(void)
+CollidableBox const &Room::getRightWall(void) const
 {
 	return (this->_right_wall);
 }
 
-CollidableBox &Room::getLeftWall(void)
+CollidableBox const &Room::getLeftWall(void) const
 {
 	return (this->_left_wall);
 }
 
-CollidableBox &Room::getFrontWall(void)
+CollidableBox const &Room::getFrontWall(void) const
 {
 	return (this->_front_wall);
 }
@@ -276,3 +278,5 @@ Room::ObstacleNotFoundException::ObstacleNotFoundException(void)
 Room::ObstacleNotFoundException::~ObstacleNotFoundException(void) throw()
 {
 }
+
+Room::Params Room::basic_params = Room::Params();

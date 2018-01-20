@@ -19,15 +19,15 @@ void NormalRoomEmpty(RunnerWorld &world, oGL_module &oGL)
 	Room           *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.tex         = &(oGL.getTexture("TestTex"));
+	room_params.floor.model       = &(oGL.getModel("TestBox"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.tex          = &(oGL.getTexture("TestTex"));
+	room_params.roof.model        = &(oGL.getModel("TestBox"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.tex    = &(oGL.getTexture("TestTex"));
+	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.tex     = &(oGL.getTexture("TestTex"));
+	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.front_wall.tex    = &(oGL.getTexture("TestTex"));
+	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
 	room = world.addRoomTemplate("NormalRoomEmpty", room_params);
 	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
@@ -42,15 +42,15 @@ void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL)
 
 	//Room Params
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.tex         = &(oGL.getTexture("TestTex"));
+	room_params.floor.model       = &(oGL.getModel("TestBox"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.tex          = &(oGL.getTexture("TestTex"));
+	room_params.roof.model        = &(oGL.getModel("TestBox"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.tex    = &(oGL.getTexture("TestTex"));
+	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.tex     = &(oGL.getTexture("TestTex"));
+	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.front_wall.tex    = &(oGL.getTexture("TestTex"));
+	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
 	room = world.addRoomTemplate("NormalRoomBonusOnly", room_params);
 	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));

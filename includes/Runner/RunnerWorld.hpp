@@ -132,11 +132,11 @@ class RunnerWorld
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
 									  CollisionBox::SweepResolution const &res,
-									  ICollidable *ptr);
-		void _check_collidable_box(CollidableBox &cb,
+									  ICollidable const *ptr);
+		void _check_collidable_box(CollidableBox const &cb,
 								   CollisionBox::SweepResolution *nearest,
 								   glm::vec3 const &inv_delta,
-								   ICollidable **ptr);
+								   ICollidable const **ptr);
 };
 
 #endif

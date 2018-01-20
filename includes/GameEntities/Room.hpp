@@ -39,10 +39,8 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		Room(void);
 		Room(Room::Params const &params);
 		virtual ~Room(void);
-		Room(Room const &src) = delete;
-		Room &operator=(Room const &rhs) = delete;
-		Room(Room &&src);
-		Room &operator=(Room &&rhs);
+		Room(Room const &src);
+		Room &operator=(Room const &rhs);
 
 		void addBonus(std::string const &slot, CollidableProp::Params const &params);
 		void addObstacle(std::string const &slot, CollidableProp::Params const &params);
@@ -88,11 +86,11 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		 * Getter
 		 */
 
-		CollidableBox &getFloor(void);
-		CollidableBox &getRoof(void);
-		CollidableBox &getRightWall(void);
-		CollidableBox &getLeftWall(void);
-		CollidableBox &getFrontWall(void);
+		CollidableBox const &getFloor(void) const;
+		CollidableBox const &getRoof(void) const;
+		CollidableBox const &getRightWall(void) const;
+		CollidableBox const &getLeftWall(void) const;
+		CollidableBox const &getFrontWall(void) const;
 		CollidableProp &getBonus(std::string const &name);
 		CollidableProp &getObstacle(std::string const &name);
 
@@ -123,8 +121,8 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		std::string                           _pick_up;
 		std::map<std::string, CollidableProp> _list_bonuses;
 		std::map<std::string, CollidableProp> _list_obstacles;
-};
 
-static Room::Params basic_params;
+		static Room::Params basic_params;
+};
 
 #endif

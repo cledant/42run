@@ -66,9 +66,12 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/fontset/fontset.fs");
 	oGL.add_shader("sprites", "./shaders/sprites/sprites.vs",
 				   "./shaders/sprites/sprites.fs");
-	oGL.add_texture("TestTex",
-					{"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
-					Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("Skybox", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/skybox/right.jpg", "./textures/skybox/left.jpg", "./textures/skybox/top.jpg", "./textures/skybox/bottom.jpg", "./textures/skybox/back.jpg", "./textures/skybox/front.jpg"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	oGL.add_model("cola", "./models/cola/cola.obj");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
@@ -84,7 +87,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 	params.shader                 = &(oGL.getShader("sprites"));
 	params.pos                    = glm::vec3({0.0f, 1.0f, 0.0f});
 	params.size                   = glm::vec3({0.3f, 0.5f, 0.3f});
-	params.cb_tex                 = &(oGL.getTexture("TestTex"));
+	params.cb_model               = &(oGL.getModel("TestBox"));
 	params.tex                    = &(oGL.getTexture("sprite_reimu"));
 	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
 	params.nb_walk_frame          = 4;

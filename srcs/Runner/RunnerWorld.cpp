@@ -157,20 +157,11 @@ void RunnerWorld::addObstacleToRoomTemplate(std::string const &room_name,
 
 void RunnerWorld::generateRoomListNorth(void)
 {
-	auto it = this->_room_list_north[0];
-	*it = this->_room_template_list["NormalRoomEmpty"];
-	auto it = this->_room_list_north[1];
-	*it = this->_room_template_list["NormalRoomEmpty"];
-	auto it = this->_room_list_north[2];
-	*it = this->_room_template_list["NormalRoomEmpty"];
-	auto it = this->_room_list_north[3];
-	*it = this->_room_template_list["NormalRoomBonusOnly"];
-	auto it = this->_room_list_north[4];
-	*it = this->_room_template_list["NormalRoomBonusOnly"];
-	auto it = this->_room_list_north[5];
-	*it = this->_room_template_list["NormalRoomBonusOnly"];
-	auto it = this->_room_list_north[6];
-	*it = this->_room_template_list["NormalRoomBonusOnly"];
+	auto it = this->_room_template_list.find("NormalRoomEmpty");
+
+	if (it == this->_room_template_list.end())
+		throw RunnerWorldFailException();
+	this->_room_list_north.push_back(&(it->second));
 }
 
 IInteractive *RunnerWorld::add_Player(Player::Params &params)
@@ -272,7 +263,7 @@ void RunnerWorld::_check_collisions(void)
 
 	glm::vec3                     inv_delta;
 	CollisionBox::SweepResolution nearest;
-	ICollidable                   *ptr      = nullptr;
+	ICollidable const             *ptr      = nullptr;
 	Room                          *cur_room = nullptr;
 
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
@@ -308,7 +299,7 @@ void RunnerWorld::_check_collisions(void)
 
 void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &box,
 										   CollisionBox::SweepResolution const &res,
-										   ICollidable *ptr)
+										   ICollidable const *ptr)
 {
 	glm::vec3 new_delta;
 
@@ -345,10 +336,10 @@ void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &b
 	}
 }
 
-void RunnerWorld::_check_collidable_box(CollidableBox &cb,
+void RunnerWorld::_check_collidable_box(CollidableBox const &cb,
 										CollisionBox::SweepResolution *nearest,
 										glm::vec3 const &inv_delta,
-										ICollidable **ptr)
+										ICollidable const **ptr)
 {
 	CollisionBox::SweepResolution res;
 
@@ -357,12 +348,12 @@ void RunnerWorld::_check_collidable_box(CollidableBox &cb,
 	{
 		if (*ptr == nullptr)
 		{
-			*ptr = static_cast<ICollidable *>(&cb);
+			*ptr = static_cast<ICollidable const *>(&cb);
 			std::memcpy(nearest, &res, sizeof(CollisionBox::SweepResolution));
 		}
 		else if (res.time < nearest->time)
 		{
-			*ptr = static_cast<ICollidable *>(&cb);
+			*ptr = static_cast<ICollidable const *>(&cb);
 			std::memcpy(nearest, &res, sizeof(CollisionBox::SweepResolution));
 		}
 	}
