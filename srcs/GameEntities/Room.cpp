@@ -66,6 +66,8 @@ Room::Room(Room const &src) : _perspec_mult_view(src.getPerspecMultView()),
 							  _front_wall(src.getFrontWall()),
 							  _pick_up("")
 {
+	this->_list_obstacles = src.getObstacleList();
+	this->_list_bonuses   = src.getBonusList();
 }
 
 Room &Room::operator=(Room const &rhs)
@@ -78,6 +80,8 @@ Room &Room::operator=(Room const &rhs)
 	this->_front_wall        = rhs.getFrontWall();
 	this->_pick_up           = "";
 	this->_perspec_mult_view = rhs.getPerspecMultView();
+	this->_list_obstacles    = rhs.getObstacleList();
+	this->_list_bonuses      = rhs.getBonusList();
 	return (*this);
 }
 
@@ -267,6 +271,20 @@ CollidableProp &Room::getObstacle(std::string const &name)
 		throw Room::ObstacleNotFoundException();
 	return ((*it).second);
 }
+
+std::map<std::string, CollidableProp> const &Room::getBonusList(void) const
+{
+	return (this->_list_bonuses);
+};
+
+std::map<std::string, CollidableProp> const &Room::getObstacleList(void) const
+{
+	return (this->_list_obstacles);
+};
+
+/*
+ * Exceptions
+ */
 
 glm::mat4 const *Room::getPerspecMultView(void) const
 {

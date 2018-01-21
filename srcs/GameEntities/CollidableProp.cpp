@@ -48,6 +48,7 @@ CollidableProp::CollidableProp(CollidableProp const &src) : _prop(src.getProp())
 	this->_score_modifier = src.getScoreModifier();
 	this->_pick_up        = src.getPickUpSound();
 	this->_auto_rotation  = src.getAutoRotation();
+	this->_active         = src.getActive();
 }
 
 CollidableProp &CollidableProp::operator=(CollidableProp const &rhs)
@@ -59,6 +60,7 @@ CollidableProp &CollidableProp::operator=(CollidableProp const &rhs)
 	this->_score_modifier = rhs.getScoreModifier();
 	this->_pick_up        = rhs.getPickUpSound();
 	this->_auto_rotation  = rhs.getAutoRotation();
+	this->_active         = rhs.getActive();
 	return (*this);
 }
 

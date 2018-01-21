@@ -95,6 +95,12 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		CollidableProp &getBonus(std::string const &name);
 		CollidableProp &getObstacle(std::string const &name);
 		glm::mat4 const *getPerspecMultView(void) const;
+		std::map<std::string, CollidableProp> const &getBonusList(void) const;
+		std::map<std::string, CollidableProp> const &getObstacleList(void) const;
+
+		/*
+		 * Exceptions
+		 */
 
 		class BonusNotFoundException : public GeneralException
 		{

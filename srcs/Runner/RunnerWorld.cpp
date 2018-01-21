@@ -158,7 +158,7 @@ void RunnerWorld::addObstacleToRoomTemplate(std::string const &room_name,
 
 void RunnerWorld::generateRoomListNorth(void)
 {
-	auto it = this->_room_template_list.find("NormalRoomEmpty");
+	auto it = this->_room_template_list.find("NormalRoomBonusOnly");
 
 	if (it == this->_room_template_list.end())
 		throw RunnerWorldFailException();
