@@ -73,6 +73,7 @@ static void init_oGL(oGL_module &oGL)
 				  {"./textures/skybox/right.jpg", "./textures/skybox/left.jpg", "./textures/skybox/top.jpg", "./textures/skybox/bottom.jpg", "./textures/skybox/back.jpg", "./textures/skybox/front.jpg"},
 				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	oGL.add_model("cola", "./models/cola/cola.obj");
+	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
@@ -110,6 +111,7 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	(*world)->add_Player(player_params);
 	NormalRoomEmpty(**world, oGL);
 	NormalRoomBonusOnly(**world, oGL);
+	NormalRoomObstacleOnly(**world, oGL);
 	(*world)->generateRoomListNorth();
 /*	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
 	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));

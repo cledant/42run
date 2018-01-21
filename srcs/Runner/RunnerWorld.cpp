@@ -158,7 +158,7 @@ void RunnerWorld::addObstacleToRoomTemplate(std::string const &room_name,
 
 void RunnerWorld::generateRoomListNorth(void)
 {
-	auto it = this->_room_template_list.find("NormalRoomBonusOnly");
+	auto it = this->_room_template_list.find("NormalRoomObstacleOnly");
 
 	if (it == this->_room_template_list.end())
 		throw RunnerWorldFailException();
@@ -261,7 +261,7 @@ void RunnerWorld::setActiveRoom(enum RunnerWorld::Direction dir)
 
 void RunnerWorld::_check_collisions(void)
 {
-
+	CollisionBox::SweepResolution res;
 	glm::vec3                     inv_delta;
 	CollisionBox::SweepResolution nearest;
 	ICollidable const             *ptr      = nullptr;
@@ -291,6 +291,36 @@ void RunnerWorld::_check_collisions(void)
 			this->_check_collidable_box((*it)->getLeftWall(), &nearest, inv_delta, &ptr);
 			if ((*it)->getFrontWall().getActive())
 				this->_check_collidable_box((*it)->getFrontWall(), &nearest, inv_delta, &ptr);
+			for (auto it = cur_room->getBonusList().begin(); it != cur_room->getBonusList().end(); ++it)
+			{
+				if ((*it).second.getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
+						IsBoxInBoxSweep((*it).second.getCollisionBox(), inv_delta, &res)))
+				{
+					if ((*it).second.getPassthrough())
+					{
+						if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
+							(*it).second.getDamages() != ICollidable::Damages::NONE)
+						{
+							reinterpret_cast<Player *>(this->_active)->lowerHP((*it).second.getDamages());
+							reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
+							reinterpret_cast<Player *>(this->_active)->playSound("damage");
+						}
+						reinterpret_cast<Player *>(this->_active)->playSound((*it).second.getPickUpSound());
+						this->_score_modifier += (*it).second.getScoreModifier();
+						const_cast<CollidableProp &>((*it).second).setActive(false);
+					}
+					else if (ptr == nullptr)
+					{
+						ptr = (&(*it).second);
+						std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+					}
+					else if (res.time < nearest.time)
+					{
+						ptr = (&(*it).second);
+						std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+					}
+				}
+			}
 		}
 	}
 	if (ptr != nullptr)

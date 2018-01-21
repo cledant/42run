@@ -17,5 +17,6 @@
 
 void NormalRoomEmpty(RunnerWorld &world, oGL_module &oGL);
 void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL);
+void NormalRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL);
 
 #endif
