@@ -43,8 +43,7 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		Room(Room const &src);
 		Room &operator=(Room const &rhs);
 
-		void addBonus(std::string const &slot, CollidableProp::Params &params);
-		void addObstacle(std::string const &slot, CollidableProp::Params &params);
+		void addCollidableProp(std::string const &slot, CollidableProp::Params &params);
 
 		/*
 		 * Interface ITranslatable
@@ -92,11 +91,9 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		CollidableBox const &getRightWall(void) const;
 		CollidableBox const &getLeftWall(void) const;
 		CollidableBox const &getFrontWall(void) const;
-		CollidableProp &getBonus(std::string const &name);
-		CollidableProp &getObstacle(std::string const &name);
+		CollidableProp &getCollidableProp(std::string const &name);
 		glm::mat4 const *getPerspecMultView(void) const;
-		std::map<std::string, CollidableProp> const &getBonusList(void) const;
-		std::map<std::string, CollidableProp> const &getObstacleList(void) const;
+		std::map<std::string, CollidableProp> const &getCollidablePropList(void) const;
 
 		/*
 		 * Exceptions
@@ -128,8 +125,7 @@ class Room : public ICollidable, public IEntity, public ITranslatable
 		CollidableBox                         _left_wall;
 		CollidableBox                         _front_wall;
 		std::string                           _pick_up;
-		std::map<std::string, CollidableProp> _list_bonuses;
-		std::map<std::string, CollidableProp> _list_obstacles;
+		std::map<std::string, CollidableProp> _list_collidable_prop;
 
 		static Room::Params basic_params;
 };

@@ -132,28 +132,16 @@ Room *RunnerWorld::addRoomTemplate(std::string const &name, Room::Params &params
 	return (&(this->_room_template_list[name]));
 }
 
-void RunnerWorld::addBonusToRoomTemplate(std::string const &room_name,
-										 std::string const &slot_name,
-										 CollidableProp::Params &params)
+void RunnerWorld::addCollidableToRoomTemplate(std::string const &room_name,
+											  std::string const &slot_name,
+											  CollidableProp::Params &params)
 {
 	auto it = this->_room_template_list.find(room_name);
 
 	params.prop_params.perspec_mult_view = &(this->_perspec_mult_view);
 	if (it == this->_room_template_list.end())
 		throw RunnerWorld::RoomNotFoundException();
-	(*it).second.addBonus(slot_name, params);
-}
-
-void RunnerWorld::addObstacleToRoomTemplate(std::string const &room_name,
-											std::string const &slot_name,
-											CollidableProp::Params &params)
-{
-	auto it = this->_room_template_list.find(room_name);
-
-	params.prop_params.perspec_mult_view = &(this->_perspec_mult_view);
-	if (it == this->_room_template_list.end())
-		throw RunnerWorld::RoomNotFoundException();
-	(*it).second.addObstacle(slot_name, params);
+	(*it).second.addCollidableProp(slot_name, params);
 }
 
 void RunnerWorld::generateRoomListNorth(void)
@@ -291,7 +279,8 @@ void RunnerWorld::_check_collisions(void)
 			this->_check_collidable_box((*it)->getLeftWall(), &nearest, inv_delta, &ptr);
 			if ((*it)->getFrontWall().getActive())
 				this->_check_collidable_box((*it)->getFrontWall(), &nearest, inv_delta, &ptr);
-			for (auto it = cur_room->getBonusList().begin(); it != cur_room->getBonusList().end(); ++it)
+			for (auto it = cur_room->getCollidablePropList().begin(); it != cur_room->getCollidablePropList()
+																					.end(); ++it)
 			{
 				if ((*it).second.getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 						IsBoxInBoxSweep((*it).second.getCollisionBox(), inv_delta, &res)))

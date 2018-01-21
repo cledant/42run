@@ -66,37 +66,28 @@ Room::Room(Room const &src) : _perspec_mult_view(src.getPerspecMultView()),
 							  _front_wall(src.getFrontWall()),
 							  _pick_up("")
 {
-	this->_list_obstacles = src.getObstacleList();
-	this->_list_bonuses   = src.getBonusList();
+	this->_list_collidable_prop = src.getCollidablePropList();
 }
 
 Room &Room::operator=(Room const &rhs)
 {
-	this->_room_cb           = rhs.getCollisionBox();
-	this->_floor             = rhs.getFloor();
-	this->_roof              = rhs.getRoof();
-	this->_right_wall        = rhs.getRightWall();
-	this->_left_wall         = rhs.getLeftWall();
-	this->_front_wall        = rhs.getFrontWall();
-	this->_pick_up           = "";
-	this->_perspec_mult_view = rhs.getPerspecMultView();
-	this->_list_obstacles    = rhs.getObstacleList();
-	this->_list_bonuses      = rhs.getBonusList();
+	this->_room_cb              = rhs.getCollisionBox();
+	this->_floor                = rhs.getFloor();
+	this->_roof                 = rhs.getRoof();
+	this->_right_wall           = rhs.getRightWall();
+	this->_left_wall            = rhs.getLeftWall();
+	this->_front_wall           = rhs.getFrontWall();
+	this->_pick_up              = "";
+	this->_perspec_mult_view    = rhs.getPerspecMultView();
+	this->_list_collidable_prop = rhs.getCollidablePropList();
 	return (*this);
 }
 
-void Room::addBonus(std::string const &slot, CollidableProp::Params &params)
+void Room::addCollidableProp(std::string const &slot, CollidableProp::Params &params)
 {
 	params.prop_params.perspec_mult_view = this->_perspec_mult_view;
-	this->_list_bonuses.insert(std::pair<std::string, CollidableProp>
-									   (slot, CollidableProp(params)));
-}
-
-void Room::addObstacle(std::string const &slot, CollidableProp::Params &params)
-{
-	params.prop_params.perspec_mult_view = this->_perspec_mult_view;
-	this->_list_obstacles.insert(std::pair<std::string, CollidableProp>
-										 (slot, CollidableProp(params)));
+	this->_list_collidable_prop.insert(std::pair<std::string, CollidableProp>
+											   (slot, CollidableProp(params)));
 }
 
 /*
@@ -111,9 +102,7 @@ void Room::translateObject(glm::vec3 const &vec)
 	this->_right_wall.translateObject(vec);
 	this->_left_wall.translateObject(vec);
 	this->_front_wall.translateObject(vec);
-	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
-		(*it).second.translateObject(vec);
-	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
+	for (auto it = this->_list_collidable_prop.begin(); it != this->_list_collidable_prop.end(); ++it)
 		(*it).second.translateObject(vec);
 }
 
@@ -146,9 +135,7 @@ void Room::update(float time)
 	this->_left_wall.update(time);
 	if (this->_front_wall.getActive())
 		this->_front_wall.update(time);
-	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
-		(*it).second.update(time);
-	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
+	for (auto it = this->_list_collidable_prop.begin(); it != this->_list_collidable_prop.end(); ++it)
 		(*it).second.update(time);
 }
 
@@ -160,12 +147,7 @@ void Room::draw(void)
 	this->_left_wall.draw();
 	if (this->_front_wall.getActive())
 		this->_front_wall.draw();
-	for (auto it = this->_list_bonuses.begin(); it != this->_list_bonuses.end(); ++it)
-	{
-		if ((*it).second.getActive())
-			(*it).second.draw();
-	}
-	for (auto it = this->_list_obstacles.begin(); it != this->_list_obstacles.end(); ++it)
+	for (auto it = this->_list_collidable_prop.begin(); it != this->_list_collidable_prop.end(); ++it)
 	{
 		if ((*it).second.getActive())
 			(*it).second.draw();
@@ -254,32 +236,18 @@ CollidableBox const &Room::getFrontWall(void) const
 	return (this->_front_wall);
 }
 
-CollidableProp &Room::getBonus(std::string const &name)
+CollidableProp &Room::getCollidableProp(std::string const &name)
 {
-	auto it = this->_list_bonuses.find(name);
+	auto it = this->_list_collidable_prop.find(name);
 
-	if (it == this->_list_bonuses.end())
+	if (it == this->_list_collidable_prop.end())
 		throw Room::BonusNotFoundException();
 	return ((*it).second);
 }
 
-CollidableProp &Room::getObstacle(std::string const &name)
+std::map<std::string, CollidableProp> const &Room::getCollidablePropList() const
 {
-	auto it = this->_list_obstacles.find(name);
-
-	if (it == this->_list_obstacles.end())
-		throw Room::ObstacleNotFoundException();
-	return ((*it).second);
-}
-
-std::map<std::string, CollidableProp> const &Room::getBonusList(void) const
-{
-	return (this->_list_bonuses);
-};
-
-std::map<std::string, CollidableProp> const &Room::getObstacleList(void) const
-{
-	return (this->_list_obstacles);
+	return (this->_list_collidable_prop);
 };
 
 /*

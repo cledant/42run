@@ -78,7 +78,7 @@ void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL)
 			bonus_params.cb              = CollisionBox(bonus_params.prop_params.pos,
 														glm::vec3(0.14f, 0.14f, 0.14f));
 			slot_name += std::to_string(c);
-			room->addBonus(slot_name, bonus_params);
+			room->addCollidableProp(slot_name, bonus_params);
 			c++;
 		}
 	}
@@ -124,7 +124,7 @@ void NormalRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL)
 			obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
 														   glm::vec3(0.14f, 0.14f, 0.14f));
 			slot_name += std::to_string(c);
-			room->addBonus(slot_name, obstacle_params);
+			room->addCollidableProp(slot_name, obstacle_params);
 			c++;
 		}
 	}
