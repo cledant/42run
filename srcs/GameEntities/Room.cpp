@@ -31,6 +31,7 @@ Room::Params::Params(void) : room_cb(CollisionBox(glm::vec3(0.0f, 0.0f, 0.0f),
 	this->left_wall.size  = glm::vec3(1.1f, 0.9f, 0.1f);
 	this->front_wall.pos  = glm::vec3(1.0f, 0.0f, 0.0f);
 	this->front_wall.size = glm::vec3(0.1f, 0.9f, 0.9f);
+	this->front_wall.dmg  = Damages::INSTANT_DEATH;
 }
 
 Room::Params::~Params(void)

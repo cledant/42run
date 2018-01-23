@@ -171,11 +171,13 @@ void RunnerWorld::generateRoomListNorth(void)
 														  this->_room_template_list.find("NormalRoomBonusAndObstacle")};
 	size_t                                nb_room_type = 4;
 	size_t                                nb_prop      = 15;
-	std::random_device                    generator;
-	std::uniform_int_distribution<size_t> distri_room(0, nb_room_type - 1);
-	std::uniform_int_distribution<size_t> distri_prop(0, nb_prop - 1);
 	size_t                                index_room   = 0;
 	size_t                                index_prop   = 0;
+	std::random_device                    generator;
+	std::uniform_int_distribution<size_t> distri_room(1, nb_room_type - 1);
+	std::uniform_int_distribution<size_t> distri_prop(0, nb_prop - 1);
+	std::uniform_int_distribution<size_t> distri_front_wall(RunnerWorld::list_size - 10,
+															RunnerWorld::list_size - 1);
 
 	for (size_t i = 0; i < nb_room_type; ++i)
 	{
@@ -197,6 +199,7 @@ void RunnerWorld::generateRoomListNorth(void)
 			}
 		}
 	}
+	(*(this->_room_list_north[distri_front_wall(generator)])).activeFrontWall(true);
 }
 
 IInteractive *RunnerWorld::add_Player(Player::Params &params)
@@ -424,7 +427,6 @@ void RunnerWorld::_check_collidable_box(CollidableBox const &cb,
 		}
 	}
 }
-
 
 RunnerWorld::RunnerWorldFailException::RunnerWorldFailException(void)
 {
