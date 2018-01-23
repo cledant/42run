@@ -165,33 +165,36 @@ void RunnerWorld::initRoomList(void)
 
 void RunnerWorld::generateRoomListNorth(void)
 {
-	std::map<std::string, Room>::iterator it[]    = {this->_room_template_list.find("NormalRoomEmpty"),
-													 this->_room_template_list.find("NormalRoomObstacleOnly"),
-													 this->_room_template_list.find("NormalRoomBonusOnly"),
-													 this->_room_template_list.find("NormalRoomBonusAndObstacle")};
-	size_t                                it_size = 4;
+	std::map<std::string, Room>::iterator it[]         = {this->_room_template_list.find("NormalRoomEmpty"),
+														  this->_room_template_list.find("NormalRoomObstacleOnly"),
+														  this->_room_template_list.find("NormalRoomBonusOnly"),
+														  this->_room_template_list.find("NormalRoomBonusAndObstacle")};
+	size_t                                nb_room_type = 4;
+	size_t                                nb_prop      = 15;
+	std::random_device                    generator;
+	std::uniform_int_distribution<size_t> distri_room(0, nb_room_type - 1);
+	std::uniform_int_distribution<size_t> distri_prop(0, nb_prop - 1);
+	size_t                                index_room   = 0;
+	size_t                                index_prop   = 0;
 
-	for (size_t i = 0; i < it_size; ++i)
+	for (size_t i = 0; i < nb_room_type; ++i)
 	{
 		if (it[i] == this->_room_template_list.end())
 			throw RoomNotFoundException();
 	}
-	for (size_t i = 0; i < 2; ++i)
+	*(this->_room_list_north[0]) = it[0]->second;
+	for (size_t i = 1; i < RunnerWorld::list_size; ++i)
 	{
-		*(this->_room_list_north[i]) = it[0]->second;
+		index_room = distri_room(generator);
+		*(this->_room_list_north[i]) = it[index_room]->second;
 		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-	}
-	for (size_t i = 2; i < RunnerWorld::list_size; ++i)
-	{
-		*(this->_room_list_north[i]) = it[i % it_size]->second;
-		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-		if (i % it_size)
+		if (index_room % nb_room_type)
 		{
-			this->_room_list_north[i]->getCollidableProp("Slot3").setActive(true);
-			this->_room_list_north[i]->getCollidableProp("Slot5").setActive(true);
-			this->_room_list_north[i]->getCollidableProp("Slot7").setActive(true);
-			this->_room_list_north[i]->getCollidableProp("Slot9").setActive(true);
-			this->_room_list_north[i]->getCollidableProp("Slot11").setActive(true);
+			for (size_t j = 0; j < 7; ++j)
+			{
+				index_prop = distri_prop(generator);
+				this->_room_list_north[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+			}
 		}
 	}
 }

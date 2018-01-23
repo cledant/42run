@@ -115,16 +115,6 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	NormalRoomBonusAndObstacle(**world, oGL);
 	(*world)->initRoomList();
 	(*world)->generateRoomListNorth();
-/*	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
-	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));
-	room->translateObject(glm::vec3(6.6f, 0.0f, 0.0f));
-	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
-	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));
-	room->translateObject(glm::vec3(13.2f, 0.0f, 0.0f));
-	room_params.front_wall.active = true;
-	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
-	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));
-	room->translateObject(glm::vec3(19.8f, 0.0f, 0.0f));*/
 }
 
 static void init_audio(Audio &audio)
