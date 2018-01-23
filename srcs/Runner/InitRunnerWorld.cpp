@@ -112,6 +112,8 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	NormalRoomEmpty(**world, oGL);
 	NormalRoomBonusOnly(**world, oGL);
 	NormalRoomObstacleOnly(**world, oGL);
+	NormalRoomBonusAndObstacle(**world, oGL);
+	(*world)->initRoomList();
 	(*world)->generateRoomListNorth();
 /*	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
 	room->scaleObject(glm::vec3(3.0f, 3.0f, 3.0f));

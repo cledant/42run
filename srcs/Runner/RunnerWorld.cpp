@@ -34,9 +34,9 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 											  400.0f);
 	this->_enabled_gamepad = this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1);
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
-	this->_room_list_north.reserve(20);
-	this->_room_list_east.reserve(20);
-	this->_room_list_west.reserve(20);
+	this->_room_list_north.reserve(RunnerWorld::list_size);
+	this->_room_list_east.reserve(RunnerWorld::list_size);
+	this->_room_list_west.reserve(RunnerWorld::list_size);
 }
 
 RunnerWorld::~RunnerWorld(void)
@@ -144,13 +144,57 @@ void RunnerWorld::addCollidableToRoomTemplate(std::string const &room_name,
 	(*it).second.addCollidableProp(slot_name, params);
 }
 
+void RunnerWorld::initRoomList(void)
+{
+	static bool isInit = false;
+	auto        it     = this->_room_template_list.find("NormalRoomEmpty");
+
+	if (!isInit)
+	{
+		if (it == this->_room_template_list.end())
+			throw RoomNotFoundException();
+		for (size_t i = 0; i < RunnerWorld::list_size; ++i)
+		{
+			this->_room_list_north.push_back(new Room(it->second));
+			this->_room_list_east.push_back(new Room(it->second));
+			this->_room_list_west.push_back(new Room(it->second));
+		}
+		isInit = true;
+	}
+}
+
 void RunnerWorld::generateRoomListNorth(void)
 {
-	auto it = this->_room_template_list.find("NormalRoomObstacleOnly");
+	std::map<std::string, Room>::iterator it[]    = {this->_room_template_list.find("NormalRoomEmpty"),
+													 this->_room_template_list.find("NormalRoomObstacleOnly"),
+													 this->_room_template_list.find("NormalRoomBonusOnly"),
+													 this->_room_template_list.find("NormalRoomBonusAndObstacle")};
+	size_t                                it_size = 4;
 
-	if (it == this->_room_template_list.end())
-		throw RunnerWorldFailException();
-	this->_room_list_north.push_back(new Room(it->second));
+	for (size_t i = 0; i < it_size; ++i)
+	{
+		if (it[i] == this->_room_template_list.end())
+			throw RoomNotFoundException();
+	}
+	for (size_t i = 0; i < 2; ++i)
+	{
+		*(this->_room_list_north[i]) = it[0]->second;
+		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+	}
+	for (size_t i = 2; i < RunnerWorld::list_size; ++i)
+	{
+		*(this->_room_list_north[i]) = it[i % it_size]->second;
+		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+/*		if (i % it_size)
+		{
+			auto it_prop = this->_room_list_north[i]->getCollidableProp("Slot5");
+			it_prop.setActive(true);
+			this->_room_list_north[i]->getCollidableProp("Slot3");
+			it_prop.setActive(true);
+			this->_room_list_north[i]->getCollidableProp("Slot7");
+			it_prop.setActive(true);
+		}*/
+	}
 }
 
 IInteractive *RunnerWorld::add_Player(Player::Params &params)
@@ -397,3 +441,5 @@ RunnerWorld::RoomNotFoundException::RoomNotFoundException(void)
 RunnerWorld::RoomNotFoundException::~RoomNotFoundException(void) throw()
 {
 }
+
+size_t RunnerWorld::list_size = 20;

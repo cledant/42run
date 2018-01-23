@@ -56,6 +56,7 @@ class RunnerWorld
 		void addCollidableToRoomTemplate(std::string const &room_name,
 										 std::string const &slot_name,
 										 CollidableProp::Params &params);
+		void initRoomList(void);
 		void generateRoomListNorth(void);
 		IInteractive *add_Player(Player::Params &params);
 		void updatePerspective(float fov);
@@ -134,6 +135,8 @@ class RunnerWorld
 								   CollisionBox::SweepResolution *nearest,
 								   glm::vec3 const &inv_delta,
 								   ICollidable const **ptr);
+
+		static size_t list_size;
 };
 
 #endif
