@@ -63,7 +63,7 @@ void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL)
 	bonus_params.prop_params.scale       = glm::vec3(0.03f, 0.03f, 0.03f);
 	bonus_params.prop_params.orientation = glm::vec3(0.0f, 20.0f, 0.0f);
 	bonus_params.dmg                     = ICollidable::Damages::NONE;
-//	bonus_params.active                  = false;
+	bonus_params.active                  = false;
 	bonus_params.pick_up                 = std::string("bonus");
 	bonus_params.passthrough             = true;
 	bonus_params.score_modifier          = 500;
@@ -115,7 +115,7 @@ void NormalRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL)
 	obstacle_params.prop_params.scale  = glm::vec3(0.005f, 0.005f, 0.005f);
 	obstacle_params.prop_params.offset = glm::vec3(0.0f, 0.1f, 0.0f);
 	obstacle_params.dmg                = ICollidable::Damages::HALF;
-//	obstacle_params.active             = false;
+	obstacle_params.active             = false;
 
 	for (size_t j = 0; j < 3; ++j)
 	{
@@ -163,7 +163,7 @@ void NormalRoomBonusAndObstacle(RunnerWorld &world, oGL_module &oGL)
 	obstacle_params.prop_params.scale  = glm::vec3(0.005f, 0.005f, 0.005f);
 	obstacle_params.prop_params.offset = glm::vec3(0.0f, 0.1f, 0.0f);
 	obstacle_params.dmg                = ICollidable::Damages::HALF;
-//	obstacle_params.active             = false;
+	obstacle_params.active             = false;
 
 	//Bonus Params
 	bonus_params.prop_params.shader      = &(oGL.getShader("prop"));

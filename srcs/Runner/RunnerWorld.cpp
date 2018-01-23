@@ -17,7 +17,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_active_room(&(this->_room_list_north)), _active(nullptr), _input(input),
 		_window(win), _gamepad(gamepad),
 		_camera(input, gamepad, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
-				glm::vec3(0.0f, 0.0f, -1.0f), -90.0f, 0.0f),
+				glm::vec3(0.0f, 0.0f, -1.0f), 0.0f, 0.0f),
 		_fov(45.0f), _max_fps(max_fps),
 		_max_frame_skip(max_frame_skip), _next_update_tick(0.0f),
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
@@ -185,15 +185,14 @@ void RunnerWorld::generateRoomListNorth(void)
 	{
 		*(this->_room_list_north[i]) = it[i % it_size]->second;
 		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-/*		if (i % it_size)
+		if (i % it_size)
 		{
-			auto it_prop = this->_room_list_north[i]->getCollidableProp("Slot5");
-			it_prop.setActive(true);
-			this->_room_list_north[i]->getCollidableProp("Slot3");
-			it_prop.setActive(true);
-			this->_room_list_north[i]->getCollidableProp("Slot7");
-			it_prop.setActive(true);
-		}*/
+			this->_room_list_north[i]->getCollidableProp("Slot3").setActive(true);
+			this->_room_list_north[i]->getCollidableProp("Slot5").setActive(true);
+			this->_room_list_north[i]->getCollidableProp("Slot7").setActive(true);
+			this->_room_list_north[i]->getCollidableProp("Slot9").setActive(true);
+			this->_room_list_north[i]->getCollidableProp("Slot11").setActive(true);
+		}
 	}
 }
 
@@ -212,7 +211,7 @@ void RunnerWorld::updatePerspective(float fov)
 {
 	GLfloat ratio = static_cast<GLfloat>(this->_window.cur_win_w) /
 					static_cast<GLfloat>(this->_window.cur_win_h);
-	this->_perspective = glm::perspective(glm::radians(fov), ratio, 0.1f, 400.0f);
+	this->_perspective = glm::perspective(glm::radians(fov), ratio, 0.1f, 75.0f);
 }
 
 void RunnerWorld::reset_update_timer(float time)
