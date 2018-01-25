@@ -18,7 +18,7 @@
 # include "Runner/RunnerWorld.hpp"
 # include "UI/Ui.hpp"
 
-void run_debug_world(Glfw_manager &manager);
-void run_runner_world(Glfw_manager &manager);
+void run_debug_world(Glfw_manager &manager, bool vsync);
+void run_runner_world(Glfw_manager &manager, bool vsync);
 
 #endif

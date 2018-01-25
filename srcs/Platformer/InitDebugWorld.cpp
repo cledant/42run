@@ -211,7 +211,7 @@ static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
 	load_debug_level(manager, oGL, world, audio);
 }
 
-void run_debug_world(Glfw_manager &manager)
+void run_debug_world(Glfw_manager &manager, bool vsync)
 {
 
 	oGL_module oGL;
@@ -229,6 +229,8 @@ void run_debug_world(Glfw_manager &manager)
 		delete world;
 		return;
 	}
+	if (vsync)
+		manager.enableVsync();
 	world->reset_update_timer(Glfw_manager::getTime());
 	manager.reset_fps_counter();
 	main_loop(*world, manager, *ui);

@@ -60,6 +60,8 @@ class Glfw_manager
 		void reset_fps_counter(void);
 		void toogle_mouse_exclusive(void);
 		void triggerWindowClose(void);
+		void disableVsync(void);
+		void enableVsync(void);
 
 		class InitFailException : public GeneralException
 		{

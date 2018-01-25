@@ -254,6 +254,16 @@ void Glfw_manager::triggerWindowClose(void)
 	glfwSetWindowShouldClose(this->_window.win, GLFW_TRUE);
 }
 
+void Glfw_manager::disableVsync(void)
+{
+	glfwSwapInterval(0);
+}
+
+void Glfw_manager::enableVsync(void)
+{
+	glfwSwapInterval(1);
+}
+
 void Glfw_manager::_window_creation_callback_setup(void)
 {
 	auto close_callback = [](GLFWwindow *win)
