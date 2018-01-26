@@ -15,7 +15,9 @@
 
 # include "glad/glad.h"
 # include "WindowManager/Window.hpp"
-# include "FontSet.hpp"
+# include "UI/FontSet.hpp"
+# include "UI/ShaderSurface.hpp"
+# include "WindowManager/Input.hpp"
 # include <vector>
 # include <string>
 
@@ -23,7 +25,7 @@ class Ui
 {
 	public :
 
-		Ui(GLFW_Window const &win);
+		Ui(GLFW_Window const &win, Input const &input);
 		virtual ~Ui(void);
 		Ui(Ui const &src) = delete;
 		Ui &operator=(Ui const &rhs) = delete;
@@ -46,7 +48,9 @@ class Ui
 	private :
 
 		GLFW_Window const    &_win;
+		Input const          &_input;
 		std::vector<FontSet> _fset_list;
+//		std::map<std::string, ShaderSurface *> _shaderSurface_list;
 		glm::mat4            _proj_matrix;
 };
 

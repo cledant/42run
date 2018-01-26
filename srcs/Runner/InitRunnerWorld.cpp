@@ -66,6 +66,8 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/fontset/fontset.fs");
 	oGL.add_shader("sprites", "./shaders/sprites/sprites.vs",
 				   "./shaders/sprites/sprites.fs");
+	oGL.add_shader("title_screen", "./shaders/title_screen/title_screen.vs",
+				   "./shaders/title_screen/title_screen.fs");
 	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
 				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
 				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
@@ -135,10 +137,17 @@ static void init_program(RunnerWorld **world, oGL_module &oGL, Glfw_manager &man
 	init_oGL(oGL);
 	init_audio(audio);
 	Gamepad::updateGamepadMapping("./ControllerConfigFiles/gamecontrollerdb_205.txt");
-	(*ui) = new Ui(manager.getWindow());
+	(*ui)               = new Ui(manager.getWindow(), manager.getInput());
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
-	load_runner(manager, oGL, world, audio);
+//	load_runner(manager, oGL, world, audio);
+	static_cast<void>(world);
+	static_cast<void>(load_runner);
+	ShaderSurface *toto = new ShaderSurface(&manager.getWindow(),
+											&manager.getInput(),
+											&oGL.getShader("title_screen"));
+	while (1)
+		toto->draw();
 }
 
 void run_runner_world(Glfw_manager &manager, bool vsync)

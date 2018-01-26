@@ -205,7 +205,7 @@ static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
 	init_oGL(oGL);
 	init_audio(audio);
 	Gamepad::updateGamepadMapping("./ControllerConfigFiles/gamecontrollerdb_205.txt");
-	(*ui) = new Ui(manager.getWindow());
+	(*ui) = new Ui(manager.getWindow(), manager.getInput());
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
 	load_debug_level(manager, oGL, world, audio);

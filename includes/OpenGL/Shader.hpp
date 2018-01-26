@@ -40,9 +40,10 @@ class Shader
 		void setMat4(GLint uniform_id,
 					 glm::mat4 const &mat4) const;
 		void setVec3(GLint uniform_id,
-					 glm::vec3 const &vec3) const;
+					 glm::vec3 const &float3) const;
 		void setVec2(GLint uniform_id,
-					 glm::vec2 const &vec3) const;
+					 glm::vec2 const &float2) const;
+		void setFloat(GLint uniform_id, float value) const;
 
 		class FileOpenException : public GeneralException
 		{

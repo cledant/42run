@@ -91,7 +91,8 @@ set(SOURCE_FILES
 		srcs/Platformer/InitDebugWorld.cpp
 		srcs/Runner/RunnerWorld.cpp
 		srcs/Runner/InitRunnerWorld.cpp
-		srcs/Runner/TemplatedRoom.cpp)
+		srcs/Runner/TemplatedRoom.cpp
+		srcs/UI/ShaderSurface.cpp)
 
 #OS specific libs
 if (APPLE)

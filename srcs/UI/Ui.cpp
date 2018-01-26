@@ -12,10 +12,11 @@
 
 #include "UI/Ui.hpp"
 
-Ui::Ui(GLFW_Window const &win) : _win(win)
+Ui::Ui(GLFW_Window const &win, Input const &input) : _win(win), _input(input)
 {
 	this->_proj_matrix = glm::ortho(0.0f, static_cast<float>(this->_win.cur_win_w),
 									0.0f, static_cast<float>(this->_win.cur_win_h));
+	static_cast<void>(this->_input);
 }
 
 Ui::~Ui(void)
