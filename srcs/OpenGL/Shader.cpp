@@ -150,9 +150,10 @@ void Shader::_get_shader_error(GLuint shader)
 	char msg[4096];
 	int  msg_len;
 
+	std::memset(msg, 0, 4096);
 	glGetShaderInfoLog(shader, 4095, &msg_len, msg);
-	msg[4095] = '\0';
-	std::cout << msg << std::endl;
+	std::string str_msg(msg);
+	std::cout << str_msg << std::endl;
 }
 
 void Shader::_read_file(std::string const &path, std::string &content)

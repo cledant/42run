@@ -1,7 +1,7 @@
 #version 410 core
 
-in vec2 uniform_resolution;
-in float uniform_time;
+uniform vec2 uniform_resolution;
+uniform float uniform_time;
 
 out vec4 color;
 

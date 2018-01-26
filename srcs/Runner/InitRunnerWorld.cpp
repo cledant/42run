@@ -137,17 +137,10 @@ static void init_program(RunnerWorld **world, oGL_module &oGL, Glfw_manager &man
 	init_oGL(oGL);
 	init_audio(audio);
 	Gamepad::updateGamepadMapping("./ControllerConfigFiles/gamecontrollerdb_205.txt");
-	(*ui)               = new Ui(manager.getWindow(), manager.getInput());
+	(*ui) = new Ui(manager.getWindow(), manager.getInput());
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
-//	load_runner(manager, oGL, world, audio);
-	static_cast<void>(world);
-	static_cast<void>(load_runner);
-	ShaderSurface *toto = new ShaderSurface(&manager.getWindow(),
-											&manager.getInput(),
-											&oGL.getShader("title_screen"));
-	while (1)
-		toto->draw();
+	load_runner(manager, oGL, world, audio);
 }
 
 void run_runner_world(Glfw_manager &manager, bool vsync)
@@ -172,7 +165,20 @@ void run_runner_world(Glfw_manager &manager, bool vsync)
 		manager.enableVsync();
 	world->reset_update_timer(Glfw_manager::getTime());
 	manager.reset_fps_counter();
-	main_loop(*world, manager, *ui);
+
+	static_cast<void>(world);
+	static_cast<void>(main_loop);
+	glfwPollEvents();
+	ShaderSurface *toto = new ShaderSurface(&manager.getWindow(),
+											&manager.getInput(),
+											&oGL.getShader("title_screen"));
+	while (1)
+	{
+		toto->draw();
+		manager.swap_buffers();
+	}
+
+	//main_loop(*world, manager, *ui);
 	std::cout << "Delete Ui" << std::endl;
 	delete ui;
 	std::cout << "Delete world" << std::endl;

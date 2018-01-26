@@ -110,7 +110,7 @@ void ShaderSurface::draw(void)
 	this->_shader->setVec2(id_resolution, glm::vec2{this->_win->cur_win_w,
 													this->_win->cur_win_h});
 	this->_shader->setFloat(id_time, Glfw_manager::getTime());
-	oGL_module::oGL_draw_filled(this->_vao, ShaderSurface::_nb_faces);
+	oGL_module::oGL_draw_points(this->_vao, ShaderSurface::_nb_faces);
 }
 
 ShaderSurface::InitException::InitException(void)
@@ -129,4 +129,4 @@ float ShaderSurface::_vertices[] = {0.0f, 0.0f, 0.0f,
 									-1.0f, -1.0f, 0.0f,
 									-1.0f, 1.0f, 0.0f};
 
-size_t ShaderSurface::_nb_faces = 2;
+size_t ShaderSurface::_nb_faces = 6;
