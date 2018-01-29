@@ -19,7 +19,7 @@ ShaderSurface::ShaderSurface(GLFW_Window const *win, Input const *input,
 	try
 	{
 		this->_vbo = oGL_module::oGL_create_vbo(sizeof(float) * 3 * 6,
-												static_cast<void *>(ShaderSurface::_vertices));
+												&(ShaderSurface::_vertices[0]));
 		this->_vao = oGL_module::oGL_create_vao();
 		oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
 										   sizeof(GLfloat) * 3, 0);
@@ -110,7 +110,7 @@ void ShaderSurface::draw(void)
 	this->_shader->setVec2(id_resolution, glm::vec2{this->_win->cur_win_w,
 													this->_win->cur_win_h});
 	this->_shader->setFloat(id_time, Glfw_manager::getTime());
-	oGL_module::oGL_draw_points(this->_vao, ShaderSurface::_nb_faces);
+	oGL_module::oGL_draw_filled(this->_vao, ShaderSurface::_nb_faces);
 }
 
 ShaderSurface::InitException::InitException(void)
@@ -122,11 +122,11 @@ ShaderSurface::InitException::~InitException(void) throw()
 {
 }
 
-float ShaderSurface::_vertices[] = {0.0f, 0.0f, 0.0f,
-									1.0f, -1.0f, 0.0f,
-									-1.0f, 1.0f, 0.0f,
-									1.0f, -1.0f, 0.0f,
+float ShaderSurface::_vertices[] = {-1.0f, 1.0f, 0.0f,
+									1.0f, 1.0f, 0.0f,
 									-1.0f, -1.0f, 0.0f,
-									-1.0f, 1.0f, 0.0f};
+									-1.0f, -1.0f, 0.0f,
+									1.0f, 1.0f, 0.0f,
+									1.0f, -1.0f, 0.0f};
 
 size_t ShaderSurface::_nb_faces = 6;

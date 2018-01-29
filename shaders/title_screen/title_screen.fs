@@ -22,5 +22,5 @@ void main(void)
 	float z = 1.0 + 0.5 * sin((radius + uniform_time * speed) / frame_time);
     vec3 ripple_color = vec3(z);
 
-	color = vec4(base_color * ripple_color , 1.0);
+	color = vec4(base_color * ripple_color, 1.0);
 }

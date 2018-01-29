@@ -53,6 +53,50 @@ static void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 	oGL_module::oGL_finish();
 }
 
+static void title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL)
+{
+	ShaderSurface *title_shader = nullptr;
+
+	try
+	{
+		title_shader = new ShaderSurface(&manager.getWindow(), &manager.getInput(),
+										 &oGL.getShader("title_screen"));
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl << "Exiting 42Run" << std::endl;
+	}
+	while (Glfw_manager::getActiveWindowNumber())
+	{
+		if (manager.getWindow().win != nullptr)
+		{
+			oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
+			world.reset_skip_loop();
+			while (world.should_be_updated(Glfw_manager::getTime()))
+			{
+				manager.update_events();
+			}
+			title_shader->draw();
+			ui.update();
+			ui.drawText("roboto", "42Run",
+						glm::vec3(0.4f, 0.4f, 0.4f),
+						glm::vec3(30.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) - 40.0f,
+								  0.5f));
+			ui.drawText("roboto", "Press any key to start",
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3(30.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) - 80.0f,
+								  0.5f));
+			manager.swap_buffers();
+			if (world.getShouldEnd())
+				manager.triggerWindowClose();
+			if (manager.should_window_be_closed())
+				manager.destroy_window();
+		}
+	}
+}
+
 static void init_oGL(oGL_module &oGL)
 {
 	oGL_module::oGL_enable_depth();
@@ -165,20 +209,9 @@ void run_runner_world(Glfw_manager &manager, bool vsync)
 		manager.enableVsync();
 	world->reset_update_timer(Glfw_manager::getTime());
 	manager.reset_fps_counter();
-
-	static_cast<void>(world);
-	static_cast<void>(main_loop);
-	glfwPollEvents();
-	ShaderSurface *toto = new ShaderSurface(&manager.getWindow(),
-											&manager.getInput(),
-											&oGL.getShader("title_screen"));
-	while (1)
-	{
-		toto->draw();
-		manager.swap_buffers();
-	}
-
-	//main_loop(*world, manager, *ui);
+	title_screen_loop(*world, manager, *ui, oGL);
+	(void) main_loop;
+//	main_loop(*world, manager, *ui);
 	std::cout << "Delete Ui" << std::endl;
 	delete ui;
 	std::cout << "Delete world" << std::endl;
