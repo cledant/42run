@@ -20,5 +20,7 @@
 
 void run_debug_world(Glfw_manager &manager, bool vsync);
 void run_runner_world(Glfw_manager &manager, bool vsync);
+int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
+						oGL_module &oGL, Audio &audio);
 
 #endif

@@ -76,9 +76,7 @@ static int title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, 
 			oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
 			world.reset_skip_loop();
 			while (world.should_be_updated(Glfw_manager::getTime()))
-			{
 				manager.update_events();
-			}
 			title_shader->draw();
 			ui.update();
 			ui.drawText("roboto", "42 Run",
@@ -100,6 +98,7 @@ static int title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, 
 	}
 	return (1);
 }
+
 
 static void init_oGL(oGL_module &oGL)
 {
@@ -132,33 +131,15 @@ static void init_oGL(oGL_module &oGL)
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
 }
 
-static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &audio)
-{
-	params.cb_shader              = &(oGL.getShader("cubemap"));
-	params.shader                 = &(oGL.getShader("sprites"));
-	params.pos                    = glm::vec3({0.0f, 1.0f, 0.0f});
-	params.size                   = glm::vec3({0.3f, 0.5f, 0.3f});
-	params.cb_model               = &(oGL.getModel("TestBox"));
-	params.tex                    = &(oGL.getTexture("sprite_reimu"));
-	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
-	params.nb_walk_frame          = 4;
-	params.draw_cb                = false;
-	params.max_jump               = 2;
-	params.max_hoover_time        = 2.0f;
-	params.audio                  = &audio;
-	params.theme                  = Audio::THEME_1;
-}
 
 static void load_runner(Glfw_manager &manager, oGL_module &oGL,
-						RunnerWorld **world, Audio &audio)
+						RunnerWorld **world)
 {
-	Player::Params player_params;
-	Room::Params   room_params;
+
+	Room::Params room_params;
 
 	(*world) = new RunnerWorld(manager.getInput(), manager.getWindow(), manager.getGamepad(),
 							   glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
-	set_player_params(player_params, oGL, audio);
-	(*world)->add_Player(player_params);
 	NormalRoomEmpty(**world, oGL);
 	NormalRoomBonusOnly(**world, oGL);
 	NormalRoomObstacleOnly(**world, oGL);
@@ -188,7 +169,7 @@ static void init_program(RunnerWorld **world, oGL_module &oGL, Glfw_manager &man
 	(*ui) = new Ui(manager.getWindow(), manager.getInput());
 	(*ui)->addFontSet(&(oGL.getShader("fontset")), "roboto",
 					  "./fonts/Roboto-Light.ttf", 60);
-	load_runner(manager, oGL, world, audio);
+	load_runner(manager, oGL, world);
 }
 
 void run_runner_world(Glfw_manager &manager, bool vsync)
@@ -214,7 +195,10 @@ void run_runner_world(Glfw_manager &manager, bool vsync)
 	world->reset_update_timer(Glfw_manager::getTime());
 	manager.reset_fps_counter();
 	if (title_screen_loop(*world, manager, *ui, oGL))
-		main_loop(*world, manager, *ui);
+	{
+		if (char_selection_loop(*world, manager, *ui, oGL, audio))
+			main_loop(*world, manager, *ui);
+	}
 	std::cout << "Delete Ui" << std::endl;
 	delete ui;
 	std::cout << "Delete world" << std::endl;
