@@ -53,23 +53,26 @@ static void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 	oGL_module::oGL_finish();
 }
 
-static void title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL)
+static int title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL)
 {
-	ShaderSurface *title_shader = nullptr;
+	std::unique_ptr<ShaderSurface> title_shader;
 
 	try
 	{
-		title_shader = new ShaderSurface(&manager.getWindow(), &manager.getInput(),
-										 &oGL.getShader("title_screen"));
+		title_shader = std::make_unique<ShaderSurface>(&manager.getWindow(), &manager.getInput(),
+													   &oGL.getShader("title_screen"));
 	}
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl << "Exiting 42Run" << std::endl;
+		return (0);
 	}
 	while (Glfw_manager::getActiveWindowNumber())
 	{
 		if (manager.getWindow().win != nullptr)
 		{
+			if (manager.getInput().p_key[GLFW_KEY_SPACE])
+				return (1);
 			oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
 			world.reset_skip_loop();
 			while (world.should_be_updated(Glfw_manager::getTime()))
@@ -78,16 +81,16 @@ static void title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 			}
 			title_shader->draw();
 			ui.update();
-			ui.drawText("roboto", "42Run",
-						glm::vec3(0.4f, 0.4f, 0.4f),
-						glm::vec3(30.0f,
-								  static_cast<float>(manager.getWindow().cur_win_h) - 40.0f,
-								  0.5f));
-			ui.drawText("roboto", "Press any key to start",
+			ui.drawText("roboto", "42 Run",
 						glm::vec3(0.0f, 0.0f, 0.0f),
-						glm::vec3(30.0f,
-								  static_cast<float>(manager.getWindow().cur_win_h) - 80.0f,
-								  0.5f));
+						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 85.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) - 100.0f,
+								  1.0f));
+			ui.drawText("roboto", "Press space to start",
+						glm::vec3(0.0f, 0.0f, 0.0f),
+						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2 - 250.f),
+								  static_cast<float>(manager.getWindow().cur_win_h) * 0.1,
+								  1.0f));
 			manager.swap_buffers();
 			if (world.getShouldEnd())
 				manager.triggerWindowClose();
@@ -95,6 +98,7 @@ static void title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 				manager.destroy_window();
 		}
 	}
+	return (1);
 }
 
 static void init_oGL(oGL_module &oGL)
@@ -209,9 +213,8 @@ void run_runner_world(Glfw_manager &manager, bool vsync)
 		manager.enableVsync();
 	world->reset_update_timer(Glfw_manager::getTime());
 	manager.reset_fps_counter();
-	title_screen_loop(*world, manager, *ui, oGL);
-	(void) main_loop;
-//	main_loop(*world, manager, *ui);
+	if (title_screen_loop(*world, manager, *ui, oGL))
+		main_loop(*world, manager, *ui);
 	std::cout << "Delete Ui" << std::endl;
 	delete ui;
 	std::cout << "Delete world" << std::endl;

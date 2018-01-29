@@ -122,11 +122,11 @@ ShaderSurface::InitException::~InitException(void) throw()
 {
 }
 
-float ShaderSurface::_vertices[] = {-1.0f, 1.0f, 0.0f,
-									1.0f, 1.0f, 0.0f,
-									-1.0f, -1.0f, 0.0f,
-									-1.0f, -1.0f, 0.0f,
-									1.0f, 1.0f, 0.0f,
-									1.0f, -1.0f, 0.0f};
+float ShaderSurface::_vertices[] = {-1.0f, 1.0f, 0.5f,
+									1.0f, 1.0f, 0.5f,
+									-1.0f, -1.0f, 0.5f,
+									-1.0f, -1.0f, 0.5f,
+									1.0f, 1.0f, 0.5f,
+									1.0f, -1.0f, 0.5f};
 
 size_t ShaderSurface::_nb_faces = 6;
