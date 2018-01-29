@@ -273,6 +273,11 @@ bool RunnerWorld::getShouldEnd(void) const
 	return (this->_should_end);
 }
 
+float RunnerWorld::getTickRate(void) const
+{
+	return (this->_tick);
+}
+
 /*
  * Setter
  */

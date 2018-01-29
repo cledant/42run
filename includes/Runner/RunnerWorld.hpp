@@ -72,6 +72,7 @@ class RunnerWorld
 		std::string const &getScore(void);
 		std::string const &getStrPlayerHP(void);
 		bool getShouldEnd(void) const;
+		float getTickRate(void) const;
 
 		/*
 		 * Setter

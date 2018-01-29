@@ -36,7 +36,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 		params.tex             = &(oGL.getTexture("sprite_marisa"));
 		params.max_jump        = 2;
 		params.max_hoover_time = 0.0f;
-		params.theme           = Audio::THEME_1;
+		params.theme           = Audio::THEME_2;
 	}
 }
 
@@ -45,21 +45,24 @@ int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_m
 {
 	std::unique_ptr<Sprite> character_sprites[2];
 	Player::Params          player_params;
-	int                     char_type = 0;
-	glm::mat4               matrix    = glm::ortho(0.0f, static_cast<float>(manager.getWindow().cur_win_w),
-												   0.0f, static_cast<float>(manager.getWindow().cur_win_h));
+	int                     char_type  = 0;
+	float                   type_delay = 0.0f;
+	glm::mat4               matrix     = glm::mat4(1.0f);
+
 	try
 	{
 		character_sprites[0] = std::make_unique<Sprite>(&(oGL.getShader("sprites")), &matrix,
 														&(oGL.getTexture("sprite_reimu")),
-														glm::vec3(100.0f, 0.0f, 100.0f),
-														glm::vec3(0.3f, 0.5f, 0.3f),
+														glm::vec3(0.6f, 0.2f, 0.0f),
+														glm::vec3(0.1f, 0.2f, 0.1f),
 														glm::vec4(0.093f, 0.125f, 0.0f, 0.0f), 4);
 		character_sprites[1] = std::make_unique<Sprite>(&(oGL.getShader("sprites")), &matrix,
 														&(oGL.getTexture("sprite_marisa")),
-														glm::vec3(0.5f, 0.5f, 0.0f),
-														glm::vec3(0.3f, 0.5f, 0.3f),
+														glm::vec3(-0.6f, 0.2f, 0.0f),
+														glm::vec3(0.1f, 0.2f, 0.1f),
 														glm::vec4(0.093f, 0.125f, 0.0f, 0.0f), 4);
+		character_sprites[0]->setYaw(90.0f);
+		character_sprites[1]->setYaw(90.0f);
 	}
 	catch (std::exception &e)
 	{
@@ -74,23 +77,26 @@ int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_m
 			world.reset_skip_loop();
 			while (world.should_be_updated(Glfw_manager::getTime()))
 				manager.update_events();
-			if (manager.getInput().p_key[GLFW_KEY_RIGHT] || manager.getInput().p_key[GLFW_KEY_LEFT])
-				char_type = (char_type + 1) % 2;
-			if (manager.getInput().p_key[GLFW_KEY_ENTER])
+			if (type_delay > 1.5f && ((manager.getInput().p_key[GLFW_KEY_RIGHT] || manager.getInput()
+																						  .p_key[GLFW_KEY_LEFT])))
+			{
+				char_type  = (char_type + 1) % 2;
+				type_delay = 0.0f;
+			}
+			if (type_delay > 1.5f && (manager.getInput().p_key[GLFW_KEY_SPACE]))
 				break;
+			type_delay += world.getTickRate();
 			ui.update();
-			//update sprite selon reso
-			character_sprites[(char_type) % 2]->setScale(glm::vec3(0.4f, 0.6f, 0.4f));
-			character_sprites[(char_type + 1) % 2]->setScale(glm::vec3(0.3f, 0.5f, 0.3f));
+			character_sprites[(char_type) % 2]->setScale(glm::vec3(0.2f, 0.4f, 0.2f));
+			character_sprites[(char_type + 1) % 2]->setScale(glm::vec3(0.1f, 0.2f, 0.1f));
 			for (size_t i = 0; i < 2; ++i)
+			{
 				character_sprites[i]->update(0.0f);
-			for (size_t i = 0; i < 2; ++i)
 				character_sprites[i]->draw();
-			//update params du title shader
-			//du texte apres
+			}
 			ui.drawText("roboto", "Choose your character !",
 						glm::vec3(1.0f, 1.0f, 1.0f),
-						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 50.0f,
+						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 250.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 100.0f,
 								  0.8f));
 			manager.swap_buffers();
