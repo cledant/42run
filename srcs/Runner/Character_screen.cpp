@@ -61,14 +61,14 @@ int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_m
 														glm::vec3(-0.6f, 0.2f, 0.0f),
 														glm::vec3(0.1f, 0.2f, 0.1f),
 														glm::vec4(0.093f, 0.125f, 0.0f, 0.0f), 4);
-		character_sprites[0]->setYaw(90.0f);
-		character_sprites[1]->setYaw(90.0f);
 	}
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl << "Exiting 42Run" << std::endl;
 		return (0);
 	}
+	character_sprites[0]->setYaw(90.0f);
+	character_sprites[1]->setYaw(90.0f);
 	while (Glfw_manager::getActiveWindowNumber())
 	{
 		if (manager.getWindow().win != nullptr)
@@ -98,6 +98,11 @@ int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_m
 						glm::vec3(1.0f, 1.0f, 1.0f),
 						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 250.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 100.0f,
+								  0.8f));
+			ui.drawText("roboto", "Marisa Kirisame",
+						glm::vec3(1.0f, 1.0f, 1.0f),
+						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 180.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) * 0.3,
 								  0.8f));
 			manager.swap_buffers();
 			if (world.getShouldEnd())
