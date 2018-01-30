@@ -45,9 +45,10 @@ int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_m
 {
 	std::unique_ptr<Sprite> character_sprites[2];
 	Player::Params          player_params;
-	int                     char_type  = 0;
-	float                   type_delay = 0.0f;
-	glm::mat4               matrix     = glm::mat4(1.0f);
+	int                     char_type         = 0;
+	float                   type_delay        = 0.0f;
+	glm::mat4               matrix            = glm::mat4(1.0f);
+	bool                    trigger_selection = false;
 
 	try
 	{
@@ -76,16 +77,21 @@ int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_m
 			oGL_module::oGL_clear_buffer(0.0f, 0.0f, 0.0f);
 			world.reset_skip_loop();
 			while (world.should_be_updated(Glfw_manager::getTime()))
-				manager.update_events();
-			if (type_delay > 1.5f && ((manager.getInput().p_key[GLFW_KEY_RIGHT] || manager.getInput()
-																						  .p_key[GLFW_KEY_LEFT])))
 			{
-				char_type  = (char_type + 1) % 2;
-				type_delay = 0.0f;
+				manager.update_events();
+				if (type_delay > 0.5f && ((manager.getInput().p_key[GLFW_KEY_RIGHT] ||
+										   manager.getInput().p_key[GLFW_KEY_LEFT])))
+				{
+					char_type  = (char_type + 1) % 2;
+					type_delay = 0.0f;
+				}
+				if (type_delay > 0.5f && (manager.getInput().p_key[GLFW_KEY_SPACE]))
+					trigger_selection = true;
+				if (type_delay < 2.0f)
+					type_delay += world.getTickRate();
 			}
-			if (type_delay > 1.5f && (manager.getInput().p_key[GLFW_KEY_SPACE]))
+			if (trigger_selection)
 				break;
-			type_delay += world.getTickRate();
 			ui.update();
 			character_sprites[(char_type) % 2]->setScale(glm::vec3(0.2f, 0.4f, 0.2f));
 			character_sprites[(char_type + 1) % 2]->setScale(glm::vec3(0.1f, 0.2f, 0.1f));
@@ -99,11 +105,42 @@ int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_m
 						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 250.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 100.0f,
 								  0.8f));
-			ui.drawText("roboto", "Marisa Kirisame",
-						glm::vec3(1.0f, 1.0f, 1.0f),
-						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 180.0f,
-								  static_cast<float>(manager.getWindow().cur_win_h) * 0.3,
-								  0.8f));
+			if (char_type)
+			{
+				ui.drawText("roboto", "Marisa Kirisame",
+							glm::vec3(1.0f, 1.0f, 0.0f),
+							glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 170.0f,
+									  static_cast<float>(manager.getWindow().cur_win_h) * 0.3,
+									  0.8f));
+				ui.drawText("roboto", "Double Jump",
+							glm::vec3(1.0f, 1.0f, 1.0f),
+							glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 135.0f,
+									  static_cast<float>(manager.getWindow().cur_win_h) * 0.2,
+									  0.8f));
+				ui.drawText("roboto", "Normal fall",
+							glm::vec3(1.0f, 1.0f, 1.0f),
+							glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 110.0f,
+									  static_cast<float>(manager.getWindow().cur_win_h) * 0.1,
+									  0.8f));
+			}
+			else
+			{
+				ui.drawText("roboto", "Hakurei Reimu",
+							glm::vec3(0.863f, 0.078f, 0.235f),
+							glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 160.0f,
+									  static_cast<float>(manager.getWindow().cur_win_h) * 0.3,
+									  0.8f));
+				ui.drawText("roboto", "Single Jump",
+							glm::vec3(1.0f, 1.0f, 1.0f),
+							glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 135.0f,
+									  static_cast<float>(manager.getWindow().cur_win_h) * 0.2,
+									  0.8f));
+				ui.drawText("roboto", "Slow fall",
+							glm::vec3(1.0f, 1.0f, 1.0f),
+							glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 105.0f,
+									  static_cast<float>(manager.getWindow().cur_win_h) * 0.1,
+									  0.8f));
+			}
 			manager.swap_buffers();
 			if (world.getShouldEnd())
 				manager.triggerWindowClose();
