@@ -85,6 +85,7 @@ static void init_program(RunnerWorld **world, oGL_module &oGL, Glfw_manager &man
 
 static int cleanup(RunnerWorld *world, Ui *ui)
 {
+	oGL_module::oGL_finish();
 	std::cout << "Delete Ui" << std::endl;
 	delete ui;
 	std::cout << "Delete world" << std::endl;
@@ -98,6 +99,7 @@ int run_runner_world(Glfw_manager &manager, bool vsync)
 	Audio       audio;
 	Ui          *ui    = nullptr;
 	RunnerWorld *world = nullptr;
+	bool        loop   = true;
 
 	try
 	{
@@ -115,8 +117,15 @@ int run_runner_world(Glfw_manager &manager, bool vsync)
 	manager.reset_fps_counter();
 	if (!title_screen_loop(*world, manager, *ui, oGL))
 		return (cleanup(world, ui));
-	if (!char_selection_loop(*world, manager, *ui, oGL, audio))
-		return (cleanup(world, ui));
-	main_loop(*world, manager, *ui);
+	while (loop)
+	{
+		if (!char_selection_loop(*world, manager, *ui, oGL, audio))
+			return (cleanup(world, ui));
+		if (!main_loop(*world, manager, *ui))
+			loop = game_over_loop(*world, manager, *ui, oGL, audio);
+		else
+			return (cleanup(world, ui));
+//		reset_world(world);
+	}
 	return (cleanup(world, ui));
 }

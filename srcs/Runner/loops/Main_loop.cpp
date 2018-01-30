@@ -12,7 +12,7 @@
 
 #include "Utility/WorldSelect.hpp"
 
-void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
+bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 {
 	while (Glfw_manager::getActiveWindowNumber())
 	{
@@ -24,6 +24,8 @@ void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 				manager.update_events();
 				world.update();
 			}
+			if (!world.isPlayerAlive())
+				return (false);
 			manager.calculate_fps();
 			world.render();
 			ui.update();
@@ -49,5 +51,5 @@ void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 				manager.destroy_window();
 		}
 	}
-	oGL_module::oGL_finish();
+	return (true);
 }

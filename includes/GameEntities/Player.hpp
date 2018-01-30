@@ -89,6 +89,10 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		Player(const Player &src) = delete;
 		Player &operator=(const Player &rhs) = delete;
 
+		/*
+		 * Setter
+		 */
+
 		void setPos(glm::vec3 const &new_pos);
 		void setDelta(glm::vec3 const &new_delta);
 		void setSurfaceCollisionBox(CollisionBox const &cb);
@@ -102,6 +106,10 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void lowerHP(ICollidable::Damages type);
 		void setImmunityTimerToMax(void);
 		void setScale(glm::vec3 const &scale);
+
+		/*
+		 * Getter
+		 */
 
 		glm::vec3 const &getDelta(void) const;
 		glm::vec3 const &getPos(void) const;
@@ -117,6 +125,10 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void playTheme(Audio::theme_list slot);
 		void playSetTheme(void);
 		void stopSetTheme(void);
+
+		/*
+		 * Other
+		 */
 
 		void update_model(float time);
 

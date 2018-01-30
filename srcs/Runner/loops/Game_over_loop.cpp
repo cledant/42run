@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Character_screen.cpp                               :+:      :+:    :+:   */
+/*   Game_over_loop.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,41 +12,10 @@
 
 #include "Utility/WorldSelect.hpp"
 
-static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &audio,
-							  int player_type)
-{
-	params.cb_shader              = &(oGL.getShader("cubemap"));
-	params.shader                 = &(oGL.getShader("sprites"));
-	params.pos                    = glm::vec3({0.0f, 1.0f, 0.0f});
-	params.size                   = glm::vec3({0.3f, 0.5f, 0.3f});
-	params.cb_model               = &(oGL.getModel("TestBox"));
-	params.tex                    = &(oGL.getTexture("sprite_reimu"));
-	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
-	params.nb_walk_frame          = 4;
-	params.draw_cb                = false;
-	params.audio                  = &audio;
-	params.hp                     = 1;
-	if (!player_type)
-	{
-		params.tex             = &(oGL.getTexture("sprite_reimu"));
-		params.max_jump        = 1;
-		params.max_hoover_time = 2.0f;
-		params.theme           = Audio::THEME_1;
-	}
-	else
-	{
-		params.tex             = &(oGL.getTexture("sprite_marisa"));
-		params.max_jump        = 2;
-		params.max_hoover_time = 0.0f;
-		params.theme           = Audio::THEME_2;
-	}
-}
-
 bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL,
 						 Audio &audio)
 {
 	std::unique_ptr<Sprite> character_sprites[2];
-	Player::Params          player_params;
 	int                     char_type         = 0;
 	float                   type_delay        = 0.0f;
 	glm::mat4               matrix            = glm::mat4(1.0f);
@@ -150,7 +119,5 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 				manager.destroy_window();
 		}
 	}
-	set_player_params(player_params, oGL, audio, char_type);
-	world.add_Player(player_params);
 	return (true);
 }

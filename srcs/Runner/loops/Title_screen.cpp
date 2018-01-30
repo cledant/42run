@@ -12,8 +12,8 @@
 
 #include "Utility/WorldSelect.hpp"
 
-int title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
-					  oGL_module &oGL)
+bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
+					   oGL_module &oGL)
 {
 	std::unique_ptr<ShaderSurface> title_shader;
 
@@ -26,7 +26,7 @@ int title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl << "Exiting 42Run" << std::endl;
-		return (0);
+		return (false);
 	}
 	while (Glfw_manager::getActiveWindowNumber())
 	{
@@ -57,5 +57,5 @@ int title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 				manager.destroy_window();
 		}
 	}
-	return (1);
+	return (true);
 }

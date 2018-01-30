@@ -29,10 +29,12 @@ int run_runner_world(Glfw_manager &manager, bool vsync);
  * Runner game loops
  */
 
-int char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
-						oGL_module &oGL, Audio &audio);
-int title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
-					  oGL_module &oGL);
-void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui);
+bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
+						 oGL_module &oGL, Audio &audio);
+bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
+					   oGL_module &oGL);
+bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
+					oGL_module &oGL);
+bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui);
 
 #endif

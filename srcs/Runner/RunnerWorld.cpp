@@ -278,6 +278,13 @@ float RunnerWorld::getTickRate(void) const
 	return (this->_tick);
 }
 
+bool RunnerWorld::isPlayerAlive() const
+{
+	if (dynamic_cast<Player *>(this->_active)->getHP() > 0)
+		return (true);
+	return (false);
+}
+
 /*
  * Setter
  */
@@ -320,7 +327,7 @@ void RunnerWorld::_check_collisions(void)
 	}
 	if (cur_room == nullptr)
 	{
-		this->_should_end = true;
+		dynamic_cast<Player *>(this->_active)->lowerHP(Player::INSTANT_DEATH);
 		return;
 	}
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)

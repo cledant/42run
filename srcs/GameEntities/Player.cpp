@@ -66,6 +66,10 @@ Player::~Player(void)
 {
 }
 
+/*
+ * Setter
+ */
+
 void Player::setPos(glm::vec3 const &new_pos)
 {
 	this->_pos = new_pos;
@@ -133,6 +137,10 @@ void Player::setScale(glm::vec3 const &scale)
 	this->_cb.setHalfSize({scale.x, scale.y, scale.z});
 	this->_cb_model.setScale(scale);
 }
+
+/*
+ * Getter
+ */
 
 glm::vec3 const &Player::getDelta(void) const
 {
@@ -230,6 +238,10 @@ void Player::stopSetTheme(void)
 	}
 	this->_audio->stopTheme(this->_theme);
 }
+
+/*
+ * Other
+ */
 
 void Player::update_model(float time)
 {
