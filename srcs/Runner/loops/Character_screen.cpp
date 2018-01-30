@@ -81,6 +81,7 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 			while (world.should_be_updated(Glfw_manager::getTime()))
 			{
 				manager.update_events();
+				world.update();
 				if (type_delay > 0.25f && ((manager.getInput().p_key[GLFW_KEY_RIGHT] ||
 											manager.getInput().p_key[GLFW_KEY_LEFT])))
 				{

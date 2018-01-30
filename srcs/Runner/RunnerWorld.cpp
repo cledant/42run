@@ -13,7 +13,8 @@
 #include "Runner/RunnerWorld.hpp"
 
 RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
-						 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip) :
+						 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip,
+						 long int high_score) :
 		_active_room(&(this->_room_list_north)), _active(nullptr), _input(input),
 		_window(win), _gamepad(gamepad),
 		_camera(input, gamepad, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
@@ -24,7 +25,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_input_timer(0.0f), _input_mouse_timer(0.0f),
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
 		_score_modifier(0), _first_run_theme(true), _should_end(false),
-		_current_score(0), _last_game_score(0), _high_score(0)
+		_current_score(0), _last_game_score(0), _high_score(high_score)
 {
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();

@@ -37,4 +37,11 @@ bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 					oGL_module &oGL);
 bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui);
 
+/*
+ * Score
+ */
+
+long int load_score(std::string const &path);
+void save_score(std::string const &path, long int to_save);
+
 #endif

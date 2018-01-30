@@ -50,7 +50,7 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	Room::Params room_params;
 
 	(*world) = new RunnerWorld(manager.getInput(), manager.getWindow(), manager.getGamepad(),
-							   glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
+							   glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10, load_score("./highscore"));
 	NormalRoomEmpty(**world, oGL);
 	NormalRoomBonusOnly(**world, oGL);
 	NormalRoomObstacleOnly(**world, oGL);
@@ -86,6 +86,7 @@ static void init_program(RunnerWorld **world, oGL_module &oGL, Glfw_manager &man
 static int cleanup(RunnerWorld *world, Ui *ui)
 {
 	oGL_module::oGL_finish();
+	save_score("./highscore", world->getHighScore());
 	std::cout << "Delete Ui" << std::endl;
 	delete ui;
 	std::cout << "Delete world" << std::endl;

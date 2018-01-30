@@ -28,6 +28,7 @@ bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_modul
 			while (world.should_be_updated(Glfw_manager::getTime()))
 			{
 				manager.update_events();
+				world.update();
 				if (type_delay > 0.25f && ((manager.getInput().p_key[GLFW_KEY_UP] ||
 											manager.getInput().p_key[GLFW_KEY_DOWN])))
 				{

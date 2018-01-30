@@ -46,7 +46,8 @@ class RunnerWorld
 		};
 
 		RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
-					glm::vec3 cam_pos, float max_fps, size_t max_frame_skip);
+					glm::vec3 cam_pos, float max_fps, size_t max_frame_skip,
+					long int high_score);
 		virtual ~RunnerWorld(void);
 		RunnerWorld(RunnerWorld const &src) = delete;
 		RunnerWorld &operator=(RunnerWorld const &rhs) = delete;

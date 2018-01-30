@@ -38,14 +38,19 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 								  static_cast<float>(manager.getWindow().cur_win_h) - 40.0f,
 								  0.5f));
 			ui.drawText("roboto", "Player Life : " + world.getStrPlayerHP(),
-						glm::vec3(0.4f, 0.4f, 0.4f),
+						glm::vec3(1.0f, 0.4f, 0.4f),
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 80.0f,
 								  0.5f));
-			ui.drawText("roboto", "Score : " + world.getStrCurrentScore(),
-						glm::vec3(0.4f, 0.4f, 0.4f),
+			ui.drawText("roboto", "High Score : " + world.getStrHighScore(),
+						glm::vec3(0.0f, 1.0f, 0.0f),
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 120.0f,
+								  0.5f));
+			ui.drawText("roboto", "Score : " + world.getStrCurrentScore(),
+						glm::vec3(0.0f, 0.0f, 1.0f),
+						glm::vec3(10.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) - 160.0f,
 								  0.5f));
 			manager.swap_buffers();
 			if (world.getShouldEnd())

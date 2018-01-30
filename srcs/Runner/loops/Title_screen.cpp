@@ -37,7 +37,10 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 			oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
 			world.reset_skip_loop();
 			while (world.should_be_updated(Glfw_manager::getTime()))
+			{
 				manager.update_events();
+				world.update();
+			}
 			title_shader->draw();
 			ui.update();
 			ui.drawText("roboto", "42 Run",
