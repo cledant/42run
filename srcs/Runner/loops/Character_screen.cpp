@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ShaderSurface.hpp                                  :+:      :+:    :+:   */
+/*   Character_screen.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,8 @@
 
 #include "Utility/WorldSelect.hpp"
 
-static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &audio, int player_type)
+static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &audio,
+							  int player_type)
 {
 	params.cb_shader              = &(oGL.getShader("cubemap"));
 	params.shader                 = &(oGL.getShader("sprites"));

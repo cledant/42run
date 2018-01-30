@@ -92,7 +92,7 @@ set(SOURCE_FILES
 		srcs/Runner/RunnerWorld.cpp
 		srcs/Runner/InitRunnerWorld.cpp
 		srcs/Runner/TemplatedRoom.cpp
-		srcs/UI/ShaderSurface.cpp srcs/Runner/Character_screen.cpp)
+		srcs/UI/ShaderSurface.cpp srcs/Runner/loops/Character_screen.cpp srcs/Runner/loops/Title_screen.cpp srcs/Runner/loops/Main_loop.cpp)
 
 #OS specific libs
 if (APPLE)

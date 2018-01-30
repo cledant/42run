@@ -13,93 +13,6 @@
 #include "Utility/WorldSelect.hpp"
 #include "Runner/TemplatedRoom.hpp"
 
-static void main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
-{
-	while (Glfw_manager::getActiveWindowNumber())
-	{
-		if (manager.getWindow().win != nullptr)
-		{
-			world.reset_skip_loop();
-			while (world.should_be_updated(Glfw_manager::getTime()))
-			{
-				manager.update_events();
-				world.update();
-			}
-			manager.calculate_fps();
-			world.render();
-			ui.update();
-			ui.drawText("roboto", "42Run : " + manager.getStrFps() + " fps",
-						glm::vec3(0.4f, 0.4f, 0.4f),
-						glm::vec3(10.0f,
-								  static_cast<float>(manager.getWindow().cur_win_h) - 40.0f,
-								  0.5f));
-			ui.drawText("roboto", "Player Life : " + world.getStrPlayerHP(),
-						glm::vec3(0.4f, 0.4f, 0.4f),
-						glm::vec3(10.0f,
-								  static_cast<float>(manager.getWindow().cur_win_h) - 80.0f,
-								  0.5f));
-			ui.drawText("roboto", "Score : " + world.getScore(),
-						glm::vec3(0.4f, 0.4f, 0.4f),
-						glm::vec3(10.0f,
-								  static_cast<float>(manager.getWindow().cur_win_h) - 120.0f,
-								  0.5f));
-			manager.swap_buffers();
-			if (world.getShouldEnd())
-				manager.triggerWindowClose();
-			if (manager.should_window_be_closed())
-				manager.destroy_window();
-		}
-	}
-	oGL_module::oGL_finish();
-}
-
-static int title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL)
-{
-	std::unique_ptr<ShaderSurface> title_shader;
-
-	try
-	{
-		title_shader = std::make_unique<ShaderSurface>(&manager.getWindow(), &manager.getInput(),
-													   &oGL.getShader("title_screen"));
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl << "Exiting 42Run" << std::endl;
-		return (0);
-	}
-	while (Glfw_manager::getActiveWindowNumber())
-	{
-		if (manager.getWindow().win != nullptr)
-		{
-			if (manager.getInput().p_key[GLFW_KEY_SPACE])
-				return (1);
-			oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
-			world.reset_skip_loop();
-			while (world.should_be_updated(Glfw_manager::getTime()))
-				manager.update_events();
-			title_shader->draw();
-			ui.update();
-			ui.drawText("roboto", "42 Run",
-						glm::vec3(0.0f, 0.0f, 0.0f),
-						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 85.0f,
-								  static_cast<float>(manager.getWindow().cur_win_h) - 100.0f,
-								  1.0f));
-			ui.drawText("roboto", "Press space to start",
-						glm::vec3(0.0f, 0.0f, 0.0f),
-						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2 - 250.f),
-								  static_cast<float>(manager.getWindow().cur_win_h) * 0.1,
-								  1.0f));
-			manager.swap_buffers();
-			if (world.getShouldEnd())
-				manager.triggerWindowClose();
-			if (manager.should_window_be_closed())
-				manager.destroy_window();
-		}
-	}
-	return (1);
-}
-
-
 static void init_oGL(oGL_module &oGL)
 {
 	oGL_module::oGL_enable_depth();
@@ -131,11 +44,9 @@ static void init_oGL(oGL_module &oGL)
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
 }
 
-
 static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 						RunnerWorld **world)
 {
-
 	Room::Params room_params;
 
 	(*world) = new RunnerWorld(manager.getInput(), manager.getWindow(), manager.getGamepad(),
@@ -174,7 +85,6 @@ static void init_program(RunnerWorld **world, oGL_module &oGL, Glfw_manager &man
 
 void run_runner_world(Glfw_manager &manager, bool vsync)
 {
-
 	oGL_module  oGL;
 	Audio       audio;
 	Ui          *ui    = nullptr;
