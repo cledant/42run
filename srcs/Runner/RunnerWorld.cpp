@@ -23,7 +23,8 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
 		_input_timer(0.0f), _input_mouse_timer(0.0f),
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
-		_score_modifier(0), _first_run_theme(true), _should_end(false)
+		_score_modifier(0), _first_run_theme(true), _should_end(false),
+		_current_score(0), _last_game_score(0), _high_score(0)
 {
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
@@ -106,6 +107,9 @@ void RunnerWorld::update(void)
 		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
 		reinterpret_cast<Player *>(this->_active)->setSpriteYaw(this->_camera.getYaw());
 		reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
+		this->_current_score = static_cast<long int>(std::trunc(
+				reinterpret_cast<Player *>(this->_active)->getTotalWalked()) / 10.0f) +
+							   this->_score_modifier;
 	}
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 		(*it)->update(this->_delta_tick);
@@ -251,20 +255,55 @@ bool RunnerWorld::should_be_updated(float time)
 	return (false);
 }
 
+void RunnerWorld::updateLastGameScore(void)
+{
+	this->_last_game_score = this->_current_score;
+	this->_current_score   = 0;
+	this->_score_modifier  = 0;
+}
+
+void RunnerWorld::updateHighScore(void)
+{
+	if (this->_high_score < this->_current_score)
+		this->_high_score = this->_current_score;
+	this->_score_modifier = 0;
+}
+
 /*
  * Getter
  */
 
-std::string const &RunnerWorld::getScore(void)
+std::string const &RunnerWorld::getStrCurrentScore(void)
 {
-
-	if (this->_active == nullptr)
-		this->_str_score = "0";
-	this->_str_score     = std::to_string(
-			static_cast<long int>(std::trunc(reinterpret_cast<Player *>
-											 (this->_active)->getTotalWalked()) / 10.0f)
-			+ this->_score_modifier);
+	this->_str_score = std::to_string(this->_current_score);
 	return (this->_str_score);
+}
+
+std::string const &RunnerWorld::getStrLastScore(void)
+{
+	this->_str_last_score = std::to_string(this->_last_game_score);
+	return (this->_str_last_score);
+}
+
+std::string const &RunnerWorld::getStrHighScore(void)
+{
+	this->_str_high_score = std::to_string(this->_high_score);
+	return (this->_str_high_score);
+}
+
+long int RunnerWorld::getCurrentScore(void)
+{
+	return (this->_current_score);
+}
+
+long int RunnerWorld::getLastGameScore(void)
+{
+	return (this->_last_game_score);
+}
+
+long int RunnerWorld::getHighScore(void)
+{
+	return (this->_high_score);
 }
 
 std::string const &RunnerWorld::getStrPlayerHP(void)

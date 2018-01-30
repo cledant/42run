@@ -45,6 +45,21 @@ bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_modul
 						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 180.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) * 0.8,
 								  1.0f));
+			ui.drawText("roboto", "High Score : " + world.getStrHighScore(),
+						glm::vec3(1.0f, 0.0f, 0.0f),
+						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 300.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) * 0.65,
+								  0.7f));
+			ui.drawText("roboto", "Last Game Score : " + world.getStrLastScore(),
+						glm::vec3(0.0f, 1.0f, 0.0f),
+						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 300.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) * 0.55,
+								  0.7f));
+			ui.drawText("roboto", "Current Game Score : " + world.getStrCurrentScore(),
+						glm::vec3(0.0f, 0.0f, 1.0f),
+						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 300.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) * 0.45,
+								  0.7f));
 			if (!selection_type)
 			{
 				ui.drawText("roboto", "Retry",

@@ -126,6 +126,7 @@ int run_runner_world(Glfw_manager &manager, bool vsync)
 		else
 			return (cleanup(world, ui));
 		world->deletePlayer();
+		world->updateLastGameScore();
 	}
 	return (cleanup(world, ui));
 }

@@ -25,7 +25,10 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 				world.update();
 			}
 			if (!world.isPlayerAlive())
+			{
+				world.updateHighScore();
 				return (false);
+			}
 			manager.calculate_fps();
 			world.render();
 			ui.update();
@@ -39,7 +42,7 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 80.0f,
 								  0.5f));
-			ui.drawText("roboto", "Score : " + world.getScore(),
+			ui.drawText("roboto", "Score : " + world.getStrCurrentScore(),
 						glm::vec3(0.4f, 0.4f, 0.4f),
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 120.0f,

@@ -65,12 +65,19 @@ class RunnerWorld
 		void reset_update_timer(float time);
 		void reset_skip_loop(void);
 		bool should_be_updated(float time);
+		void updateLastGameScore(void);
+		void updateHighScore(void);
 
 		/*
 		 * Getter
 		 */
 
-		std::string const &getScore(void);
+		std::string const &getStrCurrentScore(void);
+		std::string const &getStrLastScore(void);
+		std::string const &getStrHighScore(void);
+		long int getCurrentScore(void);
+		long int getLastGameScore(void);
+		long int getHighScore(void);
 		std::string const &getStrPlayerHP(void);
 		bool getShouldEnd(void) const;
 		float getTickRate(void) const;
@@ -127,10 +134,15 @@ class RunnerWorld
 		glm::vec3                   _gravity;
 		std::string                 _str_hp;
 		std::string                 _str_score;
+		std::string                 _str_last_score;
+		std::string                 _str_high_score;
 		long int                    _score_modifier;
 		bool                        _first_run_theme;
 		bool                        _enabled_gamepad;
 		bool                        _should_end;
+		long int                    _current_score;
+		long int                    _last_game_score;
+		long int                    _high_score;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
