@@ -125,7 +125,7 @@ int run_runner_world(Glfw_manager &manager, bool vsync)
 			loop = game_over_loop(*world, manager, *ui, oGL);
 		else
 			return (cleanup(world, ui));
-//		reset_world(world);
+		world->deletePlayer();
 	}
 	return (cleanup(world, ui));
 }

@@ -213,6 +213,12 @@ IInteractive *RunnerWorld::add_Player(Player::Params &params)
 	return (ptr);
 }
 
+void RunnerWorld::deletePlayer(void)
+{
+	delete this->_active;
+	this->_active = nullptr;
+}
+
 void RunnerWorld::updatePerspective(float fov)
 {
 	GLfloat ratio = static_cast<GLfloat>(this->_window.cur_win_w) /
@@ -302,6 +308,11 @@ void RunnerWorld::setActiveRoom(enum RunnerWorld::Direction dir)
 		this->_active_room = &(this->_room_list_east);
 	else if (dir == RunnerWorld::Direction::WEST)
 		this->_active_room = &(this->_room_list_west);
+}
+
+void RunnerWorld::resetInputTimer(void)
+{
+	this->_input_timer = 0.0f;
 }
 
 /*

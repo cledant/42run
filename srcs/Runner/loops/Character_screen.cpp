@@ -151,6 +151,14 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 		}
 	}
 	set_player_params(player_params, oGL, audio, char_type);
-	world.add_Player(player_params);
+	try
+	{
+		world.add_Player(player_params);
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl << "Exiting 42Run" << std::endl;
+		return (false);
+	}
 	return (true);
 }

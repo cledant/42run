@@ -60,6 +60,7 @@ class RunnerWorld
 		void initRoomList(void);
 		void generateRoomListNorth(void);
 		IInteractive *add_Player(Player::Params &params);
+		void deletePlayer(void);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);
 		void reset_skip_loop(void);
@@ -81,6 +82,7 @@ class RunnerWorld
 
 		void setActiveInteractive(IInteractive *ptr);
 		void setActiveRoom(enum RunnerWorld::Direction dir);
+		void resetInputTimer(void);
 
 		class RunnerWorldFailException : public GeneralException
 		{
