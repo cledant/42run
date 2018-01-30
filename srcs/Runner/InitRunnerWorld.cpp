@@ -122,7 +122,7 @@ int run_runner_world(Glfw_manager &manager, bool vsync)
 		if (!char_selection_loop(*world, manager, *ui, oGL, audio))
 			return (cleanup(world, ui));
 		if (!main_loop(*world, manager, *ui))
-			loop = game_over_loop(*world, manager, *ui, oGL, audio);
+			loop = game_over_loop(*world, manager, *ui, oGL);
 		else
 			return (cleanup(world, ui));
 //		reset_world(world);

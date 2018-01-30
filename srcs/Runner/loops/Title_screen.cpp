@@ -33,7 +33,7 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 		if (manager.getWindow().win != nullptr)
 		{
 			if (manager.getInput().p_key[GLFW_KEY_SPACE])
-				return (1);
+				return (true);
 			oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
 			world.reset_skip_loop();
 			while (world.should_be_updated(Glfw_manager::getTime()))
@@ -57,5 +57,5 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 				manager.destroy_window();
 		}
 	}
-	return (true);
+	return (false);
 }
