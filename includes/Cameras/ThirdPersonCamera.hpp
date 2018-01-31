@@ -35,10 +35,16 @@ class ThirdPersonCamera : public Camera
 		ThirdPersonCamera(const ThirdPersonCamera &src) = delete;
 		ThirdPersonCamera &operator=(ThirdPersonCamera const &rhs) = delete;
 
-		void setDistToTarget(float dist);
 
 		void update_third_person(bool mouse_exclusive_to_manager,
 								 glm::vec3 const &target_pos, bool gamepad);
+
+		/*
+		 * Setter
+		 */
+
+		void setDistToTarget(float dist);
+		void setLockCam(bool val);
 
 		class ThirdPersonCameraFailException : public GeneralException
 		{
@@ -52,6 +58,7 @@ class ThirdPersonCamera : public Camera
 
 		float         _dist_to_target;
 		Gamepad const &_gamepad;
+		bool          _lock_cam;
 
 	private :
 

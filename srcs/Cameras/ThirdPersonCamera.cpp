@@ -17,7 +17,7 @@ ThirdPersonCamera::ThirdPersonCamera(Input const &input, Gamepad const &gamepad,
 									 glm::vec3 const &world_up, glm::vec3 const &front,
 									 GLfloat yaw, GLfloat pitch) :
 		Camera(input, glm::vec3({0.0f, 0.0f, 0.0f}), world_up, front, yaw, pitch),
-		_gamepad(gamepad)
+		_gamepad(gamepad), _lock_cam(false)
 {
 	this->_dist_to_target = (dist_to_target < 0.001f) ? 0.001f : dist_to_target;
 	this->update_third_person(true, target_pos,
@@ -28,13 +28,6 @@ ThirdPersonCamera::~ThirdPersonCamera(void)
 {
 }
 
-void ThirdPersonCamera::setDistToTarget(float dist)
-{
-	if (dist < 0.001f)
-		dist = 0.001f;
-	this->_dist_to_target = dist;
-}
-
 void ThirdPersonCamera::update_third_person(bool mouse_exclusive_to_manager,
 											glm::vec3 const &target_pos,
 											bool gamepad)
@@ -43,7 +36,7 @@ void ThirdPersonCamera::update_third_person(bool mouse_exclusive_to_manager,
 	this->_update_cam = mouse_exclusive_to_manager;
 	if (!gamepad)
 	{
-		if (this->_update_cam)
+		if (this->_update_cam && !this->_lock_cam)
 		{
 			if (this->_input.mouse_refreshed)
 				this->_update_from_mouse_input();
@@ -59,13 +52,29 @@ void ThirdPersonCamera::update_third_person(bool mouse_exclusive_to_manager,
 							  this->_up);
 }
 
+/*
+ * Setter
+ */
+
+void ThirdPersonCamera::setDistToTarget(float dist)
+{
+	if (dist < 0.001f)
+		dist = 0.001f;
+	this->_dist_to_target = dist;
+}
+
+void ThirdPersonCamera::setLockCam(bool val)
+{
+	this->_lock_cam = val;
+}
+
 void ThirdPersonCamera::_update_from_keyboard_input(void)
 {
 	float velocity            = this->_movement_speed;
 
-	if (this->_input.p_key[GLFW_KEY_E] == PRESSED)
+	if (this->_input.p_key[GLFW_KEY_E] == PRESSED && !this->_lock_cam)
 		this->_dist_to_target += velocity;
-	if (this->_input.p_key[GLFW_KEY_Q] == PRESSED)
+	if (this->_input.p_key[GLFW_KEY_Q] == PRESSED && !this->_lock_cam)
 		this->_dist_to_target -= velocity;
 	if (this->_dist_to_target < 0.001f)
 		this->_dist_to_target = 0.001f;
@@ -87,20 +96,20 @@ void ThirdPersonCamera::_update_from_gamepad_input(void)
 	float velocity            = this->_movement_speed;
 
 	if (this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).buttons
-		[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER] == GLFW_PRESS)
+		[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER] == GLFW_PRESS && !this->_lock_cam)
 		this->_dist_to_target += velocity;
 	if (this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).buttons
-		[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER] == GLFW_PRESS)
+		[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER] == GLFW_PRESS && !this->_lock_cam)
 		this->_dist_to_target -= velocity;
 	if (this->_dist_to_target < 0.001f)
 		this->_dist_to_target = 0.001f;
 	if (std::abs(this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
-				 [GLFW_GAMEPAD_AXIS_RIGHT_X]) > CAM_DEAD_ZONE)
+				 [GLFW_GAMEPAD_AXIS_RIGHT_X]) > CAM_DEAD_ZONE && !this->_lock_cam)
 		this->_yaw += (this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
 					   [GLFW_GAMEPAD_AXIS_RIGHT_X] * this->_mouse_sensitivity *
 					   THIRD_CAM_GAMEPAD_SENSITIVITY);
 	if (std::abs(this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
-				 [GLFW_GAMEPAD_AXIS_RIGHT_Y]) > CAM_DEAD_ZONE)
+				 [GLFW_GAMEPAD_AXIS_RIGHT_Y]) > CAM_DEAD_ZONE && !this->_lock_cam)
 		this->_pitch += (this->_gamepad.getGamepadState(GLFW_JOYSTICK_1).axes
 						 [GLFW_GAMEPAD_AXIS_RIGHT_Y] * this->_mouse_sensitivity *
 						 THIRD_CAM_GAMEPAD_SENSITIVITY);

@@ -32,6 +32,11 @@ class Camera
 
 		void update(bool mouse_exclusive_to_manager);
 		void toggle_update(void);
+
+		/*
+		 * Getter
+		 */
+
 		glm::mat4 const &getViewMatrix(void) const;
 		glm::vec3 const &getWorldUp(void) const;
 		glm::vec3 const &getFront(void) const;
@@ -41,6 +46,13 @@ class Camera
 		glm::vec3 const &getXYFront(void) const;
 		float getYaw(void) const;
 		float getPitch(void) const;
+
+		/*
+		 * Setter
+		 */
+
+		void setYaw(GLfloat yaw);
+		void setPitch(GLfloat pitch);
 
 		class CameraFailException : public GeneralException
 		{

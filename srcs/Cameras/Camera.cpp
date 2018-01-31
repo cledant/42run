@@ -43,6 +43,10 @@ void Camera::toggle_update(void)
 	this->_update_cam = !this->_update_cam;
 }
 
+/*
+ * Getter
+ */
+
 glm::mat4 const &Camera::getViewMatrix(void) const
 {
 	return (this->_view);
@@ -88,6 +92,41 @@ float Camera::getPitch(void) const
 	return (this->_pitch);
 }
 
+/*
+ * Setter
+ */
+
+void Camera::setYaw(GLfloat yaw)
+{
+	this->_yaw = yaw;
+	this->_update_vector_matrix();
+}
+
+void Camera::setPitch(GLfloat pitch)
+{
+	this->_pitch     = pitch;
+	if (this->_pitch > 89.0f)
+		this->_pitch = 89.0f;
+	if (this->_pitch < -89.0f)
+		this->_pitch = -89.0f;
+	this->_update_vector_matrix();
+}
+
+void Camera::_update_vector_matrix(void)
+{
+	this->_front.x = cos(glm::radians(this->_yaw)) *
+					 cos(glm::radians(this->_pitch));
+	this->_front.y = sin(glm::radians(this->_pitch));
+	this->_front.z = sin(glm::radians(this->_yaw)) *
+					 cos(glm::radians(this->_pitch));
+	glm::normalize(this->_front);
+	this->_right      = glm::normalize(glm::cross(this->_front, this->_world_up));
+	this->_up         = glm::normalize(glm::cross(this->_right, this->_front));
+	this->_xy_front.x = this->_front.x;
+	this->_xy_front.z = this->_front.z;
+	this->_xy_front   = glm::normalize(this->_xy_front);
+}
+
 void Camera::_update_from_keyboard_input(void)
 {
 	float velocity;
@@ -116,21 +155,6 @@ void Camera::_update_from_mouse_input(void)
 	if (this->_pitch < -89.0f)
 		this->_pitch = -89.0f;
 	this->_update_vector_matrix();
-}
-
-void Camera::_update_vector_matrix(void)
-{
-	this->_front.x = cos(glm::radians(this->_yaw)) *
-					 cos(glm::radians(this->_pitch));
-	this->_front.y = sin(glm::radians(this->_pitch));
-	this->_front.z = sin(glm::radians(this->_yaw)) *
-					 cos(glm::radians(this->_pitch));
-	glm::normalize(this->_front);
-	this->_right      = glm::normalize(glm::cross(this->_front, this->_world_up));
-	this->_up         = glm::normalize(glm::cross(this->_right, this->_front));
-	this->_xy_front.x = this->_front.x;
-	this->_xy_front.z = this->_front.z;
-	this->_xy_front   = glm::normalize(this->_xy_front);
 }
 
 Camera::CameraFailException::CameraFailException(void)
