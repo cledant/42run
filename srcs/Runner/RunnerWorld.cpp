@@ -39,7 +39,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 	this->_room_list_north.reserve(RunnerWorld::list_size);
 	this->_room_list_east.reserve(RunnerWorld::list_size);
 	this->_room_list_west.reserve(RunnerWorld::list_size);
-	this->_camera.setLockCam(true);
+	//this->_camera.setLockCam(true);
 	this->_camera.setPitch(-15.0f);
 	this->_camera.setDistToTarget(5.0f);
 }
@@ -87,6 +87,8 @@ void RunnerWorld::update(void)
 				this->_input_timer       = 0.0f;
 			else if (this->_input_timer < INPUT_REPEAT_TIMER)
 				this->_input_timer += this->_tick;
+			dynamic_cast<Player *>(this->_active)->addAcceleration(100.0f * this->_camera.getXYFront());
+			dynamic_cast<Player *>(this->_active)->forceBackSprite();
 		}
 		else
 		{
@@ -98,6 +100,8 @@ void RunnerWorld::update(void)
 					this->_input_timer = 0.0f;
 				else if (this->_input_timer < INPUT_REPEAT_TIMER)
 					this->_input_timer += this->_tick;
+				dynamic_cast<Player *>(this->_active)->addAcceleration(100.0f * this->_camera.getXYFront());
+				dynamic_cast<Player *>(this->_active)->forceBackSprite();
 			}
 			else
 				std::cout << "Gamepad not connected anymore" << std::endl;
@@ -218,6 +222,8 @@ IInteractive *RunnerWorld::add_Player(Player::Params &params)
 	params.cam               = &(this->_camera);
 	ptr = new Player(params);
 	this->_active = ptr;
+	dynamic_cast<Player *>(this->_active)->setDisableFront(true);
+	dynamic_cast<Player *>(this->_active)->setDisableBack(true);
 	return (ptr);
 }
 

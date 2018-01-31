@@ -106,6 +106,10 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void lowerHP(ICollidable::Damages type);
 		void setImmunityTimerToMax(void);
 		void setScale(glm::vec3 const &scale);
+		void setDisableFront(bool val);
+		void setDisableBack(bool val);
+		void addAcceleration(glm::vec3 const &acc);
+		void forceBackSprite(void);
 
 		/*
 		 * Getter
@@ -200,6 +204,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		Audio::theme_list       _theme;
 		bool                    _last_jump;
 		std::string             _pick_up;
+		bool                    _disable_front;
+		bool                    _disable_back;
 
 		void _set_sprite_direction(void);
 };

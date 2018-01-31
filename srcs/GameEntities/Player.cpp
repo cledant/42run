@@ -57,7 +57,8 @@ Player::Player(Player::Params const &params) :
 		_cur_hoover_time(params.max_hoover_time),
 		_max_hoover_time(params.max_hoover_time), _hp(params.hp),
 		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio),
-		_theme(params.theme), _last_jump(GLFW_RELEASE), _pick_up(params.pick_up)
+		_theme(params.theme), _last_jump(GLFW_RELEASE), _pick_up(params.pick_up),
+		_disable_front(false), _disable_back(false)
 {
 	this->update(1.0f);
 }
@@ -136,6 +137,27 @@ void Player::setScale(glm::vec3 const &scale)
 	this->_model.setScale(scale);
 	this->_cb.setHalfSize({scale.x, scale.y, scale.z});
 	this->_cb_model.setScale(scale);
+}
+
+void Player::setDisableFront(bool val)
+{
+	this->_disable_front = val;
+}
+
+void Player::setDisableBack(bool val)
+{
+	this->_disable_back = val;
+}
+
+void Player::addAcceleration(glm::vec3 const &acc)
+{
+	this->_acc += acc;
+}
+
+void Player::forceBackSprite(void)
+{
+	this->_axis.x = 1;
+	this->_set_sprite_direction();
 }
 
 /*
@@ -314,13 +336,13 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 		{
 			this->_hoover = false;
 		}
-		if (input.p_key[GLFW_KEY_W] == PRESSED)
+		if (input.p_key[GLFW_KEY_W] == PRESSED && !this->_disable_front)
 		{
 			this->_acc += this->_force * this->_cam->getXYFront();
 			this->_axis.x += 1;
 			change_dir = true;
 		}
-		if (input.p_key[GLFW_KEY_S] == PRESSED)
+		if (input.p_key[GLFW_KEY_S] == PRESSED && !this->_disable_back)
 		{
 			this->_acc -= this->_force * this->_cam->getXYFront();
 			this->_axis.x -= 1;
