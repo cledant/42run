@@ -58,7 +58,8 @@ Player::Player(Player::Params const &params) :
 		_max_hoover_time(params.max_hoover_time), _hp(params.hp),
 		_cur_immunity(0.0f), _max_immunity(params.max_immunity), _audio(params.audio),
 		_theme(params.theme), _last_jump(GLFW_RELEASE), _pick_up(params.pick_up),
-		_disable_front(false), _disable_back(false)
+		_disable_front(false), _disable_back(false), _disable_right(false),
+		_disable_left(false)
 {
 	this->update(1.0f);
 }
@@ -96,9 +97,19 @@ void Player::setVelocity(glm::vec3 const &vel)
 	this->_vel = vel;
 }
 
+void Player::setVelocityXtoZero(void)
+{
+	this->_vel.x = 0.0f;
+}
+
 void Player::setVelocityYtoZero(void)
 {
 	this->_vel.y = 0.0f;
+}
+
+void Player::setVelocityZtoZero(void)
+{
+	this->_vel.z = 0.0f;
 }
 
 void Player::setVelocityXZtoZero(void)
@@ -149,6 +160,16 @@ void Player::setDisableBack(bool val)
 	this->_disable_back = val;
 }
 
+void Player::setDisableRight(bool val)
+{
+	this->_disable_right = val;
+}
+
+void Player::setDisableLeft(bool val)
+{
+	this->_disable_left = val;
+}
+
 void Player::addAcceleration(glm::vec3 const &acc)
 {
 	this->_acc += acc;
@@ -158,6 +179,11 @@ void Player::forceBackSprite(void)
 {
 	this->_axis.x = 1;
 	this->_set_sprite_direction();
+}
+
+void Player::setAccelerationXZtoZero()
+{
+	this->_acc -= this->_force;
 }
 
 /*
@@ -261,6 +287,11 @@ void Player::stopSetTheme(void)
 	this->_audio->stopTheme(this->_theme);
 }
 
+glm::vec3 const &Player::getVelocity(void) const
+{
+	return (this->_vel);
+}
+
 /*
  * Other
  */
@@ -325,11 +356,8 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 	bool        change_dir   = false;
 	static bool sound_toogle = true;
 
-	this->_acc.x  = 0.0f;
-	this->_acc.z  = 0.0f;
-	this->_acc.y  = 0.0f;
-	this->_axis.x = 0;
-	this->_axis.y = 0;
+	this->_acc  = glm::vec3(0.0f);
+	this->_axis = glm::ivec2(0);
 	if (this->_cam != nullptr)
 	{
 		if (input.p_key[GLFW_KEY_SPACE] == RELEASED)
@@ -348,17 +376,21 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			this->_axis.x -= 1;
 			change_dir = true;
 		}
-		if (input.p_key[GLFW_KEY_D] == PRESSED)
+		if (input.p_key[GLFW_KEY_D] == PRESSED && input.p_key[GLFW_KEY_A] == RELEASED
+			&& !this->_disable_right)
 		{
 			this->_acc += this->_force * this->_cam->getRight();
 			this->_axis.y += 1;
 			change_dir = true;
+			this->_disable_left = false;
 		}
-		if (input.p_key[GLFW_KEY_A] == PRESSED)
+		if (input.p_key[GLFW_KEY_A] == PRESSED && input.p_key[GLFW_KEY_D] == RELEASED
+			&& !this->_disable_left)
 		{
 			this->_acc -= this->_force * this->_cam->getRight();
 			this->_axis.y -= 1;
 			change_dir = true;
+			this->_disable_right = false;
 		}
 		if (input.p_key[GLFW_KEY_M] == PRESSED && input_timer >= INPUT_REPEAT_TIMER)
 		{
@@ -421,11 +453,8 @@ bool Player::update_gamepad_interaction(GamepadState const &state, float input_t
 	bool        change_dir   = false;
 	static bool sound_toogle = true;
 
-	this->_acc.x  = 0.0f;
-	this->_acc.z  = 0.0f;
-	this->_acc.y  = 0.0f;
-	this->_axis.x = 0;
-	this->_axis.y = 0;
+	this->_acc  = glm::vec3(0.0f);
+	this->_axis = glm::ivec2(0);
 	if (this->_cam != nullptr)
 	{
 		if (state.buttons[GLFW_GAMEPAD_BUTTON_CROSS] == GLFW_RELEASE)

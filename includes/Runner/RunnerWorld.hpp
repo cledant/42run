@@ -144,6 +144,7 @@ class RunnerWorld
 		long int                    _current_score;
 		long int                    _last_game_score;
 		long int                    _high_score;
+		enum Direction              _dir;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,

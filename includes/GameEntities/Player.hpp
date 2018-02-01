@@ -98,7 +98,9 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setSurfaceCollisionBox(CollisionBox const &cb);
 		void setOnSurface(bool flag);
 		void setVelocity(glm::vec3 const &vel);
+		void setVelocityXtoZero(void);
 		void setVelocityYtoZero(void);
+		void setVelocityZtoZero(void);
 		void setVelocityXZtoZero(void);
 		void setSpriteYaw(float yaw);
 		void setCurJumpToMax(void);
@@ -108,8 +110,11 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void setScale(glm::vec3 const &scale);
 		void setDisableFront(bool val);
 		void setDisableBack(bool val);
+		void setDisableRight(bool val);
+		void setDisableLeft(bool val);
 		void addAcceleration(glm::vec3 const &acc);
 		void forceBackSprite(void);
+		void setAccelerationXZtoZero(void);
 
 		/*
 		 * Getter
@@ -129,6 +134,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		void playTheme(Audio::theme_list slot);
 		void playSetTheme(void);
 		void stopSetTheme(void);
+		glm::vec3 const &getVelocity(void) const;
 
 		/*
 		 * Other
@@ -206,6 +212,8 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		std::string             _pick_up;
 		bool                    _disable_front;
 		bool                    _disable_back;
+		bool                    _disable_right;
+		bool                    _disable_left;
 
 		void _set_sprite_direction(void);
 };

@@ -25,7 +25,8 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_input_timer(0.0f), _input_mouse_timer(0.0f),
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
 		_score_modifier(0), _first_run_theme(true), _should_end(false),
-		_current_score(0), _last_game_score(0), _high_score(high_score)
+		_current_score(0), _last_game_score(0), _high_score(high_score),
+		_dir(RunnerWorld::NORTH)
 {
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
@@ -39,7 +40,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 	this->_room_list_north.reserve(RunnerWorld::list_size);
 	this->_room_list_east.reserve(RunnerWorld::list_size);
 	this->_room_list_west.reserve(RunnerWorld::list_size);
-	//this->_camera.setLockCam(true);
+	this->_camera.setLockCam(true);
 	this->_camera.setPitch(-15.0f);
 	this->_camera.setDistToTarget(5.0f);
 }
@@ -406,34 +407,41 @@ void RunnerWorld::_check_collisions(void)
 			this->_check_collidable_box((*it)->getLeftWall(), &nearest, inv_delta, &ptr);
 			if ((*it)->getFrontWall().getActive())
 				this->_check_collidable_box((*it)->getFrontWall(), &nearest, inv_delta, &ptr);
-			for (auto it = cur_room->getCollidablePropList().begin(); it != cur_room->getCollidablePropList()
-																					.end(); ++it)
+			if (ptr == &((*it)->getRightWall()))
+				reinterpret_cast<Player *>(this->_active)->setDisableRight(true);
+			else if (ptr == &((*it)->getLeftWall()))
+				reinterpret_cast<Player *>(this->_active)->setDisableLeft(true);
+			if (ptr == nullptr)
 			{
-				if ((*it).second.getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
-						IsBoxInBoxSweep((*it).second.getCollisionBox(), inv_delta, &res)))
+				for (auto it = cur_room->getCollidablePropList().begin(); it != cur_room->getCollidablePropList()
+																						.end(); ++it)
 				{
-					if ((*it).second.getPassthrough())
+					if ((*it).second.getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
+							IsBoxInBoxSweep((*it).second.getCollisionBox(), inv_delta, &res)))
 					{
-						if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
-							(*it).second.getDamages() != ICollidable::Damages::NONE)
+						if ((*it).second.getPassthrough())
 						{
-							reinterpret_cast<Player *>(this->_active)->lowerHP((*it).second.getDamages());
-							reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
-							reinterpret_cast<Player *>(this->_active)->playSound("damage");
+							if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
+								(*it).second.getDamages() != ICollidable::Damages::NONE)
+							{
+								reinterpret_cast<Player *>(this->_active)->lowerHP((*it).second.getDamages());
+								reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
+								reinterpret_cast<Player *>(this->_active)->playSound("damage");
+							}
+							reinterpret_cast<Player *>(this->_active)->playSound((*it).second.getPickUpSound());
+							this->_score_modifier += (*it).second.getScoreModifier();
+							const_cast<CollidableProp &>((*it).second).setActive(false);
 						}
-						reinterpret_cast<Player *>(this->_active)->playSound((*it).second.getPickUpSound());
-						this->_score_modifier += (*it).second.getScoreModifier();
-						const_cast<CollidableProp &>((*it).second).setActive(false);
-					}
-					else if (ptr == nullptr)
-					{
-						ptr = (&(*it).second);
-						std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
-					}
-					else if (res.time < nearest.time)
-					{
-						ptr = (&(*it).second);
-						std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+						else if (ptr == nullptr)
+						{
+							ptr = (&(*it).second);
+							std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+						}
+						else if (res.time < nearest.time)
+						{
+							ptr = (&(*it).second);
+							std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+						}
 					}
 				}
 			}
@@ -472,8 +480,10 @@ void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &b
 		player->setCurJumpToMax();
 		player->setCurHooverTimeToMax();
 	}
+	else if (this->_dir == RunnerWorld::NORTH)
+		player->setVelocityZtoZero();
 	else
-		player->setVelocityXZtoZero();
+		player->setVelocityXtoZero();
 	if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
 		ptr->getDamages() != ICollidable::Damages::NONE)
 	{
