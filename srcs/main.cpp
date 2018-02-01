@@ -13,6 +13,22 @@
 #include "WindowManager/Glfw_manager.hpp"
 #include "Utility/WorldSelect.hpp"
 
+static void parse_args(int argc, char **argv, Glfw_manager &manager)
+{
+	bool vsync = false;
+	int  type  = 0;
+
+	for (int i = 1; i < argc; ++i)
+	{
+		if (!std::string(argv[i]).compare("--Vsync"))
+			vsync = true;
+		else if (!std::string(argv[i]).compare("--debug_level"))
+			type = 1;
+	}
+	return ((type == 1) ? run_debug_world(manager, vsync) :
+			(void) run_runner_world(manager, vsync));
+}
+
 int main(int argc, char **argv)
 {
 	Glfw_manager manager;
@@ -26,11 +42,7 @@ int main(int argc, char **argv)
 		std::cout << e.what() << std::endl;
 		return (0);
 	}
-//	run_debug_world(manager, false);
-	if (argc >= 2 && !std::string(argv[1]).compare("--Vsync=on"))
-		run_runner_world(manager, true);
-	else
-		run_runner_world(manager, false);
+	parse_args(argc, argv, manager);
 	std::cout << "Close manager" << std::endl;
 	Glfw_manager::close_manager();
 	return (0);
