@@ -87,8 +87,11 @@ void RunnerWorld::update(void)
 				this->_input_timer       = 0.0f;
 			else if (this->_input_timer < INPUT_REPEAT_TIMER)
 				this->_input_timer += this->_tick;
-			dynamic_cast<Player *>(this->_active)->addAcceleration(100.0f * this->_camera.getXYFront());
-			dynamic_cast<Player *>(this->_active)->forceBackSprite();
+			if (dynamic_cast<Player *>(this->_active)->isAlive())
+			{
+				dynamic_cast<Player *>(this->_active)->addAcceleration(100.0f * this->_camera.getXYFront());
+				dynamic_cast<Player *>(this->_active)->forceBackSprite();
+			}
 		}
 		else
 		{
@@ -100,8 +103,11 @@ void RunnerWorld::update(void)
 					this->_input_timer = 0.0f;
 				else if (this->_input_timer < INPUT_REPEAT_TIMER)
 					this->_input_timer += this->_tick;
-				dynamic_cast<Player *>(this->_active)->addAcceleration(100.0f * this->_camera.getXYFront());
-				dynamic_cast<Player *>(this->_active)->forceBackSprite();
+				if (dynamic_cast<Player *>(this->_active)->isAlive())
+				{
+					dynamic_cast<Player *>(this->_active)->addAcceleration(100.0f * this->_camera.getXYFront());
+					dynamic_cast<Player *>(this->_active)->forceBackSprite();
+				}
 			}
 			else
 				std::cout << "Gamepad not connected anymore" << std::endl;
