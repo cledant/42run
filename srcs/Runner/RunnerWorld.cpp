@@ -132,7 +132,7 @@ void RunnerWorld::update(void)
 
 void RunnerWorld::render(void)
 {
-	oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
+	oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 		(*it)->draw();
 	if (this->_active != nullptr)

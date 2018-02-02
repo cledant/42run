@@ -35,7 +35,7 @@ bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_modul
 					selection_type = (selection_type + 1) % 2;
 					type_delay     = 0.0f;
 				}
-				if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_SPACE]))
+				if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_ENTER]))
 					trigger_selection = true;
 				if (type_delay < 2.0f)
 					type_delay += world.getTickRate();

@@ -32,9 +32,9 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 	{
 		if (manager.getWindow().win != nullptr)
 		{
-			if (manager.getInput().p_key[GLFW_KEY_SPACE])
+			if (manager.getInput().p_key[GLFW_KEY_ENTER])
 				return (true);
-			oGL_module::oGL_clear_buffer(0.2f, 0.3f, 0.3f);
+			oGL_module::oGL_clear_buffer(0.0f, 0.0f, 0.0f);
 			world.reset_skip_loop();
 			while (world.should_be_updated(Glfw_manager::getTime()))
 			{
@@ -48,7 +48,7 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 85.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 100.0f,
 								  1.0f));
-			ui.drawText("roboto", "Press space to start",
+			ui.drawText("roboto", "Press enter to start",
 						glm::vec3(0.0f, 0.0f, 0.0f),
 						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2 - 250.f),
 								  static_cast<float>(manager.getWindow().cur_win_h) * 0.1,
