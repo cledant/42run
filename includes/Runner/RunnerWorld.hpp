@@ -38,13 +38,6 @@ class RunnerWorld
 {
 	public :
 
-		enum Direction
-		{
-			NORTH,
-			EAST,
-			WEST
-		};
-
 		RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 					glm::vec3 cam_pos, float max_fps, size_t max_frame_skip,
 					long int high_score);
@@ -59,7 +52,7 @@ class RunnerWorld
 										 std::string const &slot_name,
 										 CollidableProp::Params &params);
 		void initRoomList(void);
-		void generateRoomListNorth(void);
+		void generateRoomList(void);
 		IInteractive *add_Player(Player::Params &params);
 		void deletePlayer(void);
 		void updatePerspective(float fov);
@@ -89,7 +82,6 @@ class RunnerWorld
 		 */
 
 		void setActiveInteractive(IInteractive *ptr);
-		void setActiveRoom(enum RunnerWorld::Direction dir);
 		void resetInputTimer(void);
 
 		class RunnerWorldFailException : public GeneralException
@@ -111,10 +103,7 @@ class RunnerWorld
 	private :
 
 		std::map<std::string, Room> _room_template_list;
-		std::vector<Room *>         _room_list_north;
-		std::vector<Room *>         _room_list_east;
-		std::vector<Room *>         _room_list_west;
-		std::vector<Room *>         *_active_room;
+		std::vector<Room *>         _room_list;
 		IInteractive                *_active;
 		Input const                 &_input;
 		GLFW_Window const           &_window;
@@ -144,7 +133,6 @@ class RunnerWorld
 		long int                    _current_score;
 		long int                    _last_game_score;
 		long int                    _high_score;
-		enum Direction              _dir;
 
 		void _check_collisions(void);
 		void _resolve_sweep_collision(Player *player, CollisionBox const &box,

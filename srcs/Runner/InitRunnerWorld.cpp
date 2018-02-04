@@ -56,7 +56,7 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	NormalRoomObstacleOnly(**world, oGL);
 	NormalRoomBonusAndObstacle(**world, oGL);
 	(*world)->initRoomList();
-	(*world)->generateRoomListNorth();
+	(*world)->generateRoomList();
 }
 
 static void init_audio(Audio &audio)

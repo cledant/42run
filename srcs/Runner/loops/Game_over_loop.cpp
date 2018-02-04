@@ -90,7 +90,7 @@ bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_modul
 			manager.swap_buffers();
 			if (trigger_selection && !selection_type)
 			{
-				world.generateRoomListNorth();
+				world.generateRoomList();
 				world.resetInputTimer();
 				return (true);
 			}
