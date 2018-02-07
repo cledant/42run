@@ -195,16 +195,31 @@ void RunnerWorld::generateRoomListNorth(void)
 	std::random_device                    generator;
 	std::uniform_int_distribution<size_t> distri_room(1, nb_room_type - 1);
 	std::uniform_int_distribution<size_t> distri_prop(0, nb_prop - 1);
-	std::uniform_int_distribution<size_t> distri_front_wall(RunnerWorld::list_size - 10,
-															RunnerWorld::list_size - 1);
 
 	for (size_t i = 0; i < nb_room_type; ++i)
 	{
 		if (it[i] == this->_room_template_list.end())
 			throw RoomNotFoundException();
 	}
-	*(this->_room_list_north[0]) = it[0]->second;
-	for (size_t i = 1; i < RunnerWorld::list_size; ++i)
+	for (size_t i = 0; i < 5; ++i)
+	{
+		index_room = distri_room(generator);
+		*(this->_room_list_north[i])      = it[index_room]->second;
+		*(this->_room_list_north[i + 15]) = it[index_room]->second;
+		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		if (index_room % nb_room_type)
+		{
+			for (size_t j = 0; j < 7; ++j)
+			{
+				index_prop = distri_prop(generator);
+				this->_room_list_north[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				this->_room_list_north[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+			}
+		}
+	}
+	*(this->_room_list_north[5]) = it[0]->second;
+	this->_room_list_north[5]->translateObject(glm::vec3(13.2f * 5, 0.0f, 0.0f));
+	for (size_t i = 6; i < RunnerWorld::list_size - 6; ++i)
 	{
 		index_room = distri_room(generator);
 		*(this->_room_list_north[i]) = it[index_room]->second;
@@ -218,7 +233,6 @@ void RunnerWorld::generateRoomListNorth(void)
 			}
 		}
 	}
-	(*(this->_room_list_north[distri_front_wall(generator)])).activeFrontWall(true);
 }
 
 IInteractive *RunnerWorld::add_Player(Player::Params &params)
