@@ -42,6 +42,7 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 			std::string          pick_up;
 		};
 
+		CollidableBox(void);
 		CollidableBox(CollidableBox::Params const &params);
 		virtual ~CollidableBox();
 		CollidableBox(CollidableBox const &src);

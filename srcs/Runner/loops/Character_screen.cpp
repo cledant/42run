@@ -17,7 +17,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 {
 	params.cb_shader              = &(oGL.getShader("cubemap"));
 	params.shader                 = &(oGL.getShader("sprites"));
-	params.pos                    = glm::vec3({-3.5f, -2.1f, 0.0f});
+	params.pos                    = glm::vec3({-3.5f + (13.2f * 5), -2.1f, 0.0f});
 	params.size                   = glm::vec3({0.3f, 0.5f, 0.3f});
 	params.cb_model               = &(oGL.getModel("TestBox"));
 	params.tex                    = &(oGL.getTexture("sprite_reimu"));
@@ -42,6 +42,15 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 	}
 }
 
+static void set_trigger_tp_params(CollidableBox::Params &params, oGL_module &oGL)
+{
+	params.shader = &(oGL.getShader("cubemap"));
+	params.model  = &(oGL.getModel("TestBox"));
+	params.pos    = glm::vec3({13.2f * 10, 0.0f, 0.0f});
+	params.size   = glm::vec3({0.1f * 6, 0.9f * 3, 0.9f * 3});
+	params.active = true;
+}
+
 bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL,
 						 Audio &audio)
 {
@@ -51,6 +60,7 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 	float                   type_delay        = 0.0f;
 	glm::mat4               matrix            = glm::mat4(1.0f);
 	bool                    trigger_selection = false;
+	CollidableBox::Params   trigger_tp_params;
 
 	try
 	{
@@ -72,6 +82,7 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 	}
 	character_sprites[0]->setYaw(90.0f);
 	character_sprites[1]->setYaw(90.0f);
+	set_trigger_tp_params(trigger_tp_params, oGL);
 	while (Glfw_manager::getActiveWindowNumber())
 	{
 		if (manager.getWindow().win != nullptr)
@@ -155,6 +166,7 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 	try
 	{
 		world.add_Player(player_params);
+		world.add_CollidableBox(trigger_tp_params, "tp_trigger");
 	}
 	catch (std::exception &e)
 	{

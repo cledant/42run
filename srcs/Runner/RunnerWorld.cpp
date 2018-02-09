@@ -128,6 +128,9 @@ void RunnerWorld::update(void)
 	}
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 		(*it)->update(this->_delta_tick);
+	auto      it = this->_list_collidable_box.find("tp_trigger");
+	if (it != this->_list_collidable_box.end())
+		it->second.update(this->_delta_tick);
 }
 
 void RunnerWorld::render(void)
@@ -135,6 +138,9 @@ void RunnerWorld::render(void)
 	oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 		(*it)->draw();
+	auto      it = this->_list_collidable_box.find("tp_trigger");
+	if (it != this->_list_collidable_box.end())
+		it->second.draw();
 	if (this->_active != nullptr)
 		reinterpret_cast<Player *>(this->_active)->draw();
 }
@@ -149,6 +155,15 @@ Room *RunnerWorld::addRoomTemplate(std::string const &name, Room::Params &params
 	params.perspec_mult_view            = &(this->_perspec_mult_view);
 	this->_room_template_list.insert(std::pair<std::string, Room>(name, Room(params)));
 	return (&(this->_room_template_list[name]));
+}
+
+IEntity *RunnerWorld::add_CollidableBox(CollidableBox::Params &params,
+										std::string const &name)
+{
+	params.perspec_mult_view = &(this->_perspec_mult_view);
+	this->_list_collidable_box.insert(std::pair<std::string, CollidableBox>(
+			name, CollidableBox(params)));
+	return (&(this->_list_collidable_box[name]));
 }
 
 void RunnerWorld::addCollidableToRoomTemplate(std::string const &room_name,
@@ -411,6 +426,10 @@ void RunnerWorld::_check_collisions(void)
 		dynamic_cast<Player *>(this->_active)->lowerHP(Player::INSTANT_DEATH);
 		return;
 	}
+/*
+ * ici check tp_trigger et regen le random des rooms
+ */
+
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 	{
 		if ((*it)->getActive())

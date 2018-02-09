@@ -30,6 +30,14 @@ CollidableBox::Params::~Params(void)
 {
 }
 
+CollidableBox::CollidableBox(void) :
+		_cm(nullptr, nullptr, nullptr, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)),
+		_cb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f)),
+		_pos(glm::vec3(0.0f, 0.0f, 0.0f)), _dmg(CollidableBox::Damages::NONE),
+		_passthrough(true), _score_modifier(0), _active(true), _pick_up("")
+{
+}
+
 CollidableBox::CollidableBox(CollidableBox::Params const &params) :
 		_cm(params.shader, params.perspec_mult_view, params.model,
 			params.pos, params.size), _cb(params.pos, params.size),
