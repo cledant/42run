@@ -222,6 +222,7 @@ void RunnerWorld::generateRoomListNorth(void)
 		*(this->_room_list_north[i])      = it[index_room]->second;
 		*(this->_room_list_north[i + 15]) = it[index_room]->second;
 		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		this->_room_list_north[i + 15]->translateObject(glm::vec3(13.2f * (i + 14), 0.0f, 0.0f));
 		if (index_room % nb_room_type)
 		{
 			for (size_t j = 0; j < 7; ++j)
