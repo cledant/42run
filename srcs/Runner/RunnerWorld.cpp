@@ -15,7 +15,7 @@
 RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 						 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip,
 						 long int high_score) :
-		_active_room(&(this->_room_list_north)), _active(nullptr), _input(input),
+		_active_room(&(this->_room_list)), _active(nullptr), _input(input),
 		_window(win), _gamepad(gamepad),
 		_camera(input, gamepad, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), 0.0f, 0.0f),
@@ -25,8 +25,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_input_timer(0.0f), _input_mouse_timer(0.0f),
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
 		_score_modifier(0), _first_run_theme(true), _should_end(false),
-		_current_score(0), _last_game_score(0), _high_score(high_score),
-		_dir(RunnerWorld::NORTH)
+		_current_score(0), _last_game_score(0), _high_score(high_score)
 {
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
@@ -37,9 +36,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 											  RUNNER_FOV_MIN, RUNNER_FOV_MAX);
 	this->_enabled_gamepad = this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1);
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
-	this->_room_list_north.reserve(RunnerWorld::list_size);
-	this->_room_list_east.reserve(RunnerWorld::list_size);
-	this->_room_list_west.reserve(RunnerWorld::list_size);
+	this->_room_list.reserve(RunnerWorld::list_size);
 	this->_camera.setLockCam(true);
 	this->_camera.setPitch(-15.0f);
 	this->_camera.setDistToTarget(5.0f);
@@ -47,11 +44,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 
 RunnerWorld::~RunnerWorld(void)
 {
-	for (auto it = this->_room_list_north.begin(); it != this->_room_list_north.end(); ++it)
-		delete *it;
-	for (auto it = this->_room_list_east.begin(); it != this->_room_list_east.end(); ++it)
-		delete *it;
-	for (auto it = this->_room_list_west.begin(); it != this->_room_list_west.end(); ++it)
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		delete *it;
 	delete this->_active;
 }
@@ -138,9 +131,6 @@ void RunnerWorld::render(void)
 	oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 		(*it)->draw();
-//	auto      it = this->_list_collidable_box.find("tp_trigger");
-//	if (it != this->_list_collidable_box.end())
-//		it->second.draw();
 	if (this->_active != nullptr)
 		reinterpret_cast<Player *>(this->_active)->draw();
 }
@@ -188,11 +178,7 @@ void RunnerWorld::initRoomList(void)
 		if (it == this->_room_template_list.end())
 			throw RoomNotFoundException();
 		for (size_t i = 0; i < RunnerWorld::list_size; ++i)
-		{
-			this->_room_list_north.push_back(new Room(it->second));
-			this->_room_list_east.push_back(new Room(it->second));
-			this->_room_list_west.push_back(new Room(it->second));
-		}
+			this->_room_list.push_back(new Room(it->second));
 		isInit = true;
 	}
 }
@@ -219,33 +205,33 @@ void RunnerWorld::generateRoomListNorth(void)
 	for (size_t i = 0; i < 5; ++i)
 	{
 		index_room = distri_room(generator);
-		*(this->_room_list_north[i])      = it[index_room]->second;
-		*(this->_room_list_north[i + 15]) = it[index_room]->second;
-		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-		this->_room_list_north[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
+		*(this->_room_list[i])      = it[index_room]->second;
+		*(this->_room_list[i + 15]) = it[index_room]->second;
+		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
 		if (index_room % nb_room_type)
 		{
 			for (size_t j = 0; j < 7; ++j)
 			{
 				index_prop = distri_prop(generator);
-				this->_room_list_north[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
-				this->_room_list_north[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				this->_room_list[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
 			}
 		}
 	}
-	*(this->_room_list_north[5]) = it[0]->second;
-	this->_room_list_north[5]->translateObject(glm::vec3(13.2f * 5, 0.0f, 0.0f));
+	*(this->_room_list[5]) = it[0]->second;
+	this->_room_list[5]->translateObject(glm::vec3(13.2f * 5, 0.0f, 0.0f));
 	for (size_t i = 6; i < RunnerWorld::list_size - 5; ++i)
 	{
 		index_room = distri_room(generator);
-		*(this->_room_list_north[i]) = it[index_room]->second;
-		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		*(this->_room_list[i]) = it[index_room]->second;
+		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		if (index_room % nb_room_type)
 		{
 			for (size_t j = 0; j < 7; ++j)
 			{
 				index_prop = distri_prop(generator);
-				this->_room_list_north[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
 			}
 		}
 	}
@@ -387,16 +373,6 @@ void RunnerWorld::setActiveInteractive(IInteractive *ptr)
 	this->_active = ptr;
 }
 
-void RunnerWorld::setActiveRoom(enum RunnerWorld::Direction dir)
-{
-	if (dir == RunnerWorld::Direction::NORTH)
-		this->_active_room = &(this->_room_list_north);
-	else if (dir == RunnerWorld::Direction::EAST)
-		this->_active_room = &(this->_room_list_east);
-	else if (dir == RunnerWorld::Direction::WEST)
-		this->_active_room = &(this->_room_list_west);
-}
-
 void RunnerWorld::resetInputTimer(void)
 {
 	this->_input_timer = 0.0f;
@@ -531,10 +507,8 @@ void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &b
 		player->setCurJumpToMax();
 		player->setCurHooverTimeToMax();
 	}
-	else if (this->_dir == RunnerWorld::NORTH)
-		player->setVelocityZtoZero();
 	else
-		player->setVelocityXtoZero();
+		player->setVelocityZtoZero();
 	if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
 		ptr->getDamages() != ICollidable::Damages::NONE)
 	{
