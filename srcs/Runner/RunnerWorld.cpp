@@ -138,9 +138,9 @@ void RunnerWorld::render(void)
 	oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 		(*it)->draw();
-	auto      it = this->_list_collidable_box.find("tp_trigger");
-	if (it != this->_list_collidable_box.end())
-		it->second.draw();
+//	auto      it = this->_list_collidable_box.find("tp_trigger");
+//	if (it != this->_list_collidable_box.end())
+//		it->second.draw();
 	if (this->_active != nullptr)
 		reinterpret_cast<Player *>(this->_active)->draw();
 }
@@ -415,6 +415,9 @@ void RunnerWorld::_check_collisions(void)
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
 	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
+/*
+ * Check if Player is in a room
+ */
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 	{
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
@@ -427,9 +430,23 @@ void RunnerWorld::_check_collisions(void)
 		return;
 	}
 /*
- * ici check tp_trigger et regen le random des rooms
+ * Check teleport and room generation trigger;
  */
-
+	auto      it = this->_list_collidable_box.find("tp_trigger");
+	if (it != this->_list_collidable_box.end())
+	{
+		if (it->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
+														 inv_delta, &res))
+		{
+			glm::vec3 player_pos = reinterpret_cast<Player *>(this->_active)->getPos();
+			player_pos.x -= 13.2f * 10;
+			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
+			return;
+		}
+	}
+/*
+ * Check actual collisions
+ */
 	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
 	{
 		if ((*it)->getActive())
@@ -494,7 +511,6 @@ void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &b
 	new_delta.x = !std::isnan(-res.res.delta.x) ? -res.res.delta.x : 0.0f;
 	new_delta.y = !std::isnan(-res.res.delta.y) ? -res.res.delta.y : 0.0f;
 	new_delta.z = !std::isnan(-res.res.delta.z) ? -res.res.delta.z : 0.0f;
-
 	if (res.res.normal.y != 0.0f)
 		new_delta.y += (res.res.normal.y < 0.0f) ? (player->getCollisionBox().getHalfSize().y * 0.01) :
 					   -(player->getCollisionBox().getHalfSize().y * 0.01);
