@@ -17,7 +17,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 {
 	params.cb_shader              = &(oGL.getShader("cubemap"));
 	params.shader                 = &(oGL.getShader("sprites"));
-	params.pos                    = glm::vec3({-3.5f + (13.2f * 0), -2.1f, 0.0f});
+	params.pos                    = glm::vec3({-3.5f + (13.2f * 5), -2.1f, 0.0f});
 	params.size                   = glm::vec3({0.3f, 0.5f, 0.3f});
 	params.cb_model               = &(oGL.getModel("TestBox"));
 	params.tex                    = &(oGL.getTexture("sprite_reimu"));
@@ -46,7 +46,7 @@ static void set_trigger_tp_params(CollidableBox::Params &params, oGL_module &oGL
 {
 	params.shader = &(oGL.getShader("cubemap"));
 	params.model  = &(oGL.getModel("TestBox"));
-	params.pos    = glm::vec3({13.2f * 10, 0.0f, 0.0f});
+	params.pos    = glm::vec3({13.2f * 16 + 6.0f, 0.0f, 0.0f});
 	params.size   = glm::vec3({0.1f * 6, 0.9f * 3, 0.9f * 3});
 	params.active = true;
 }

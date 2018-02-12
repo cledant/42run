@@ -34,6 +34,9 @@
 # include <fstream>
 # include <random>
 
+# define RUNNER_FOV_MIN 0.1f
+# define RUNNER_FOV_MAX 50.0f
+
 class RunnerWorld
 {
 	public :

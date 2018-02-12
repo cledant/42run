@@ -33,8 +33,8 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 	GLfloat ratio = static_cast<GLfloat>(win.cur_win_w) /
 					static_cast<GLfloat>(win.cur_win_h);
 	this->_tick            = 1.0f / this->_max_fps;
-	this->_perspective     = glm::perspective(glm::radians(this->_fov), ratio, 0.1f,
-											  400.0f);
+	this->_perspective     = glm::perspective(glm::radians(this->_fov), ratio,
+											  RUNNER_FOV_MIN, RUNNER_FOV_MAX);
 	this->_enabled_gamepad = this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1);
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
 	this->_room_list_north.reserve(RunnerWorld::list_size);
@@ -222,7 +222,7 @@ void RunnerWorld::generateRoomListNorth(void)
 		*(this->_room_list_north[i])      = it[index_room]->second;
 		*(this->_room_list_north[i + 15]) = it[index_room]->second;
 		this->_room_list_north[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-		this->_room_list_north[i + 15]->translateObject(glm::vec3(13.2f * (i + 14), 0.0f, 0.0f));
+		this->_room_list_north[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
 		if (index_room % nb_room_type)
 		{
 			for (size_t j = 0; j < 7; ++j)
@@ -235,7 +235,7 @@ void RunnerWorld::generateRoomListNorth(void)
 	}
 	*(this->_room_list_north[5]) = it[0]->second;
 	this->_room_list_north[5]->translateObject(glm::vec3(13.2f * 5, 0.0f, 0.0f));
-	for (size_t i = 6; i < RunnerWorld::list_size - 6; ++i)
+	for (size_t i = 6; i < RunnerWorld::list_size - 5; ++i)
 	{
 		index_room = distri_room(generator);
 		*(this->_room_list_north[i]) = it[index_room]->second;
@@ -274,7 +274,8 @@ void RunnerWorld::updatePerspective(float fov)
 {
 	GLfloat ratio = static_cast<GLfloat>(this->_window.cur_win_w) /
 					static_cast<GLfloat>(this->_window.cur_win_h);
-	this->_perspective = glm::perspective(glm::radians(fov), ratio, 0.1f, 75.0f);
+	this->_perspective = glm::perspective(glm::radians(fov), ratio, RUNNER_FOV_MIN,
+										  RUNNER_FOV_MAX);
 }
 
 void RunnerWorld::reset_update_timer(float time)
@@ -440,7 +441,7 @@ void RunnerWorld::_check_collisions(void)
 														 inv_delta, &res))
 		{
 			glm::vec3 player_pos = reinterpret_cast<Player *>(this->_active)->getPos();
-			player_pos.x -= 13.2f * 10;
+			player_pos.x -= 13.2f * 15;
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			return;
 		}
