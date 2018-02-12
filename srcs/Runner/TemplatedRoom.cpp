@@ -69,6 +69,7 @@ void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL)
 	bonus_params.score_modifier          = 500;
 	bonus_params.auto_rotation           = true;
 	bonus_params.prop_params.pos         = glm::vec3(-4.0f, -2.0f, 1.5f);
+	bonus_params.active                  = false;
 
 	for (size_t j = 0; j < 3; ++j)
 	{
@@ -177,7 +178,7 @@ void NormalRoomBonusAndObstacle(RunnerWorld &world, oGL_module &oGL)
 	bonus_params.score_modifier          = 500;
 	bonus_params.auto_rotation           = true;
 	bonus_params.prop_params.pos         = glm::vec3(-4.0f, -2.0f, 1.5f);
-//	bonus_params.active                  = false;
+	bonus_params.active                  = false;
 
 	for (size_t j = 0; j < 3; ++j)
 	{

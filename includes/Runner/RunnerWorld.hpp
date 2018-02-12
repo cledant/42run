@@ -35,7 +35,7 @@
 # include <random>
 
 # define RUNNER_FOV_MIN 0.1f
-# define RUNNER_FOV_MAX 50.0f
+# define RUNNER_FOV_MAX 40.0f
 
 class RunnerWorld
 {
@@ -55,8 +55,7 @@ class RunnerWorld
 		void addCollidableToRoomTemplate(std::string const &room_name,
 										 std::string const &slot_name,
 										 CollidableProp::Params &params);
-		void initRoomList(void);
-		void generateRoomListNorth(void);
+
 		IInteractive *add_Player(Player::Params &params);
 		void deletePlayer(void);
 		void updatePerspective(float fov);
@@ -65,6 +64,15 @@ class RunnerWorld
 		bool should_be_updated(float time);
 		void updateLastGameScore(void);
 		void updateHighScore(void);
+
+		/*
+		 * Room generation
+		 */
+
+		void initRoomList(void);
+		void generateInitialRoomList(size_t obstacle_nb);
+		void generateBeginEndRoomList(size_t obstacle_nb);
+		void generateMiddleRoomList(size_t obstacle_nb);
 
 		/*
 		 * Getter
@@ -108,7 +116,6 @@ class RunnerWorld
 
 		std::map<std::string, Room>          _room_template_list;
 		std::vector<Room *>                  _room_list;
-		std::vector<Room *>                  *_active_room;
 		IInteractive                         *_active;
 		Input const                          &_input;
 		GLFW_Window const                    &_window;
@@ -151,6 +158,8 @@ class RunnerWorld
 								   ICollidable const **ptr);
 
 		static size_t list_size;
+		static size_t nb_room_type;
+		static size_t nb_prop;
 };
 
 #endif

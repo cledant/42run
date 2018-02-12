@@ -15,8 +15,7 @@
 RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 						 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip,
 						 long int high_score) :
-		_active_room(&(this->_room_list)), _active(nullptr), _input(input),
-		_window(win), _gamepad(gamepad),
+		_active(nullptr), _input(input), _window(win), _gamepad(gamepad),
 		_camera(input, gamepad, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), 0.0f, 0.0f),
 		_fov(45.0f), _max_fps(max_fps),
@@ -119,7 +118,7 @@ void RunnerWorld::update(void)
 				reinterpret_cast<Player *>(this->_active)->getTotalWalked()) / 10.0f) +
 							   this->_score_modifier;
 	}
-	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		(*it)->update(this->_delta_tick);
 	auto      it = this->_list_collidable_box.find("tp_trigger");
 	if (it != this->_list_collidable_box.end())
@@ -129,7 +128,7 @@ void RunnerWorld::update(void)
 void RunnerWorld::render(void)
 {
 	oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
-	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		(*it)->draw();
 	if (this->_active != nullptr)
 		reinterpret_cast<Player *>(this->_active)->draw();
@@ -183,21 +182,21 @@ void RunnerWorld::initRoomList(void)
 	}
 }
 
-void RunnerWorld::generateRoomListNorth(void)
+void RunnerWorld::generateInitialRoomList(size_t obstacle_nb)
 {
-	std::map<std::string, Room>::iterator it[]         = {this->_room_template_list.find("NormalRoomEmpty"),
-														  this->_room_template_list.find("NormalRoomObstacleOnly"),
-														  this->_room_template_list.find("NormalRoomBonusOnly"),
-														  this->_room_template_list.find("NormalRoomBonusAndObstacle")};
-	size_t                                nb_room_type = 4;
-	size_t                                nb_prop      = 15;
-	size_t                                index_room   = 0;
-	size_t                                index_prop   = 0;
+	std::map<std::string, Room>::iterator it[]       = {this->_room_template_list.find("NormalRoomEmpty"),
+														this->_room_template_list.find("NormalRoomObstacleOnly"),
+														this->_room_template_list.find("NormalRoomBonusOnly"),
+														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
+	size_t                                index_room = 0;
+	size_t                                index_prop = 0;
 	std::random_device                    generator;
-	std::uniform_int_distribution<size_t> distri_room(1, nb_room_type - 1);
-	std::uniform_int_distribution<size_t> distri_prop(0, nb_prop - 1);
+	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
+	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
 
-	for (size_t i = 0; i < nb_room_type; ++i)
+	if (obstacle_nb > RunnerWorld::nb_prop)
+		obstacle_nb = RunnerWorld::nb_prop;
+	for (size_t i = 0; i < RunnerWorld::nb_room_type; ++i)
 	{
 		if (it[i] == this->_room_template_list.end())
 			throw RoomNotFoundException();
@@ -209,9 +208,9 @@ void RunnerWorld::generateRoomListNorth(void)
 		*(this->_room_list[i + 15]) = it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
-		if (index_room % nb_room_type)
+		if (index_room % RunnerWorld::nb_room_type)
 		{
-			for (size_t j = 0; j < 7; ++j)
+			for (size_t j = 0; j < obstacle_nb; ++j)
 			{
 				index_prop = distri_prop(generator);
 				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
@@ -226,12 +225,73 @@ void RunnerWorld::generateRoomListNorth(void)
 		index_room = distri_room(generator);
 		*(this->_room_list[i]) = it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-		if (index_room % nb_room_type)
+		if (index_room % RunnerWorld::nb_room_type)
 		{
-			for (size_t j = 0; j < 7; ++j)
+			for (size_t j = 0; j < obstacle_nb; ++j)
 			{
 				index_prop = distri_prop(generator);
 				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+			}
+		}
+	}
+}
+
+void RunnerWorld::generateMiddleRoomList(size_t obstacle_nb)
+{
+	std::map<std::string, Room>::iterator it[]       = {this->_room_template_list.find("NormalRoomEmpty"),
+														this->_room_template_list.find("NormalRoomObstacleOnly"),
+														this->_room_template_list.find("NormalRoomBonusOnly"),
+														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
+	size_t                                index_room = 0;
+	size_t                                index_prop = 0;
+	std::random_device                    generator;
+	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
+	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
+
+	if (obstacle_nb > RunnerWorld::nb_prop)
+		obstacle_nb = RunnerWorld::nb_prop;
+	for (size_t i = 5; i < RunnerWorld::list_size - 5; ++i)
+	{
+		index_room = distri_room(generator);
+		*(this->_room_list[i]) = it[index_room]->second;
+		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		if (index_room % RunnerWorld::nb_room_type)
+		{
+			for (size_t j = 0; j < obstacle_nb; ++j)
+			{
+				index_prop = distri_prop(generator);
+				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+			}
+		}
+	}
+}
+
+void RunnerWorld::generateBeginEndRoomList(size_t obstacle_nb)
+{
+	std::map<std::string, Room>::iterator it[]       = {this->_room_template_list.find("NormalRoomEmpty"),
+														this->_room_template_list.find("NormalRoomObstacleOnly"),
+														this->_room_template_list.find("NormalRoomBonusOnly"),
+														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
+	size_t                                index_room = 0;
+	size_t                                index_prop = 0;
+	std::random_device                    generator;
+	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
+	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
+
+	for (size_t i = 0; i < 5; ++i)
+	{
+		index_room = distri_room(generator);
+		*(this->_room_list[i])      = it[index_room]->second;
+		*(this->_room_list[i + 15]) = it[index_room]->second;
+		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
+		if (index_room % RunnerWorld::nb_room_type)
+		{
+			for (size_t j = 0; j < obstacle_nb; ++j)
+			{
+				index_prop = distri_prop(generator);
+				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				this->_room_list[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
 			}
 		}
 	}
@@ -396,7 +456,7 @@ void RunnerWorld::_check_collisions(void)
 /*
  * Check if Player is in a room
  */
-	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 	{
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBox((*it)->getCollisionBox(), nullptr)))
@@ -410,7 +470,7 @@ void RunnerWorld::_check_collisions(void)
 /*
  * Check teleport and room generation trigger;
  */
-	auto      it = this->_list_collidable_box.find("tp_trigger");
+	auto it  = this->_list_collidable_box.find("tp_trigger");
 	if (it != this->_list_collidable_box.end())
 	{
 		if (it->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
@@ -418,14 +478,24 @@ void RunnerWorld::_check_collisions(void)
 		{
 			glm::vec3 player_pos = reinterpret_cast<Player *>(this->_active)->getPos();
 			player_pos.x -= 13.2f * 15;
+			this->generateMiddleRoomList(7);
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			return;
+		}
+	}
+	auto it2 = this->_list_collidable_box.find("regen_end_trigger");
+	if (it2 != this->_list_collidable_box.end())
+	{
+		if (it2->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
+														  inv_delta, &res))
+		{
+			this->generateBeginEndRoomList(7);
 		}
 	}
 /*
  * Check actual collisions
  */
-	for (auto it = this->_active_room->begin(); it != this->_active_room->end(); ++it)
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 	{
 		if ((*it)->getActive())
 		{
@@ -560,3 +630,7 @@ RunnerWorld::RoomNotFoundException::~RoomNotFoundException(void) throw()
 }
 
 size_t RunnerWorld::list_size = 20;
+
+size_t RunnerWorld::nb_room_type = 4;
+
+size_t RunnerWorld::nb_prop = 15;
