@@ -480,9 +480,13 @@ void RunnerWorld::_check_collisions(void)
 			glm::vec3 player_pos = reinterpret_cast<Player *>(this->_active)->getPos();
 			player_pos.x -= 13.2f * 15;
 			this->generateMiddleRoomList(7);
-			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			should_trigger_regen_end = true;
-			std::cout << "trigger tp" << std::endl;
+			for (int i = 0; i < 5; ++i)
+			{
+				*(this->_room_list[i]) = *(this->_room_list[i + 15]);
+				this->_room_list[i]->translateObject(glm::vec3(-13.2f * 15, 0.0f, 0.0f));
+			}
+			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			return;
 		}
 	}
@@ -494,7 +498,6 @@ void RunnerWorld::_check_collisions(void)
 		{
 			this->generateBeginEndRoomList(7);
 			should_trigger_regen_end = false;
-			std::cout << "trigger regen end" << std::endl;
 		}
 	}
 /*
