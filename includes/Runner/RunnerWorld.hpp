@@ -69,9 +69,9 @@ class RunnerWorld
 		 */
 
 		void initRoomList(void);
-		void generateInitialRoomList(size_t obstacle_nb);
-		void generateBeginEndRoomList(size_t obstacle_nb);
-		void generateMiddleRoomList(size_t obstacle_nb);
+		void generateInitialRoomList(size_t nb);
+		void generateBeginEndRoomList(size_t nb);
+		void generateMiddleRoomList(size_t nb);
 
 		/*
 		 * Getter
