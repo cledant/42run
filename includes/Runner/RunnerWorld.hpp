@@ -149,14 +149,14 @@ class RunnerWorld
 		std::random_device                   _rd;
 
 
-		void _check_collisions(void);
-		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
-									  CollisionBox::SweepResolution const &res,
-									  ICollidable const *ptr);
-		void _check_collidable_box(CollidableBox const &cb,
-								   CollisionBox::SweepResolution *nearest,
-								   glm::vec3 const &inv_delta,
-								   ICollidable const **ptr);
+		inline void _check_collisions(void);
+		inline void _resolve_sweep_collision(Player *player, CollisionBox const &box,
+											 CollisionBox::SweepResolution const &res,
+											 ICollidable const *ptr);
+		inline void _check_collidable_box(CollidableBox const &cb,
+										  CollisionBox::SweepResolution *nearest,
+										  glm::vec3 const &inv_delta,
+										  ICollidable const **ptr);
 
 		static size_t list_size;
 		static size_t nb_room_type;

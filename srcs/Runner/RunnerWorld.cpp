@@ -442,7 +442,7 @@ void RunnerWorld::resetInputTimer(void)
  * Private
  */
 
-void RunnerWorld::_check_collisions(void)
+inline void RunnerWorld::_check_collisions(void)
 {
 	CollisionBox::SweepResolution res;
 	glm::vec3                     inv_delta;
@@ -558,9 +558,9 @@ void RunnerWorld::_check_collisions(void)
 									   (*ptr).getCollisionBox(), nearest, ptr);
 }
 
-void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &box,
-										   CollisionBox::SweepResolution const &res,
-										   ICollidable const *ptr)
+inline void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &box,
+												  CollisionBox::SweepResolution const &res,
+												  ICollidable const *ptr)
 {
 	glm::vec3 new_delta;
 
@@ -596,10 +596,10 @@ void RunnerWorld::_resolve_sweep_collision(Player *player, CollisionBox const &b
 	}
 }
 
-void RunnerWorld::_check_collidable_box(CollidableBox const &cb,
-										CollisionBox::SweepResolution *nearest,
-										glm::vec3 const &inv_delta,
-										ICollidable const **ptr)
+inline void RunnerWorld::_check_collidable_box(CollidableBox const &cb,
+											   CollisionBox::SweepResolution *nearest,
+											   glm::vec3 const &inv_delta,
+											   ICollidable const **ptr)
 {
 	CollisionBox::SweepResolution res;
 
