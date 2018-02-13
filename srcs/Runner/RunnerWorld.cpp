@@ -190,7 +190,7 @@ void RunnerWorld::generateInitialRoomList(size_t obstacle_nb)
 														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
 	size_t                                index_room = 0;
 	size_t                                index_prop = 0;
-	std::random_device                    generator;
+	std::mt19937_64                       generator(this->_rd());
 	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
 	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
 
@@ -244,7 +244,7 @@ void RunnerWorld::generateMiddleRoomList(size_t obstacle_nb)
 														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
 	size_t                                index_room = 0;
 	size_t                                index_prop = 0;
-	std::random_device                    generator;
+	std::mt19937_64                       generator(this->_rd());
 	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
 	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
 
@@ -274,7 +274,7 @@ void RunnerWorld::generateBeginEndRoomList(size_t obstacle_nb)
 														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
 	size_t                                index_room = 0;
 	size_t                                index_prop = 0;
-	std::random_device                    generator;
+	std::mt19937_64                       generator(this->_rd());
 	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
 	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
 
@@ -447,8 +447,9 @@ void RunnerWorld::_check_collisions(void)
 	CollisionBox::SweepResolution res;
 	glm::vec3                     inv_delta;
 	CollisionBox::SweepResolution nearest;
-	ICollidable const             *ptr      = nullptr;
-	Room                          *cur_room = nullptr;
+	ICollidable const             *ptr                     = nullptr;
+	Room                          *cur_room                = nullptr;
+	static bool                   should_trigger_regen_end = false;
 
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
@@ -480,16 +481,20 @@ void RunnerWorld::_check_collisions(void)
 			player_pos.x -= 13.2f * 15;
 			this->generateMiddleRoomList(7);
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
+			should_trigger_regen_end = true;
+			std::cout << "trigger tp" << std::endl;
 			return;
 		}
 	}
 	auto it2 = this->_list_collidable_box.find("regen_end_trigger");
-	if (it2 != this->_list_collidable_box.end())
+	if (it2 != this->_list_collidable_box.end() && should_trigger_regen_end)
 	{
 		if (it2->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
 														  inv_delta, &res))
 		{
 			this->generateBeginEndRoomList(7);
+			should_trigger_regen_end = false;
+			std::cout << "trigger regen end" << std::endl;
 		}
 	}
 /*

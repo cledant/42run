@@ -146,6 +146,7 @@ class RunnerWorld
 		long int                             _last_game_score;
 		long int                             _high_score;
 		std::map<std::string, CollidableBox> _list_collidable_box;
+		std::random_device                   _rd;
 
 
 		void _check_collisions(void);

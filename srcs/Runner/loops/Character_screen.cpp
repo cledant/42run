@@ -178,7 +178,7 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 	{
 		world.add_Player(player_params);
 		world.add_CollidableBox(trigger_tp_params, "tp_trigger");
-		world.add_CollidableBox(trigger_tp_params, "regen_end_trigger");
+		world.add_CollidableBox(trigger_regen_end_params, "regen_end_trigger");
 	}
 	catch (std::exception &e)
 	{
