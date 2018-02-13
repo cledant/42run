@@ -191,31 +191,35 @@ void RunnerWorld::initRoomList(void)
 
 void RunnerWorld::generateInitialRoomList(size_t nb)
 {
-	std::map<std::string, Room>::iterator it[]       = {this->_room_template_list.find("NormalRoomEmpty"),
-														this->_room_template_list.find("NormalRoomObstacleOnly"),
-														this->_room_template_list.find("NormalRoomBonusOnly"),
-														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
-	size_t                                index_room = 0;
-	size_t                                index_prop = 0;
-	std::mt19937_64                       generator(this->_rd());
-	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
-	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
-	std::uniform_int_distribution<size_t> distri_max(1, nb % RunnerWorld::nb_prop);
-	size_t                                max_obs;
+	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
+																		 .find("NormalRoomEmpty"),
+																	 this->_room_template_list
+																		 .find("NormalRoomObstacleOnly"),
+																	 this->_room_template_list
+																		 .find("NormalRoomBonusOnly"),
+																	 this->_room_template_list
+																		 .find("NormalRoomBonusAndObstacle")};
+	size_t                                             index_room = 0;
+	size_t                                             index_prop = 0;
+	std::mt19937_64                                    generator(this->_rd());
+	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
+	std::uniform_int_distribution<size_t>              distri_prop(0, RunnerWorld::nb_prop - 1);
+	std::uniform_int_distribution<size_t>              distri_max(1, nb % RunnerWorld::nb_prop);
+	size_t                                             max_obs;
 
-	for (size_t i = 0; i < RunnerWorld::nb_room_type; ++i)
+	for (size_t i = 0; i < vec_it.size(); ++i)
 	{
-		if (it[i] == this->_room_template_list.end())
+		if (vec_it[i] == this->_room_template_list.end())
 			throw RoomNotFoundException();
 	}
 	for (size_t i = 0; i < 5; ++i)
 	{
 		index_room = distri_room(generator);
-		*(this->_room_list[i])      = it[index_room]->second;
-		*(this->_room_list[i + 15]) = it[index_room]->second;
+		*(this->_room_list[i])      = vec_it[index_room]->second;
+		*(this->_room_list[i + 15]) = vec_it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
-		if (index_room % RunnerWorld::nb_room_type)
+		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
 			for (size_t j = 0; j < max_obs; ++j)
@@ -226,14 +230,14 @@ void RunnerWorld::generateInitialRoomList(size_t nb)
 			}
 		}
 	}
-	*(this->_room_list[5]) = it[0]->second;
+	*(this->_room_list[5]) = vec_it[0]->second;
 	this->_room_list[5]->translateObject(glm::vec3(13.2f * 5, 0.0f, 0.0f));
 	for (size_t i = 6; i < RunnerWorld::list_size - 5; ++i)
 	{
 		index_room = distri_room(generator);
-		*(this->_room_list[i]) = it[index_room]->second;
+		*(this->_room_list[i]) = vec_it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-		if (index_room % RunnerWorld::nb_room_type)
+		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
 			for (size_t j = 0; j < max_obs; ++j)
@@ -247,24 +251,28 @@ void RunnerWorld::generateInitialRoomList(size_t nb)
 
 void RunnerWorld::generateMiddleRoomList(size_t nb)
 {
-	std::map<std::string, Room>::iterator it[]       = {this->_room_template_list.find("NormalRoomEmpty"),
-														this->_room_template_list.find("NormalRoomObstacleOnly"),
-														this->_room_template_list.find("NormalRoomBonusOnly"),
-														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
-	size_t                                index_room = 0;
-	size_t                                index_prop = 0;
-	std::mt19937_64                       generator(this->_rd());
-	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
-	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
-	std::uniform_int_distribution<size_t> distri_max(1, nb % RunnerWorld::nb_prop);
-	size_t                                max_obs;
+	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
+																		 .find("NormalRoomEmpty"),
+																	 this->_room_template_list
+																		 .find("NormalRoomObstacleOnly"),
+																	 this->_room_template_list
+																		 .find("NormalRoomBonusOnly"),
+																	 this->_room_template_list
+																		 .find("NormalRoomBonusAndObstacle")};
+	size_t                                             index_room = 0;
+	size_t                                             index_prop = 0;
+	std::mt19937_64                                    generator(this->_rd());
+	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
+	std::uniform_int_distribution<size_t>              distri_prop(0, RunnerWorld::nb_prop - 1);
+	std::uniform_int_distribution<size_t>              distri_max(1, nb % RunnerWorld::nb_prop);
+	size_t                                             max_obs;
 
 	for (size_t i = 5; i < RunnerWorld::list_size - 5; ++i)
 	{
 		index_room = distri_room(generator);
-		*(this->_room_list[i]) = it[index_room]->second;
+		*(this->_room_list[i]) = vec_it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-		if (index_room % RunnerWorld::nb_room_type)
+		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
 			for (size_t j = 0; j < max_obs; ++j)
@@ -278,26 +286,30 @@ void RunnerWorld::generateMiddleRoomList(size_t nb)
 
 void RunnerWorld::generateBeginEndRoomList(size_t nb)
 {
-	std::map<std::string, Room>::iterator it[]       = {this->_room_template_list.find("NormalRoomEmpty"),
-														this->_room_template_list.find("NormalRoomObstacleOnly"),
-														this->_room_template_list.find("NormalRoomBonusOnly"),
-														this->_room_template_list.find("NormalRoomBonusAndObstacle")};
-	size_t                                index_room = 0;
-	size_t                                index_prop = 0;
-	std::mt19937_64                       generator(this->_rd());
-	std::uniform_int_distribution<size_t> distri_room(1, RunnerWorld::nb_room_type - 1);
-	std::uniform_int_distribution<size_t> distri_prop(0, RunnerWorld::nb_prop - 1);
-	std::uniform_int_distribution<size_t> distri_max(1, nb % RunnerWorld::nb_prop);
-	size_t                                max_obs;
+	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
+																		 .find("NormalRoomEmpty"),
+																	 this->_room_template_list
+																		 .find("NormalRoomObstacleOnly"),
+																	 this->_room_template_list
+																		 .find("NormalRoomBonusOnly"),
+																	 this->_room_template_list
+																		 .find("NormalRoomBonusAndObstacle")};
+	size_t                                             index_room = 0;
+	size_t                                             index_prop = 0;
+	std::mt19937_64                                    generator(this->_rd());
+	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
+	std::uniform_int_distribution<size_t>              distri_prop(0, RunnerWorld::nb_prop - 1);
+	std::uniform_int_distribution<size_t>              distri_max(1, nb % RunnerWorld::nb_prop);
+	size_t                                             max_obs;
 
 	for (size_t i = 0; i < 5; ++i)
 	{
 		index_room = distri_room(generator);
-		*(this->_room_list[i])      = it[index_room]->second;
-		*(this->_room_list[i + 15]) = it[index_room]->second;
+		*(this->_room_list[i])      = vec_it[index_room]->second;
+		*(this->_room_list[i + 15]) = vec_it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
-		if (index_room % RunnerWorld::nb_room_type)
+		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
 			for (size_t j = 0; j < max_obs; ++j)
@@ -657,7 +669,5 @@ RunnerWorld::RoomNotFoundException::~RoomNotFoundException(void) throw()
 }
 
 size_t RunnerWorld::list_size = 20;
-
-size_t RunnerWorld::nb_room_type = 4;
 
 size_t RunnerWorld::nb_prop = 15;

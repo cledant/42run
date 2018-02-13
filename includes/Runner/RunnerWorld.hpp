@@ -159,7 +159,6 @@ class RunnerWorld
 										  ICollidable const **ptr);
 
 		static size_t list_size;
-		static size_t nb_room_type;
 		static size_t nb_prop;
 };
 
