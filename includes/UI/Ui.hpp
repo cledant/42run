@@ -50,7 +50,6 @@ class Ui
 		GLFW_Window const    &_win;
 		Input const          &_input;
 		std::vector<FontSet> _fset_list;
-//		std::map<std::string, ShaderSurface *> _shaderSurface_list;
 		glm::mat4            _proj_matrix;
 };
 

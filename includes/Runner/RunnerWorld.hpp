@@ -55,7 +55,6 @@ class RunnerWorld
 		void addCollidableToRoomTemplate(std::string const &room_name,
 										 std::string const &slot_name,
 										 CollidableProp::Params &params);
-
 		IInteractive *add_Player(Player::Params &params);
 		void deletePlayer(void);
 		void updatePerspective(float fov);
@@ -95,6 +94,7 @@ class RunnerWorld
 
 		void setActiveInteractive(IInteractive *ptr);
 		void resetInputTimer(void);
+		void setLaps(size_t laps);
 
 		class RunnerWorldFailException : public GeneralException
 		{
@@ -147,7 +147,7 @@ class RunnerWorld
 		long int                             _high_score;
 		std::map<std::string, CollidableBox> _list_collidable_box;
 		std::random_device                   _rd;
-
+		size_t                               _laps;
 
 		inline void _check_collisions(void);
 		inline void _resolve_sweep_collision(Player *player, CollisionBox const &box,

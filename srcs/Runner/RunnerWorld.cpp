@@ -24,7 +24,8 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_input_timer(0.0f), _input_mouse_timer(0.0f),
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
 		_score_modifier(0), _first_run_theme(true), _should_end(false),
-		_current_score(0), _last_game_score(0), _high_score(high_score)
+		_current_score(0), _last_game_score(0), _high_score(high_score),
+		_laps(1)
 {
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
@@ -82,7 +83,10 @@ void RunnerWorld::update(void)
 				this->_input_timer += this->_tick;
 			if (dynamic_cast<Player *>(this->_active)->isAlive())
 			{
-				dynamic_cast<Player *>(this->_active)->addAcceleration(100.0f * this->_camera.getXYFront());
+				dynamic_cast<Player *>(this->_active)->addAcceleration(
+						40.0f * glm::log(glm::vec3((this->_current_score * this->_current_score) / (1000 * 1000)) +
+										 glm::vec3(10.0f) * glm::vec3(this->_current_score / 1000) +
+										 glm::vec3(100.0f)) * this->_camera.getXYFront());
 				dynamic_cast<Player *>(this->_active)->forceBackSprite();
 			}
 		}
@@ -98,7 +102,10 @@ void RunnerWorld::update(void)
 					this->_input_timer += this->_tick;
 				if (dynamic_cast<Player *>(this->_active)->isAlive())
 				{
-					dynamic_cast<Player *>(this->_active)->addAcceleration(100.0f * this->_camera.getXYFront());
+					dynamic_cast<Player *>(this->_active)->addAcceleration(
+							40.0f * glm::log(glm::vec3((this->_current_score * this->_current_score) / (1000 * 1000)) +
+											 glm::vec3(10.0f) * glm::vec3(this->_current_score / 1000) +
+											 glm::vec3(100.0f)) * this->_camera.getXYFront());
 					dynamic_cast<Player *>(this->_active)->forceBackSprite();
 				}
 			}
@@ -438,6 +445,11 @@ void RunnerWorld::resetInputTimer(void)
 	this->_input_timer = 0.0f;
 }
 
+void RunnerWorld::setLaps(size_t laps)
+{
+	this->_laps = laps;
+}
+
 /*
  * Private
  */
@@ -486,6 +498,7 @@ inline void RunnerWorld::_check_collisions(void)
 				*(this->_room_list[i]) = *(this->_room_list[i + 15]);
 				this->_room_list[i]->translateObject(glm::vec3(-13.2f * 15, 0.0f, 0.0f));
 			}
+			this->_laps += 5;
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			return;
 		}

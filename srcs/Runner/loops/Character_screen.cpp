@@ -174,6 +174,7 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 		}
 	}
 	set_player_params(player_params, oGL, audio, char_type);
+	world.setLaps(1);
 	try
 	{
 		world.add_Player(player_params);
