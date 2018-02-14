@@ -20,9 +20,10 @@ void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL);
 void NormalRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL);
 void NormalRoomBonusAndObstacle(RunnerWorld &world, oGL_module &oGL);
 void FallRightRoomEmpty(RunnerWorld &world, oGL_module &oGL);
-void FallRightRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL);
+void FallRightRoomObstacle(RunnerWorld &world, oGL_module &oGL);
 void FallLeftRoomEmpty(RunnerWorld &world, oGL_module &oGL);
-void FallLeftRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL);
+void FallLeftRoomObstacle(RunnerWorld &world, oGL_module &oGL);
 void FallFrontRoomEmpty(RunnerWorld &world, oGL_module &oGL);
+void FallFrontRoomObstacle(RunnerWorld &world, oGL_module &oGL);
 
 #endif
