@@ -70,16 +70,28 @@ void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL)
 	bonus_params.auto_rotation           = true;
 	bonus_params.active                  = false;
 
-	for (size_t j = 0; j < 3; ++j)
+	for (size_t i = 0; i < 5; ++i)
 	{
-		for (size_t i = 0; i < 5; ++i)
+		for (size_t j = 0; j < 3; ++j)
 		{
 			slot_name = "Slot";
-			bonus_params.prop_params.pos = glm::vec3(-4.0f + (i * 2.0f), -2.0f, -1.5f + (j * 1.5f));
-			bonus_params.cb              = CollisionBox(bonus_params.prop_params.pos,
-														glm::vec3(0.14f, 0.14f, 0.14f));
 			slot_name += std::to_string(c);
-			room->addCollidableProp(slot_name, bonus_params);
+			if (!(i % 2))
+			{
+				bonus_params.prop_params.pos = glm::vec3(-4.0f + (i * 2.0f), -2.0f, -1.75f + (j * 1.75f));
+				bonus_params.cb              = CollisionBox(bonus_params.prop_params.pos,
+															glm::vec3(0.14f, 0.14f, 0.14f));
+				room->addCollidableProp(slot_name, bonus_params);
+			}
+			else
+			{
+				bonus_params.prop_params.pos = glm::vec3(-4.0f + (i * 2.0f), -2.0f, -0.875f + (j * 1.75f));
+				bonus_params.cb              = CollisionBox(bonus_params.prop_params.pos,
+															glm::vec3(0.14f, 0.14f, 0.14f));
+				room->addCollidableProp(slot_name, bonus_params);
+				if (j >= 1)
+					j = 3;
+			}
 			c++;
 		}
 	}
