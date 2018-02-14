@@ -65,7 +65,7 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 {
 	std::unique_ptr<Sprite> character_sprites[2];
 	Player::Params          player_params;
-	int                     char_type         = 0;
+	static int              char_type         = 0;
 	float                   type_delay        = 0.0f;
 	glm::mat4               matrix            = glm::mat4(1.0f);
 	bool                    trigger_selection = false;

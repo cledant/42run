@@ -226,6 +226,7 @@ void FallRightRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL)
 	Player::Params         player_params;
 	Room::Params           room_params;
 	CollidableProp::Params obstacle_params;
+	CollidableProp::Params bonus_params;
 	Room                   *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
@@ -270,7 +271,7 @@ void FallRightRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL)
 	room->addCollidableProp("Slot2", obstacle_params);
 
 	//4th Obstacle
-	obstacle_params.prop_params.pos = glm::vec3(5.0f, -2.0f, 1.7f);
+	obstacle_params.prop_params.pos = glm::vec3(4.5f, -2.0f, 2.0f);
 	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
 												   glm::vec3(0.14f, 0.14f, 0.14f));
 	room->addCollidableProp("Slot3", obstacle_params);
@@ -286,6 +287,26 @@ void FallRightRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL)
 	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
 												   glm::vec3(0.14f, 0.14f, 0.14f));
 	room->addCollidableProp("Slot5", obstacle_params);
+
+	//Bonus Params
+	bonus_params.prop_params.shader      = &(oGL.getShader("prop"));
+	bonus_params.prop_params.model       = &(oGL.getModel("cola"));
+	bonus_params.prop_params.scale       = glm::vec3(0.03f, 0.03f, 0.03f);
+	bonus_params.prop_params.orientation = glm::vec3(0.0f, 20.0f, 0.0f);
+	bonus_params.dmg                     = ICollidable::Damages::NONE;
+	bonus_params.active                  = false;
+	bonus_params.pick_up                 = std::string("bonus");
+	bonus_params.passthrough             = true;
+	bonus_params.score_modifier          = 500;
+	bonus_params.auto_rotation           = true;
+	bonus_params.prop_params.pos         = glm::vec3(-4.0f, -2.0f, 1.5f);
+	bonus_params.active                  = false;
+
+	//7th Obstacle
+	bonus_params.prop_params.pos = glm::vec3(-3.0f, -1.2f, -1.1f);
+	bonus_params.cb              = CollisionBox(bonus_params.prop_params.pos,
+												glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot6", bonus_params);
 }
 
 void FallLeftRoomEmpty(RunnerWorld &world, oGL_module &oGL)
