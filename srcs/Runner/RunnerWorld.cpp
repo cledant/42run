@@ -38,12 +38,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
 	this->_room_list.reserve(RunnerWorld::list_size);
 	this->_camera.setLockCam(true);
-	this->_camera.setPitch(-15.0f);	this->_add_pos_for_check(reinterpret_cast<Player *>(this->_active)->getPos());
-	if (std::adjacent_find(this->_check_stuck.begin(), this->_check_stuck.end(), std::not_equal_to<float>()) ==
-		this->_check_stuck.end())
-	{
-		reinterpret_cast<Player *>(this->_active)->lowerHP(ICollidable::Damages::INSTANT_DEATH);
-	}
+	this->_camera.setPitch(-15.0f);
 	this->_camera.setDistToTarget(5.0f);
 	this->_check_stuck = std::vector<float>(MAX_STUCK_FRAME, 100000.0f);
 }

@@ -27,6 +27,7 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 			if (!world.isPlayerAlive())
 			{
 				world.updateHighScore();
+				world.deletePlayer();
 				return (false);
 			}
 			manager.calculate_fps();
