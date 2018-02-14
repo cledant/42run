@@ -103,7 +103,6 @@ void NormalRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL)
 	CollidableProp::Params obstacle_params;
 	Room::Params           room_params;
 	Room                   *room     = nullptr;
-	size_t                 c         = 0;
 	std::string            slot_name = "Slot";
 
 	//Room Params
@@ -129,19 +128,47 @@ void NormalRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL)
 	obstacle_params.dmg                = ICollidable::Damages::HALF;
 	obstacle_params.active             = false;
 
-	for (size_t j = 0; j < 3; ++j)
-	{
-		for (size_t i = 0; i < 5; ++i)
-		{
-			slot_name = "Slot";
-			obstacle_params.prop_params.pos = glm::vec3(-4.0f + (i * 2.0f), -2.0f, -1.5f + (j * 1.5f));
-			obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
-														   glm::vec3(0.14f, 0.14f, 0.14f));
-			slot_name += std::to_string(c);
-			room->addCollidableProp(slot_name, obstacle_params);
-			c++;
-		}
-	}
+	//1st Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(0.0f, -2.0f, 0.0f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot0", obstacle_params);
+
+	//2nd Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(-4.0f, -2.0f, -2.0f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot1", obstacle_params);
+
+	//3td Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(-3.0f, -2.0f, 0.0f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot2", obstacle_params);
+
+	//4th Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(4.0f, -2.0f, 2.0f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot3", obstacle_params);
+
+	//5th Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(-2.0f, -2.0f, -1.0f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot4", obstacle_params);
+
+	//6th Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(-1.0f, -2.0f, 0.0f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot5", obstacle_params);
+
+	//7th Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(0.0f, -2.0f, 1.0f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot6", obstacle_params);
 }
 
 void NormalRoomBonusAndObstacle(RunnerWorld &world, oGL_module &oGL)
