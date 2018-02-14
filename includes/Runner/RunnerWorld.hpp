@@ -36,7 +36,8 @@
 
 # define RUNNER_FOV_MIN 0.1f
 # define RUNNER_FOV_MAX 40.0f
-# define DEBUG_FORCE_ROOM 6
+# define DEBUG_FORCE_ROOM 7
+# define DEBUG_FORCE_PROP true
 # define MAX_STUCK_FRAME 10
 
 class RunnerWorld
@@ -74,7 +75,7 @@ class RunnerWorld
 		void generateInitialRoomList(size_t nb);
 		void generateBeginEndRoomList(size_t nb);
 		void generateMiddleRoomList(size_t nb);
-		void generateDebug(size_t nb, size_t room_type, bool has_prop);
+		void generateDebug(size_t room_type, bool has_prop);
 
 		/*
 		 * Getter

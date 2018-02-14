@@ -329,59 +329,52 @@ void RunnerWorld::generateBeginEndRoomList(size_t nb)
 	}
 }
 
-void RunnerWorld::generateDebug(size_t nb, size_t room_type, bool has_prop)
+void RunnerWorld::generateDebug(size_t room_type, bool has_prop)
 {
-	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
-																		 .find("NormalRoomEmpty"),
-																	 this->_room_template_list
-																		 .find("NormalRoomObstacleOnly"),
-																	 this->_room_template_list
-																		 .find("NormalRoomBonusOnly"),
-																	 this->_room_template_list
-																		 .find("NormalRoomBonusAndObstacle"),
-																	 this->_room_template_list
-																		 .find("FallRightRoomEmpty"),
-																	 this->_room_template_list
-																		 .find("FallLeftRoomEmpty"),
-																	 this->_room_template_list
-																		 .find("FallFrontRoomEmpty")
+	std::vector<std::map<std::string, Room>::iterator> vec_it  = {this->_room_template_list
+																	  .find("NormalRoomEmpty"),
+																  this->_room_template_list
+																	  .find("NormalRoomObstacleOnly"),
+																  this->_room_template_list
+																	  .find("NormalRoomBonusOnly"),
+																  this->_room_template_list
+																	  .find("NormalRoomBonusAndObstacle"),
+																  this->_room_template_list
+																	  .find("FallRightRoomEmpty"),
+																  this->_room_template_list
+																	  .find("FallLeftRoomEmpty"),
+																  this->_room_template_list
+																	  .find("FallFrontRoomEmpty"),
+																  this->_room_template_list
+																	  .find("FallRightRoomObstacleOnly"),
+																  this->_room_template_list
+																	  .find("FallLeftRoomObstacleOnly")
 	};
-	size_t                                             index_room = 0;
-	size_t                                             index_prop = 0;
-	std::mt19937_64                                    generator(this->_rd());
-	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
-	std::uniform_int_distribution<size_t>              distri_prop(0, RunnerWorld::nb_prop - 1);
-	std::uniform_int_distribution<size_t>              distri_max(1, nb % RunnerWorld::nb_prop);
-	size_t                                             max_obs;
-
-	for (size_t i = 0; i < 5; ++i)
+	size_t                                             max_obs = vec_it[room_type]->second.getCollidablePropList()
+																				  .size();
+	for (size_t                                        i       = 0; i < 5; ++i)
 	{
 		*(this->_room_list[i]) = vec_it[room_type]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-		if (index_room % vec_it.size() && has_prop)
+		if (has_prop)
 		{
-			max_obs = distri_max(generator);
 			for (size_t j = 0; j < max_obs; ++j)
 			{
-				index_prop = distri_prop(generator);
-				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
-				this->_room_list[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(j)).setActive(true);
 			}
 		}
 	}
-	*(this->_room_list[5]) = vec_it[0]->second;
+	*(this->_room_list[5])                                     = vec_it[0]->second;
 	this->_room_list[5]->translateObject(glm::vec3(13.2f * 5, 0.0f, 0.0f));
 	for (size_t i = 6; i < RunnerWorld::list_size - 1; ++i)
 	{
 		*(this->_room_list[i]) = vec_it[room_type]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
-		if (index_room % vec_it.size() && has_prop)
+		if (has_prop)
 		{
-			max_obs = distri_max(generator);
 			for (size_t j = 0; j < max_obs; ++j)
 			{
-				index_prop = distri_prop(generator);
-				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(j)).setActive(true);
 			}
 		}
 	}
@@ -582,7 +575,7 @@ inline void RunnerWorld::_check_collisions(void)
 			}
 			this->_laps++;
 //			this->generateMiddleRoomList(this->_laps);
-			this->generateDebug(this->_laps, DEBUG_FORCE_ROOM, false);
+			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			return;
 		}
@@ -594,7 +587,7 @@ inline void RunnerWorld::_check_collisions(void)
 														  inv_delta, &res))
 		{
 //			this->generateBeginEndRoomList(this->_laps);
-			this->generateDebug(this->_laps, DEBUG_FORCE_ROOM, false);
+			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 			should_trigger_regen_end = false;
 		}
 	}

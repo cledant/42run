@@ -91,7 +91,7 @@ bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_modul
 			if (trigger_selection && !selection_type)
 			{
 //				world.generateInitialRoomList(5);
-				world.generateDebug(5, DEBUG_FORCE_ROOM, false);
+				world.generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 				world.resetInputTimer();
 				return (true);
 			}
