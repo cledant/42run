@@ -198,3 +198,70 @@ void NormalRoomBonusAndObstacle(RunnerWorld &world, oGL_module &oGL)
 		}
 	}
 }
+
+void FallRightRoomEmpty(RunnerWorld &world, oGL_module &oGL)
+{
+	Player::Params player_params;
+	Room::Params   room_params;
+	Room           *room = nullptr;
+
+	room_params.floor.shader      = &(oGL.getShader("cubemap"));
+	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.roof.shader       = &(oGL.getShader("cubemap"));
+	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
+	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.front_wall.active = false;
+	room = world.addRoomTemplate("FallRightRoomEmpty", room_params);
+	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
+	const_cast<CollidableBox &>(room->getFloor()).translateObject(glm::vec3(0.0f, 0.0f, 3.0f));
+}
+
+void FallLeftRoomEmpty(RunnerWorld &world, oGL_module &oGL)
+{
+	Player::Params player_params;
+	Room::Params   room_params;
+	Room           *room = nullptr;
+
+	room_params.floor.shader      = &(oGL.getShader("cubemap"));
+	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.roof.shader       = &(oGL.getShader("cubemap"));
+	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
+	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.front_wall.active = false;
+	room = world.addRoomTemplate("FallLeftRoomEmpty", room_params);
+	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
+	const_cast<CollidableBox &>(room->getFloor()).translateObject(glm::vec3(0.0f, 0.0f, -3.0f));
+}
+
+void FallFrontRoomEmpty(RunnerWorld &world, oGL_module &oGL)
+{
+	Player::Params player_params;
+	Room::Params   room_params;
+	Room           *room = nullptr;
+
+	room_params.floor.shader      = &(oGL.getShader("cubemap"));
+	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.roof.shader       = &(oGL.getShader("cubemap"));
+	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
+	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.front_wall.active = false;
+	room = world.addRoomTemplate("FallFrontRoomEmpty", room_params);
+	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
+	const_cast<CollidableBox &>(room->getFloor()).translateObject(glm::vec3(6.6f * 0.5f, 0.0f, 0.0f));
+	const_cast<CollidableBox &>(room->getFloor()).scaleObject(glm::vec3(0.5f, 1.0f, 1.0f));
+}

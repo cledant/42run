@@ -38,8 +38,14 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
 	this->_room_list.reserve(RunnerWorld::list_size);
 	this->_camera.setLockCam(true);
-	this->_camera.setPitch(-15.0f);
+	this->_camera.setPitch(-15.0f);	this->_add_pos_for_check(reinterpret_cast<Player *>(this->_active)->getPos());
+	if (std::adjacent_find(this->_check_stuck.begin(), this->_check_stuck.end(), std::not_equal_to<float>()) ==
+		this->_check_stuck.end())
+	{
+		reinterpret_cast<Player *>(this->_active)->lowerHP(ICollidable::Damages::INSTANT_DEATH);
+	}
 	this->_camera.setDistToTarget(5.0f);
+	this->_check_stuck = std::vector<float>(MAX_STUCK_FRAME, 100000.0f);
 }
 
 RunnerWorld::~RunnerWorld(void)
@@ -124,6 +130,12 @@ void RunnerWorld::update(void)
 		this->_current_score = static_cast<long int>(std::trunc(
 				reinterpret_cast<Player *>(this->_active)->getTotalWalked()) / 10.0f) +
 							   this->_score_modifier;
+		this->_add_pos_for_check(reinterpret_cast<Player *>(this->_active)->getPos());
+		if (std::adjacent_find(this->_check_stuck.begin(), this->_check_stuck.end(), std::not_equal_to<float>()) ==
+			this->_check_stuck.end())
+		{
+			reinterpret_cast<Player *>(this->_active)->lowerHP(ICollidable::Damages::INSTANT_DEATH);
+		}
 	}
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		(*it)->update(this->_delta_tick);
@@ -317,6 +329,64 @@ void RunnerWorld::generateBeginEndRoomList(size_t nb)
 				index_prop = distri_prop(generator);
 				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
 				this->_room_list[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+			}
+		}
+	}
+}
+
+void RunnerWorld::generateDebug(size_t nb, size_t room_type, bool has_prop)
+{
+	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
+																		 .find("NormalRoomEmpty"),
+																	 this->_room_template_list
+																		 .find("NormalRoomObstacleOnly"),
+																	 this->_room_template_list
+																		 .find("NormalRoomBonusOnly"),
+																	 this->_room_template_list
+																		 .find("NormalRoomBonusAndObstacle"),
+																	 this->_room_template_list
+																		 .find("FallRightRoomEmpty"),
+																	 this->_room_template_list
+																		 .find("FallLeftRoomEmpty"),
+																	 this->_room_template_list
+																		 .find("FallFrontRoomEmpty")
+	};
+	size_t                                             index_room = 0;
+	size_t                                             index_prop = 0;
+	std::mt19937_64                                    generator(this->_rd());
+	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
+	std::uniform_int_distribution<size_t>              distri_prop(0, RunnerWorld::nb_prop - 1);
+	std::uniform_int_distribution<size_t>              distri_max(1, nb % RunnerWorld::nb_prop);
+	size_t                                             max_obs;
+
+	for (size_t i = 0; i < 5; ++i)
+	{
+		*(this->_room_list[i]) = vec_it[room_type]->second;
+		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		if (index_room % vec_it.size() && has_prop)
+		{
+			max_obs = distri_max(generator);
+			for (size_t j = 0; j < max_obs; ++j)
+			{
+				index_prop = distri_prop(generator);
+				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				this->_room_list[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+			}
+		}
+	}
+	*(this->_room_list[5]) = vec_it[0]->second;
+	this->_room_list[5]->translateObject(glm::vec3(13.2f * 5, 0.0f, 0.0f));
+	for (size_t i = 6; i < RunnerWorld::list_size - 1; ++i)
+	{
+		*(this->_room_list[i]) = vec_it[room_type]->second;
+		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		if (index_room % vec_it.size() && has_prop)
+		{
+			max_obs = distri_max(generator);
+			for (size_t j = 0; j < max_obs; ++j)
+			{
+				index_prop = distri_prop(generator);
+				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
 			}
 		}
 	}
@@ -516,7 +586,8 @@ inline void RunnerWorld::_check_collisions(void)
 				this->_room_list[i]->translateObject(glm::vec3(-13.2f * 15, 0.0f, 0.0f));
 			}
 			this->_laps++;
-			this->generateMiddleRoomList(this->_laps);
+//			this->generateMiddleRoomList(this->_laps);
+			this->generateDebug(this->_laps, DEBUG_FORCE_ROOM, false);
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			return;
 		}
@@ -527,7 +598,8 @@ inline void RunnerWorld::_check_collisions(void)
 		if (it2->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
 														  inv_delta, &res))
 		{
-			this->generateBeginEndRoomList(this->_laps);
+//			this->generateBeginEndRoomList(this->_laps);
+			this->generateDebug(this->_laps, DEBUG_FORCE_ROOM, false);
 			should_trigger_regen_end = false;
 		}
 	}
@@ -648,6 +720,14 @@ inline void RunnerWorld::_check_collidable_box(CollidableBox const &cb,
 			std::memcpy(nearest, &res, sizeof(CollisionBox::SweepResolution));
 		}
 	}
+}
+
+inline void RunnerWorld::_add_pos_for_check(glm::vec3 const &pos)
+{
+	static size_t i = 0;
+
+	this->_check_stuck[i] = pos.x;
+	i = (i == MAX_STUCK_FRAME - 1) ? 0 : (i + 1);
 }
 
 RunnerWorld::RunnerWorldFailException::RunnerWorldFailException(void)

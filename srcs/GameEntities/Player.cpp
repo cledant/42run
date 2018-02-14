@@ -413,7 +413,7 @@ bool Player::update_keyboard_interaction(Input const &input, float input_timer)
 			input_timer >= DOUBLE_JUMP_REPEAT_TIMER &&
 			this->_last_jump == GLFW_RELEASE)
 		{
-			this->_acc += this->_force * 10.0f * this->_cam->getWorldUp();
+			this->_acc += this->_force * 12.0f * this->_cam->getWorldUp();
 			toogle = true;
 			(this->_cur_jump)--;
 			this->_on_surface = false;

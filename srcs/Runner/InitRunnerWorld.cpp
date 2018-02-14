@@ -55,8 +55,12 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	NormalRoomBonusOnly(**world, oGL);
 	NormalRoomObstacleOnly(**world, oGL);
 	NormalRoomBonusAndObstacle(**world, oGL);
+	FallRightRoomEmpty(**world, oGL);
+	FallLeftRoomEmpty(**world, oGL);
+	FallFrontRoomEmpty(**world, oGL);
 	(*world)->initRoomList();
-	(*world)->generateInitialRoomList(5);
+//	(*world)->generateInitialRoomList(5);
+	(*world)->generateDebug(5, DEBUG_FORCE_ROOM, false);
 }
 
 static void init_audio(Audio &audio)

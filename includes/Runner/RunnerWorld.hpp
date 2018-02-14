@@ -36,6 +36,8 @@
 
 # define RUNNER_FOV_MIN 0.1f
 # define RUNNER_FOV_MAX 40.0f
+# define DEBUG_FORCE_ROOM 6
+# define MAX_STUCK_FRAME 10
 
 class RunnerWorld
 {
@@ -72,6 +74,7 @@ class RunnerWorld
 		void generateInitialRoomList(size_t nb);
 		void generateBeginEndRoomList(size_t nb);
 		void generateMiddleRoomList(size_t nb);
+		void generateDebug(size_t nb, size_t room_type, bool has_prop);
 
 		/*
 		 * Getter
@@ -148,6 +151,7 @@ class RunnerWorld
 		std::map<std::string, CollidableBox> _list_collidable_box;
 		std::random_device                   _rd;
 		size_t                               _laps;
+		std::vector<float>                   _check_stuck;
 
 		inline void _check_collisions(void);
 		inline void _resolve_sweep_collision(Player *player, CollisionBox const &box,
@@ -157,6 +161,7 @@ class RunnerWorld
 										  CollisionBox::SweepResolution *nearest,
 										  glm::vec3 const &inv_delta,
 										  ICollidable const **ptr);
+		inline void _add_pos_for_check(glm::vec3 const &pos);
 
 		static size_t list_size;
 		static size_t nb_prop;
