@@ -30,6 +30,7 @@
 # include "WindowManager/Window.hpp"
 # include "WindowManager/Input.hpp"
 # include <iostream>
+# include <iomanip>
 # include <vector>
 # include <fstream>
 # include <random>
@@ -84,6 +85,7 @@ class RunnerWorld
 		std::string const &getStrCurrentScore(void);
 		std::string const &getStrLastScore(void);
 		std::string const &getStrHighScore(void);
+		std::string const &getStrSpeed(void);
 		long int getCurrentScore(void);
 		long int getLastGameScore(void);
 		long int getHighScore(void);
@@ -142,6 +144,7 @@ class RunnerWorld
 		std::string                          _str_score;
 		std::string                          _str_last_score;
 		std::string                          _str_high_score;
+		std::string                          _str_speed;
 		long int                             _score_modifier;
 		bool                                 _first_run_theme;
 		bool                                 _enabled_gamepad;

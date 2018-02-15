@@ -53,6 +53,11 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 160.0f,
 								  0.5f));
+			ui.drawText("roboto", "Speed : " + world.getStrSpeed(),
+						glm::vec3(0.8f, 0.1f, 0.1f),
+						glm::vec3(10.0f,
+								  static_cast<float>(manager.getWindow().cur_win_h) - 200.0f,
+								  0.5f));
 			manager.swap_buffers();
 			if (world.getShouldEnd())
 				manager.triggerWindowClose();

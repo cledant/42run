@@ -23,9 +23,9 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
 		_input_timer(0.0f), _input_mouse_timer(0.0f),
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
-		_score_modifier(0), _first_run_theme(true), _should_end(false),
-		_current_score(0), _last_game_score(0), _high_score(high_score),
-		_laps(1)
+		_str_speed("0.0"), _score_modifier(0), _first_run_theme(true),
+		_should_end(false), _current_score(0), _last_game_score(0),
+		_high_score(high_score), _laps(1)
 {
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
@@ -523,6 +523,15 @@ std::string const &RunnerWorld::getStrHighScore(void)
 {
 	this->_str_high_score = std::to_string(this->_high_score);
 	return (this->_str_high_score);
+}
+
+std::string const &RunnerWorld::getStrSpeed(void)
+{
+	std::stringstream sstream;
+
+	sstream << std::fixed << std::setprecision(1) << reinterpret_cast<Player *>(this->_active)->getVelocity().x;
+	this->_str_speed = sstream.str();
+	return (this->_str_speed);
 }
 
 long int RunnerWorld::getCurrentScore(void)
