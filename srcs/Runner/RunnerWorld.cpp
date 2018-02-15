@@ -205,13 +205,24 @@ void RunnerWorld::generateInitialRoomList(size_t nb)
 																	 this->_room_template_list
 																		 .find("NormalRoomBonusOnly"),
 																	 this->_room_template_list
-																		 .find("NormalRoomBonusAndObstacle")};
+																		 .find("NormalRoomBonusAndObstacle"),
+																	 this->_room_template_list
+																		 .find("FallRightRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallLeftRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallRightRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallFrontRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallMiddleRoomObstacle")
+	};
 	size_t                                             index_room = 0;
 	size_t                                             index_prop = 0;
 	std::mt19937_64                                    generator(this->_rd());
 	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
-	std::uniform_int_distribution<size_t>              distri_prop(0, RunnerWorld::nb_prop - 1);
-	std::uniform_int_distribution<size_t>              distri_max(1, nb % RunnerWorld::nb_prop);
+	std::uniform_int_distribution<size_t>              distri_prop;
+	std::uniform_int_distribution<size_t>              distri_max;
 	size_t                                             max_obs;
 
 	for (size_t i = 0; i < vec_it.size(); ++i)
@@ -224,6 +235,10 @@ void RunnerWorld::generateInitialRoomList(size_t nb)
 		index_room = distri_room(generator);
 		*(this->_room_list[i])      = vec_it[index_room]->second;
 		*(this->_room_list[i + 15]) = vec_it[index_room]->second;
+		distri_prop = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
+																				 .size() - 1);
+		distri_max  = std::uniform_int_distribution<size_t>(0, nb % vec_it[index_room]->second.getCollidablePropList()
+																					  .size());
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
 		if (index_room % vec_it.size())
@@ -244,6 +259,10 @@ void RunnerWorld::generateInitialRoomList(size_t nb)
 		index_room = distri_room(generator);
 		*(this->_room_list[i]) = vec_it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		distri_prop = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
+																				 .size() - 1);
+		distri_max  = std::uniform_int_distribution<size_t>(0, nb % vec_it[index_room]->second.getCollidablePropList()
+																					  .size());
 		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
@@ -265,13 +284,24 @@ void RunnerWorld::generateMiddleRoomList(size_t nb)
 																	 this->_room_template_list
 																		 .find("NormalRoomBonusOnly"),
 																	 this->_room_template_list
-																		 .find("NormalRoomBonusAndObstacle")};
+																		 .find("NormalRoomBonusAndObstacle"),
+																	 this->_room_template_list
+																		 .find("FallRightRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallLeftRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallRightRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallFrontRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallMiddleRoomObstacle")
+	};
 	size_t                                             index_room = 0;
 	size_t                                             index_prop = 0;
 	std::mt19937_64                                    generator(this->_rd());
 	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
-	std::uniform_int_distribution<size_t>              distri_prop(0, RunnerWorld::nb_prop - 1);
-	std::uniform_int_distribution<size_t>              distri_max(1, nb % RunnerWorld::nb_prop);
+	std::uniform_int_distribution<size_t>              distri_prop;
+	std::uniform_int_distribution<size_t>              distri_max;
 	size_t                                             max_obs;
 
 	for (size_t i = 5; i < RunnerWorld::list_size - 5; ++i)
@@ -279,6 +309,10 @@ void RunnerWorld::generateMiddleRoomList(size_t nb)
 		index_room = distri_room(generator);
 		*(this->_room_list[i]) = vec_it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
+		distri_prop = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
+																				 .size() - 1);
+		distri_max  = std::uniform_int_distribution<size_t>(0, nb % vec_it[index_room]->second.getCollidablePropList()
+																					  .size());
 		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
@@ -300,13 +334,24 @@ void RunnerWorld::generateBeginEndRoomList(size_t nb)
 																	 this->_room_template_list
 																		 .find("NormalRoomBonusOnly"),
 																	 this->_room_template_list
-																		 .find("NormalRoomBonusAndObstacle")};
+																		 .find("NormalRoomBonusAndObstacle"),
+																	 this->_room_template_list
+																		 .find("FallRightRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallLeftRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallRightRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallFrontRoomObstacle"),
+																	 this->_room_template_list
+																		 .find("FallMiddleRoomObstacle")
+	};
 	size_t                                             index_room = 0;
 	size_t                                             index_prop = 0;
 	std::mt19937_64                                    generator(this->_rd());
 	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
-	std::uniform_int_distribution<size_t>              distri_prop(0, RunnerWorld::nb_prop - 1);
-	std::uniform_int_distribution<size_t>              distri_max(1, nb % RunnerWorld::nb_prop);
+	std::uniform_int_distribution<size_t>              distri_prop;
+	std::uniform_int_distribution<size_t>              distri_max;
 	size_t                                             max_obs;
 
 	for (size_t i = 0; i < 5; ++i)
@@ -316,6 +361,10 @@ void RunnerWorld::generateBeginEndRoomList(size_t nb)
 		*(this->_room_list[i + 15]) = vec_it[index_room]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
+		distri_prop = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
+																				 .size() - 1);
+		distri_max  = std::uniform_int_distribution<size_t>(0, nb % vec_it[index_room]->second.getCollidablePropList()
+																					  .size());
 		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
@@ -346,7 +395,7 @@ void RunnerWorld::generateDebug(size_t room_type, bool has_prop)
 																  this->_room_template_list
 																	  .find("FallFrontRoomEmpty"),
 																  this->_room_template_list
-																	  .find("FallRightRoomObstacleOnly"),
+																	  .find("FallRightRoomObstacle"),
 																  this->_room_template_list
 																	  .find("FallLeftRoomObstacle"),
 																  this->_room_template_list
@@ -582,8 +631,8 @@ inline void RunnerWorld::_check_collisions(void)
 				this->_room_list[i]->translateObject(glm::vec3(-13.2f * 15, 0.0f, 0.0f));
 			}
 			this->_laps++;
-//			this->generateMiddleRoomList(this->_laps);
-			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
+			this->generateMiddleRoomList(this->_laps);
+//			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			return;
 		}
@@ -594,8 +643,8 @@ inline void RunnerWorld::_check_collisions(void)
 		if (it2->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
 														  inv_delta, &res))
 		{
-//			this->generateBeginEndRoomList(this->_laps);
-			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
+			this->generateBeginEndRoomList(this->_laps);
+//			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 			should_trigger_regen_end = false;
 		}
 	}
@@ -745,5 +794,3 @@ RunnerWorld::RoomNotFoundException::~RoomNotFoundException(void) throw()
 }
 
 size_t RunnerWorld::list_size = 20;
-
-size_t RunnerWorld::nb_prop = 15;

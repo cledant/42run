@@ -341,7 +341,7 @@ void FallRightRoomObstacle(RunnerWorld &world, oGL_module &oGL)
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
-	room = world.addRoomTemplate("FallRightRoomObstacleOnly", room_params);
+	room = world.addRoomTemplate("FallRightRoomObstacle", room_params);
 	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
 	const_cast<CollidableBox &>(room->getFloor()).translateObject(glm::vec3(0.0f, 0.0f, 3.2f));
 
@@ -456,7 +456,7 @@ void FallLeftRoomObstacle(RunnerWorld &world, oGL_module &oGL)
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
-	room = world.addRoomTemplate("FallLeftRoomObstacleOnly", room_params);
+	room = world.addRoomTemplate("FallLeftRoomObstacle", room_params);
 	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
 	const_cast<CollidableBox &>(room->getFloor()).translateObject(glm::vec3(0.0f, 0.0f, -3.2f));
 

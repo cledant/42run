@@ -165,7 +165,6 @@ class RunnerWorld
 		inline void _add_pos_for_check(glm::vec3 const &pos);
 
 		static size_t list_size;
-		static size_t nb_prop;
 };
 
 #endif
