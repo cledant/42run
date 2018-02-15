@@ -374,7 +374,7 @@ void RunnerWorld::generateDebug(size_t room_type, bool has_prop)
 	}
 	*(this->_room_list[5])                                     = vec_it[0]->second;
 	this->_room_list[5]->translateObject(glm::vec3(13.2f * 5, 0.0f, 0.0f));
-	for (size_t i = 6; i < RunnerWorld::list_size - 1; ++i)
+	for (size_t i = 6; i < RunnerWorld::list_size; ++i)
 	{
 		*(this->_room_list[i]) = vec_it[room_type]->second;
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
