@@ -576,3 +576,118 @@ void FallFrontRoomObstacle(RunnerWorld &world, oGL_module &oGL)
 												glm::vec3(0.14f, 0.14f, 0.14f));
 	room->addCollidableProp("Slot6", bonus_params);
 }
+
+void FallMiddleRoomEmpty(RunnerWorld &world, oGL_module &oGL)
+{
+	Player::Params player_params;
+	Room::Params   room_params;
+	Room           *room = nullptr;
+
+	room_params.floor.shader      = &(oGL.getShader("cubemap"));
+	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.roof.shader       = &(oGL.getShader("cubemap"));
+	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
+	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.front_wall.active = false;
+	room = world.addRoomTemplate("FallMiddleRoomEmpty", room_params);
+	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
+	const_cast<CollidableBox &>(room->getFloor()).scaleObject(glm::vec3(1.0f, 1.0f, 0.3f));
+}
+
+void FallMiddleRoomObstacle(RunnerWorld &world, oGL_module &oGL)
+{
+	Player::Params         player_params;
+	Room::Params           room_params;
+	CollidableProp::Params bonus_params;
+	CollidableProp::Params obstacle_params;
+	Room                   *room = nullptr;
+
+	room_params.floor.shader      = &(oGL.getShader("cubemap"));
+	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.roof.shader       = &(oGL.getShader("cubemap"));
+	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
+	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
+	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.front_wall.active = false;
+	room = world.addRoomTemplate("FallMiddleRoomObstacle", room_params);
+	room->scaleObject(glm::vec3(6.0f, 3.0f, 3.0f));
+	const_cast<CollidableBox &>(room->getFloor()).scaleObject(glm::vec3(1.0f, 1.0f, 0.24f));
+
+	//Obstacle params
+	obstacle_params.prop_params.shader = &(oGL.getShader("prop"));
+	obstacle_params.prop_params.model  = &(oGL.getModel("Sakuya"));
+	obstacle_params.prop_params.scale  = glm::vec3(0.005f, 0.005f, 0.005f);
+	obstacle_params.prop_params.offset = glm::vec3(0.0f, 0.1f, 0.0f);
+	obstacle_params.dmg                = ICollidable::Damages::HALF;
+	obstacle_params.active             = false;
+
+	//1st Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(-5.0f, -2.0f, 0.0f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot0", obstacle_params);
+
+	//2nd Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(-1.0f, -2.0f, -0.6f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot1", obstacle_params);
+
+	//3td Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(0.0f, -2.0f, 0.6f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot2", obstacle_params);
+
+	//4th Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(4.0f, -2.0f, 0.6f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot3", obstacle_params);
+
+	//5th Obstacle
+	obstacle_params.prop_params.pos = glm::vec3(4.0f, -2.0f, -0.6f);
+	obstacle_params.cb              = CollisionBox(obstacle_params.prop_params.pos,
+												   glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot4", obstacle_params);
+
+	//Bonus Params
+	bonus_params.prop_params.shader      = &(oGL.getShader("prop"));
+	bonus_params.prop_params.model       = &(oGL.getModel("cola"));
+	bonus_params.prop_params.scale       = glm::vec3(0.03f, 0.03f, 0.03f);
+	bonus_params.prop_params.orientation = glm::vec3(0.0f, 20.0f, 0.0f);
+	bonus_params.dmg                     = ICollidable::Damages::NONE;
+	bonus_params.active                  = false;
+	bonus_params.pick_up                 = std::string("bonus");
+	bonus_params.passthrough             = true;
+	bonus_params.score_modifier          = 500;
+	bonus_params.auto_rotation           = true;
+	bonus_params.active                  = false;
+
+	//6th Bonus
+	bonus_params.prop_params.pos = glm::vec3(-2.0f, -1.2f, 1.55f);
+	bonus_params.cb              = CollisionBox(bonus_params.prop_params.pos,
+												glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot5", bonus_params);
+
+	//7th Bonus
+	bonus_params.prop_params.pos = glm::vec3(0.0f, -1.2f, -1.55f);
+	bonus_params.cb              = CollisionBox(bonus_params.prop_params.pos,
+												glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot6", bonus_params);
+
+	//8th Bonus
+	bonus_params.prop_params.pos = glm::vec3(2.0f, -2.0f, 0.0f);
+	bonus_params.cb              = CollisionBox(bonus_params.prop_params.pos,
+												glm::vec3(0.14f, 0.14f, 0.14f));
+	room->addCollidableProp("Slot7", bonus_params);
+}

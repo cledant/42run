@@ -61,6 +61,8 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	FallRightRoomObstacle(**world, oGL);
 	FallLeftRoomObstacle(**world, oGL);
 	FallFrontRoomObstacle(**world, oGL);
+	FallMiddleRoomEmpty(**world, oGL);
+	FallMiddleRoomObstacle(**world, oGL);
 	(*world)->initRoomList();
 //	(*world)->generateInitialRoomList(5);
 	(*world)->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);

@@ -352,7 +352,11 @@ void RunnerWorld::generateDebug(size_t room_type, bool has_prop)
 																  this->_room_template_list
 																	  .find("FallRightRoomObstacle"),
 																  this->_room_template_list
-																	  .find("FallFrontRoomObstacle")
+																	  .find("FallFrontRoomObstacle"),
+																  this->_room_template_list
+																	  .find("FallMiddleRoomEmpty"),
+																  this->_room_template_list
+																	  .find("FallMiddleRoomObstacle")
 	};
 	size_t                                             max_obs = vec_it[room_type]->second.getCollidablePropList()
 																				  .size();

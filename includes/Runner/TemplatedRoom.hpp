@@ -25,5 +25,7 @@ void FallLeftRoomEmpty(RunnerWorld &world, oGL_module &oGL);
 void FallLeftRoomObstacle(RunnerWorld &world, oGL_module &oGL);
 void FallFrontRoomEmpty(RunnerWorld &world, oGL_module &oGL);
 void FallFrontRoomObstacle(RunnerWorld &world, oGL_module &oGL);
+void FallMiddleRoomEmpty(RunnerWorld &world, oGL_module &oGL);
+void FallMiddleRoomObstacle(RunnerWorld &world, oGL_module &oGL);
 
 #endif
