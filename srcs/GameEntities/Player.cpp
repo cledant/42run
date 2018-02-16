@@ -461,29 +461,31 @@ bool Player::update_gamepad_interaction(GamepadState const &state, float input_t
 		{
 			this->_hoover = false;
 		}
-		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] <= -MOV_DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] <= -MOV_DEAD_ZONE && !this->_disable_back)
 		{
 			this->_acc += this->_force * this->_cam->getXYFront();
 			this->_axis.x += 1;
 			change_dir = true;
 		}
-		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] >= MOV_DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] >= MOV_DEAD_ZONE && !this->_disable_front)
 		{
 			this->_acc -= this->_force * this->_cam->getXYFront();
 			this->_axis.x -= 1;
 			change_dir = true;
 		}
-		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] >= MOV_DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] >= MOV_DEAD_ZONE && !this->_disable_right)
 		{
 			this->_acc += this->_force * this->_cam->getRight();
 			this->_axis.y += 1;
 			change_dir = true;
+			this->_disable_left = false;
 		}
-		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] <= -MOV_DEAD_ZONE)
+		if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] <= -MOV_DEAD_ZONE && !this->_disable_left)
 		{
 			this->_acc -= this->_force * this->_cam->getRight();
 			this->_axis.y -= 1;
 			change_dir = true;
+			this->_disable_right = false;
 		}
 		if (state.buttons[GLFW_GAMEPAD_BUTTON_TRIANGLE] == GLFW_PRESS &&
 			input_timer >= INPUT_REPEAT_TIMER)
