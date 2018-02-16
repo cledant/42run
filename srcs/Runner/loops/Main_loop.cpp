@@ -12,8 +12,58 @@
 
 #include "Utility/WorldSelect.hpp"
 
+static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_rate,
+						bool &trigger_pause, int &char_type)
+{
+	static float type_delay = 0.0f;
+
+	if (enabled_gamepad)
+	{
+		if (manager.getGamepad().isGamepadConnected(GLFW_JOYSTICK_1))
+		{
+			manager.getGamepad().pollGamepads();
+			if (type_delay > 0.25f &&
+				((manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).axes[GLFW_GAMEPAD_AXIS_LEFT_Y]
+				  >= MOV_DEAD_ZONE) ||
+				 (manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).axes[GLFW_GAMEPAD_AXIS_LEFT_Y]
+				  <= -MOV_DEAD_ZONE)))
+			{
+				char_type = (char_type + 1) % 2;
+			}
+			if (type_delay > 0.25f &&
+				(manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).buttons[GLFW_GAMEPAD_BUTTON_START]
+				 == GLFW_PRESS))
+			{
+				trigger_pause = !trigger_pause;
+				type_delay    = 0.0f;
+			}
+			if (type_delay < 2.0f)
+				type_delay += tick_rate;
+		}
+	}
+	else
+	{
+		if (type_delay > 0.25f && ((manager.getInput().p_key[GLFW_KEY_RIGHT] ||
+									manager.getInput().p_key[GLFW_KEY_LEFT])))
+		{
+			char_type  = (char_type + 1) % 2;
+			type_delay = 0.0f;
+		}
+		if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_HOME]))
+		{
+			trigger_pause = !trigger_pause;
+			type_delay    = 0.0f;
+		}
+		if (type_delay < 2.0f)
+			type_delay += tick_rate;
+	}
+}
+
 bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 {
+	bool       trigger_pause = false;
+	static int selection     = 0;
+
 	while (Glfw_manager::getActiveWindowNumber())
 	{
 		if (manager.getWindow().win != nullptr)
@@ -22,7 +72,10 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 			while (world.should_be_updated(Glfw_manager::getTime()))
 			{
 				manager.update_events();
-				world.update();
+				world_input(world.isGamepadEnabled(), manager, world.getTickRate(),
+							trigger_pause, selection);
+				if (!trigger_pause)
+					world.update();
 			}
 			if (!world.isPlayerAlive())
 			{
