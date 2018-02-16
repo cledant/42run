@@ -12,29 +12,12 @@
 
 #include "Utility/WorldSelect.hpp"
 
-static bool title_input(bool enabled_gamepad, Glfw_manager &manager)
-{
-	if (enabled_gamepad)
-	{
-		if (manager.getGamepad().isGamepadConnected(GLFW_JOYSTICK_1))
-		{
-			manager.getGamepad().pollGamepads();
-			if (manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).buttons[GLFW_GAMEPAD_BUTTON_CROSS]
-				== GLFW_PRESS)
-			{
-				return (true);
-			}
-		}
-	}
-	else if (manager.getInput().p_key[GLFW_KEY_ENTER])
-		return (true);
-	return (false);
-}
-
 bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 					   oGL_module &oGL)
 {
 	std::unique_ptr<ShaderSurface> title_shader;
+	bool                           validate  = false;
+	int                            selection = 0;
 
 	try
 	{
@@ -51,7 +34,9 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 	{
 		if (manager.getWindow().win != nullptr)
 		{
-			if (title_input(world.isGamepadEnabled(), manager))
+			loop_input(world.isGamepadEnabled(), manager, world.getTickRate(),
+					   validate, selection);
+			if (validate)
 				return (true);
 			oGL_module::oGL_clear_buffer(0.0f, 0.0f, 0.0f);
 			world.reset_skip_loop();

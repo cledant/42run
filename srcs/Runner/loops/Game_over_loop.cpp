@@ -14,9 +14,8 @@
 
 bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL)
 {
-	int   selection_type    = 0;
-	float type_delay        = 0.0f;
-	bool  trigger_selection = false;
+	int  selection_type    = 0;
+	bool trigger_selection = false;
 
 	static_cast<void>(oGL);
 	while (Glfw_manager::getActiveWindowNumber())
@@ -29,16 +28,8 @@ bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_modul
 			{
 				manager.update_events();
 				world.update();
-				if (type_delay > 0.25f && ((manager.getInput().p_key[GLFW_KEY_UP] ||
-											manager.getInput().p_key[GLFW_KEY_DOWN])))
-				{
-					selection_type = (selection_type + 1) % 2;
-					type_delay     = 0.0f;
-				}
-				if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_ENTER]))
-					trigger_selection = true;
-				if (type_delay < 2.0f)
-					type_delay += world.getTickRate();
+				loop_input(world.isGamepadEnabled(), manager, world.getTickRate(),
+						   trigger_selection, selection_type);
 			}
 			ui.update();
 			ui.drawText("roboto", "Game Over !",

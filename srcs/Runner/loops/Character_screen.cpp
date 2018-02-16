@@ -60,56 +60,6 @@ static void set_trigger_regen_end_params(CollidableBox::Params &params, oGL_modu
 	params.active = true;
 }
 
-static void char_selection_input(bool enabled_gamepad, Glfw_manager &manager, float tick_rate,
-								 bool &trigger_selection, int &char_type)
-{
-	static float type_delay = 0.0f;
-
-	if (enabled_gamepad)
-	{
-		if (manager.getGamepad().isGamepadConnected(GLFW_JOYSTICK_1))
-		{
-			manager.getGamepad().pollGamepads();
-			if (type_delay > 0.25f &&
-				((manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).axes[GLFW_GAMEPAD_AXIS_LEFT_Y]
-				  >= MOV_DEAD_ZONE) ||
-				 (manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).axes[GLFW_GAMEPAD_AXIS_LEFT_Y]
-				  <= -MOV_DEAD_ZONE)))
-			{
-				char_type  = (char_type + 1) % 2;
-				type_delay = 0.0f;
-			}
-			if (type_delay > 0.25f &&
-				(manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).buttons[GLFW_GAMEPAD_BUTTON_CROSS]
-				 == GLFW_PRESS))
-			{
-				trigger_selection = true;
-				type_delay        = 0.0f;
-				return;
-			}
-			if (type_delay < 2.0f)
-				type_delay += tick_rate;
-		}
-	}
-	else
-	{
-		if (type_delay > 0.25f && ((manager.getInput().p_key[GLFW_KEY_RIGHT] ||
-									manager.getInput().p_key[GLFW_KEY_LEFT])))
-		{
-			char_type  = (char_type + 1) % 2;
-			type_delay = 0.0f;
-		}
-		if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_ENTER]))
-		{
-			trigger_selection = true;
-			type_delay        = 0.0f;
-			return;
-		}
-		if (type_delay < 2.0f)
-			type_delay += tick_rate;
-	}
-}
-
 bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL,
 						 Audio &audio)
 {
@@ -154,8 +104,8 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 			{
 				manager.update_events();
 				world.update();
-				char_selection_input(world.isGamepadEnabled(), manager, world.getTickRate(),
-									 trigger_selection, char_type);
+				loop_input(world.isGamepadEnabled(), manager, world.getTickRate(),
+						   trigger_selection, char_type);
 			}
 			if (trigger_selection)
 				break;
