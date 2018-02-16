@@ -13,7 +13,7 @@
 #include "Utility/WorldSelect.hpp"
 
 static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_rate,
-						bool &trigger_pause, int &char_type)
+						bool &trigger_pause, bool &reset_trigger)
 {
 	static float type_delay = 0.0f;
 
@@ -22,13 +22,12 @@ static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_
 		if (manager.getGamepad().isGamepadConnected(GLFW_JOYSTICK_1))
 		{
 			manager.getGamepad().pollGamepads();
-			if (type_delay > 0.25f &&
-				((manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).axes[GLFW_GAMEPAD_AXIS_LEFT_Y]
-				  >= MOV_DEAD_ZONE) ||
-				 (manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).axes[GLFW_GAMEPAD_AXIS_LEFT_Y]
-				  <= -MOV_DEAD_ZONE)))
+			if (type_delay > 0.25f && trigger_pause &&
+				(manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).buttons[GLFW_GAMEPAD_BUTTON_BACK]
+				 == GLFW_PRESS))
 			{
-				char_type = (char_type + 1) % 2;
+				reset_trigger = !reset_trigger;
+				type_delay    = 0.0f;
 			}
 			if (type_delay > 0.25f &&
 				(manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).buttons[GLFW_GAMEPAD_BUTTON_START]
@@ -43,11 +42,10 @@ static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_
 	}
 	else
 	{
-		if (type_delay > 0.25f && ((manager.getInput().p_key[GLFW_KEY_RIGHT] ||
-									manager.getInput().p_key[GLFW_KEY_LEFT])))
+		if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_END]))
 		{
-			char_type  = (char_type + 1) % 2;
-			type_delay = 0.0f;
+			reset_trigger = !reset_trigger;
+			type_delay    = 0.0f;
 		}
 		if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_HOME]))
 		{
@@ -61,8 +59,8 @@ static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_
 
 bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 {
-	bool       trigger_pause = false;
-	static int selection     = 0;
+	bool trigger_pause = false;
+	bool trigger_reset = false;
 
 	while (Glfw_manager::getActiveWindowNumber())
 	{
@@ -73,11 +71,11 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 			{
 				manager.update_events();
 				world_input(world.isGamepadEnabled(), manager, world.getTickRate(),
-							trigger_pause, selection);
+							trigger_pause, trigger_reset);
 				if (!trigger_pause)
 					world.update();
 			}
-			if (!world.isPlayerAlive())
+			if (!world.isPlayerAlive() || trigger_reset)
 			{
 				world.updateHighScore();
 				world.deletePlayer();
@@ -111,6 +109,19 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 200.0f,
 								  0.5f));
+			if (trigger_pause)
+			{
+				ui.drawText("roboto", "Pause",
+							glm::vec3(1.0f, 0.0f, 0.0f),
+							glm::vec3(static_cast<float>(manager.getWindow().cur_win_w) / 2 - 125.0f,
+									  static_cast<float>(manager.getWindow().cur_win_h) / 2,
+									  1.5f));
+				ui.drawText("roboto", "Press End / Select to start again",
+							glm::vec3(0.9f, 0.9f, 0.9f),
+							glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 300.0f,
+									  static_cast<float>(manager.getWindow().cur_win_h) / 2 - 70.0f,
+									  0.7f));
+			}
 			manager.swap_buffers();
 			if (world.getShouldEnd())
 				manager.triggerWindowClose();
