@@ -102,6 +102,7 @@ class RunnerWorld
 		void setActiveInteractive(IInteractive *ptr);
 		void resetInputTimer(void);
 		void setLaps(size_t laps);
+		void forceKeyboard(void);
 
 		class RunnerWorldFailException : public GeneralException
 		{

@@ -236,6 +236,12 @@ bool World::should_be_updated(float time)
 	return (false);
 }
 
+void World::forceKeyboard(void)
+{
+	this->_enabled_gamepad = false;
+	std::cout << "Keyboard forced to be used" << std::endl;
+}
+
 std::string const &World::getScore(void)
 {
 

@@ -211,7 +211,7 @@ static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
 	load_debug_level(manager, oGL, world, audio);
 }
 
-void run_debug_world(Glfw_manager &manager, bool vsync)
+void run_debug_world(Glfw_manager &manager, bool vsync, bool force_keyboard)
 {
 
 	oGL_module oGL;
@@ -232,6 +232,8 @@ void run_debug_world(Glfw_manager &manager, bool vsync)
 	if (vsync)
 		manager.enableVsync();
 	world->reset_update_timer(Glfw_manager::getTime());
+	if (force_keyboard)
+		world->forceKeyboard();
 	manager.reset_fps_counter();
 	main_loop(*world, manager, *ui);
 	std::cout << "Delete Ui" << std::endl;

@@ -22,8 +22,8 @@
  * Inits
  */
 
-void run_debug_world(Glfw_manager &manager, bool vsync);
-int run_runner_world(Glfw_manager &manager, bool vsync);
+void run_debug_world(Glfw_manager &manager, bool vsync, bool force_keyboard);
+int run_runner_world(Glfw_manager &manager, bool vsync, bool force_keyboard);
 
 /*
  * Runner game loops

@@ -103,7 +103,7 @@ static int cleanup(RunnerWorld *world, Ui *ui)
 	return (1);
 }
 
-int run_runner_world(Glfw_manager &manager, bool vsync)
+int run_runner_world(Glfw_manager &manager, bool vsync, bool force_keyboard)
 {
 	oGL_module  oGL;
 	Audio       audio;
@@ -124,6 +124,8 @@ int run_runner_world(Glfw_manager &manager, bool vsync)
 	if (vsync)
 		manager.enableVsync();
 	world->reset_update_timer(Glfw_manager::getTime());
+	if (force_keyboard)
+		world->forceKeyboard();
 	manager.reset_fps_counter();
 	if (!title_screen_loop(*world, manager, *ui, oGL))
 		return (cleanup(world, ui));

@@ -597,6 +597,12 @@ void RunnerWorld::setLaps(size_t laps)
 	this->_laps = laps;
 }
 
+void RunnerWorld::forceKeyboard(void)
+{
+	this->_enabled_gamepad = false;
+	std::cout << "Keyboard forced to be used" << std::endl;
+}
+
 /*
  * Private
  */

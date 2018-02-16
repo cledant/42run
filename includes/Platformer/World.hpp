@@ -62,6 +62,7 @@ class World
 		void reset_update_timer(float time);
 		void reset_skip_loop(void);
 		bool should_be_updated(float time);
+		void forceKeyboard(void);
 
 		std::string const &getScore(void);
 		std::string const &getStrPlayerHP(void);

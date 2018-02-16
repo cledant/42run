@@ -15,18 +15,21 @@
 
 static void parse_args(int argc, char **argv, Glfw_manager &manager)
 {
-	bool vsync = false;
-	int  type  = 0;
+	bool vsync          = false;
+	int  type           = 0;
+	bool force_keyboard = false;
 
 	for (int i = 1; i < argc; ++i)
 	{
-		if (!std::string(argv[i]).compare("--Vsync"))
+		if (!std::string(argv[i]).compare("--vsync"))
 			vsync = true;
-		else if (!std::string(argv[i]).compare("--debug_level"))
+		else if (!std::string(argv[i]).compare("--debugLevel"))
 			type = 1;
+		else if (!std::string(argv[i]).compare("--forceKeyboard"))
+			force_keyboard = true;
 	}
-	return ((type == 1) ? run_debug_world(manager, vsync) :
-			(void) run_runner_world(manager, vsync));
+	return ((type == 1) ? run_debug_world(manager, vsync, force_keyboard) :
+			(void) run_runner_world(manager, vsync, force_keyboard));
 }
 
 int main(int argc, char **argv)
