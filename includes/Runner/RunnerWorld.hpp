@@ -86,13 +86,14 @@ class RunnerWorld
 		std::string const &getStrLastScore(void);
 		std::string const &getStrHighScore(void);
 		std::string const &getStrSpeed(void);
-		long int getCurrentScore(void);
-		long int getLastGameScore(void);
-		long int getHighScore(void);
+		long int getCurrentScore(void) const;
+		long int getLastGameScore(void) const;
+		long int getHighScore(void) const;
 		std::string const &getStrPlayerHP(void);
 		bool getShouldEnd(void) const;
 		float getTickRate(void) const;
 		bool isPlayerAlive(void) const;
+		bool isGamepadEnabled(void) const;
 
 		/*
 		 * Setter

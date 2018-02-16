@@ -534,17 +534,17 @@ std::string const &RunnerWorld::getStrSpeed(void)
 	return (this->_str_speed);
 }
 
-long int RunnerWorld::getCurrentScore(void)
+long int RunnerWorld::getCurrentScore(void) const
 {
 	return (this->_current_score);
 }
 
-long int RunnerWorld::getLastGameScore(void)
+long int RunnerWorld::getLastGameScore(void) const
 {
 	return (this->_last_game_score);
 }
 
-long int RunnerWorld::getHighScore(void)
+long int RunnerWorld::getHighScore(void) const
 {
 	return (this->_high_score);
 }
@@ -571,6 +571,11 @@ bool RunnerWorld::isPlayerAlive() const
 	if (dynamic_cast<Player *>(this->_active)->getHP() > 0)
 		return (true);
 	return (false);
+}
+
+bool RunnerWorld::isGamepadEnabled() const
+{
+	return (this->_enabled_gamepad);
 }
 
 /*

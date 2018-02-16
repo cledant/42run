@@ -17,7 +17,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 {
 	params.cb_shader              = &(oGL.getShader("cubemap"));
 	params.shader                 = &(oGL.getShader("sprites"));
-	params.pos                    = glm::vec3({-3.5f + (13.2f * 5), -2.1f, 0.0f});
+	params.pos                    = glm::vec3({-5.5f + (13.2f * 5), -2.1f, 0.0f});
 	params.size                   = glm::vec3({0.3f, 0.5f, 0.3f});
 	params.cb_model               = &(oGL.getModel("TestBox"));
 	params.tex                    = &(oGL.getTexture("sprite_reimu"));

@@ -12,6 +12,25 @@
 
 #include "Utility/WorldSelect.hpp"
 
+static bool title_input(bool enabled_gamepad, Glfw_manager &manager)
+{
+	if (enabled_gamepad)
+	{
+		if (manager.getGamepad().isGamepadConnected(GLFW_JOYSTICK_1))
+		{
+			manager.getGamepad().pollGamepads();
+			if (manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).buttons[GLFW_GAMEPAD_BUTTON_CROSS]
+				== GLFW_PRESS)
+			{
+				return (true);
+			}
+		}
+	}
+	else if (manager.getInput().p_key[GLFW_KEY_ENTER])
+		return (true);
+	return (false);
+}
+
 bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 					   oGL_module &oGL)
 {
@@ -32,7 +51,7 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 	{
 		if (manager.getWindow().win != nullptr)
 		{
-			if (manager.getInput().p_key[GLFW_KEY_ENTER])
+			if (title_input(world.isGamepadEnabled(), manager))
 				return (true);
 			oGL_module::oGL_clear_buffer(0.0f, 0.0f, 0.0f);
 			world.reset_skip_loop();
@@ -48,9 +67,9 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2) - 85.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 100.0f,
 								  1.0f));
-			ui.drawText("roboto", "Press enter to start",
+			ui.drawText("roboto", "Press enter/cross to start",
 						glm::vec3(0.0f, 0.0f, 0.0f),
-						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2 - 250.f),
+						glm::vec3((static_cast<float>(manager.getWindow().cur_win_w) / 2 - 330.f),
 								  static_cast<float>(manager.getWindow().cur_win_h) * 0.1,
 								  1.0f));
 			manager.swap_buffers();

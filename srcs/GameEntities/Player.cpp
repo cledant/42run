@@ -526,7 +526,7 @@ bool Player::update_gamepad_interaction(GamepadState const &state, float input_t
 			return (true);
 	}
 	else
-		std::cout << "Player : Can't update keyboard interaction" << std::endl;
+		std::cout << "Player : Can't update gamepad interaction" << std::endl;
 	return (false);
 }
 
