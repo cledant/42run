@@ -76,6 +76,8 @@ static void init_audio(Audio &audio)
 	audio.loadSound("malus", "./sounds/effects/malus.wav", false, EFFECT_VOLUME);
 	audio.loadTheme("./sounds/musics/reimu_theme.wav", Audio::THEME_1, true, THEME_VOLUME);
 	audio.loadTheme("./sounds/musics/marisa_theme.wav", Audio::THEME_2, true, THEME_VOLUME);
+	audio.loadTheme("./sounds/musics/title_screen.wav", Audio::THEME_3, true, THEME_VOLUME);
+	audio.loadTheme("./sounds/musics/game_over.wav", Audio::THEME_4, true, THEME_VOLUME);
 }
 
 static void init_program(RunnerWorld **world, oGL_module &oGL, Glfw_manager &manager,
@@ -127,17 +129,16 @@ int run_runner_world(Glfw_manager &manager, bool vsync, bool force_keyboard)
 	if (force_keyboard)
 		world->forceKeyboard();
 	manager.reset_fps_counter();
-	if (!title_screen_loop(*world, manager, *ui, oGL))
+	if (!title_screen_loop(*world, manager, *ui, oGL, audio))
 		return (cleanup(world, ui));
 	while (loop)
 	{
 		if (!char_selection_loop(*world, manager, *ui, oGL, audio))
 			return (cleanup(world, ui));
 		if (!main_loop(*world, manager, *ui))
-			loop = game_over_loop(*world, manager, *ui, oGL);
+			loop = game_over_loop(*world, manager, *ui, oGL, audio);
 		else
 			return (cleanup(world, ui));
-		world->deletePlayer();
 		world->updateLastGameScore();
 	}
 	return (cleanup(world, ui));

@@ -67,6 +67,8 @@ class RunnerWorld
 		bool should_be_updated(float time);
 		void updateLastGameScore(void);
 		void updateHighScore(void);
+		void playPlayerTheme(void);
+		void stopPlayerTheme(void);
 
 		/*
 		 * Room generation

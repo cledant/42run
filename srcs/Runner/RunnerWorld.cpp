@@ -27,6 +27,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_should_end(false), _current_score(0), _last_game_score(0),
 		_high_score(high_score), _laps(1)
 {
+	(void) _first_run_theme;
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
 	GLfloat ratio = static_cast<GLfloat>(win.cur_win_w) /
@@ -52,11 +53,11 @@ RunnerWorld::~RunnerWorld(void)
 
 void RunnerWorld::update(void)
 {
-	if (this->_first_run_theme && this->_active != nullptr)
+/*	if (this->_first_run_theme && this->_active != nullptr)
 	{
 		reinterpret_cast<Player *>(this->_active)->playSetTheme();
 		this->_first_run_theme = false;
-	}
+	}*/
 	if (this->_window.resized)
 		this->updatePerspective(this->_fov);
 	if (this->_active == nullptr)
@@ -501,6 +502,16 @@ void RunnerWorld::updateHighScore(void)
 	if (this->_high_score < this->_current_score)
 		this->_high_score = this->_current_score;
 	this->_score_modifier = 0;
+}
+
+void RunnerWorld::playPlayerTheme(void)
+{
+	reinterpret_cast<Player *>(this->_active)->playSetTheme();
+}
+
+void RunnerWorld::stopPlayerTheme(void)
+{
+	reinterpret_cast<Player *>(this->_active)->stopSetTheme();
 }
 
 /*

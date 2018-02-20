@@ -13,11 +13,11 @@
 #include "Utility/WorldSelect.hpp"
 
 bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
-					   oGL_module &oGL)
+					   oGL_module &oGL, Audio &audio)
 {
-	std::unique_ptr<ShaderSurface> title_shader;
-	bool                           validate  = false;
-	int                            selection = 0;
+	std::unique_ptr<ShaderSurface> title_shader = nullptr;
+	bool                           validate     = false;
+	int                            selection    = 0;
 
 	try
 	{
@@ -30,6 +30,7 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 		std::cout << e.what() << std::endl << "Exiting 42Run" << std::endl;
 		return (false);
 	}
+	audio.playTheme(Audio::THEME_3);
 	while (Glfw_manager::getActiveWindowNumber())
 	{
 		if (manager.getWindow().win != nullptr)

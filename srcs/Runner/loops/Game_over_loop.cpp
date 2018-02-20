@@ -12,12 +12,14 @@
 
 #include "Utility/WorldSelect.hpp"
 
-bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL)
+bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL,
+					Audio &audio)
 {
 	int  selection_type    = 0;
 	bool trigger_selection = false;
 
 	static_cast<void>(oGL);
+	audio.playTheme(Audio::THEME_4);
 	while (Glfw_manager::getActiveWindowNumber())
 	{
 		if (manager.getWindow().win != nullptr)

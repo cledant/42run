@@ -62,6 +62,7 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 	bool trigger_pause = false;
 	bool trigger_reset = false;
 
+	world.playPlayerTheme();
 	while (Glfw_manager::getActiveWindowNumber())
 	{
 		if (manager.getWindow().win != nullptr)
@@ -78,6 +79,7 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 			if (!world.isPlayerAlive() || trigger_reset)
 			{
 				world.updateHighScore();
+				world.stopPlayerTheme();
 				world.deletePlayer();
 				return (false);
 			}
@@ -129,5 +131,6 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 				manager.destroy_window();
 		}
 	}
+	world.stopPlayerTheme();
 	return (true);
 }

@@ -65,13 +65,13 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 {
 	std::unique_ptr<Sprite> character_sprites[2];
 	Player::Params          player_params;
-	static int              char_type = 0;
+	static int              char_type         = 0;
+	glm::mat4               matrix            = glm::mat4(1.0f);
+	bool                    trigger_selection = false;
+	CollidableBox::Params   trigger_tp_params;
+	CollidableBox::Params   trigger_regen_end_params;
 
-	glm::mat4             matrix            = glm::mat4(1.0f);
-	bool                  trigger_selection = false;
-	CollidableBox::Params trigger_tp_params;
-	CollidableBox::Params trigger_regen_end_params;
-
+	static_cast<void>(audio);
 	try
 	{
 		character_sprites[0] = std::make_unique<Sprite>(&(oGL.getShader("sprites")), &matrix,
@@ -178,5 +178,7 @@ bool char_selection_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_
 		std::cout << e.what() << std::endl << "Exiting 42Run" << std::endl;
 		return (false);
 	}
+	audio.stopTheme(Audio::THEME_3);
+	audio.stopTheme(Audio::THEME_4);
 	return (true);
 }
