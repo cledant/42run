@@ -25,7 +25,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
 		_str_speed("0.0"), _score_modifier(0), _should_end(false),
 		_current_score(0), _last_game_score(0), _high_score(high_score),
-		_laps(1)
+		_laps(0)
 {
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
@@ -312,11 +312,19 @@ void RunnerWorld::generateMiddleRoomList(void)
 																				 .size());
 		if (index_room % vec_it.size())
 		{
-			max_obs = distri_max(generator);
-			for (size_t j = 0; j < max_obs; ++j)
+			if (this->_should_spawn_full_obstacle())
 			{
-				index_prop = distri_prop(generator);
-				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				for (size_t j = 0; j < vec_it[index_room]->second.getCollidablePropList().size(); ++j)
+					this->_room_list[i]->getCollidableProp("Slot" + std::to_string(j)).setActive(true);
+			}
+			else
+			{
+				max_obs = distri_max(generator);
+				for (size_t j = 0; j < max_obs; ++j)
+				{
+					index_prop = distri_prop(generator);
+					this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				}
 			}
 		}
 	}
@@ -364,12 +372,23 @@ void RunnerWorld::generateBeginEndRoomList(void)
 																				 .size());
 		if (index_room % vec_it.size())
 		{
-			max_obs = distri_max(generator);
-			for (size_t j = 0; j < max_obs; ++j)
+			if (this->_should_spawn_full_obstacle())
 			{
-				index_prop = distri_prop(generator);
-				this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
-				this->_room_list[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				for (size_t j = 0; j < vec_it[index_room]->second.getCollidablePropList().size(); ++j)
+				{
+					this->_room_list[i]->getCollidableProp("Slot" + std::to_string(j)).setActive(true);
+					this->_room_list[i + 15]->getCollidableProp("Slot" + std::to_string(j)).setActive(true);
+				}
+			}
+			else
+			{
+				max_obs = distri_max(generator);
+				for (size_t j = 0; j < max_obs; ++j)
+				{
+					index_prop = distri_prop(generator);
+					this->_room_list[i]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+					this->_room_list[i + 15]->getCollidableProp("Slot" + std::to_string(index_prop)).setActive(true);
+				}
 			}
 		}
 	}
@@ -800,6 +819,19 @@ inline void RunnerWorld::_add_pos_for_check(glm::vec3 const &pos)
 
 	this->_check_stuck[i] = pos.x;
 	i = (i == MAX_STUCK_FRAME - 1) ? 0 : (i + 1);
+}
+
+inline bool RunnerWorld::_should_spawn_full_obstacle(void)
+{
+	std::mt19937_64                       generator(this->_rd());
+	std::uniform_int_distribution<size_t> distri;
+	size_t                                value_for_random = INITIAL_MAX_SPAWN_CHANCE;
+
+	value_for_random = (this->_laps >= INITIAL_MAX_SPAWN_CHANCE) ? 0 : value_for_random - this->_laps;
+	distri           = std::uniform_int_distribution<size_t>(0, value_for_random);
+	if (!distri(generator))
+		return (true);
+	return (false);
 }
 
 RunnerWorld::RunnerWorldFailException::RunnerWorldFailException(void)

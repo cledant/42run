@@ -40,6 +40,7 @@
 # define DEBUG_FORCE_ROOM 3
 # define DEBUG_FORCE_PROP true
 # define MAX_STUCK_FRAME 10
+# define INITIAL_MAX_SPAWN_CHANCE 100
 
 class RunnerWorld
 {
@@ -169,6 +170,7 @@ class RunnerWorld
 										  glm::vec3 const &inv_delta,
 										  ICollidable const **ptr);
 		inline void _add_pos_for_check(glm::vec3 const &pos);
+		inline bool _should_spawn_full_obstacle(void);
 
 		static size_t list_size;
 };
