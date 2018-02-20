@@ -55,6 +55,7 @@ void Audio::playSound(std::string const &name)
 		std::cout << "Sound unknown : " + name << std::endl;
 		return;
 	}
+	sound->stop();
 	sound->play();
 }
 

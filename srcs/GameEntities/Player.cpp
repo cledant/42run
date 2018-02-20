@@ -253,8 +253,7 @@ void Player::playSound(std::string const &name)
 		std::cout << "No Audio class provided !" << std::endl;
 		return;
 	}
-	if (this->_audio->getSoundStatus(name) == sf::Sound::Stopped)
-		this->_audio->playSound(name);
+	this->_audio->playSound(name);
 }
 
 void Player::playTheme(Audio::theme_list slot)

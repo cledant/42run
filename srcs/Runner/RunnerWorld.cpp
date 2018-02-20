@@ -131,6 +131,8 @@ void RunnerWorld::update(void)
 			this->_check_stuck.end())
 		{
 			reinterpret_cast<Player *>(this->_active)->lowerHP(ICollidable::Damages::INSTANT_DEATH);
+			reinterpret_cast<Player *>(this->_active)->playSound("damage");
+			return;
 		}
 	}
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
