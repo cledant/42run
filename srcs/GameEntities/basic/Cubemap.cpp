@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GameEntities/Cubemap.hpp"
+#include "GameEntities/basic/Cubemap.hpp"
 
 Cubemap::Cubemap(Shader const *shader, glm::mat4 const *perspec_mult_view,
 				 Model const *model, glm::vec3 const &pos, glm::vec3 const &scale) :

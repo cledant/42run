@@ -58,7 +58,7 @@ link_directories(${CMAKE_BINARY_DIR}/glad/build
 		${CMAKE_BINARY_DIR}/SFML/build/lib)
 set(SOURCE_FILES
 		srcs/Cameras/Camera.cpp
-		srcs/GameEntities/Cubemap.cpp
+		srcs/GameEntities/basic/Cubemap.cpp
 		srcs/Exceptions/GeneralException.cpp
 		srcs/WindowManager/Glfw_manager.cpp
 		srcs/Interfaces/IEntity.cpp
@@ -68,25 +68,25 @@ set(SOURCE_FILES
 		srcs/main.cpp
 		srcs/OpenGL/oGL_module.cpp
 		srcs/OpenGL/Shader.cpp
-		srcs/GameEntities/Simple_box.cpp
+		srcs/GameEntities/basic/Simple_box.cpp
 		srcs/OpenGL/Texture.cpp
 		srcs/WindowManager/Window.cpp
 		srcs/Platformer/World.cpp
 		srcs/Model/Model.cpp
 		srcs/Model/Mesh.cpp
-		srcs/GameEntities/Prop.cpp
+		srcs/GameEntities/basic/Prop.cpp
 		srcs/UI/FontSet.cpp
 		srcs/UI/Ui.cpp
-		srcs/Utility/CollisionBox.cpp
+		srcs/GameEntities/utility/CollisionBox.cpp
 		srcs/Cameras/ThirdPersonCamera.cpp
-		srcs/GameEntities/Player.cpp
-		srcs/GameEntities/CollidableBox.cpp
+		srcs/GameEntities/composed/Player.cpp
+		srcs/GameEntities/composed/CollidableBox.cpp
 		srcs/Interfaces/IGravity.cpp
-		srcs/GameEntities/Sprite.cpp
-		srcs/GameEntities/CollidableProp.cpp
+		srcs/GameEntities/basic/Sprite.cpp
+		srcs/GameEntities/composed/CollidableProp.cpp
 		srcs/Audio/Audio.cpp
 		srcs/WindowManager/Gamepad.cpp
-		srcs/GameEntities/Room.cpp
+		srcs/GameEntities/composed/Room.cpp
 		srcs/Interfaces/ITranslatable.cpp
 		srcs/Platformer/InitDebugWorld.cpp
 		srcs/Runner/RunnerWorld.cpp

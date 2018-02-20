@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GameEntities/Simple_box.hpp"
+#include "GameEntities/basic/Simple_box.hpp"
 
 Simple_box::Simple_box(Shader const *shader, glm::mat4 const *perspec_mult_view,
 					   glm::vec3 const &pos, glm::vec3 const &scale) : _shader(shader),

@@ -16,8 +16,8 @@
 # define GLM_ENABLE_EXPERIMENTAL
 
 # include "OpenGL/oGL_module.hpp"
-# include "Cubemap.hpp"
-# include "Sprite.hpp"
+# include "GameEntities/basic/Cubemap.hpp"
+# include "GameEntities/basic/Sprite.hpp"
 # include "Exceptions/GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "glm/gtc/matrix_transform.hpp"

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GameEntities/Prop.hpp"
+#include "GameEntities/basic/Prop.hpp"
 
 Prop::Params::Params(void)
 {

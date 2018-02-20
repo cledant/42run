@@ -13,8 +13,8 @@
 #ifndef COLLIDABLEPROP_HPP
 # define COLLIDABLEPROP_HPP
 
-# include "Prop.hpp"
-# include "Utility/CollisionBox.hpp"
+# include "GameEntities/basic/Prop.hpp"
+# include "GameEntities/utility/CollisionBox.hpp"
 # include "Interfaces/ICollidable.hpp"
 # include "Interfaces/IEntity.hpp"
 # include "Interfaces/ITranslatable.hpp"

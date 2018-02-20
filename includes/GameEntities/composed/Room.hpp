@@ -16,8 +16,8 @@
 # include "Interfaces/ICollidable.hpp"
 # include "Interfaces/IEntity.hpp"
 # include "Interfaces/ITranslatable.hpp"
-# include "GameEntities/CollidableBox.hpp"
-# include "GameEntities/CollidableProp.hpp"
+# include "GameEntities/composed/CollidableBox.hpp"
+# include "GameEntities/composed/CollidableProp.hpp"
 
 class Room : public ICollidable, public IEntity, public ITranslatable
 {

@@ -14,7 +14,7 @@
 # define COLLIDABLEBOX_HPP
 
 # include "OpenGL/oGL_module.hpp"
-# include "Cubemap.hpp"
+# include "GameEntities/basic/Cubemap.hpp"
 # include "Exceptions/GeneralException.hpp"
 # include "glm/glm.hpp"
 # include "Interfaces/IEntity.hpp"
