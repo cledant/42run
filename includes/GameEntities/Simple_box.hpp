@@ -55,8 +55,6 @@ class Simple_box : public IEntity
 
 		static float  _vertices[];
 		static size_t _nb_faces;
-
-
 };
 
 #endif

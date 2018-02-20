@@ -35,7 +35,6 @@ class ThirdPersonCamera : public Camera
 		ThirdPersonCamera(const ThirdPersonCamera &src) = delete;
 		ThirdPersonCamera &operator=(ThirdPersonCamera const &rhs) = delete;
 
-
 		void update_third_person(bool mouse_exclusive_to_manager,
 								 glm::vec3 const &target_pos, bool gamepad);
 

@@ -96,7 +96,7 @@ class Prop : public IEntity, public ITranslatable
 				virtual        ~InitException(void) throw();
 		};
 
-	protected :
+	private :
 
 		Shader const    *_shader;
 		glm::mat4 const *_perspec_mult_view;

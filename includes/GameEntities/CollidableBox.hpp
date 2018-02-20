@@ -77,6 +77,7 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 		/*
  		* Getter
 		*/
+
 		glm::vec3 const &getPos(void) const;
 		Cubemap const &getCubemap(void) const;
 

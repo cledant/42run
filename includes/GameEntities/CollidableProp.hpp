@@ -43,18 +43,19 @@ class CollidableProp : public ICollidable, public IEntity, public ITranslatable
 		CollidableProp(CollidableProp const &src);
 		CollidableProp &operator=(CollidableProp const &rhs);
 
-		/*
-		 * Interface ICollidable
-		 */
-		void setPassthrough(bool value);
-		void setActive(bool value);
-
 		CollisionBox const &getCollisionBox(void) const;
 		Damages getDamages(void) const;
 		int getScoreModifier(void) const;
 		bool getPassthrough(void) const;
 		bool getActive(void) const;
 		std::string const &getPickUpSound(void) const;
+
+		/*
+		 * Interface ICollidable
+		 */
+
+		void setPassthrough(bool value);
+		void setActive(bool value);
 
 		/*
 		 * Interface IEntity
@@ -72,6 +73,7 @@ class CollidableProp : public ICollidable, public IEntity, public ITranslatable
 		/*
 		 * Getter
 		 */
+
 		Prop const &getProp(void) const;
 		bool getAutoRotation(void) const;
 
