@@ -75,9 +75,9 @@ class RunnerWorld
 		 */
 
 		void initRoomList(void);
-		void generateInitialRoomList(size_t nb);
-		void generateBeginEndRoomList(size_t nb);
-		void generateMiddleRoomList(size_t nb);
+		void generateInitialRoomList(void);
+		void generateBeginEndRoomList(void);
+		void generateMiddleRoomList(void);
 		void generateDebug(size_t room_type, bool has_prop);
 
 		/*
@@ -150,7 +150,6 @@ class RunnerWorld
 		std::string                          _str_high_score;
 		std::string                          _str_speed;
 		long int                             _score_modifier;
-		bool                                 _first_run_theme;
 		bool                                 _enabled_gamepad;
 		bool                                 _should_end;
 		long int                             _current_score;

@@ -23,11 +23,10 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
 		_input_timer(0.0f), _input_mouse_timer(0.0f),
 		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
-		_str_speed("0.0"), _score_modifier(0), _first_run_theme(true),
-		_should_end(false), _current_score(0), _last_game_score(0),
-		_high_score(high_score), _laps(1)
+		_str_speed("0.0"), _score_modifier(0), _should_end(false),
+		_current_score(0), _last_game_score(0), _high_score(high_score),
+		_laps(1)
 {
-	(void) _first_run_theme;
 	if (max_frame_skip == 0)
 		throw RunnerWorld::RunnerWorldFailException();
 	GLfloat ratio = static_cast<GLfloat>(win.cur_win_w) /
@@ -53,11 +52,6 @@ RunnerWorld::~RunnerWorld(void)
 
 void RunnerWorld::update(void)
 {
-/*	if (this->_first_run_theme && this->_active != nullptr)
-	{
-		reinterpret_cast<Player *>(this->_active)->playSetTheme();
-		this->_first_run_theme = false;
-	}*/
 	if (this->_window.resized)
 		this->updatePerspective(this->_fov);
 	if (this->_active == nullptr)
@@ -199,7 +193,7 @@ void RunnerWorld::initRoomList(void)
 	}
 }
 
-void RunnerWorld::generateInitialRoomList(size_t nb)
+void RunnerWorld::generateInitialRoomList(void)
 {
 	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
 																		 .find("NormalRoomEmpty"),
@@ -240,8 +234,8 @@ void RunnerWorld::generateInitialRoomList(size_t nb)
 		*(this->_room_list[i + 15]) = vec_it[index_room]->second;
 		distri_prop = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
 																				 .size() - 1);
-		distri_max  = std::uniform_int_distribution<size_t>(0, nb % vec_it[index_room]->second.getCollidablePropList()
-																					  .size());
+		distri_max  = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
+																				 .size());
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
 		if (index_room % vec_it.size())
@@ -264,8 +258,8 @@ void RunnerWorld::generateInitialRoomList(size_t nb)
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		distri_prop = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
 																				 .size() - 1);
-		distri_max  = std::uniform_int_distribution<size_t>(0, nb % vec_it[index_room]->second.getCollidablePropList()
-																					  .size());
+		distri_max  = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
+																				 .size());
 		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
@@ -278,7 +272,7 @@ void RunnerWorld::generateInitialRoomList(size_t nb)
 	}
 }
 
-void RunnerWorld::generateMiddleRoomList(size_t nb)
+void RunnerWorld::generateMiddleRoomList(void)
 {
 	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
 																		 .find("NormalRoomEmpty"),
@@ -314,8 +308,8 @@ void RunnerWorld::generateMiddleRoomList(size_t nb)
 		this->_room_list[i]->translateObject(glm::vec3(13.2f * i, 0.0f, 0.0f));
 		distri_prop = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
 																				 .size() - 1);
-		distri_max  = std::uniform_int_distribution<size_t>(0, nb % vec_it[index_room]->second.getCollidablePropList()
-																					  .size());
+		distri_max  = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
+																				 .size());
 		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
@@ -328,7 +322,7 @@ void RunnerWorld::generateMiddleRoomList(size_t nb)
 	}
 }
 
-void RunnerWorld::generateBeginEndRoomList(size_t nb)
+void RunnerWorld::generateBeginEndRoomList(void)
 {
 	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
 																		 .find("NormalRoomEmpty"),
@@ -366,8 +360,8 @@ void RunnerWorld::generateBeginEndRoomList(size_t nb)
 		this->_room_list[i + 15]->translateObject(glm::vec3(13.2f * (i + 15), 0.0f, 0.0f));
 		distri_prop = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
 																				 .size() - 1);
-		distri_max  = std::uniform_int_distribution<size_t>(0, nb % vec_it[index_room]->second.getCollidablePropList()
-																					  .size());
+		distri_max  = std::uniform_int_distribution<size_t>(0, vec_it[index_room]->second.getCollidablePropList()
+																				 .size());
 		if (index_room % vec_it.size())
 		{
 			max_obs = distri_max(generator);
@@ -664,7 +658,7 @@ inline void RunnerWorld::_check_collisions(void)
 				this->_room_list[i]->translateObject(glm::vec3(-13.2f * 15, 0.0f, 0.0f));
 			}
 			this->_laps++;
-			this->generateMiddleRoomList(this->_laps);
+			this->generateMiddleRoomList();
 //			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 			return;
@@ -676,7 +670,7 @@ inline void RunnerWorld::_check_collisions(void)
 		if (it2->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
 														  inv_delta, &res))
 		{
-			this->generateBeginEndRoomList(this->_laps);
+			this->generateBeginEndRoomList();
 //			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 			should_trigger_regen_end = false;
 		}

@@ -64,7 +64,7 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	FallMiddleRoomEmpty(**world, oGL);
 	FallMiddleRoomObstacle(**world, oGL);
 	(*world)->initRoomList();
-	(*world)->generateInitialRoomList(5);
+	(*world)->generateInitialRoomList();
 //	(*world)->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 }
 
