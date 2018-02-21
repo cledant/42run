@@ -15,6 +15,17 @@
 
 # include "Runner/RunnerWorld.hpp"
 
+/*
+ * Init
+ */
+
+void initBonusParams(CollidableProp::Params &bonus_params, oGL_module &oGL);
+void initObstacleParams(CollidableProp::Params &obstacle_params, oGL_module &oGL);
+
+/*
+ * Rooms
+ */
+
 void NormalRoomEmpty(RunnerWorld &world, oGL_module &oGL);
 void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL);
 void NormalRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL);

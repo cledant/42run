@@ -38,7 +38,7 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 	this->_gamepad.printJoystickInfo(GLFW_JOYSTICK_1);
 	this->_room_list.reserve(RunnerWorld::list_size);
 	this->_camera.setLockCam(true);
-	this->_camera.setPitch(-15.0f);
+	this->_camera.setPitch(-20.0f);
 	this->_camera.setDistToTarget(5.0f);
 	this->_check_stuck = std::vector<float>(MAX_STUCK_FRAME, 100000.0f);
 }

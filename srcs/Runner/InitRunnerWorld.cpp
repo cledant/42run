@@ -36,6 +36,7 @@ static void init_oGL(oGL_module &oGL)
 				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	oGL.add_model("cola", "./models/cola/cola.obj");
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
+	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.3ds");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);

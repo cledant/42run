@@ -37,7 +37,7 @@
 
 # define RUNNER_FOV_MIN 0.1f
 # define RUNNER_FOV_MAX 40.0f
-# define DEBUG_FORCE_ROOM 3
+# define DEBUG_FORCE_ROOM 2
 # define DEBUG_FORCE_PROP true
 # define MAX_STUCK_FRAME 10
 # define INITIAL_MAX_SPAWN_CHANCE 100
