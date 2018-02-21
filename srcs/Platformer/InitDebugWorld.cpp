@@ -73,6 +73,7 @@ static void init_oGL(oGL_module &oGL)
 	oGL.add_model("Alice", "./models/Alice/Alice.obj");
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
 	oGL.add_model("cola", "./models/cola/cola.obj");
+	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.3ds");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
@@ -86,7 +87,7 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 	params.cb_shader              = &(oGL.getShader("cubemap"));
 	params.shader                 = &(oGL.getShader("sprites"));
 	params.pos                    = glm::vec3({0.0f, 15.0f, 0.0f});
-	params.size                   = glm::vec3({0.1f, 0.2f, 0.1f});
+	params.size                   = glm::vec3({0.3f, 0.5f, 0.3f});
 	params.cb_model               = &(oGL.getModel("TestBox"));
 	params.tex                    = &(oGL.getTexture("sprite_marisa"));
 	params.sprite_tex_size_offset = glm::vec4(0.093f, 0.125f, 0.0f, 0.0f);
@@ -104,6 +105,7 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	Player::Params         player_params;
 	CollidableProp::Params bonus_params;
 	CollidableProp::Params damage_box_params;
+	CollidableProp::Params cola_machine;
 	CollidableBox::Params  box_1;
 	CollidableBox::Params  box_2;
 	CollidableBox::Params  box_3;
@@ -160,14 +162,14 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 
 	bonus_params.prop_params.shader      = &(oGL.getShader("prop"));
 	bonus_params.prop_params.model       = &(oGL.getModel("cola"));
-	bonus_params.prop_params.pos         = glm::vec3(0.0f, 0.5f, 0.0f);
-	bonus_params.prop_params.scale       = glm::vec3(0.015f, 0.015f, 0.015f);
+	bonus_params.prop_params.pos         = glm::vec3(10.0f, 0.8f, 5.0f);
+	bonus_params.prop_params.scale       = glm::vec3(0.03f, 0.03f, 0.03f);
 	bonus_params.prop_params.orientation = glm::vec3(0.0f, 20.0f, 0.0f);
 	bonus_params.cb                      = CollisionBox(bonus_params.prop_params.pos,
-														glm::vec3(0.07f, 0.07f, 0.07f));
+														glm::vec3(0.14f));
 	bonus_params.dmg                     = ICollidable::Damages::NONE;
 	bonus_params.pick_up                 = std::string("bonus");
-	bonus_params.passthrough             = true;
+	bonus_params.passthrough             = false;
 	bonus_params.score_modifier          = 1000;
 	bonus_params.auto_rotation           = true;
 	(*world)->add_CollidableProp(bonus_params);
@@ -185,6 +187,17 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	room = dynamic_cast<Room *>((*world)->add_Room(room_params));
 	room->translateObject(glm::vec3(4.0f, 2.0f, 2.0f));
 	room->scaleObject(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	cola_machine.prop_params.shader      = &(oGL.getShader("prop"));
+	cola_machine.prop_params.model       = &(oGL.getModel("cola_machine"));
+	cola_machine.prop_params.pos         = glm::vec3(10.0f, 0.5f, 0.0f);
+	cola_machine.prop_params.scale       = glm::vec3(0.006f);
+	cola_machine.prop_params.offset      = glm::vec3(0.0f, 0.0f, 0.2f);
+	cola_machine.prop_params.orientation = glm::vec3(0.0f, -90.0f, 0.0f);
+	cola_machine.cb                      = CollisionBox(cola_machine.prop_params.pos,
+														glm::vec3(0.1f, 0.7f, 0.1f));
+	cola_machine.dmg                     = ICollidable::Damages::NONE;
+	(*world)->add_CollidableProp(cola_machine);
 }
 
 static void init_audio(Audio &audio)
