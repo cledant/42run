@@ -640,25 +640,13 @@ inline void RunnerWorld::_check_collisions(void)
 	CollisionBox::SweepResolution nearest;
 	ICollidable const             *ptr                     = nullptr;
 	Room                          *cur_room                = nullptr;
+	Room                          *next_room               = nullptr;
 	static bool                   should_trigger_regen_end = false;
 
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
 	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
-/*
- * Check if Player is in a room
- */
-	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
-	{
-		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
-				IsBoxInBox((*it)->getCollisionBox(), nullptr)))
-			cur_room = *it;
-	}
-	if (cur_room == nullptr)
-	{
-		dynamic_cast<Player *>(this->_active)->lowerHP(Player::INSTANT_DEATH);
-		return;
-	}
+
 /*
  * Check teleport and room generation trigger;
  */
@@ -680,7 +668,6 @@ inline void RunnerWorld::_check_collisions(void)
 			this->generateMiddleRoomList();
 //			this->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
-			return;
 		}
 	}
 	auto it2 = this->_list_collidable_box.find("regen_end_trigger");
@@ -695,55 +682,70 @@ inline void RunnerWorld::_check_collisions(void)
 		}
 	}
 /*
+ * Check if Player is in a room
+ */
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
+	{
+		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
+				IsBoxInBox((*it)->getCollisionBox(), nullptr)))
+		{
+			cur_room  = *it;
+			next_room = ((it++) == this->_room_list.end()) ? nullptr : *(it++);
+		}
+	}
+	if (cur_room == nullptr)
+	{
+		dynamic_cast<Player *>(this->_active)->lowerHP(Player::INSTANT_DEATH);
+		return;
+	}
+/*
  * Check actual collisions
  */
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 	{
 		if ((*it)->getActive())
 		{
-			this->_check_collidable_box((*it)->getFloor(), &nearest, inv_delta, &ptr);
 			this->_check_collidable_box((*it)->getRoof(), &nearest, inv_delta, &ptr);
 			this->_check_collidable_box((*it)->getRightWall(), &nearest, inv_delta, &ptr);
 			this->_check_collidable_box((*it)->getLeftWall(), &nearest, inv_delta, &ptr);
+			this->_check_collidable_box((*it)->getFloor(), &nearest, inv_delta, &ptr);
 			if ((*it)->getFrontWall().getActive())
 				this->_check_collidable_box((*it)->getFrontWall(), &nearest, inv_delta, &ptr);
 			if (ptr == &((*it)->getRightWall()))
 				reinterpret_cast<Player *>(this->_active)->setDisableRight(true);
 			else if (ptr == &((*it)->getLeftWall()))
 				reinterpret_cast<Player *>(this->_active)->setDisableLeft(true);
-			if (ptr == nullptr)
+
+		}
+	}
+	for (auto it = cur_room->getCollidablePropList().begin(); it != cur_room->getCollidablePropList()
+																			.end(); ++it)
+	{
+		if ((*it).second.getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
+				IsBoxInBoxSweep((*it).second.getCollisionBox(), inv_delta, &res)))
+		{
+			if ((*it).second.getPassthrough())
 			{
-				for (auto it = cur_room->getCollidablePropList().begin(); it != cur_room->getCollidablePropList()
-																						.end(); ++it)
+				if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
+					(*it).second.getDamages() != ICollidable::Damages::NONE)
 				{
-					if ((*it).second.getActive() && (reinterpret_cast<Player *>(this->_active)->getCollisionBox().
-							IsBoxInBoxSweep((*it).second.getCollisionBox(), inv_delta, &res)))
-					{
-						if ((*it).second.getPassthrough())
-						{
-							if (!reinterpret_cast<Player *>(this->_active)->isImmune() &&
-								(*it).second.getDamages() != ICollidable::Damages::NONE)
-							{
-								reinterpret_cast<Player *>(this->_active)->lowerHP((*it).second.getDamages());
-								reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
-								reinterpret_cast<Player *>(this->_active)->playSound("damage");
-							}
-							reinterpret_cast<Player *>(this->_active)->playSound((*it).second.getPickUpSound());
-							this->_score_modifier += (*it).second.getScoreModifier();
-							const_cast<CollidableProp &>((*it).second).setActive(false);
-						}
-						else if (ptr == nullptr)
-						{
-							ptr = (&(*it).second);
-							std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
-						}
-						else if (res.time < nearest.time)
-						{
-							ptr = (&(*it).second);
-							std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
-						}
-					}
+					reinterpret_cast<Player *>(this->_active)->lowerHP((*it).second.getDamages());
+					reinterpret_cast<Player *>(this->_active)->setImmunityTimerToMax();
+					reinterpret_cast<Player *>(this->_active)->playSound("damage");
 				}
+				reinterpret_cast<Player *>(this->_active)->playSound((*it).second.getPickUpSound());
+				this->_score_modifier += (*it).second.getScoreModifier();
+				const_cast<CollidableProp &>((*it).second).setActive(false);
+			}
+			else if (ptr == nullptr)
+			{
+				ptr = (&(*it).second);
+				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
+			}
+			else if (res.time < nearest.time)
+			{
+				ptr = (&(*it).second);
+				std::memcpy(&nearest, &res, sizeof(CollisionBox::SweepResolution));
 			}
 		}
 	}
@@ -817,7 +819,7 @@ inline void RunnerWorld::_add_pos_for_check(glm::vec3 const &pos)
 {
 	static size_t i = 0;
 
-	this->_check_stuck[i] = pos.x;
+	this->_check_stuck[i] = std::trunc(pos.x);
 	i = (i == MAX_STUCK_FRAME - 1) ? 0 : (i + 1);
 }
 
