@@ -34,11 +34,19 @@ class Sprite : public IEntity
 		Sprite(Sprite const &src) = delete;
 		Sprite &operator=(Sprite const &rhs) = delete;
 
+		/*
+		 * Setter
+		 */
+
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);
 		void setYaw(float yaw);
 		void setSpriteX(size_t pos_x);
 		void setSpriteY(size_t pos_y);
+
+		/*
+		 * Getter
+		 */
 
 		glm::mat4 const &getTotalMatrix(void) const;
 		size_t getNbOfWalkFrame(void) const;
@@ -48,6 +56,7 @@ class Sprite : public IEntity
 		/*
 		 * IEntity Interface
 		 */
+
 		void update(float time);
 		void draw(void);
 

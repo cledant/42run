@@ -43,7 +43,6 @@ Sprite::Sprite(Shader const *shader, glm::mat4 const *perspec_mult_view,
 		std::cout << e.what() << std::endl;
 		throw Sprite::InitException();
 	}
-	(void) this->_nb_walk_frame;
 }
 
 Sprite::~Sprite(void)
@@ -51,6 +50,10 @@ Sprite::~Sprite(void)
 	oGL_module::oGL_delete_vao(this->_vao);
 	oGL_module::oGL_delete_vbo(this->_vbo);
 }
+
+/*
+ * Setter
+ */
 
 void Sprite::setPosition(glm::vec3 const &pos)
 {
@@ -77,6 +80,10 @@ void Sprite::setSpriteY(size_t pos_y)
 	this->_sprite_y = pos_y;
 }
 
+/*
+ * Getter
+ */
+
 glm::mat4 const &Sprite::getTotalMatrix(void) const
 {
 	return (this->_total);
@@ -102,6 +109,10 @@ GLuint Sprite::moveVBO(void)
 	this->_vbo = 0;
 	return (tmp);
 }
+
+/*
+ * IEntity Interface
+ */
 
 void Sprite::update(float time)
 {
