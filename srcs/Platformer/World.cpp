@@ -198,11 +198,20 @@ IEntity *World::add_Room(Room::Params &params)
 	return (ptr);
 }
 
+IEntity *World::add_OrientableShaderSurface(OrientableShaderSurface::Params &params)
+{
+	IEntity *ptr;
+
+	params.perspec_mult_view = &(this->_perspec_mult_view);
+	ptr = new OrientableShaderSurface(params);
+	this->_entity_list.push_back(ptr);
+	return (ptr);
+}
+
 void World::setActiveInteractive(IInteractive *ptr)
 {
 	this->_active = ptr;
 }
-
 
 void World::updatePerspective(float fov)
 {

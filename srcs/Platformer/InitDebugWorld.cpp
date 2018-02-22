@@ -64,6 +64,9 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/fontset/fontset.fs");
 	oGL.add_shader("sprites", "./shaders/sprites/sprites.vs",
 				   "./shaders/sprites/sprites.fs");
+	oGL.add_shader("title_screen_orientable",
+				   "./shaders/title_screen_orientable/title_screen_orientable.vs",
+				   "./shaders/title_screen_orientable/title_screen_orientable.fs");
 	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
 				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
 				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
@@ -102,16 +105,17 @@ static void set_player_params(Player::Params &params, oGL_module &oGL, Audio &au
 static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 							 World **world, Audio &audio)
 {
-	Player::Params         player_params;
-	CollidableProp::Params bonus_params;
-	CollidableProp::Params damage_box_params;
-	CollidableProp::Params cola_machine;
-	CollidableBox::Params  box_1;
-	CollidableBox::Params  box_2;
-	CollidableBox::Params  box_3;
-	CollidableBox::Params  box_4;
-	Room::Params           room_params;
-	Room                   *room;
+	Player::Params                  player_params;
+	CollidableProp::Params          bonus_params;
+	CollidableProp::Params          damage_box_params;
+	CollidableProp::Params          cola_machine;
+	CollidableBox::Params           box_1;
+	CollidableBox::Params           box_2;
+	CollidableBox::Params           box_3;
+	CollidableBox::Params           box_4;
+	Room::Params                    room_params;
+	OrientableShaderSurface::Params oss_params;
+	Room                            *room;
 
 	(*world) = new World(manager.getInput(), manager.getWindow(), manager.getGamepad(),
 						 glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10);
@@ -198,6 +202,13 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 														glm::vec3(0.1f, 0.7f, 0.1f));
 	cola_machine.dmg                     = ICollidable::Damages::NONE;
 	(*world)->add_CollidableProp(cola_machine);
+
+	oss_params.win    = &(manager.getWindow());
+	oss_params.input  = &(manager.getInput());
+	oss_params.shader = &oGL.getShader("title_screen_orientable");
+	oss_params.pos    = glm::vec3(10.0f, 3.0f, 20.0f);
+	oss_params.scale  = glm::vec3(2.0f, 2.0f, 2.0f);
+	(*world)->add_OrientableShaderSurface(oss_params);
 }
 
 static void init_audio(Audio &audio)

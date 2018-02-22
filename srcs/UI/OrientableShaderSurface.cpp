@@ -20,7 +20,7 @@ OrientableShaderSurface::Params::Params(void)
 	this->perspec_mult_view = nullptr;
 	this->pos               = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->offset            = glm::vec3(0.0f, 0.0f, 0.0f);
-	this->scale             = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->scale             = glm::vec3(1.0f, 1.0f, 1.0f);
 	this->orientation       = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
@@ -29,7 +29,8 @@ OrientableShaderSurface::Params::~Params(void)
 }
 
 OrientableShaderSurface::OrientableShaderSurface(OrientableShaderSurface::Params const &params) :
-		ShaderSurface(params.win, params.input, params.shader), _pos(params.pos),
+		ShaderSurface(params.win, params.input, params.shader),
+		_perspec_mult_view(params.perspec_mult_view), _pos(params.pos),
 		_offset(params.offset), _scale(params.scale), _orientation(params.orientation)
 {
 	this->update(0.0f);
@@ -37,6 +38,24 @@ OrientableShaderSurface::OrientableShaderSurface(OrientableShaderSurface::Params
 
 OrientableShaderSurface::~OrientableShaderSurface(void)
 {
+}
+
+OrientableShaderSurface::OrientableShaderSurface(OrientableShaderSurface &&src) :
+		ShaderSurface(src.getWindow(), src.getInput(), src.getShader())
+{
+	*this = std::move(src);
+}
+
+OrientableShaderSurface &OrientableShaderSurface::operator=(OrientableShaderSurface &&rhs)
+{
+	ShaderSurface::operator=(std::move(rhs));
+	this->_perspec_mult_view = rhs.getPerspecMultView();
+	this->_total             = rhs.getTotalMatrix();
+	this->_pos               = rhs.getPos();
+	this->_scale             = rhs.getScale();
+	this->_offset            = rhs.getOffset();
+	this->_offset            = rhs.getOrientation();
+	return (*this);
 }
 
 /*

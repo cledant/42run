@@ -30,6 +30,7 @@
 # include "GameEntities/composed/CollidableBox.hpp"
 # include "GameEntities/composed/CollidableProp.hpp"
 # include "GameEntities/composed/Room.hpp"
+# include "UI/OrientableShaderSurface.hpp"
 # include "WindowManager/Window.hpp"
 # include "WindowManager/Input.hpp"
 # include <iostream>
@@ -57,6 +58,7 @@ class World
 		IEntity *add_CollidableBox(CollidableBox::Params &params);
 		IEntity *add_CollidableProp(CollidableProp::Params &params);
 		IEntity *add_Room(Room::Params &params);
+		IEntity *add_OrientableShaderSurface(OrientableShaderSurface::Params &params);
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);
