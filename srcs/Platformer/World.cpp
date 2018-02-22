@@ -94,9 +94,9 @@ void World::update(void)
 			else
 				std::cout << "Gamepad not connected anymore" << std::endl;
 		}
-		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_delta_tick);
+		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_tick);
 		this->_check_collisions();
-		reinterpret_cast<Player *>(this->_active)->update(this->_delta_tick);
+		reinterpret_cast<Player *>(this->_active)->update(this->_tick);
 		this->_camera.update_third_person(this->_input.mouse_exclusive,
 										  reinterpret_cast<Player *>(this->_active)->getPos(),
 										  this->_enabled_gamepad);
@@ -105,7 +105,7 @@ void World::update(void)
 		reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
 	}
 	for (it = this->_entity_list.begin(); it != this->_entity_list.end(); ++it)
-		(*it)->update(this->_delta_tick);
+		(*it)->update(this->_tick);
 }
 
 void World::render(void)
