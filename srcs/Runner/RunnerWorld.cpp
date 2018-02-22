@@ -108,9 +108,9 @@ void RunnerWorld::update(void)
 			else
 				std::cout << "Gamepad not connected anymore" << std::endl;
 		}
-		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_delta_tick);
+		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_tick);
 		this->_check_collisions();
-		reinterpret_cast<Player *>(this->_active)->update(this->_delta_tick);
+		reinterpret_cast<Player *>(this->_active)->update(this->_tick);
 		this->_camera.update_third_person(this->_input.mouse_exclusive,
 										  reinterpret_cast<Player *>(this->_active)->getPos(),
 										  this->_enabled_gamepad);
@@ -130,10 +130,10 @@ void RunnerWorld::update(void)
 		}
 	}
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
-		(*it)->update(this->_delta_tick);
+		(*it)->update(this->_tick);
 	auto      it = this->_list_collidable_box.find("tp_trigger");
 	if (it != this->_list_collidable_box.end())
-		it->second.update(this->_delta_tick);
+		it->second.update(this->_tick);
 }
 
 void RunnerWorld::render(void)
