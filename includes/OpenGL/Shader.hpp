@@ -39,6 +39,8 @@ class Shader
 		void use(void) const;
 		void setMat4(GLint uniform_id,
 					 glm::mat4 const &mat4) const;
+		void setVec4(GLint uniform_id,
+					 glm::vec4 const &float4) const;
 		void setVec3(GLint uniform_id,
 					 glm::vec3 const &float3) const;
 		void setVec2(GLint uniform_id,

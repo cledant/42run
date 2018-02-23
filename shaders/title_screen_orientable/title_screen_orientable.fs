@@ -2,6 +2,8 @@
 
 uniform vec2 uniform_resolution;
 uniform float uniform_time;
+uniform mat4 uniform_inv_total_matrix;
+uniform vec4 uniform_viewport;
 
 out vec4 color;
 
@@ -11,7 +13,18 @@ void main(void)
     float speed = 0.02;
     float frame_time = 0.013;
 
-    vec2 uv = gl_FragCoord.xy / uniform_resolution.xy;
+    //Window space to world space conversion
+    vec4 ndcPos;
+    ndcPos.xy = ((2.0 * gl_FragCoord.xy) - (2.0 * uniform_viewport.xy)) / (uniform_viewport.zw) - 1;
+    ndcPos.z = (2.0 * gl_FragCoord.z - gl_DepthRange.near - gl_DepthRange.far) /
+        (gl_DepthRange.far - gl_DepthRange.near);
+    ndcPos.w = 1.0;
+    vec4 clipPos = ndcPos / gl_FragCoord.w;
+    vec4 eyePos = uniform_inv_total_matrix * clipPos;
+
+
+    //Actual Shader
+    vec2 uv = eyePos.xy;
 
     float fishEyeCorrection = uniform_resolution.y / uniform_resolution.x;
 

@@ -147,6 +147,8 @@ void OrientableShaderSurface::draw(void)
 	GLint id_time;
 	GLint id_resolution;
 	GLint id_total_matrix;
+	GLint id_inv_total_matrix;
+	GLint id_viewport;
 
 	if (this->_shader == nullptr || this->_win == nullptr ||
 		!oGL_module::oGL_getUniformID("uniform_time",
@@ -157,7 +159,13 @@ void OrientableShaderSurface::draw(void)
 									  &id_resolution) ||
 		!oGL_module::oGL_getUniformID("uniform_total_matrix",
 									  this->_shader->getShaderProgram(),
-									  &id_total_matrix))
+									  &id_total_matrix) ||
+		!oGL_module::oGL_getUniformID("uniform_inv_total_matrix",
+									  this->_shader->getShaderProgram(),
+									  &id_inv_total_matrix) ||
+		!oGL_module::oGL_getUniformID("uniform_viewport",
+									  this->_shader->getShaderProgram(),
+									  &id_viewport))
 	{
 		std::cout << "Warning : Can't draw ShaderSurface" << std::endl;
 		return;
@@ -167,5 +175,8 @@ void OrientableShaderSurface::draw(void)
 													this->_win->cur_win_h});
 	this->_shader->setFloat(id_time, Glfw_manager::getTime());
 	this->_shader->setMat4(id_total_matrix, this->_total);
+	this->_shader->setMat4(id_inv_total_matrix, glm::inverse(this->_total));
+	this->_shader->setVec4(id_viewport, glm::vec4{0, 0, this->_win->cur_win_w,
+												  this->_win->cur_win_h});
 	oGL_module::oGL_draw_filled(this->_vao, ShaderSurface::_nb_faces);
 }

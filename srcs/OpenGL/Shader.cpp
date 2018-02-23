@@ -87,6 +87,12 @@ void Shader::setMat4(GLint uniform_id, glm::mat4 const &mat4) const
 					   reinterpret_cast<const GLfloat *>(&mat4));
 }
 
+void Shader::setVec4(GLint uniform_id, glm::vec4 const &float4) const
+{
+	glUniform4fv(uniform_id, 1, reinterpret_cast<const GLfloat *>(&float4));
+}
+
+
 void Shader::setVec3(GLint uniform_id, glm::vec3 const &float3) const
 {
 	glUniform3fv(uniform_id, 1, reinterpret_cast<const GLfloat *>(&float3));
