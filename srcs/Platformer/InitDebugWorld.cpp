@@ -203,11 +203,12 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	cola_machine.dmg                     = ICollidable::Damages::NONE;
 	(*world)->add_CollidableProp(cola_machine);
 
-	oss_params.win    = &(manager.getWindow());
-	oss_params.input  = &(manager.getInput());
-	oss_params.shader = &oGL.getShader("title_screen_orientable");
-	oss_params.pos    = glm::vec3(10.0f, 3.0f, 20.0f);
-	oss_params.scale  = glm::vec3(2.0f, 2.0f, 2.0f);
+	oss_params.win         = &(manager.getWindow());
+	oss_params.input       = &(manager.getInput());
+	oss_params.shader      = &oGL.getShader("title_screen_orientable");
+	oss_params.pos         = glm::vec3(10.0f, 3.0f, 20.0f);
+	oss_params.scale       = glm::vec3(2.0f, 2.0f, 2.0f);
+	oss_params.orientation = glm::vec3(0.0f, 180.0f, 0.0f);
 	(*world)->add_OrientableShaderSurface(oss_params);
 }
 

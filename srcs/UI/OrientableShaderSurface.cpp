@@ -167,7 +167,7 @@ void OrientableShaderSurface::draw(void)
 									  this->_shader->getShaderProgram(),
 									  &id_viewport))
 	{
-		std::cout << "Warning : Can't draw ShaderSurface" << std::endl;
+		std::cout << "Warning : Can't draw OrientableShaderSurface" << std::endl;
 		return;
 	}
 	this->_shader->use();
