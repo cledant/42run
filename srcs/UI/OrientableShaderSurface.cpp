@@ -144,7 +144,6 @@ void OrientableShaderSurface::update(float time)
 void OrientableShaderSurface::draw(void)
 {
 	GLint id_time;
-	GLint id_resolution;
 	GLint id_total_matrix;
 	GLint id_inv_total_matrix;
 	GLint id_viewport;
@@ -153,9 +152,6 @@ void OrientableShaderSurface::draw(void)
 		!oGL_module::oGL_getUniformID("uniform_time",
 									  this->_shader->getShaderProgram(),
 									  &id_time) ||
-		!oGL_module::oGL_getUniformID("uniform_resolution",
-									  this->_shader->getShaderProgram(),
-									  &id_resolution) ||
 		!oGL_module::oGL_getUniformID("uniform_total_matrix",
 									  this->_shader->getShaderProgram(),
 									  &id_total_matrix) ||
@@ -170,8 +166,6 @@ void OrientableShaderSurface::draw(void)
 		return;
 	}
 	this->_shader->use();
-	this->_shader->setVec2(id_resolution, glm::vec2{this->_win->cur_win_w,
-													this->_win->cur_win_h});
 	this->_shader->setFloat(id_time, Glfw_manager::getTime());
 	this->_shader->setMat4(id_total_matrix, this->_total);
 	this->_shader->setMat4(id_inv_total_matrix, glm::inverse(this->_total));

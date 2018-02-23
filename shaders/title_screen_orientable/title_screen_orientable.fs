@@ -1,6 +1,5 @@
 #version 410 core
 
-uniform vec2 uniform_resolution;
 uniform float uniform_time;
 uniform mat4 uniform_inv_total_matrix;
 uniform vec4 uniform_viewport;
@@ -26,7 +25,7 @@ void main(void)
 
     vec2 uv = (eyePos.xy + vec2(1.0, 1.0)) / vec2(2.0, 2.0);
 
-    float fishEyeCorrection = uniform_resolution.y / uniform_resolution.x;
+    float fishEyeCorrection = uniform_viewport.w / uniform_viewport.z;
 
     vec3 base_color = vec3(uv, 0.5 + 0.5 * sin(uniform_time));
 

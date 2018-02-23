@@ -28,14 +28,15 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/sprites/sprites.fs");
 	oGL.add_shader("title_screen", "./shaders/title_screen/title_screen.vs",
 				   "./shaders/title_screen/title_screen.fs");
+	oGL.add_shader("title_screen_orientable",
+				   "./shaders/title_screen_orientable/title_screen_orientable.vs",
+				   "./shaders/title_screen_orientable/title_screen_orientable.fs");
+	oGL.add_shader("circle", "./shaders/circle/circle.vs",
+				   "./shaders/circle/circle.fs");
 	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
 				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
 				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
-	oGL.add_model("Skybox", Cubemap::vertices, Cubemap::nb_faces,
-				  {"./textures/skybox/right.jpg", "./textures/skybox/left.jpg", "./textures/skybox/top.jpg", "./textures/skybox/bottom.jpg", "./textures/skybox/back.jpg", "./textures/skybox/front.jpg"},
-				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
 	oGL.add_model("cola", "./models/cola/cola.obj");
-	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
 	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.3ds");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
