@@ -75,6 +75,11 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 							trigger_pause, trigger_reset);
 				if (!trigger_pause)
 					world.update();
+				else if (trigger_pause && manager.getWindow().resized)
+				{
+					world.updatePerspective(world.getFov());
+					world.updateMatrix();
+				}
 			}
 			if (!world.isPlayerAlive() || trigger_reset)
 			{

@@ -68,6 +68,7 @@ class RunnerWorld
 		void deletePlayer(void);
 		void deletePlayerShadow(void);
 		void updatePerspective(float fov);
+		void updateMatrix(void);
 		void reset_update_timer(float time);
 		void reset_skip_loop(void);
 		bool should_be_updated(float time);
@@ -102,6 +103,7 @@ class RunnerWorld
 		float getTickRate(void) const;
 		bool isPlayerAlive(void) const;
 		bool isGamepadEnabled(void) const;
+		float getFov(void) const;
 
 		/*
 		 * Setter

@@ -140,9 +140,6 @@ void RunnerWorld::update(void)
 	}
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		(*it)->update(this->_tick);
-	auto      it = this->_list_collidable_box.find("tp_trigger");
-	if (it != this->_list_collidable_box.end())
-		it->second.update(this->_tick);
 }
 
 void RunnerWorld::render(void)
@@ -507,6 +504,20 @@ void RunnerWorld::updatePerspective(float fov)
 										  RUNNER_FOV_MAX);
 }
 
+void RunnerWorld::updateMatrix(void)
+{
+	if (this->_active == nullptr)
+		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
+	else
+	{
+		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
+		reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
+		this->_active_shadow->update(0.0f);
+	}
+	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
+		(*it)->update(this->_tick);
+}
+
 void RunnerWorld::reset_update_timer(float time)
 {
 	this->_next_update_tick = time;
@@ -629,6 +640,11 @@ bool RunnerWorld::isPlayerAlive() const
 bool RunnerWorld::isGamepadEnabled() const
 {
 	return (this->_enabled_gamepad);
+}
+
+float RunnerWorld::getFov(void) const
+{
+	return (this->_fov);
 }
 
 /*
