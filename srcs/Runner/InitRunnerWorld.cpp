@@ -52,9 +52,10 @@ static void initPlayerShadowShader(Glfw_manager &manager, oGL_module &oGL,
 	oss_params.win         = &(manager.getWindow());
 	oss_params.input       = &(manager.getInput());
 	oss_params.shader      = &oGL.getShader("circle");
+	oss_params.offset      = glm::vec3(0.15f, 0.0f, -0.01f);
 	oss_params.pos         = glm::vec3(0.0f, 0.0f, 0.0f);
-	oss_params.scale       = glm::vec3(1.0f, 1.0f, 1.0f);
-	oss_params.orientation = glm::vec3(0.0f, 0.0f, 0.0f);
+	oss_params.scale       = glm::vec3(0.25f, 0.25f, 0.25f);
+	oss_params.orientation = glm::vec3(90.0f, 0.0f, 0.0f);
 }
 
 static void load_runner(Glfw_manager &manager, oGL_module &oGL,

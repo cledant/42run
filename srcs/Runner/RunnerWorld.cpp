@@ -130,6 +130,11 @@ void RunnerWorld::update(void)
 			reinterpret_cast<Player *>(this->_active)->playSound("damage");
 			return;
 		}
+		reinterpret_cast<OrientableShaderSurface *>(this->_active_shadow)->setPosition(
+				glm::vec3(reinterpret_cast<Player *>(this->_active)->getPos().x,
+						  -2.81f,
+						  reinterpret_cast<Player *>(this->_active)->getPos().z));
+		this->_active_shadow->update(0.0f);
 	}
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		(*it)->update(this->_tick);
@@ -143,6 +148,8 @@ void RunnerWorld::render(void)
 	oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		(*it)->draw();
+	if (this->_active_shadow != nullptr)
+		this->_active_shadow->draw();
 	if (this->_active != nullptr)
 		reinterpret_cast<Player *>(this->_active)->draw();
 }
