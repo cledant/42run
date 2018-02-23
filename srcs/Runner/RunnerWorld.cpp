@@ -114,7 +114,9 @@ void RunnerWorld::update(void)
 		this->_check_collisions();
 		reinterpret_cast<Player *>(this->_active)->update(this->_tick);
 		this->_camera.update_third_person(this->_input.mouse_exclusive,
-										  reinterpret_cast<Player *>(this->_active)->getPos(),
+										  glm::vec3(reinterpret_cast<Player *>(this->_active)->getPos().x,
+													CAMERA_HEIGHT,
+													reinterpret_cast<Player *>(this->_active)->getPos().z),
 										  this->_enabled_gamepad);
 		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
 		reinterpret_cast<Player *>(this->_active)->setSpriteYaw(this->_camera.getYaw());
@@ -132,7 +134,7 @@ void RunnerWorld::update(void)
 		}
 		reinterpret_cast<OrientableShaderSurface *>(this->_active_shadow)->setPosition(
 				glm::vec3(reinterpret_cast<Player *>(this->_active)->getPos().x,
-						  -2.81f,
+						  PLAYER_SHADOW_HEIGHT,
 						  reinterpret_cast<Player *>(this->_active)->getPos().z));
 		this->_active_shadow->update(0.0f);
 	}

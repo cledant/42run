@@ -43,6 +43,7 @@
 # define MAX_STUCK_FRAME 15
 # define INITIAL_MAX_SPAWN_CHANCE 100
 # define PLAYER_SHADOW_HEIGHT -2.81f
+# define CAMERA_HEIGHT -2.0f
 
 class RunnerWorld
 {
