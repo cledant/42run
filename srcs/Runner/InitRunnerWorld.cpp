@@ -46,10 +46,21 @@ static void init_oGL(oGL_module &oGL)
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
 }
 
+static void initPlayerShadowShader(Glfw_manager &manager, oGL_module &oGL,
+								   OrientableShaderSurface::Params &oss_params)
+{
+	oss_params.win         = &(manager.getWindow());
+	oss_params.input       = &(manager.getInput());
+	oss_params.shader      = &oGL.getShader("circle");
+	oss_params.pos         = glm::vec3(0.0f, 0.0f, 0.0f);
+	oss_params.scale       = glm::vec3(1.0f, 1.0f, 1.0f);
+	oss_params.orientation = glm::vec3(0.0f, 0.0f, 0.0f);
+}
+
 static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 						RunnerWorld **world)
 {
-	Room::Params room_params;
+	OrientableShaderSurface::Params oss_params;
 
 	(*world) = new RunnerWorld(manager.getInput(), manager.getWindow(), manager.getGamepad(),
 							   glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 10, load_score("./highscore"));
@@ -67,6 +78,8 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	FallMiddleRoomObstacle(**world, oGL);
 	(*world)->initRoomList();
 	(*world)->generateInitialRoomList();
+	initPlayerShadowShader(manager, oGL, oss_params);
+	(*world)->add_PlayerShadow(oss_params);
 //	(*world)->generateDebug(DEBUG_FORCE_ROOM, DEBUG_FORCE_PROP);
 }
 

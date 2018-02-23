@@ -15,7 +15,8 @@
 RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &gamepad,
 						 glm::vec3 cam_pos, float max_fps, size_t max_frame_skip,
 						 long int high_score) :
-		_active(nullptr), _input(input), _window(win), _gamepad(gamepad),
+		_active(nullptr), _active_shadow(nullptr), _input(input),
+		_window(win), _gamepad(gamepad),
 		_camera(input, gamepad, cam_pos, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f),
 				glm::vec3(0.0f, 0.0f, -1.0f), 0.0f, 0.0f),
 		_fov(45.0f), _max_fps(max_fps),
@@ -48,6 +49,7 @@ RunnerWorld::~RunnerWorld(void)
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		delete *it;
 	delete this->_active;
+	delete this->_active_shadow;
 }
 
 void RunnerWorld::update(void)
@@ -466,10 +468,26 @@ IInteractive *RunnerWorld::add_Player(Player::Params &params)
 	return (ptr);
 }
 
+IEntity *RunnerWorld::add_PlayerShadow(OrientableShaderSurface::Params &params)
+{
+	IEntity *ptr;
+
+	params.perspec_mult_view = &(this->_perspec_mult_view);
+	ptr = new OrientableShaderSurface(params);
+	this->_active_shadow = ptr;
+	return (ptr);
+}
+
 void RunnerWorld::deletePlayer(void)
 {
 	delete this->_active;
 	this->_active = nullptr;
+}
+
+void RunnerWorld::deletePlayerShadow(void)
+{
+	delete this->_active_shadow;
+	this->_active_shadow = nullptr;
 }
 
 void RunnerWorld::updatePerspective(float fov)

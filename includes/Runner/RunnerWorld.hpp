@@ -27,6 +27,7 @@
 # include "GameEntities/composed/CollidableBox.hpp"
 # include "GameEntities/composed/CollidableProp.hpp"
 # include "GameEntities/composed/Room.hpp"
+# include "UI/OrientableShaderSurface.hpp"
 # include "WindowManager/Window.hpp"
 # include "WindowManager/Input.hpp"
 # include <iostream>
@@ -61,7 +62,9 @@ class RunnerWorld
 										 std::string const &slot_name,
 										 CollidableProp::Params &params);
 		IInteractive *add_Player(Player::Params &params);
+		IEntity *add_PlayerShadow(OrientableShaderSurface::Params &params);
 		void deletePlayer(void);
+		void deletePlayerShadow(void);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);
 		void reset_skip_loop(void);
@@ -128,6 +131,7 @@ class RunnerWorld
 		std::map<std::string, Room>          _room_template_list;
 		std::vector<Room *>                  _room_list;
 		IInteractive                         *_active;
+		IEntity                              *_active_shadow;
 		Input const                          &_input;
 		GLFW_Window const                    &_window;
 		Gamepad                              &_gamepad;
