@@ -67,6 +67,8 @@ static void init_oGL(oGL_module &oGL)
 	oGL.add_shader("title_screen_orientable",
 				   "./shaders/title_screen_orientable/title_screen_orientable.vs",
 				   "./shaders/title_screen_orientable/title_screen_orientable.fs");
+	oGL.add_shader("circle", "./shaders/circle/circle.vs",
+				   "./shaders/circle/circle.fs");
 	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
 				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
 				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
@@ -207,6 +209,14 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	oss_params.input       = &(manager.getInput());
 	oss_params.shader      = &oGL.getShader("title_screen_orientable");
 	oss_params.pos         = glm::vec3(10.0f, 3.0f, 20.0f);
+	oss_params.scale       = glm::vec3(2.0f, 2.0f, 2.0f);
+	oss_params.orientation = glm::vec3(0.0f, 180.0f, 0.0f);
+	(*world)->add_OrientableShaderSurface(oss_params);
+
+	oss_params.win         = &(manager.getWindow());
+	oss_params.input       = &(manager.getInput());
+	oss_params.shader      = &oGL.getShader("circle");
+	oss_params.pos         = glm::vec3(10.0f, 3.0f, 30.0f);
 	oss_params.scale       = glm::vec3(2.0f, 2.0f, 2.0f);
 	oss_params.orientation = glm::vec3(0.0f, 180.0f, 0.0f);
 	(*world)->add_OrientableShaderSurface(oss_params);

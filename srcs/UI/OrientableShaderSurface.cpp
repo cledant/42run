@@ -122,7 +122,7 @@ glm::vec3 const &OrientableShaderSurface::getOrientation(void) const
 
 void OrientableShaderSurface::update(float time)
 {
-	glm::mat4 model;
+	glm::mat4 model = glm::mat4(1.0f);
 
 	static_cast<void>(time);
 	if (this->_shader == nullptr || this->_perspec_mult_view == nullptr)
@@ -130,7 +130,6 @@ void OrientableShaderSurface::update(float time)
 		std::cout << "Warning : Can't update OrientableShaderSuraface" << std::endl;
 		return;
 	}
-	model = glm::mat4(1.0f);
 	model = glm::translate(model, (this->_pos + this->_offset));
 	model = glm::scale(model, this->_scale);
 	model = glm::rotate(model, glm::radians(-this->_orientation.x),
