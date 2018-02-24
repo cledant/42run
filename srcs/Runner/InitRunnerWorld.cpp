@@ -64,7 +64,7 @@ static void load_runner(Glfw_manager &manager, oGL_module &oGL,
 	OrientableShaderSurface::Params oss_params;
 
 	(*world) = new RunnerWorld(manager.getInput(), manager.getWindow(), manager.getGamepad(),
-							   glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 50, load_score("./highscore"));
+							   glm::vec3(0.0f, 0.0f, 10.0f), 60.0f, 5, load_score("./highscore"));
 	NormalRoomEmpty(**world, oGL);
 	NormalRoomBonusOnly(**world, oGL);
 	NormalRoomObstacleOnly(**world, oGL);
