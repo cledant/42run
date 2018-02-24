@@ -57,7 +57,17 @@ static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_
 	}
 }
 
-bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
+static void blockFramerate(Glfw_manager &manager)
+{
+	static double old_time = 0.0;
+
+	if (old_time == 0.0)
+		old_time = manager.getTime();
+	while (manager.getTime() - old_time < (1.0 / BLOCK_FRAME_RATE));
+	old_time = manager.getTime();
+}
+
+bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, bool vsync)
 {
 	bool trigger_pause = false;
 	bool trigger_reset = false;
@@ -125,6 +135,8 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui)
 									  static_cast<float>(manager.getWindow().cur_win_h) / 2 - 70.0f,
 									  0.7f));
 			}
+			if (vsync)
+				blockFramerate(manager);
 			manager.swap_buffers();
 			if (world.getShouldEnd())
 				manager.triggerWindowClose();

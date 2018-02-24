@@ -151,7 +151,7 @@ int run_runner_world(Glfw_manager &manager, bool vsync, bool force_keyboard)
 	{
 		if (!char_selection_loop(*world, manager, *ui, oGL, audio))
 			return (cleanup(world, ui));
-		if (!main_loop(*world, manager, *ui))
+		if (!main_loop(*world, manager, *ui, vsync))
 			loop = game_over_loop(*world, manager, *ui, oGL, audio);
 		else
 			return (cleanup(world, ui));

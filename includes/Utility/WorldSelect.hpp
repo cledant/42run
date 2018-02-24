@@ -18,6 +18,8 @@
 # include "Runner/RunnerWorld.hpp"
 # include "UI/Ui.hpp"
 
+# define BLOCK_FRAME_RATE 59.95
+
 /*
  * Inits
  */
@@ -35,7 +37,7 @@ bool title_screen_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 					   oGL_module &oGL, Audio &audio);
 bool game_over_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui,
 					oGL_module &oGL, Audio &audio);
-bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui);
+bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, bool vsync);
 void loop_input(bool enabled_gamepad, Glfw_manager &manager, float tick_rate,
 				bool &trigger_selection, int &char_type);
 
