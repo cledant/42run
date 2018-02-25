@@ -36,6 +36,7 @@ static void init_oGL(oGL_module &oGL)
 	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
 				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
 				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_framebuffer("render", MAX_WIN_H, MAX_WIN_W);
 	oGL.add_model("cola", "./models/cola/cola.obj");
 	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.3ds");
 	oGL.add_texture("sprite_reimu",
@@ -151,7 +152,7 @@ int run_runner_world(Glfw_manager &manager, bool vsync, bool force_keyboard)
 	{
 		if (!char_selection_loop(*world, manager, *ui, oGL, audio))
 			return (cleanup(world, ui));
-		if (!main_loop(*world, manager, *ui, vsync))
+		if (!main_loop(*world, manager, *ui, oGL, vsync))
 			loop = game_over_loop(*world, manager, *ui, oGL, audio);
 		else
 			return (cleanup(world, ui));
