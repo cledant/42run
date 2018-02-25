@@ -69,19 +69,22 @@ static void blockFramerate(Glfw_manager &manager)
 
 bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL, bool vsync)
 {
-	bool trigger_pause = false;
-	bool trigger_reset = false;
-/*	std::unique_ptr<???> fb_surface;
+	bool                                  trigger_pause = false;
+	bool                                  trigger_reset = false;
+	std::unique_ptr<TextureShaderSurface> fb_surface    = nullptr;
 
 	try
 	{
-		fb_surface = std::make_unique<???>();
+		fb_surface = std::make_unique<TextureShaderSurface>(&manager.getWindow(),
+															&manager.getInput(),
+															&oGL.getShader("texture_window"),
+															oGL.getFramebuffer("render").getTextureColorBuffer());
 	}
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl << "Error allocating Surface" << std::endl;
 		return (false);
-	}*/
+	}
 	(void) oGL;
 	world.playPlayerTheme();
 	manager.reset_fps_counter();
@@ -111,14 +114,20 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oG
 				world.deletePlayer();
 				return (false);
 			}
-//			oGL.getFramebuffer("render").useFramebuffer();
+
+			//Rending World into a custom framebuffer
+			oGL.getFramebuffer("render").useFramebuffer();
+			oGL_module::oGL_enable_depth();
 			oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
 			world.render();
+			oGL_module::oGL_disable_depth();
 
-//			oGL.getFramebuffer("render").defaultFramebuffer();
-//			oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
+			//Displaying world into default framebuffer
+			oGL.getFramebuffer("render").defaultFramebuffer();
+			oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
+			fb_surface->draw();
 
-
+			//Displaying text into default framebuffer
 			manager.calculate_fps();
 			ui.drawText("roboto", "42Run : " + manager.getStrFps() + " fps",
 						glm::vec3(0.4f, 0.4f, 0.4f),

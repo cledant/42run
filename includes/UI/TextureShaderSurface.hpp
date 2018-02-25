@@ -15,17 +15,18 @@
 
 # include "UI/ShaderSurface.hpp"
 
-class TextueShaderSurface : public ShaderSurface
+class TextureShaderSurface : public ShaderSurface
 {
 	public :
 
-		TextueShaderSurface(GLFW_Window const *win, Input const *input, Shader const *shader,
-							GLuint tex_id);
-		virtual ~TextueShaderSurface(void);
-		TextueShaderSurface(TextueShaderSurface const &src) = delete;
-		TextueShaderSurface &operator=(TextueShaderSurface const &rhs) = delete;
-		TextueShaderSurface(TextueShaderSurface &&src);
-		TextueShaderSurface &operator=(TextueShaderSurface &&rhs);
+		TextureShaderSurface(void);
+		TextureShaderSurface(GLFW_Window const *win, Input const *input, Shader const *shader,
+							 GLuint tex_id);
+		virtual ~TextureShaderSurface(void);
+		TextureShaderSurface(TextureShaderSurface const &src) = delete;
+		TextureShaderSurface &operator=(TextureShaderSurface const &rhs) = delete;
+		TextureShaderSurface(TextureShaderSurface &&src);
+		TextureShaderSurface &operator=(TextureShaderSurface &&rhs);
 
 		/*
 		 * Getter
@@ -37,7 +38,7 @@ class TextueShaderSurface : public ShaderSurface
 		 * Setter
 		 */
 
-		void setTextureID(void) const;
+		void setTextureID(GLuint id);
 
 		/*
 		 * Interface IEntity
@@ -50,7 +51,7 @@ class TextueShaderSurface : public ShaderSurface
 
 		GLuint _tex_id;
 
-		virtual void _allocate_buffer(void);
+		void _allocate_tex_buffer(void);
 
 		static float  _tex_vertices[];
 		static size_t _tex_nb_faces;

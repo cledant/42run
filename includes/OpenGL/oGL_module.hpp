@@ -47,6 +47,7 @@ class oGL_module
 		static void oGL_clear_buffer(float r, float g, float b);
 		static void oGL_update_framebuffer(int width, int height);
 		static void oGL_enable_depth(void);
+		static void oGL_disable_depth(void);
 		static bool oGL_getUniformID(std::string const &name,
 									 GLuint prog, GLint *uniform_id);
 		static void oGL_set_texture(GLint tex_uniform, GLint tex_index, GLuint tex_id);

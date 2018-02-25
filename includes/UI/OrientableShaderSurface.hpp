@@ -35,6 +35,7 @@ class OrientableShaderSurface : public ShaderSurface
 			glm::vec3         orientation;
 		};
 
+		OrientableShaderSurface(void);
 		OrientableShaderSurface(OrientableShaderSurface::Params const &params);
 		virtual ~OrientableShaderSurface(void);
 		OrientableShaderSurface(OrientableShaderSurface const &src) = delete;
@@ -70,8 +71,6 @@ class OrientableShaderSurface : public ShaderSurface
 		virtual void draw(void);
 
 	protected :
-
-		virtual void _allocate_buffer(void);
 
 		glm::mat4 const *_perspec_mult_view;
 		glm::mat4       _total;

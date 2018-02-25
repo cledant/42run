@@ -137,6 +137,11 @@ void oGL_module::oGL_enable_depth(void)
 	glEnable(GL_DEPTH_TEST);
 }
 
+void oGL_module::oGL_disable_depth(void)
+{
+	glDisable(GL_DEPTH_TEST);
+}
+
 bool oGL_module::oGL_getUniformID(std::string const &name,
 								  GLuint prog, GLint *uniform_id)
 {

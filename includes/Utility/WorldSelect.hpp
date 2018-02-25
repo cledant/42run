@@ -17,6 +17,7 @@
 # include "Platformer/World.hpp"
 # include "Runner/RunnerWorld.hpp"
 # include "UI/Ui.hpp"
+# include "UI/TextureShaderSurface.hpp"
 
 # define BLOCK_FRAME_RATE 59.95
 

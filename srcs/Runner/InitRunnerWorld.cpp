@@ -33,6 +33,8 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/title_screen_orientable/title_screen_orientable.fs");
 	oGL.add_shader("circle", "./shaders/circle/circle.vs",
 				   "./shaders/circle/circle.fs");
+	oGL.add_shader("texture_window", "./shaders/texture_window/texture_window.vs",
+				   "./shaders/texture_window/texture_window.fs");
 	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
 				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
 				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);

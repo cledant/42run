@@ -24,6 +24,7 @@ class ShaderSurface : public IEntity
 {
 	public :
 
+		ShaderSurface(void);
 		ShaderSurface(GLFW_Window const *win, Input const *input, Shader const *shader);
 		virtual ~ShaderSurface(void);
 		ShaderSurface(ShaderSurface const &src) = delete;
@@ -64,7 +65,7 @@ class ShaderSurface : public IEntity
 		GLuint            _vao;
 		GLuint            _vbo;
 
-		virtual void _allocate_buffer(void);
+		void _allocate_buffer(void);
 
 		static float  _vertices[];
 		static size_t _nb_faces;

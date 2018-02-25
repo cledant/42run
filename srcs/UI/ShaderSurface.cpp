@@ -12,6 +12,11 @@
 
 #include "UI/ShaderSurface.hpp"
 
+ShaderSurface::ShaderSurface(void) : _win(nullptr), _input(nullptr), _shader(nullptr),
+									 _vao(0), _vbo(0)
+{
+}
+
 ShaderSurface::ShaderSurface(GLFW_Window const *win, Input const *input,
 							 Shader const *shader) : _win(win), _input(input),
 													 _shader(shader), _vao(0), _vbo(0)

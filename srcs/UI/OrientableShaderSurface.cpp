@@ -28,6 +28,13 @@ OrientableShaderSurface::Params::~Params(void)
 {
 }
 
+OrientableShaderSurface::OrientableShaderSurface(void) :
+		ShaderSurface(nullptr, nullptr, nullptr),
+		_perspec_mult_view(nullptr), _pos(glm::vec3(0.0f)),
+		_offset(glm::vec3(0.0f)), _scale(glm::vec3(0.0f)), _orientation(glm::vec3(0.0f))
+{
+}
+
 OrientableShaderSurface::OrientableShaderSurface(OrientableShaderSurface::Params const &params) :
 		ShaderSurface(params.win, params.input, params.shader),
 		_perspec_mult_view(params.perspec_mult_view), _pos(params.pos),
@@ -40,8 +47,7 @@ OrientableShaderSurface::~OrientableShaderSurface(void)
 {
 }
 
-OrientableShaderSurface::OrientableShaderSurface(OrientableShaderSurface &&src) :
-		ShaderSurface(src.getWindow(), src.getInput(), src.getShader())
+OrientableShaderSurface::OrientableShaderSurface(OrientableShaderSurface &&src)
 {
 	*this = std::move(src);
 }
@@ -172,9 +178,4 @@ void OrientableShaderSurface::draw(void)
 	this->_shader->setVec4(id_viewport, glm::vec4{0, 0, this->_win->cur_win_w,
 												  this->_win->cur_win_h});
 	oGL_module::oGL_draw_filled(this->_vao, ShaderSurface::_nb_faces);
-}
-
-void OrientableShaderSurface::_allocate_buffer(void)
-{
-	ShaderSurface::_allocate_buffer();
 }
