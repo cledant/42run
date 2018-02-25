@@ -18,11 +18,7 @@ ShaderSurface::ShaderSurface(GLFW_Window const *win, Input const *input,
 {
 	try
 	{
-		this->_vbo = oGL_module::oGL_create_vbo(sizeof(float) * 3 * 6,
-												&(ShaderSurface::_vertices[0]));
-		this->_vao = oGL_module::oGL_create_vao();
-		oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
-										   sizeof(GLfloat) * 3, 0);
+		this->_allocate_buffer();
 	}
 	catch (std::exception &e)
 	{
@@ -120,6 +116,15 @@ ShaderSurface::InitException::InitException(void)
 
 ShaderSurface::InitException::~InitException(void) throw()
 {
+}
+
+void ShaderSurface::_allocate_buffer(void)
+{
+	this->_vbo = oGL_module::oGL_create_vbo(sizeof(float) * 3 * 6,
+											&(ShaderSurface::_vertices[0]));
+	this->_vao = oGL_module::oGL_create_vao();
+	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
+									   sizeof(GLfloat) * 3, 0);
 }
 
 float ShaderSurface::_vertices[] = {-1.0f, 1.0f, 0.5f,

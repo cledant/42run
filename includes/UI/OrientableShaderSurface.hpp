@@ -71,6 +71,8 @@ class OrientableShaderSurface : public ShaderSurface
 
 	protected :
 
+		virtual void _allocate_buffer(void);
+
 		glm::mat4 const *_perspec_mult_view;
 		glm::mat4       _total;
 		glm::vec3       _pos;

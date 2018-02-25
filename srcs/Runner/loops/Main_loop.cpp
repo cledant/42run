@@ -71,17 +71,18 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oG
 {
 	bool trigger_pause = false;
 	bool trigger_reset = false;
-	std::unique_ptr< ???> framebuffer_surface;
+/*	std::unique_ptr<???> fb_surface;
 
 	try
 	{
-		framebuffer = std::make_unique<???>();
+		fb_surface = std::make_unique<???>();
 	}
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl << "Error allocating Surface" << std::endl;
 		return (false);
-	}
+	}*/
+	(void) oGL;
 	world.playPlayerTheme();
 	manager.reset_fps_counter();
 	while (Glfw_manager::getActiveWindowNumber())
@@ -110,12 +111,12 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oG
 				world.deletePlayer();
 				return (false);
 			}
-			oGL.getFramebuffer("render").useFramebuffer();
+//			oGL.getFramebuffer("render").useFramebuffer();
 			oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
 			world.render();
 
-			oGL.getFramebuffer("render").defaultFramebuffer();
-			oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
+//			oGL.getFramebuffer("render").defaultFramebuffer();
+//			oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
 
 
 			manager.calculate_fps();

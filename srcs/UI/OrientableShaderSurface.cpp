@@ -173,3 +173,8 @@ void OrientableShaderSurface::draw(void)
 												  this->_win->cur_win_h});
 	oGL_module::oGL_draw_filled(this->_vao, ShaderSurface::_nb_faces);
 }
+
+void OrientableShaderSurface::_allocate_buffer(void)
+{
+	ShaderSurface::_allocate_buffer();
+}
