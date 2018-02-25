@@ -103,17 +103,16 @@ void TextureShaderSurface::_allocate_tex_buffer(void)
 											&(TextureShaderSurface::_tex_vertices[0]));
 	this->_vao = oGL_module::oGL_create_vao();
 	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 0, 3,
-									   sizeof(GLfloat) * 3, 0);
+									   sizeof(GLfloat) * 5, 0);
 	oGL_module::oGL_set_vao_parameters(this->_vao, this->_vbo, 1, 2,
-									   sizeof(GLfloat) * 2, sizeof(GLfloat) * 3);
+									   sizeof(GLfloat) * 5, sizeof(GLfloat) * 3);
 }
 
 float TextureShaderSurface::_tex_vertices[] = {-1.0f, 1.0f, 0.5f, 0.0f, 1.0f,
+											   1.0f, 1.0f, 0.5f, 1.0f, 1.0f,
 											   -1.0f, -1.0f, 0.5f, 0.0f, 0.0f,
-											   1.0f, -1.0f, 0.5f, 1.0f, 0.0f,
-
-											   -1.0f, 1.0f, 0.5f, 0.0f, 1.0f,
-											   1.0f, -1.0f, 0.5f, 1.0f, 0.0f,
-											   1.0f, 1.0f, 0.5f, 1.0f, 1.0f};
+											   -1.0f, -1.0f, 0.5f, 0.0f, 0.0f,
+											   1.0f, 1.0f, 0.5f, 1.0f, 1.0f,
+											   1.0f, -1.0f, 0.5f, 1.0f, 0.0f};
 
 size_t TextureShaderSurface::_tex_nb_faces = 6;

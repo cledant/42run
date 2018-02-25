@@ -85,7 +85,6 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oG
 		std::cout << e.what() << std::endl << "Error allocating Surface" << std::endl;
 		return (false);
 	}
-	(void) oGL;
 	world.playPlayerTheme();
 	manager.reset_fps_counter();
 	while (Glfw_manager::getActiveWindowNumber())
