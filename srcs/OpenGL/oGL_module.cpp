@@ -215,11 +215,9 @@ void oGL_module::add_shader(std::string const &name,
 	this->_shader_list.push_back({name, vs_path, fs_path});
 }
 
-Shader const &oGL_module::getShader(std::string const &name)
+Shader const &oGL_module::getShader(std::string const &name) const
 {
-	std::vector<Shader>::iterator it;
-
-	for (it = this->_shader_list.begin(); it != this->_shader_list.end(); ++it)
+	for (auto it = this->_shader_list.begin(); it != this->_shader_list.end(); ++it)
 	{
 		if (it->getName().compare(name) == 0)
 			return (*it);
@@ -240,11 +238,9 @@ void oGL_module::add_model(std::string const &name, float const *array, size_t s
 	this->_model_list.push_back({name, array, size, files, gl_type, type});
 }
 
-Model const &oGL_module::getModel(std::string const &name)
+Model const &oGL_module::getModel(std::string const &name) const
 {
-	std::vector<Model>::iterator it;
-
-	for (it = this->_model_list.begin(); it != this->_model_list.end(); ++it)
+	for (auto it = this->_model_list.begin(); it != this->_model_list.end(); ++it)
 	{
 		if (it->getName().compare(name) == 0)
 			return (*it);
@@ -260,16 +256,28 @@ void oGL_module::add_texture(std::string const &name,
 	this->_texture_list.push_back({name, files, gl_type, type});
 }
 
-Texture const &oGL_module::getTexture(std::string const &name)
+Texture const &oGL_module::getTexture(std::string const &name) const
 {
-	std::vector<Texture>::iterator it;
-
-	for (it = this->_texture_list.begin(); it != this->_texture_list.end(); ++it)
+	for (auto it = this->_texture_list.begin(); it != this->_texture_list.end(); ++it)
 	{
 		if (it->getName().compare(name) == 0)
 			return (*it);
 	}
 	throw oGL_module::TextureNotFoundException(name);
+}
+
+void oGL_module::add_framebuffer(std::string const &name, int h, int w)
+{
+	this->_framebuffer_list.insert(std::pair<std::string, Framebuffer>(name, Framebuffer(h, w)));
+}
+
+Framebuffer const &oGL_module::getFramebuffer(std::string const &name) const
+{
+	auto it = this->_framebuffer_list.find(name);
+
+	if (it == this->_framebuffer_list.end())
+		throw oGL_module::FramebufferNotFoundException(name);
+	return (it->second);
 }
 
 oGL_module::ShaderNotFoundException::ShaderNotFoundException(void)
@@ -314,6 +322,21 @@ oGL_module::TextureNotFoundException::TextureNotFoundException(std::string const
 }
 
 oGL_module::TextureNotFoundException::~TextureNotFoundException(void) throw()
+{
+}
+
+oGL_module::FramebufferNotFoundException::FramebufferNotFoundException(void)
+{
+	this->_msg = "OpenGL : Failed to find requested framebuffer";
+}
+
+oGL_module::FramebufferNotFoundException::FramebufferNotFoundException(std::string const &name)
+{
+	this->_msg = "OpenGL : Failed to find buffer : ";
+	this->_msg += name.c_str();
+}
+
+oGL_module::FramebufferNotFoundException::~FramebufferNotFoundException(void) throw()
 {
 }
 

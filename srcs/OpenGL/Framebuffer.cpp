@@ -89,11 +89,45 @@ GLuint Framebuffer::getTextureColorBuffer(void) const
 	return (this->_textureColorBuffer);
 }
 
+Framebuffer::InitException::InitException(void)
+{
+	this->_msg = "Framebuffer : Failed initialize framebuffer";
+}
+
+Framebuffer::InitException::~InitException(void) throw()
+{
+}
+
+Framebuffer::IncompleteBufferException::IncompleteBufferException(void)
+{
+	this->_msg = "Framebuffer : Framebuffer is incomplet";
+}
+
+Framebuffer::IncompleteBufferException::~IncompleteBufferException(void) throw()
+{
+}
+
 inline void Framebuffer::_allocate_buffers(int h, int w)
 {
 	glGenFramebuffers(1, &this->_fbo);
 	if (glGetError() != GL_NO_ERROR)
 		throw Framebuffer::InitException();
 	glBindFramebuffer(GL_FRAMEBUFFER, this->_fbo);
-	
+	glGenTextures(1, &this->_textureColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, this->_textureColorBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->_textureColorBuffer, 0);
+	if (glGetError() != GL_NO_ERROR)
+		throw Framebuffer::InitException();
+	glGenRenderbuffers(1, &this->_rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, this->_rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, this->_rbo);
+	if (glGetError() != GL_NO_ERROR)
+		throw Framebuffer::InitException();
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		throw Framebuffer::IncompleteBufferException();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

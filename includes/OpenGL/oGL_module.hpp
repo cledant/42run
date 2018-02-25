@@ -15,9 +15,10 @@
 
 # include "glad/glad.h"
 # include "glfw3.h"
-# include "Shader.hpp"
-# include "Texture.hpp"
+# include "OpenGL/Shader.hpp"
+# include "OpenGL/Texture.hpp"
 # include "Model/Model.hpp"
+# include "OpenGL/Framebuffer.hpp"
 # include "Exceptions/GeneralException.hpp"
 # include <iostream>
 # include <vector>
@@ -61,20 +62,23 @@ class oGL_module
 		void add_shader(std::string const &name,
 						std::string const &vs_path,
 						std::string const &fs_path);
-		Shader const &getShader(std::string const &name);
+		Shader const &getShader(std::string const &name) const;
 
 		void add_model(std::string const &name,
 					   std::string const &path);
 		void add_model(std::string const &name, float const *array, size_t size,
 					   std::vector<std::string> const &files, Texture::t_tex_gl_type gl_type,
 					   Texture::t_tex_type type);
-		Model const &getModel(std::string const &name);
+		Model const &getModel(std::string const &name) const;
 
 		void add_texture(std::string const &name,
 						 std::vector<std::string> const &files,
 						 Texture::t_tex_gl_type gl_type,
 						 Texture::t_tex_type type);
-		Texture const &getTexture(std::string const &name);
+		Texture const &getTexture(std::string const &name) const;
+
+		void add_framebuffer(std::string const &name, int h, int w);
+		Framebuffer const &getFramebuffer(std::string const &name) const;
 
 		class ShaderNotFoundException : public GeneralException
 		{
@@ -103,6 +107,15 @@ class oGL_module
 				virtual ~TextureNotFoundException(void) throw();
 		};
 
+		class FramebufferNotFoundException : public GeneralException
+		{
+			public :
+
+				explicit FramebufferNotFoundException(void);
+				explicit FramebufferNotFoundException(std::string const &name);
+				virtual ~FramebufferNotFoundException(void) throw();
+		};
+
 		class oGLFailException : public GeneralException
 		{
 			public :
@@ -113,9 +126,10 @@ class oGL_module
 
 	private :
 
-		std::vector<Shader>  _shader_list;
-		std::vector<Model>   _model_list;
-		std::vector<Texture> _texture_list;
+		std::vector<Shader>                _shader_list;
+		std::vector<Model>                 _model_list;
+		std::vector<Texture>               _texture_list;
+		std::map<std::string, Framebuffer> _framebuffer_list;
 };
 
 #endif
