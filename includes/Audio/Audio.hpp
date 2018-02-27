@@ -57,8 +57,8 @@ class Audio
 		void setVolumeTheme(Audio::theme_list slot, float value);
 		void setOffsetTheme(Audio::theme_list slot, sf::Time const &off);
 
-		sf::Music::Status getThemeStatus(Audio::theme_list slot);
-		sf::Sound::Status getSoundStatus(std::string const &name);
+		sf::Music::Status getThemeStatus(Audio::theme_list slot) const;
+		sf::Sound::Status getSoundStatus(std::string const &name) const;
 
 		class FileOpenException : public GeneralException
 		{
@@ -86,6 +86,7 @@ class Audio
 
 		bool _getSoundBuffer(std::string const &name, sf::SoundBuffer **buff);
 		bool _getSound(std::string const &name, sf::Sound **buff);
+		bool _getSound(std::string const &name, sf::Sound const **buff) const;
 };
 
 #endif

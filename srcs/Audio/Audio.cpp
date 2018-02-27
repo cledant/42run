@@ -150,14 +150,14 @@ void Audio::setVolumeTheme(Audio::theme_list slot, float value)
 	this->_theme[slot].setVolume(value);
 }
 
-sf::Music::Status Audio::getThemeStatus(Audio::theme_list slot)
+sf::Music::Status Audio::getThemeStatus(Audio::theme_list slot) const
 {
 	return (this->_theme[slot].getStatus());
 }
 
-sf::Sound::Status Audio::getSoundStatus(std::string const &name)
+sf::Sound::Status Audio::getSoundStatus(std::string const &name) const
 {
-	sf::Sound *sound = nullptr;
+	sf::Sound const *sound = nullptr;
 
 	if (name.size() == 0)
 		return (sf::Sound::Stopped);
@@ -190,6 +190,19 @@ bool Audio::_getSoundBuffer(std::string const &name, sf::SoundBuffer **buff)
 bool Audio::_getSound(std::string const &name, sf::Sound **buff)
 {
 	std::map<std::string, sf::Sound>::iterator it;
+
+	if ((it = this->_sound_list.find(name)) == this->_sound_list.end())
+	{
+		*buff = nullptr;
+		return (false);
+	}
+	*buff   = &(it->second);
+	return (true);
+}
+
+bool Audio::_getSound(std::string const &name, sf::Sound const **buff) const
+{
+	std::map<std::string, sf::Sound>::const_iterator it;
 
 	if ((it = this->_sound_list.find(name)) == this->_sound_list.end())
 	{
