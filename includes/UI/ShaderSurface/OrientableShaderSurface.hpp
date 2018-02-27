@@ -13,7 +13,7 @@
 #ifndef ORIENTABLE_SHADERSURFACE_HPP
 # define ORIENTABLE_SHADERSURFACE_HPP
 
-# include "UI/ShaderSurface.hpp"
+# include "ShaderSurface.hpp"
 # include "glm/gtc/matrix_transform.hpp"
 
 class OrientableShaderSurface : public ShaderSurface

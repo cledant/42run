@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "UI/OrientableShaderSurface.hpp"
+#include "UI/ShaderSurface/OrientableShaderSurface.hpp"
 
 OrientableShaderSurface::Params::Params(void)
 {

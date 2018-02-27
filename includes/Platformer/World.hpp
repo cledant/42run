@@ -30,7 +30,7 @@
 # include "GameEntities/composed/CollidableBox.hpp"
 # include "GameEntities/composed/CollidableProp.hpp"
 # include "GameEntities/composed/Room.hpp"
-# include "UI/OrientableShaderSurface.hpp"
+# include "UI/ShaderSurface/OrientableShaderSurface.hpp"
 # include "WindowManager/Window.hpp"
 # include "WindowManager/Input.hpp"
 # include <iostream>

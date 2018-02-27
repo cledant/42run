@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "UI/ShaderSurface.hpp"
+#include "UI/ShaderSurface/ShaderSurface.hpp"
 
 ShaderSurface::ShaderSurface(void) : _win(nullptr), _input(nullptr), _shader(nullptr),
 									 _vao(0), _vbo(0)

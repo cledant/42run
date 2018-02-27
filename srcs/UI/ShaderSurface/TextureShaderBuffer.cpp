@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "UI/TextureShaderSurface.hpp"
+#include "UI/ShaderSurface/TextureShaderSurface.hpp"
 
 TextureShaderSurface::TextureShaderSurface(void) :
 		ShaderSurface(), _tex_id(0)

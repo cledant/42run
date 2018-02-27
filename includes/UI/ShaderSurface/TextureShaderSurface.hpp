@@ -13,7 +13,7 @@
 #ifndef TEXTURESHADERSURFACE_HPP
 # define TEXTURESHADERSURFACE_HPP
 
-# include "UI/ShaderSurface.hpp"
+# include "ShaderSurface.hpp"
 
 class TextureShaderSurface : public ShaderSurface
 {
