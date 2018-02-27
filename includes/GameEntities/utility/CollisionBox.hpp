@@ -91,17 +91,17 @@ class CollisionBox : public ITranslatable
 		glm::vec3 _pos;
 		glm::vec3 _half_size;
 
-		void inline _resolution_pt_x(Resolution *res, glm::vec3 const &pt,
+		inline void _resolution_pt_x(Resolution *res, glm::vec3 const &pt,
 									 glm::vec3 const &d, glm::vec3 const &p) const;
-		void inline _resolution_pt_y(Resolution *res, glm::vec3 const &pt,
+		inline void _resolution_pt_y(Resolution *res, glm::vec3 const &pt,
 									 glm::vec3 const &d, glm::vec3 const &p) const;
-		void inline _resolution_pt_z(Resolution *res, glm::vec3 const &pt,
+		inline void _resolution_pt_z(Resolution *res, glm::vec3 const &pt,
 									 glm::vec3 const &d, glm::vec3 const &p) const;
-		void inline _resolution_box_x(Resolution *res, CollisionBox const &box,
+		inline void _resolution_box_x(Resolution *res, CollisionBox const &box,
 									  glm::vec3 const &d, glm::vec3 const &p) const;
-		void inline _resolution_box_y(Resolution *res, CollisionBox const &box,
+		inline void _resolution_box_y(Resolution *res, CollisionBox const &box,
 									  glm::vec3 const &d, glm::vec3 const &p) const;
-		void inline _resolution_box_z(Resolution *res, CollisionBox const &box,
+		inline void _resolution_box_z(Resolution *res, CollisionBox const &box,
 									  glm::vec3 const &d, glm::vec3 const &p) const;
 
 		static inline float _sign(float nb);

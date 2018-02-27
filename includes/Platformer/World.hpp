@@ -47,8 +47,17 @@ class World
 		World(World const &src) = delete;
 		World &operator=(World const &rhs) = delete;
 
+		/*
+		 * Draw
+		 */
+
 		void update(void);
 		void render(void);
+
+		/*
+		 * Object creation
+		 */
+
 		IEntity *add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 								glm::vec3 const &scale);
 		IEntity *add_Cubemap(Shader const *shader, Model const *model,
@@ -59,12 +68,21 @@ class World
 		IEntity *add_CollidableProp(CollidableProp::Params &params);
 		IEntity *add_Room(Room::Params &params);
 		IEntity *add_OrientableShaderSurface(OrientableShaderSurface::Params &params);
+
+		/*
+		 * Other
+		 */
+
 		void setActiveInteractive(IInteractive *ptr);
 		void updatePerspective(float fov);
 		void reset_update_timer(float time);
 		void reset_skip_loop(void);
 		bool should_be_updated(float time);
 		void forceKeyboard(void);
+
+		/*
+		 * Getter
+		 */
 
 		std::string const &getScore(void);
 		std::string const &getStrPlayerHP(void);
@@ -105,8 +123,8 @@ class World
 		bool                       _first_run_theme;
 		bool                       _enabled_gamepad;
 
-		void _check_collisions(void);
-		void _resolve_sweep_collision(Player *player, CollisionBox const &box,
+		inline void _check_collisions(void);
+		inline void _resolve_sweep_collision(Player *player, CollisionBox const &box,
 									  CollisionBox::SweepResolution const &res,
 									  ICollidable *ptr);
 };

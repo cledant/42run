@@ -12,7 +12,6 @@
 
 #include "Utility/WorldSelect.hpp"
 
-
 static void main_loop(World &world, Glfw_manager &manager, Ui &ui)
 {
 	while (Glfw_manager::getActiveWindowNumber())
@@ -276,4 +275,3 @@ void run_debug_world(Glfw_manager &manager, bool vsync, bool force_keyboard)
 	std::cout << "Delete world" << std::endl;
 	delete world;
 }
-

@@ -45,6 +45,10 @@ World::~World(void)
 	delete this->_active;
 }
 
+/*
+ * Draw
+ */
+
 void World::update(void)
 {
 	std::vector<IEntity *>::iterator it;
@@ -118,6 +122,10 @@ void World::render(void)
 	if (this->_active != nullptr)
 		reinterpret_cast<Player *>(this->_active)->draw();
 }
+
+/*
+ * Object creation
+ */
 
 IEntity *World::add_Simple_box(Shader const *shader, glm::vec3 const &pos,
 							   glm::vec3 const &scale)
@@ -208,6 +216,10 @@ IEntity *World::add_OrientableShaderSurface(OrientableShaderSurface::Params &par
 	return (ptr);
 }
 
+/*
+ * Other
+ */
+
 void World::setActiveInteractive(IInteractive *ptr)
 {
 	this->_active = ptr;
@@ -251,6 +263,10 @@ void World::forceKeyboard(void)
 	std::cout << "Keyboard forced to be used" << std::endl;
 }
 
+/*
+ * Getter
+ */
+
 std::string const &World::getScore(void)
 {
 
@@ -270,7 +286,7 @@ std::string const &World::getStrPlayerHP(void)
 	return (this->_str_hp);
 }
 
-void World::_check_collisions(void)
+inline void World::_check_collisions(void)
 {
 	CollisionBox::SweepResolution res;
 	glm::vec3                     inv_delta;
@@ -315,9 +331,9 @@ void World::_check_collisions(void)
 									   (*ptr).getCollisionBox(), nearest, ptr);
 }
 
-void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
-									 CollisionBox::SweepResolution const &res,
-									 ICollidable *ptr)
+inline void World::_resolve_sweep_collision(Player *player, CollisionBox const &box,
+											CollisionBox::SweepResolution const &res,
+											ICollidable *ptr)
 {
 	glm::vec3 new_delta;
 
