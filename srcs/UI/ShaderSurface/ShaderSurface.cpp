@@ -55,6 +55,10 @@ ShaderSurface &ShaderSurface::operator=(ShaderSurface &&rhs)
 	return (*this);
 }
 
+/*
+ * Getter
+ */
+
 Shader const *ShaderSurface::getShader(void) const
 {
 	return (this->_shader);
@@ -85,6 +89,19 @@ GLuint ShaderSurface::moveVBO(void)
 	this->_vbo = 0;
 	return (tmp);
 }
+
+/*
+ * Setter
+ */
+
+void ShaderSurface::setShader(Shader const *shader)
+{
+	this->_shader = shader;
+}
+
+/*
+ * Interface IEntity
+ */
 
 void ShaderSurface::update(float time)
 {

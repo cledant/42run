@@ -13,7 +13,7 @@
 #include "Utility/WorldSelect.hpp"
 
 static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_rate,
-						bool &trigger_pause, bool &reset_trigger)
+						e_main_loop_option &option)
 {
 	static float type_delay = 0.0f;
 
@@ -22,39 +22,52 @@ static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_
 		if (manager.getGamepad().isGamepadConnected(GLFW_JOYSTICK_1))
 		{
 			manager.getGamepad().pollGamepads();
-			if (type_delay > 0.25f && trigger_pause &&
+			if (type_delay > 0.25f && option.trigger_pause &&
 				(manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).buttons[GLFW_GAMEPAD_BUTTON_BACK]
 				 == GLFW_PRESS))
 			{
-				reset_trigger = !reset_trigger;
-				type_delay    = 0.0f;
+				option.trigger_reset = !option.trigger_reset;
+				type_delay = 0.0f;
 			}
 			if (type_delay > 0.25f &&
 				(manager.getGamepad().getGamepadState(GLFW_JOYSTICK_1).buttons[GLFW_GAMEPAD_BUTTON_START]
 				 == GLFW_PRESS))
 			{
-				trigger_pause = !trigger_pause;
-				type_delay    = 0.0f;
+				option.trigger_pause = !option.trigger_pause;
+				type_delay = 0.0f;
 			}
-			if (type_delay < 2.0f)
-				type_delay += tick_rate;
 		}
 	}
 	else
 	{
 		if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_END]))
 		{
-			reset_trigger = !reset_trigger;
-			type_delay    = 0.0f;
+			option.trigger_reset = !option.trigger_reset;
+			type_delay = 0.0f;
 		}
 		if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_HOME]))
 		{
-			trigger_pause = !trigger_pause;
-			type_delay    = 0.0f;
+			option.trigger_pause = !option.trigger_pause;
+			type_delay = 0.0f;
 		}
-		if (type_delay < 2.0f)
-			type_delay += tick_rate;
 	}
+	if (type_delay > 0.25f && (manager.getInput().p_key[GLFW_KEY_PAGE_UP]))
+	{
+		option.trigger_grayscale = !option.trigger_grayscale;
+		type_delay = 0.0f;
+	}
+	if (type_delay < 2.0f)
+		type_delay += tick_rate;
+}
+
+static void changeFBSurfaceShader(TextureShaderSurface *tss, oGL_module &oGL)
+{
+	if (!tss->getShader()->getName().compare("texture_window"))
+	{
+		tss->setShader(&oGL.getShader("texture_window_grayscale"));
+		return;
+	}
+	tss->setShader(&oGL.getShader("texture_window"));
 }
 
 static void blockFramerate(Glfw_manager &manager)
@@ -69,10 +82,10 @@ static void blockFramerate(Glfw_manager &manager)
 
 bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oGL, bool vsync)
 {
-	bool                                  trigger_pause = false;
-	bool                                  trigger_reset = false;
-	std::unique_ptr<TextureShaderSurface> fb_surface    = nullptr;
+	e_main_loop_option                    options;
+	std::unique_ptr<TextureShaderSurface> fb_surface = nullptr;
 
+	std::memset(&options, 0, sizeof(e_main_loop_option));
 	try
 	{
 		fb_surface = std::make_unique<TextureShaderSurface>(&manager.getWindow(),
@@ -95,24 +108,25 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oG
 			while (world.should_be_updated(Glfw_manager::getTime()))
 			{
 				manager.update_events();
-				world_input(world.isGamepadEnabled(), manager, world.getTickRate(),
-							trigger_pause, trigger_reset);
-				if (!trigger_pause)
+				world_input(world.isGamepadEnabled(), manager, world.getTickRate(), options);
+				if (!options.trigger_pause)
 					world.update();
-				else if (trigger_pause && manager.getWindow().resized)
+				else if (options.trigger_pause && manager.getWindow().resized)
 				{
 					world.updatePerspective(world.getFov());
 					world.updateMatrix();
 				}
 				ui.update();
 			}
-			if (!world.isPlayerAlive() || trigger_reset)
+			if (!world.isPlayerAlive() || options.trigger_reset)
 			{
 				world.updateHighScore();
 				world.stopPlayerTheme();
 				world.deletePlayer();
 				return (false);
 			}
+			if (options.trigger_grayscale)
+				changeFBSurfaceShader(fb_surface.get(), oGL);
 
 			//Rending World into a custom framebuffer
 			oGL.getFramebuffer("render").useFramebuffer();
@@ -152,7 +166,7 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oG
 						glm::vec3(10.0f,
 								  static_cast<float>(manager.getWindow().cur_win_h) - 160.0f,
 								  0.5f));
-			if (trigger_pause)
+			if (options.trigger_pause)
 			{
 				ui.drawText("roboto", "Pause",
 							glm::vec3(1.0f, 0.0f, 0.0f),
@@ -168,6 +182,7 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oG
 			if (vsync)
 				blockFramerate(manager);
 			manager.swap_buffers();
+			options.trigger_grayscale = false;
 			if (world.getShouldEnd())
 				manager.triggerWindowClose();
 			if (manager.should_window_be_closed())

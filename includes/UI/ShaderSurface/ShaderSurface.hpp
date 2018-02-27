@@ -43,6 +43,12 @@ class ShaderSurface : public IEntity
 		GLuint moveVBO(void);
 
 		/*
+		 * Setter
+		 */
+
+		void setShader(Shader const *shader);
+
+		/*
 		 * Interface IEntity
 		 */
 

@@ -21,6 +21,13 @@
 
 # define BLOCK_FRAME_RATE 59.95
 
+typedef struct s_main_loop_option
+{
+	bool trigger_pause;
+	bool trigger_reset;
+	bool trigger_grayscale;
+} e_main_loop_option;
+
 /*
  * Inits
  */
