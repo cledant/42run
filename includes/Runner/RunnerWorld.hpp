@@ -56,8 +56,17 @@ class RunnerWorld
 		RunnerWorld(RunnerWorld const &src) = delete;
 		RunnerWorld &operator=(RunnerWorld const &rhs) = delete;
 
+		/*
+		 * Draw
+		 */
+
 		void update(void);
 		void render(void);
+
+		/*
+		 * Object creation
+		 */
+
 		Room *addRoomTemplate(std::string const &name, Room::Params &params);
 		IEntity *add_CollidableBox(CollidableBox::Params &params, std::string const &name);
 		void addCollidableToRoomTemplate(std::string const &room_name,
@@ -65,6 +74,21 @@ class RunnerWorld
 										 CollidableProp::Params &params);
 		IInteractive *add_Player(Player::Params &params);
 		IEntity *add_PlayerShadow(OrientableShaderSurface::Params &params);
+
+		/*
+		 * Room generation
+		 */
+
+		void initRoomList(void);
+		void generateInitialRoomList(void);
+		void generateBeginEndRoomList(void);
+		void generateMiddleRoomList(void);
+		void generateDebug(size_t room_type, bool has_prop);
+
+		/*
+		 * Other
+		 */
+
 		void deletePlayer(void);
 		void deletePlayerShadow(void);
 		void updatePerspective(float fov);
@@ -76,16 +100,6 @@ class RunnerWorld
 		void updateHighScore(void);
 		void playPlayerTheme(void);
 		void stopPlayerTheme(void);
-
-		/*
-		 * Room generation
-		 */
-
-		void initRoomList(void);
-		void generateInitialRoomList(void);
-		void generateBeginEndRoomList(void);
-		void generateMiddleRoomList(void);
-		void generateDebug(size_t room_type, bool has_prop);
 
 		/*
 		 * Getter

@@ -52,6 +52,10 @@ RunnerWorld::~RunnerWorld(void)
 	delete this->_active_shadow;
 }
 
+/*
+ * Draw
+ */
+
 void RunnerWorld::update(void)
 {
 	if (this->_window.resized)
@@ -152,6 +156,10 @@ void RunnerWorld::render(void)
 		reinterpret_cast<Player *>(this->_active)->draw();
 }
 
+/*
+ * Object creation
+ */
+
 Room *RunnerWorld::addRoomTemplate(std::string const &name, Room::Params &params)
 {
 	params.floor.perspec_mult_view      = &(this->_perspec_mult_view);
@@ -184,6 +192,33 @@ void RunnerWorld::addCollidableToRoomTemplate(std::string const &room_name,
 		throw RunnerWorld::RoomNotFoundException();
 	(*it).second.addCollidableProp(slot_name, params);
 }
+
+IInteractive *RunnerWorld::add_Player(Player::Params &params)
+{
+	IInteractive *ptr;
+
+	params.perspec_mult_view = &(this->_perspec_mult_view);
+	params.cam               = &(this->_camera);
+	ptr = new Player(params);
+	this->_active = ptr;
+	dynamic_cast<Player *>(this->_active)->setDisableFront(true);
+	dynamic_cast<Player *>(this->_active)->setDisableBack(true);
+	return (ptr);
+}
+
+IEntity *RunnerWorld::add_PlayerShadow(OrientableShaderSurface::Params &params)
+{
+	IEntity *ptr;
+
+	params.perspec_mult_view = &(this->_perspec_mult_view);
+	ptr = new OrientableShaderSurface(params);
+	this->_active_shadow = ptr;
+	return (ptr);
+}
+
+/*
+ * Room generation
+ */
 
 void RunnerWorld::initRoomList(void)
 {
@@ -460,28 +495,9 @@ void RunnerWorld::generateDebug(size_t room_type, bool has_prop)
 	}
 }
 
-IInteractive *RunnerWorld::add_Player(Player::Params &params)
-{
-	IInteractive *ptr;
-
-	params.perspec_mult_view = &(this->_perspec_mult_view);
-	params.cam               = &(this->_camera);
-	ptr = new Player(params);
-	this->_active = ptr;
-	dynamic_cast<Player *>(this->_active)->setDisableFront(true);
-	dynamic_cast<Player *>(this->_active)->setDisableBack(true);
-	return (ptr);
-}
-
-IEntity *RunnerWorld::add_PlayerShadow(OrientableShaderSurface::Params &params)
-{
-	IEntity *ptr;
-
-	params.perspec_mult_view = &(this->_perspec_mult_view);
-	ptr = new OrientableShaderSurface(params);
-	this->_active_shadow = ptr;
-	return (ptr);
-}
+/*
+ * Other
+ */
 
 void RunnerWorld::deletePlayer(void)
 {
