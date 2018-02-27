@@ -12,7 +12,7 @@
 
 #include "Utility/WorldSelect.hpp"
 
-static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_rate,
+static inline void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_rate,
 						e_main_loop_option &option)
 {
 	static float type_delay = 0.0f;
@@ -60,7 +60,7 @@ static void world_input(bool enabled_gamepad, Glfw_manager &manager, float tick_
 		type_delay += tick_rate;
 }
 
-static void changeFBSurfaceShader(TextureShaderSurface *tss, oGL_module &oGL)
+static inline void changeFBSurfaceShader(TextureShaderSurface *tss, oGL_module &oGL)
 {
 	if (!tss->getShader()->getName().compare("texture_window"))
 	{
@@ -70,7 +70,7 @@ static void changeFBSurfaceShader(TextureShaderSurface *tss, oGL_module &oGL)
 	tss->setShader(&oGL.getShader("texture_window"));
 }
 
-static void blockFramerate(Glfw_manager &manager)
+static inline void blockFramerate(Glfw_manager &manager)
 {
 	static double old_time = 0.0;
 
