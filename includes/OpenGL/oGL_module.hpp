@@ -45,7 +45,7 @@ class oGL_module
 		static void oGL_set_dynamic_vbo_data(GLuint vao, GLuint vbo,
 											 size_t size, void *data);
 		static void oGL_clear_buffer(float r, float g, float b);
-		static void oGL_update_framebuffer(int width, int height);
+		static void oGL_update_viewport(int width, int height);
 		static void oGL_enable_depth(void);
 		static void oGL_disable_depth(void);
 		static bool oGL_getUniformID(std::string const &name,

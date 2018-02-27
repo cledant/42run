@@ -127,7 +127,7 @@ void oGL_module::oGL_clear_buffer(float r, float g, float b)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void oGL_module::oGL_update_framebuffer(int width, int heigth)
+void oGL_module::oGL_update_viewport(int width, int heigth)
 {
 	glViewport(0, 0, width, heigth);
 }

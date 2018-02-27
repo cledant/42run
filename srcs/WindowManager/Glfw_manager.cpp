@@ -282,7 +282,7 @@ void Glfw_manager::_window_creation_callback_setup(void)
 	auto framebuffer_size_callback = [](GLFWwindow *win, int w, int h)
 	{
 		static_cast<void>(win);
-		oGL_module::oGL_update_framebuffer(w, h);
+		oGL_module::oGL_update_viewport(w, h);
 	};
 
 	glfwSetWindowCloseCallback(this->_window.win, close_callback);
