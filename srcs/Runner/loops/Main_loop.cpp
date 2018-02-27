@@ -124,10 +124,14 @@ bool main_loop(RunnerWorld &world, Glfw_manager &manager, Ui &ui, oGL_module &oG
 			//Displaying world into default framebuffer
 			oGL.getFramebuffer("render").defaultFramebuffer();
 			oGL_module::oGL_clear_buffer(0.2f, 0.2f, 0.2f);
+			oGL_module::oGL_update_framebuffer(manager.getWindow().max_win_w,
+											   manager.getWindow().max_win_h);
 			fb_surface->draw();
 
 			//Displaying text into default framebuffer
 			manager.calculate_fps();
+			oGL_module::oGL_update_framebuffer(manager.getWindow().cur_win_w,
+											   manager.getWindow().cur_win_h);
 			ui.drawText("roboto", "42Run : " + manager.getStrFps() + " fps",
 						glm::vec3(0.4f, 0.4f, 0.4f),
 						glm::vec3(10.0f,
