@@ -32,6 +32,10 @@ class oGL_module
 		oGL_module(oGL_module const &src) = delete;
 		oGL_module &operator=(oGL_module const &rhs) = delete;
 
+		/*
+		 * OpenGL related function
+		 */
+
 		static void oGL_check_error(void);
 		static void oGL_display_error(void);
 		static GLuint oGL_create_vbo(size_t size, void *data);
@@ -60,25 +64,31 @@ class oGL_module
 		static void oGL_disable_blend(void);
 		static void oGL_finish(void);
 
+		/*
+		 * Object creation
+		 */
+
 		void add_shader(std::string const &name,
 						std::string const &vs_path,
 						std::string const &fs_path);
-		Shader const &getShader(std::string const &name) const;
-
 		void add_model(std::string const &name,
 					   std::string const &path);
 		void add_model(std::string const &name, float const *array, size_t size,
 					   std::vector<std::string> const &files, Texture::t_tex_gl_type gl_type,
 					   Texture::t_tex_type type);
-		Model const &getModel(std::string const &name) const;
-
 		void add_texture(std::string const &name,
 						 std::vector<std::string> const &files,
 						 Texture::t_tex_gl_type gl_type,
 						 Texture::t_tex_type type);
-		Texture const &getTexture(std::string const &name) const;
-
 		void add_framebuffer(std::string const &name, int h, int w);
+
+		/*
+		 * Getter
+		 */
+
+		Shader const &getShader(std::string const &name) const;
+		Model const &getModel(std::string const &name) const;
+		Texture const &getTexture(std::string const &name) const;
 		Framebuffer const &getFramebuffer(std::string const &name) const;
 
 		class ShaderNotFoundException : public GeneralException

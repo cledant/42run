@@ -20,6 +20,10 @@ oGL_module::~oGL_module(void)
 {
 }
 
+/*
+ * OpenGL Related function
+ */
+
 void oGL_module::oGL_check_error(void)
 {
 	if (glGetError() != GL_NO_ERROR)
@@ -214,20 +218,14 @@ void oGL_module::oGL_finish(void)
 	glFinish();
 }
 
+/*
+ * Object Creation
+ */
+
 void oGL_module::add_shader(std::string const &name,
 							std::string const &vs_path, std::string const &fs_path)
 {
 	this->_shader_list.push_back({name, vs_path, fs_path});
-}
-
-Shader const &oGL_module::getShader(std::string const &name) const
-{
-	for (auto it = this->_shader_list.begin(); it != this->_shader_list.end(); ++it)
-	{
-		if (it->getName().compare(name) == 0)
-			return (*it);
-	}
-	throw oGL_module::ShaderNotFoundException(name);
 }
 
 void oGL_module::add_model(std::string const &name,
@@ -243,6 +241,33 @@ void oGL_module::add_model(std::string const &name, float const *array, size_t s
 	this->_model_list.push_back({name, array, size, files, gl_type, type});
 }
 
+void oGL_module::add_texture(std::string const &name,
+							 std::vector<std::string> const &files,
+							 Texture::t_tex_gl_type gl_type,
+							 Texture::t_tex_type type)
+{
+	this->_texture_list.push_back({name, files, gl_type, type});
+}
+
+void oGL_module::add_framebuffer(std::string const &name, int h, int w)
+{
+	this->_framebuffer_list.insert(std::pair<std::string, Framebuffer>(name, Framebuffer(h, w)));
+}
+
+/*
+ * Getter
+ */
+
+Shader const &oGL_module::getShader(std::string const &name) const
+{
+	for (auto it = this->_shader_list.begin(); it != this->_shader_list.end(); ++it)
+	{
+		if (it->getName().compare(name) == 0)
+			return (*it);
+	}
+	throw oGL_module::ShaderNotFoundException(name);
+}
+
 Model const &oGL_module::getModel(std::string const &name) const
 {
 	for (auto it = this->_model_list.begin(); it != this->_model_list.end(); ++it)
@@ -253,14 +278,6 @@ Model const &oGL_module::getModel(std::string const &name) const
 	throw oGL_module::ModelNotFoundException(name);
 }
 
-void oGL_module::add_texture(std::string const &name,
-							 std::vector<std::string> const &files,
-							 Texture::t_tex_gl_type gl_type,
-							 Texture::t_tex_type type)
-{
-	this->_texture_list.push_back({name, files, gl_type, type});
-}
-
 Texture const &oGL_module::getTexture(std::string const &name) const
 {
 	for (auto it = this->_texture_list.begin(); it != this->_texture_list.end(); ++it)
@@ -269,11 +286,6 @@ Texture const &oGL_module::getTexture(std::string const &name) const
 			return (*it);
 	}
 	throw oGL_module::TextureNotFoundException(name);
-}
-
-void oGL_module::add_framebuffer(std::string const &name, int h, int w)
-{
-	this->_framebuffer_list.insert(std::pair<std::string, Framebuffer>(name, Framebuffer(h, w)));
 }
 
 Framebuffer const &oGL_module::getFramebuffer(std::string const &name) const
