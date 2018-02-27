@@ -130,16 +130,16 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		int getHP(void) const;
 		bool isAlive(void) const;
 		bool isImmune(void) const;
-		void playSound(std::string const &name);
-		void playTheme(Audio::theme_list slot);
-		void playSetTheme(void);
-		void stopSetTheme(void);
 		glm::vec3 const &getVelocity(void) const;
 
 		/*
 		 * Other
 		 */
 
+		void playSound(std::string const &name);
+		void playTheme(Audio::theme_list slot);
+		void playSetTheme(void);
+		void stopSetTheme(void);
 		void update_model(float time);
 
 		/*
@@ -159,6 +159,7 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		/*
  		* Interface IInteractive
  		*/
+
 		bool update_keyboard_interaction(Input const &input,
 										 float input_timer);
 		bool update_mouse_interaction(Input const &input,
@@ -170,12 +171,14 @@ class Player : public IInteractive, public IEntity, public ICollidable,
 		/*
 		 * Interface IEntity
 		 */
+
 		void update(float time);
 		void draw(void);
 
 		/*
 		 * Interface IGravity
 		 */
+
 		void update_gravity(glm::vec3 const &vec_gravity, float delta);
 
 	private :

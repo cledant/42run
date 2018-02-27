@@ -60,6 +60,7 @@ class CollidableProp : public ICollidable, public IEntity, public ITranslatable
 		/*
 		 * Interface IEntity
 		 */
+
 		void update(float time);
 		void draw(void);
 

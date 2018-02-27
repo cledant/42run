@@ -246,6 +246,15 @@ bool Player::isImmune(void) const
 		return (false);
 }
 
+glm::vec3 const &Player::getVelocity(void) const
+{
+	return (this->_vel);
+}
+
+/*
+ * Other
+ */
+
 void Player::playSound(std::string const &name)
 {
 	if (this->_audio == nullptr)
@@ -285,15 +294,6 @@ void Player::stopSetTheme(void)
 	}
 	this->_audio->stopTheme(this->_theme);
 }
-
-glm::vec3 const &Player::getVelocity(void) const
-{
-	return (this->_vel);
-}
-
-/*
- * Other
- */
 
 void Player::update_model(float time)
 {

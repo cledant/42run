@@ -58,6 +58,7 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 		/*
 		 * Interface ICollidable
 		 */
+
 		void setPassthrough(bool value);
 		void setActive(bool value);
 
@@ -71,6 +72,7 @@ class CollidableBox : public IEntity, public ICollidable, public ITranslatable
 		/*
 		 * Interface IEntity
 		 */
+
 		void update(float time);
 		void draw(void);
 
