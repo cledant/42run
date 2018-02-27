@@ -40,6 +40,10 @@ class Gamepad
 		bool isGamepadConnected(unsigned char joy_nb) const;
 		void printJoystickInfo(unsigned char joy_nb) const;
 
+		/*
+		 * Getter
+		 */
+
 		GLFWgamepadstate const &getGamepadState(unsigned char joy_nb) const;
 
 

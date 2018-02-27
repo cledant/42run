@@ -93,6 +93,10 @@ void Gamepad::printJoystickInfo(unsigned char joy_nb) const
 		std::cout << joy_guid << std::endl;
 }
 
+/*
+ * Getter
+ */
+
 GLFWgamepadstate const &Gamepad::getGamepadState(unsigned char joy_nb) const
 {
 	if (joy_nb >= MAX_GAMEPAD || !glfwJoystickPresent(joy_nb) ||
