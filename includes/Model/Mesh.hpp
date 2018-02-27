@@ -50,6 +50,10 @@ class Mesh
 		Mesh &operator=(Mesh &&rhs);
 		virtual ~Mesh(void);
 
+		/*
+		 * Getter
+		 */
+
 		std::vector<Mesh::Vertex> const &getVertexList(void) const;
 		std::vector<unsigned int> const &getIndiceList(void) const;
 		std::map<std::string, Texture::t_tex_type> const &getTextureNameList(void) const;

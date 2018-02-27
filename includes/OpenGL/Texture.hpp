@@ -52,13 +52,16 @@ class Texture
 		Texture &operator=(Texture &&rhs);
 		virtual ~Texture(void);
 
+		/*
+		 * Getter
+		 */
+
 		std::string const &getName(void) const;
 		GLuint getTextureID(void) const;
 		Texture::t_tex_type getTextureType(void) const;
 		int getTexW(void) const;
 		int getTexH(void) const;
 		int getTexChannel(void) const;
-
 		GLuint moveTexture(void);
 
 		class FileOpenException : public GeneralException

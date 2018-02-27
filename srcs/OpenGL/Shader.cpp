@@ -58,6 +58,15 @@ Shader &Shader::operator=(Shader &&rhs)
 	return (*this);
 }
 
+void Shader::use(void) const
+{
+	glUseProgram(this->_shader_program);
+}
+
+/*
+ * Getter
+ */
+
 std::string const &Shader::getName(void) const
 {
 	return (this->_name);
@@ -76,10 +85,9 @@ GLuint Shader::moveShaderProgram(void)
 	return (tmp);
 }
 
-void Shader::use(void) const
-{
-	glUseProgram(this->_shader_program);
-}
+/*
+ * Setter
+ */
 
 void Shader::setMat4(GLint uniform_id, glm::mat4 const &mat4) const
 {

@@ -92,6 +92,10 @@ Mesh &Mesh::operator=(Mesh &&rhs)
 	return (*this);
 }
 
+/*
+ * Getter
+ */
+
 std::vector<Mesh::Vertex> const &Mesh::getVertexList(void) const
 {
 	return (this->_vertex_list);

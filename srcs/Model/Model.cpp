@@ -59,6 +59,10 @@ Model::~Model(void)
 {
 }
 
+/*
+ * Getter
+ */
+
 std::string const &Model::getName(void) const
 {
 	return (this->_name);

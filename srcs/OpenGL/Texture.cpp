@@ -74,6 +74,10 @@ Texture &Texture::operator=(Texture &&rhs)
 	return (*this);
 }
 
+/*
+ * Getter
+ */
+
 std::string const &Texture::getName(void) const
 {
 	return (this->_name);

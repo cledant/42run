@@ -41,6 +41,10 @@ class Model
 		Model &operator=(Model &&rhs);
 		virtual ~Model(void);
 
+		/*
+		 * Getter
+		 */
+
 		std::string const &getName(void) const;
 		std::vector<Mesh> const &getMeshList(void) const;
 		std::map<std::string, Texture> const &getTextureList(void) const;

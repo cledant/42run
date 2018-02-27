@@ -33,18 +33,24 @@ class Shader
 		Shader &operator=(Shader &&rhs);
 		virtual ~Shader(void);
 
+		void use(void) const;
+
+		/*
+		 * Getter
+		 */
+
 		std::string const &getName(void) const;
 		GLuint getShaderProgram(void) const;
 		GLuint moveShaderProgram(void);
-		void use(void) const;
-		void setMat4(GLint uniform_id,
-					 glm::mat4 const &mat4) const;
-		void setVec4(GLint uniform_id,
-					 glm::vec4 const &float4) const;
-		void setVec3(GLint uniform_id,
-					 glm::vec3 const &float3) const;
-		void setVec2(GLint uniform_id,
-					 glm::vec2 const &float2) const;
+
+		/*
+		 * Setter
+		 */
+
+		void setMat4(GLint uniform_id, glm::mat4 const &mat4) const;
+		void setVec4(GLint uniform_id, glm::vec4 const &float4) const;
+		void setVec3(GLint uniform_id, glm::vec3 const &float3) const;
+		void setVec2(GLint uniform_id, glm::vec2 const &float2) const;
 		void setFloat(GLint uniform_id, float value) const;
 
 		class FileOpenException : public GeneralException
@@ -88,8 +94,7 @@ class Shader
 		static GLuint _load_shader(std::string const &path, GLenum type);
 		static GLuint _compile_program(GLuint vs, GLuint fs);
 		static void _get_shader_error(GLuint shader);
-		static void _read_file(std::string const &path,
-							   std::string &content);
+		static void _read_file(std::string const &path, std::string &content);
 };
 
 #endif
