@@ -93,7 +93,16 @@ set(SOURCE_FILES
 		srcs/Runner/RunnerWorld.cpp
 		srcs/Runner/InitRunnerWorld.cpp
 		srcs/Runner/TemplatedRoom.cpp
-		srcs/UI/ShaderSurface/ShaderSurface.cpp srcs/Runner/loops/Character_screen.cpp srcs/Runner/loops/Title_screen.cpp srcs/Runner/loops/Main_loop.cpp srcs/Runner/loops/Game_over_loop.cpp srcs/Utility/Score.cpp srcs/Runner/loops/Loop_input.cpp srcs/UI/ShaderSurface/OrientableShaderSurface.cpp srcs/OpenGL/Framebuffer.cpp srcs/UI/ShaderSurface/TextureShaderBuffer.cpp)
+		srcs/UI/ShaderSurface/ShaderSurface.cpp
+		srcs/Runner/loops/Character_screen.cpp
+		srcs/Runner/loops/Title_screen.cpp
+		srcs/Runner/loops/Main_loop.cpp
+		srcs/Runner/loops/Game_over_loop.cpp
+		srcs/Utility/Score.cpp
+		srcs/Runner/loops/Loop_input.cpp
+		srcs/UI/ShaderSurface/OrientableShaderSurface.cpp
+		srcs/OpenGL/Framebuffer.cpp
+		srcs/UI/ShaderSurface/TextureShaderBuffer.cpp)
 
 #OS specific libs
 if (APPLE)
