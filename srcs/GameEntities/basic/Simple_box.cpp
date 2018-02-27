@@ -43,6 +43,10 @@ Simple_box::~Simple_box(void)
 	oGL_module::oGL_delete_vbo(this->_vbo);
 }
 
+/*
+ * Interface IEntity
+ */
+
 void Simple_box::update(float time)
 {
 	static_cast<void>(time);
@@ -72,6 +76,10 @@ void Simple_box::draw(void)
 	oGL_module::oGL_draw_filled(this->_vao, Simple_box::_nb_faces);
 }
 
+/*
+ * Setter
+ */
+
 void Simple_box::setPosition(glm::vec3 const &pos)
 {
 	this->_pos = pos;
@@ -81,6 +89,10 @@ void Simple_box::setScale(glm::vec3 const &scale)
 {
 	this->_scale = scale;
 }
+
+/*
+ * Getter
+ */
 
 glm::mat4 const &Simple_box::getTotalMatrix(void) const
 {

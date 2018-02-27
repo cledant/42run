@@ -29,10 +29,24 @@ class Simple_box : public IEntity
 		Simple_box(Simple_box const &src) = delete;
 		Simple_box &operator=(Simple_box const &rhs) = delete;
 
+		/*
+		 * Interface IEntity
+		 */
+
 		void update(float time);
 		void draw(void);
+
+		/*
+		 * Setter
+		 */
+
 		void setPosition(glm::vec3 const &pos);
 		void setScale(glm::vec3 const &scale);
+
+		/*
+		 * Getter
+		 */
+
 		glm::mat4 const &getTotalMatrix(void) const;
 
 		class InitException : public GeneralException

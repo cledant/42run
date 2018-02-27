@@ -26,6 +26,10 @@ Audio::~Audio(void)
 		this->_theme[i].stop();
 }
 
+/*
+ * Sound
+ */
+
 void Audio::loadSound(std::string const &name, std::string const &file,
 					  bool loop, float volume)
 {
@@ -115,6 +119,10 @@ void Audio::setVolumeSound(std::string const &name, float value)
 	sound->setVolume(value);
 }
 
+/*
+ * Theme
+ */
+
 void Audio::loadTheme(std::string const &file, Audio::theme_list slot,
 					  bool loop, float volume)
 {
@@ -150,6 +158,15 @@ void Audio::setVolumeTheme(Audio::theme_list slot, float value)
 	this->_theme[slot].setVolume(value);
 }
 
+void Audio::setOffsetTheme(Audio::theme_list slot, sf::Time const &off)
+{
+	this->_theme[slot].setPlayingOffset(off);
+}
+
+/*
+ * Getter
+ */
+
 sf::Music::Status Audio::getThemeStatus(Audio::theme_list slot) const
 {
 	return (this->_theme[slot].getStatus());
@@ -167,11 +184,6 @@ sf::Sound::Status Audio::getSoundStatus(std::string const &name) const
 		return (sf::Sound::Stopped);
 	}
 	return (sound->getStatus());
-}
-
-void Audio::setOffsetTheme(Audio::theme_list slot, sf::Time const &off)
-{
-	this->_theme[slot].setPlayingOffset(off);
 }
 
 bool Audio::_getSoundBuffer(std::string const &name, sf::SoundBuffer **buff)

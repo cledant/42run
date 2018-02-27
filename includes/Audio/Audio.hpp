@@ -41,6 +41,10 @@ class Audio
 		Audio(const Audio &src) = delete;
 		Audio &operator=(Audio const &rhs) = delete;
 
+		/*
+		 * Sound
+		 */
+
 		void loadSound(std::string const &name, std::string const &file,
 					   bool loop, float volume);
 		void playSound(std::string const &name);
@@ -48,6 +52,11 @@ class Audio
 		void pauseSound(std::string const &name);
 		void setLoopSound(std::string const &name, bool value);
 		void setVolumeSound(std::string const &name, float value);
+
+		/*
+		 * Theme
+		 */
+
 		void loadTheme(std::string const &file, Audio::theme_list slot,
 					   bool loop, float volume);
 		void playTheme(Audio::theme_list slot);
@@ -56,6 +65,10 @@ class Audio
 		void setLoopTheme(Audio::theme_list slot, bool value);
 		void setVolumeTheme(Audio::theme_list slot, float value);
 		void setOffsetTheme(Audio::theme_list slot, sf::Time const &off);
+
+		/*
+		 * Getter
+		 */
 
 		sf::Music::Status getThemeStatus(Audio::theme_list slot) const;
 		sf::Sound::Status getSoundStatus(std::string const &name) const;
@@ -82,7 +95,6 @@ class Audio
 		std::map<std::string, sf::SoundBuffer> _buffer_list;
 		std::map<std::string, sf::Sound>       _sound_list;
 		sf::Music                              _theme[THEME_ARRAY_LENGTH];
-
 
 		bool _getSoundBuffer(std::string const &name, sf::SoundBuffer **buff);
 		bool _getSound(std::string const &name, sf::Sound **buff);
