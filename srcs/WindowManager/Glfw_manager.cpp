@@ -40,6 +40,10 @@ void Glfw_manager::close_manager(void)
 	glfwTerminate();
 }
 
+/*
+ * Getter
+ */
+
 size_t Glfw_manager::getActiveWindowNumber(void)
 {
 	return (_nb_active_win);
@@ -75,9 +79,12 @@ bool Glfw_manager::getMouseMode(void) const
 	return (this->_input.mouse_exclusive);
 }
 
-void Glfw_manager::create_resizable_window(std::string const &name,
-										   int const major, int const minor, int const w,
-										   int const h)
+/*
+ * Other
+ */
+
+void Glfw_manager::create_resizable_window(std::string const &name, int major, int minor,
+										   int w, int h)
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);

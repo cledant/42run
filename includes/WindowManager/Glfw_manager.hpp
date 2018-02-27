@@ -38,17 +38,25 @@ class Glfw_manager
 
 		static void run_manager(void);
 		static void close_manager(void);
+
+		/*
+		 * Getter
+		 */
+
 		static size_t getActiveWindowNumber(void);
 		static float getTime(void);
-
 		Input const &getInput(void) const;
 		GLFW_Window const &getWindow(void) const;
 		Gamepad &getGamepad(void);
 		std::string const &getStrFps(void) const;
 		bool getMouseMode(void) const;
 
-		void create_resizable_window(std::string const &name, int const major,
-									 int const minor, int const w, int const h);
+		/*
+		 * Other
+		 */
+
+		void create_resizable_window(std::string const &name, int major, int minor,
+									 int w, int h);
 		void destroy_window(void);
 		void init_input_callback(void);
 		void update_events(void);
