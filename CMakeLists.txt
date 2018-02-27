@@ -50,7 +50,8 @@ include_directories(includes
 		assimp/include
 		assimp/build/include
 		freetype/include
-		SFML/include)
+		SFML/include
+		${CMAKE_BINARY_DIR}/assimp/build/include)
 link_directories(${CMAKE_BINARY_DIR}/glad/build
 		${CMAKE_BINARY_DIR}/glfw/build/src
 		${CMAKE_BINARY_DIR}/assimp/build/code
