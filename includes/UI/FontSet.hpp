@@ -48,13 +48,27 @@ class FontSet
 		FontSet(FontSet &&src);
 		FontSet &operator=(FontSet &&rhs);
 
+		/*
+		 * Getter
+		 */
+
 		Shader const *getShader(void) const;
 		std::string const &getName(void) const;
 		glm::mat4 const *getProjectionMatrix(void) const;
 		std::map<GLchar, FontChar> moveCharList(void);
 		GLuint moveVAO(void);
 		GLuint moveVBO(void);
+
+		/*
+		 * Setter
+		 */
+
 		void setProjectionMatrix(glm::mat4 const *matrix);
+
+		/*
+		 * Draw
+		 */
+
 		void drawText(std::string const &str, glm::vec3 const &color,
 					  glm::vec3 const &pos_scale) const;
 

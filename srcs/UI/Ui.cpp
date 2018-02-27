@@ -38,6 +38,10 @@ void Ui::addFontSet(Shader const *shader, std::string const &name,
 	this->_fset_list.push_back(FontSet(shader, &(this->_proj_matrix), name, font_path, size));
 }
 
+/*
+ * Getter
+ */
+
 FontSet const &Ui::getFontSet(std::string const &name) const
 {
 	std::vector<FontSet>::const_iterator it;
@@ -49,6 +53,10 @@ FontSet const &Ui::getFontSet(std::string const &name) const
 	}
 	throw Ui::FontSetNotFoundException();
 }
+
+/*
+ * Draw
+ */
 
 void Ui::drawText(std::string const &fontset_name, std::string const &str,
 				  glm::vec3 const &color, glm::vec3 const &pos_scale) const

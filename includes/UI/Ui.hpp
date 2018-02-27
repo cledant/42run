@@ -33,7 +33,17 @@ class Ui
 		void update(void);
 		void addFontSet(Shader const *shader, std::string const &name,
 						std::string const &font_path, size_t size);
+
+		/*
+		 * Getter
+		 */
+
 		FontSet const &getFontSet(std::string const &name) const;
+
+		/*
+		 * Draw
+		 */
+
 		void drawText(std::string const &fontset_name, std::string const &str,
 					  glm::vec3 const &color, glm::vec3 const &pos_scale) const;
 
