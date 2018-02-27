@@ -254,12 +254,12 @@ bool CollisionBox::IsBoxOnBox(CollisionBox const &box) const
 	return (true);
 }
 
-float CollisionBox::_sign(float nb)
+inline float CollisionBox::_sign(float nb)
 {
 	return ((nb < 0.0f) ? -1.0f : 1.0f);
 }
 
-void CollisionBox::_resolution_pt_x(Resolution *res, glm::vec3 const &pt,
+inline void CollisionBox::_resolution_pt_x(Resolution *res, glm::vec3 const &pt,
 									glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.x);
@@ -270,7 +270,7 @@ void CollisionBox::_resolution_pt_x(Resolution *res, glm::vec3 const &pt,
 	res->pos.z    = pt.z;
 }
 
-void CollisionBox::_resolution_pt_y(Resolution *res, glm::vec3 const &pt,
+inline void CollisionBox::_resolution_pt_y(Resolution *res, glm::vec3 const &pt,
 									glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.y);
@@ -281,7 +281,7 @@ void CollisionBox::_resolution_pt_y(Resolution *res, glm::vec3 const &pt,
 	res->pos.z    = pt.z;
 }
 
-void CollisionBox::_resolution_pt_z(Resolution *res, glm::vec3 const &pt,
+inline void CollisionBox::_resolution_pt_z(Resolution *res, glm::vec3 const &pt,
 									glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.z);
@@ -292,7 +292,7 @@ void CollisionBox::_resolution_pt_z(Resolution *res, glm::vec3 const &pt,
 	res->pos.y    = pt.y;
 }
 
-void CollisionBox::_resolution_box_x(Resolution *res, CollisionBox const &box,
+inline void CollisionBox::_resolution_box_x(Resolution *res, CollisionBox const &box,
 									 glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.x);
@@ -303,7 +303,7 @@ void CollisionBox::_resolution_box_x(Resolution *res, CollisionBox const &box,
 	res->pos.z    = box.getPos().z;
 }
 
-void CollisionBox::_resolution_box_y(Resolution *res, CollisionBox const &box,
+inline void CollisionBox::_resolution_box_y(Resolution *res, CollisionBox const &box,
 									 glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.y);
@@ -314,7 +314,7 @@ void CollisionBox::_resolution_box_y(Resolution *res, CollisionBox const &box,
 	res->pos.z    = box.getPos().z;
 }
 
-void CollisionBox::_resolution_box_z(Resolution *res, CollisionBox const &box,
+inline void CollisionBox::_resolution_box_z(Resolution *res, CollisionBox const &box,
 									 glm::vec3 const &d, glm::vec3 const &p) const
 {
 	float sign = CollisionBox::_sign(d.z);
@@ -325,12 +325,12 @@ void CollisionBox::_resolution_box_z(Resolution *res, CollisionBox const &box,
 	res->pos.y    = box.getPos().y;
 }
 
-float CollisionBox::_max_vec3(glm::vec3 const &vec)
+inline float CollisionBox::_max_vec3(glm::vec3 const &vec)
 {
 	return (std::max(std::max(vec.x, vec.y), vec.z));
 }
 
-float CollisionBox::_min_vec3(glm::vec3 const &vec)
+inline float CollisionBox::_min_vec3(glm::vec3 const &vec)
 {
 	return (std::min(std::min(vec.x, vec.y), vec.z));
 }

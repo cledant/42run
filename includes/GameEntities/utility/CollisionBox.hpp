@@ -55,18 +55,21 @@ class CollisionBox : public ITranslatable
 		/*
 		 * Setter
 		 */
+
 		void setPos(glm::vec3 const &pos);
 		void setHalfSize(glm::vec3 const &pos);
 
 		/*
 		 * Getter
 		 */
+
 		glm::vec3 const &getPos(void) const;
 		glm::vec3 const &getHalfSize(void) const;
 
 		/*
 		 * Collision Functions
 		 */
+
 		bool IsPointInBox(glm::vec3 const &pt, Resolution *res) const;
 		bool IsBoxInBox(CollisionBox const &box, Resolution *res) const;
 		bool IsSegmentInBox(glm::vec3 const &pt, glm::vec3 const &delta,
@@ -88,22 +91,22 @@ class CollisionBox : public ITranslatable
 		glm::vec3 _pos;
 		glm::vec3 _half_size;
 
-		static float _sign(float nb);
-		void _resolution_pt_x(Resolution *res, glm::vec3 const &pt,
-							  glm::vec3 const &d, glm::vec3 const &p) const;
-		void _resolution_pt_y(Resolution *res, glm::vec3 const &pt,
-							  glm::vec3 const &d, glm::vec3 const &p) const;
-		void _resolution_pt_z(Resolution *res, glm::vec3 const &pt,
-							  glm::vec3 const &d, glm::vec3 const &p) const;
-		void _resolution_box_x(Resolution *res, CollisionBox const &box,
-							   glm::vec3 const &d, glm::vec3 const &p) const;
-		void _resolution_box_y(Resolution *res, CollisionBox const &box,
-							   glm::vec3 const &d, glm::vec3 const &p) const;
-		void _resolution_box_z(Resolution *res, CollisionBox const &box,
-							   glm::vec3 const &d, glm::vec3 const &p) const;
+		void inline _resolution_pt_x(Resolution *res, glm::vec3 const &pt,
+									 glm::vec3 const &d, glm::vec3 const &p) const;
+		void inline _resolution_pt_y(Resolution *res, glm::vec3 const &pt,
+									 glm::vec3 const &d, glm::vec3 const &p) const;
+		void inline _resolution_pt_z(Resolution *res, glm::vec3 const &pt,
+									 glm::vec3 const &d, glm::vec3 const &p) const;
+		void inline _resolution_box_x(Resolution *res, CollisionBox const &box,
+									  glm::vec3 const &d, glm::vec3 const &p) const;
+		void inline _resolution_box_y(Resolution *res, CollisionBox const &box,
+									  glm::vec3 const &d, glm::vec3 const &p) const;
+		void inline _resolution_box_z(Resolution *res, CollisionBox const &box,
+									  glm::vec3 const &d, glm::vec3 const &p) const;
 
-		static float _max_vec3(glm::vec3 const &vec);
-		static float _min_vec3(glm::vec3 const &vec);
+		static inline float _sign(float nb);
+		static inline float _max_vec3(glm::vec3 const &vec);
+		static inline float _min_vec3(glm::vec3 const &vec);
 };
 
 #endif
