@@ -49,13 +49,13 @@ void NormalRoomEmpty(RunnerWorld &world, oGL_module &oGL)
 	Room           *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("wood_wall"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("wood_wall"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -74,13 +74,13 @@ void NormalRoomBonusOnly(RunnerWorld &world, oGL_module &oGL)
 
 	//Room Params
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("cluster_right"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("cluster_left"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -125,13 +125,13 @@ void NormalRoomObstacleOnly(RunnerWorld &world, oGL_module &oGL)
 
 	//Room Params
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("white_wall"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("squariel"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -211,13 +211,13 @@ void NormalRoomBonusAndObstacle(RunnerWorld &world, oGL_module &oGL)
 
 	//Room Params
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("wood_wall"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("wood_wall"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -301,13 +301,13 @@ void FallRightRoomEmpty(RunnerWorld &world, oGL_module &oGL)
 	Room           *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("pimax"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("white_wall"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -325,13 +325,13 @@ void FallRightRoomObstacle(RunnerWorld &world, oGL_module &oGL)
 	Room                   *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("squariel"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("pimax"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -398,13 +398,13 @@ void FallLeftRoomEmpty(RunnerWorld &world, oGL_module &oGL)
 	Room           *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("white_wall"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("tdm"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -422,13 +422,13 @@ void FallLeftRoomObstacle(RunnerWorld &world, oGL_module &oGL)
 	Room                   *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("white_wall"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("white_wall"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -495,13 +495,13 @@ void FallFrontRoomEmpty(RunnerWorld &world, oGL_module &oGL)
 	Room           *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("white_wall"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("pimax"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -520,13 +520,13 @@ void FallFrontRoomObstacle(RunnerWorld &world, oGL_module &oGL)
 	CollidableProp::Params bonus_params;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("tdm"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("white_wall"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -588,13 +588,13 @@ void FallMiddleRoomEmpty(RunnerWorld &world, oGL_module &oGL)
 	Room           *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("white_wall"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("white_wall"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;
@@ -612,13 +612,13 @@ void FallMiddleRoomObstacle(RunnerWorld &world, oGL_module &oGL)
 	Room                   *room = nullptr;
 
 	room_params.floor.shader      = &(oGL.getShader("cubemap"));
-	room_params.floor.model       = &(oGL.getModel("TestBox"));
+	room_params.floor.model       = &(oGL.getModel("floor"));
 	room_params.roof.shader       = &(oGL.getShader("cubemap"));
-	room_params.roof.model        = &(oGL.getModel("TestBox"));
+	room_params.roof.model        = &(oGL.getModel("floor"));
 	room_params.right_wall.shader = &(oGL.getShader("cubemap"));
-	room_params.right_wall.model  = &(oGL.getModel("TestBox"));
+	room_params.right_wall.model  = &(oGL.getModel("wood_wall"));
 	room_params.left_wall.shader  = &(oGL.getShader("cubemap"));
-	room_params.left_wall.model   = &(oGL.getModel("TestBox"));
+	room_params.left_wall.model   = &(oGL.getModel("wood_wall"));
 	room_params.front_wall.shader = &(oGL.getShader("cubemap"));
 	room_params.front_wall.model  = &(oGL.getModel("TestBox"));
 	room_params.front_wall.active = false;

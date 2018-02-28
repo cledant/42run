@@ -132,12 +132,14 @@ GLuint Texture::_load_cubemap(std::vector<std::string> const &files)
 	if (glGetError() != GL_NO_ERROR)
 		throw Texture::AllocationException();
 	glBindTexture(GL_TEXTURE_CUBE_MAP, tex_id);
+
+	GLint k = 0;
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &k);
 	while (i < 6)
 	{
 		if ((data = stbi_load(files[i].c_str(), &tex_w, &tex_h,
 							  &tex_nb_chan, 0)) != NULL)
 		{
-			std::cout << "Loading : " << files[i] << std::endl;
 			if (tex_nb_chan == 3)
 				format = GL_RGB;
 			else if (tex_nb_chan == 4)
@@ -167,6 +169,12 @@ GLuint Texture::_load_cubemap(std::vector<std::string> const &files)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	if (glGetError() != GL_NO_ERROR)
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+		glDeleteTextures(1, &tex_id);
+		throw InvalidTextureException();
+	}
 	return (tex_id);
 }
 
@@ -222,6 +230,12 @@ GLuint Texture::_load_flat(std::vector<std::string> const &files,
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	if (glGetError() != GL_NO_ERROR)
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+		glDeleteTextures(1, &tex_id);
+		throw InvalidTextureException();
+	}
 	return (tex_id);
 }
 
@@ -300,5 +314,14 @@ Texture::BufferException::BufferException(void)
 }
 
 Texture::BufferException::~BufferException(void) throw()
+{
+}
+
+Texture::InvalidTextureException::InvalidTextureException(void)
+{
+	this->_msg = "Texture : Invalid texture";
+}
+
+Texture::InvalidTextureException::~InvalidTextureException(void) throw()
 {
 }

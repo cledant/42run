@@ -113,6 +113,14 @@ class Texture
 				virtual ~BufferException(void) throw();
 		};
 
+		class InvalidTextureException : public GeneralException
+		{
+			public :
+
+				explicit InvalidTextureException(void);
+				virtual ~InvalidTextureException(void) throw();
+		};
+
 	private :
 
 		std::string _name;

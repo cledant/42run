@@ -13,9 +13,39 @@
 #include "Utility/WorldSelect.hpp"
 #include "Runner/TemplatedRoom.hpp"
 
-static void init_oGL(oGL_module &oGL)
+static void add_cubemap_models(oGL_module &oGL)
 {
-	oGL_module::oGL_enable_depth();
+	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("floor", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/room/floor.png", "./textures/room/floor.png", "./textures/room/floor.png", "./textures/room/floor.png", "./textures/room/floor.png", "./textures/room/floor.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("wood_wall", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/room/wood_wall.png", "./textures/room/wood_wall.png", "./textures/room/wood_wall.png", "./textures/room/wood_wall.png", "./textures/room/wood_wall.png", "./textures/room/wood_wall.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("cluster_right", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/room/cluster_right.png", "./textures/room/cluster_right.png", "./textures/room/cluster_right.png", "./textures/room/cluster_right.png", "./textures/room/cluster_right.png", "./textures/room/cluster_right.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("cluster_left", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/room/cluster_left.png", "./textures/room/cluster_left.png", "./textures/room/cluster_left.png", "./textures/room/cluster_left.png", "./textures/room/cluster_left.png", "./textures/room/cluster_left.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("squariel", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/room/squariel.png", "./textures/room/squariel.png", "./textures/room/squariel.png", "./textures/room/squariel.png", "./textures/room/squariel.png", "./textures/room/squariel.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("white_wall", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/room/white_wall.png", "./textures/room/white_wall.png", "./textures/room/white_wall.png", "./textures/room/white_wall.png", "./textures/room/white_wall.png", "./textures/room/white_wall.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("pimax", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/room/pimax.png", "./textures/room/pimax.png", "./textures/room/pimax.png", "./textures/room/pimax.png", "./textures/room/pimax.png", "./textures/room/pimax.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+	oGL.add_model("tdm", Cubemap::vertices, Cubemap::nb_faces,
+				  {"./textures/room/tdm.png", "./textures/room/tdm.png", "./textures/room/tdm.png", "./textures/room/tdm.png", "./textures/room/tdm.png", "./textures/room/tdm.png"},
+				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+}
+
+static void add_shaders(oGL_module &oGL)
+{
 	oGL.add_shader("simple_box", "./shaders/simple_box/simple_box.vs",
 				   "./shaders/simple_box/simple_box.fs");
 	oGL.add_shader("cubemap", "./shaders/cubemap/cubemap.vs",
@@ -37,9 +67,13 @@ static void init_oGL(oGL_module &oGL)
 				   "./shaders/texture_window/texture_window.fs");
 	oGL.add_shader("texture_window_grayscale", "./shaders/texture_window/texture_window.vs",
 				   "./shaders/texture_window/texture_window_grayscale.fs");
-	oGL.add_model("TestBox", Cubemap::vertices, Cubemap::nb_faces,
-				  {"./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png", "./textures/testTex/testTex.png"},
-				  Texture::TEX_CUBE, Texture::TEX_DIFFUSE);
+}
+
+static void init_oGL(oGL_module &oGL)
+{
+	oGL_module::oGL_enable_depth();
+	add_shaders(oGL);
+	add_cubemap_models(oGL);
 	oGL.add_framebuffer("render", MAX_WIN_H, MAX_WIN_W);
 	oGL.add_model("cola", "./models/cola/cola.obj");
 	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.3ds");
