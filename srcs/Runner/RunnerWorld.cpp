@@ -80,8 +80,8 @@ void RunnerWorld::update(void)
 		if (dynamic_cast<Player *>(this->_active)->isAlive())
 		{
 			dynamic_cast<Player *>(this->_active)->addAcceleration(
-					40.0f * glm::log(glm::vec3((this->_current_score * this->_current_score) / (1000 * 1000)) +
-									 glm::vec3(10.0f) * glm::vec3(this->_current_score / 1000) +
+					40.0f * glm::log(glm::vec3(std::pow(this->_current_score, 2) * 0.0000001) +
+									 glm::vec3(10.0f) * glm::vec3(this->_current_score * 0.0001) +
 									 glm::vec3(100.0f)) * this->_camera.getXYFront());
 			dynamic_cast<Player *>(this->_active)->forceBackSprite();
 		}
@@ -99,8 +99,8 @@ void RunnerWorld::update(void)
 			if (dynamic_cast<Player *>(this->_active)->isAlive())
 			{
 				dynamic_cast<Player *>(this->_active)->addAcceleration(
-						40.0f * glm::log(glm::vec3((this->_current_score * this->_current_score) / (1000 * 1000)) +
-										 glm::vec3(10.0f) * glm::vec3(this->_current_score / 1000) +
+						40.0f * glm::log(glm::vec3(std::pow(this->_current_score, 2) * 0.0000001) +
+										 glm::vec3(10.0f) * glm::vec3(this->_current_score * 0.0001) +
 										 glm::vec3(100.0f)) * this->_camera.getXYFront());
 				dynamic_cast<Player *>(this->_active)->forceBackSprite();
 			}
@@ -120,7 +120,7 @@ void RunnerWorld::update(void)
 	reinterpret_cast<Player *>(this->_active)->setSpriteYaw(this->_camera.getYaw());
 	reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
 	this->_current_score = static_cast<long int>(std::trunc(
-			reinterpret_cast<Player *>(this->_active)->getTotalWalked()) / 10.0f) +
+			reinterpret_cast<Player *>(this->_active)->getTotalWalked()) * 0.1) +
 						   this->_score_modifier;
 	this->_check_stuck[stuck_index] = std::trunc(reinterpret_cast<Player *>(this->_active)->getPos().x);
 	stuck_index = (stuck_index == MAX_STUCK_FRAME - 1) ? 0 : (stuck_index + 1);
