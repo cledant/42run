@@ -705,22 +705,30 @@ void RunnerWorld::forceKeyboard(void)
 
 inline void RunnerWorld::_check_collisions(void)
 {
-	CollisionBox::SweepResolution res;
-	glm::vec3                     inv_delta;
-	CollisionBox::SweepResolution nearest;
-	ICollidable const             *ptr                     = nullptr;
-	Room                          *cur_room                = nullptr;
-	Room                          *next_room               = nullptr;
-	static bool                   should_trigger_regen_end = false;
+	CollisionBox::SweepResolution                         res;
+	glm::vec3                                             inv_delta;
+	CollisionBox::SweepResolution                         nearest;
+	ICollidable const                                     *ptr                     = nullptr;
+	Room                                                  *cur_room                = nullptr;
+	Room                                                  *next_room               = nullptr;
+	static bool                                           should_trigger_regen_end = false;
+	static bool                                           init_it                  = false;
+	static std::map<std::string, CollidableBox>::iterator it;
+	static std::map<std::string, CollidableBox>::iterator it2;
 
 	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
 	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
 	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
+	if (!init_it)
+	{
+		it      = this->_list_collidable_box.find("tp_trigger");
+		it2     = this->_list_collidable_box.find("regen_end_trigger");
+		init_it = true;
+	}
 
 /*
  * Check teleport and room generation trigger;
  */
-	auto it  = this->_list_collidable_box.find("tp_trigger");
 	if (it != this->_list_collidable_box.end())
 	{
 		if (it->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
@@ -740,7 +748,6 @@ inline void RunnerWorld::_check_collisions(void)
 			reinterpret_cast<Player *>(this->_active)->setPos(player_pos);
 		}
 	}
-	auto it2 = this->_list_collidable_box.find("regen_end_trigger");
 	if (it2 != this->_list_collidable_box.end() && should_trigger_regen_end)
 	{
 		if (it2->second.getCollisionBox().IsBoxInBoxSweep(reinterpret_cast<Player *>(this->_active)->getCollisionBox(),
