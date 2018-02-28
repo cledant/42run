@@ -316,33 +316,39 @@ void RunnerWorld::generateInitialRoomList(void)
 
 void RunnerWorld::generateMiddleRoomList(void)
 {
-	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
-																		 .find("NormalRoomEmpty"),
-																	 this->_room_template_list
-																		 .find("NormalRoomObstacleOnly"),
-																	 this->_room_template_list
-																		 .find("NormalRoomBonusOnly"),
-																	 this->_room_template_list
-																		 .find("NormalRoomBonusAndObstacle"),
-																	 this->_room_template_list
-																		 .find("FallRightRoomObstacle"),
-																	 this->_room_template_list
-																		 .find("FallLeftRoomObstacle"),
-																	 this->_room_template_list
-																		 .find("FallRightRoomObstacle"),
-																	 this->_room_template_list
-																		 .find("FallFrontRoomObstacle"),
-																	 this->_room_template_list
-																		 .find("FallMiddleRoomObstacle")
-	};
-	size_t                                             index_room = 0;
-	size_t                                             index_prop = 0;
-	std::mt19937_64                                    generator(this->_rd());
-	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
-	std::uniform_int_distribution<size_t>              distri_prop;
-	std::uniform_int_distribution<size_t>              distri_max;
-	size_t                                             max_obs;
+	static bool                                               init       = false;
+	static std::vector<std::map<std::string, Room>::iterator> vec_it;
+	static std::uniform_int_distribution<size_t>              distri_room;
+	size_t                                                    index_room = 0;
+	size_t                                                    index_prop = 0;
+	std::mt19937_64                                           generator(this->_rd());
+	std::uniform_int_distribution<size_t>                     distri_prop;
+	std::uniform_int_distribution<size_t>                     distri_max;
+	size_t                                                    max_obs;
 
+	if (!init)
+	{
+		vec_it      = {this->_room_template_list
+						   .find("NormalRoomEmpty"),
+					   this->_room_template_list
+						   .find("NormalRoomObstacleOnly"),
+					   this->_room_template_list
+						   .find("NormalRoomBonusOnly"),
+					   this->_room_template_list
+						   .find("NormalRoomBonusAndObstacle"),
+					   this->_room_template_list
+						   .find("FallRightRoomObstacle"),
+					   this->_room_template_list
+						   .find("FallLeftRoomObstacle"),
+					   this->_room_template_list
+						   .find("FallRightRoomObstacle"),
+					   this->_room_template_list
+						   .find("FallFrontRoomObstacle"),
+					   this->_room_template_list
+						   .find("FallMiddleRoomObstacle")};
+		distri_room = std::uniform_int_distribution<size_t>(1, vec_it.size() - 1);
+		init        = true;
+	}
 	for (size_t i = 5; i < RunnerWorld::list_size - 5; ++i)
 	{
 		index_room = distri_room(generator);
@@ -374,33 +380,39 @@ void RunnerWorld::generateMiddleRoomList(void)
 
 void RunnerWorld::generateBeginEndRoomList(void)
 {
-	std::vector<std::map<std::string, Room>::iterator> vec_it     = {this->_room_template_list
-																		 .find("NormalRoomEmpty"),
-																	 this->_room_template_list
-																		 .find("NormalRoomObstacleOnly"),
-																	 this->_room_template_list
-																		 .find("NormalRoomBonusOnly"),
-																	 this->_room_template_list
-																		 .find("NormalRoomBonusAndObstacle"),
-																	 this->_room_template_list
-																		 .find("FallRightRoomObstacle"),
-																	 this->_room_template_list
-																		 .find("FallLeftRoomObstacle"),
-																	 this->_room_template_list
-																		 .find("FallRightRoomObstacle"),
-																	 this->_room_template_list
-																		 .find("FallFrontRoomObstacle"),
-																	 this->_room_template_list
-																		 .find("FallMiddleRoomObstacle")
-	};
-	size_t                                             index_room = 0;
-	size_t                                             index_prop = 0;
-	std::mt19937_64                                    generator(this->_rd());
-	std::uniform_int_distribution<size_t>              distri_room(1, vec_it.size() - 1);
-	std::uniform_int_distribution<size_t>              distri_prop;
-	std::uniform_int_distribution<size_t>              distri_max;
-	size_t                                             max_obs;
+	static bool                                               init       = false;
+	static std::vector<std::map<std::string, Room>::iterator> vec_it;
+	static std::uniform_int_distribution<size_t>              distri_room;
+	size_t                                                    index_room = 0;
+	size_t                                                    index_prop = 0;
+	std::mt19937_64                                           generator(this->_rd());
+	std::uniform_int_distribution<size_t>                     distri_prop;
+	std::uniform_int_distribution<size_t>                     distri_max;
+	size_t                                                    max_obs;
 
+	if (!init)
+	{
+		vec_it      = {this->_room_template_list
+						   .find("NormalRoomEmpty"),
+					   this->_room_template_list
+						   .find("NormalRoomObstacleOnly"),
+					   this->_room_template_list
+						   .find("NormalRoomBonusOnly"),
+					   this->_room_template_list
+						   .find("NormalRoomBonusAndObstacle"),
+					   this->_room_template_list
+						   .find("FallRightRoomObstacle"),
+					   this->_room_template_list
+						   .find("FallLeftRoomObstacle"),
+					   this->_room_template_list
+						   .find("FallRightRoomObstacle"),
+					   this->_room_template_list
+						   .find("FallFrontRoomObstacle"),
+					   this->_room_template_list
+						   .find("FallMiddleRoomObstacle")};
+		distri_room = std::uniform_int_distribution<size_t>(1, vec_it.size() - 1);
+		init        = true;
+	}
 	for (size_t i = 0; i < 5; ++i)
 	{
 		index_room = distri_room(generator);
