@@ -22,9 +22,8 @@ RunnerWorld::RunnerWorld(Input const &input, GLFW_Window const &win, Gamepad &ga
 		_fov(45.0f), _max_fps(max_fps),
 		_max_frame_skip(max_frame_skip), _next_update_tick(0.0f),
 		_last_update_tick(0.0f), _delta_tick(0.0f), _skip_loop(0),
-		_input_timer(0.0f), _input_mouse_timer(0.0f),
-		_gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"), _str_score("0"),
-		_str_speed("0.0"), _score_modifier(0), _should_end(false),
+		_input_timer(0.0f), _gravity(glm::vec3(0.0f, -50.0f, 0.0f)), _str_hp("0"),
+		_str_score("0"), _str_speed("0.0"), _score_modifier(0), _should_end(false),
 		_current_score(0), _last_game_score(0), _high_score(high_score),
 		_laps(0)
 {
@@ -58,6 +57,8 @@ RunnerWorld::~RunnerWorld(void)
 
 void RunnerWorld::update(void)
 {
+	static int stuck_index = 0;
+
 	if (this->_window.resized)
 		this->updatePerspective(this->_fov);
 	if (this->_active == nullptr)
@@ -66,21 +67,33 @@ void RunnerWorld::update(void)
 										  glm::vec3({0.0f, 0.0f, 0.0f}),
 										  this->_enabled_gamepad);
 		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
+		for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
+			(*it)->update(this->_tick);
+		return;
+	}
+	if (!this->_enabled_gamepad)
+	{
+		if (this->_active->update_keyboard_interaction(this->_input, this->_input_timer))
+			this->_input_timer = 0.0f;
+		else if (this->_input_timer < INPUT_REPEAT_TIMER)
+			this->_input_timer += this->_tick;
+		if (dynamic_cast<Player *>(this->_active)->isAlive())
+		{
+			dynamic_cast<Player *>(this->_active)->addAcceleration(
+					40.0f * glm::log(glm::vec3((this->_current_score * this->_current_score) / (1000 * 1000)) +
+									 glm::vec3(10.0f) * glm::vec3(this->_current_score / 1000) +
+									 glm::vec3(100.0f)) * this->_camera.getXYFront());
+			dynamic_cast<Player *>(this->_active)->forceBackSprite();
+		}
 	}
 	else
 	{
-		if (!this->_enabled_gamepad)
+		if (this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1))
 		{
-			if (this->_active->update_mouse_interaction(this->_input, this->_window,
-														this->_camera.getPos(), std::vector<glm::vec3 const *>{
-							&(this->_camera.getFront()), &(this->_camera.getUp()),
-							&(this->_camera.getRight())}, this->_input_mouse_timer))
-				this->_input_mouse_timer = 0.0f;
-			else if (this->_input_mouse_timer < 1.0f)
-				this->_input_mouse_timer += this->_tick;
-			if (this->_active->update_keyboard_interaction(this->_input,
-														   this->_input_timer))
-				this->_input_timer       = 0.0f;
+			this->_gamepad.pollGamepads();
+			if (this->_active->update_gamepad_interaction(
+					this->_gamepad.getGamepadState(GLFW_JOYSTICK_1), this->_input_timer))
+				this->_input_timer = 0.0f;
 			else if (this->_input_timer < INPUT_REPEAT_TIMER)
 				this->_input_timer += this->_tick;
 			if (dynamic_cast<Player *>(this->_active)->isAlive())
@@ -93,55 +106,36 @@ void RunnerWorld::update(void)
 			}
 		}
 		else
-		{
-			if (this->_gamepad.isGamepadConnected(GLFW_JOYSTICK_1))
-			{
-				this->_gamepad.pollGamepads();
-				if (this->_active->update_gamepad_interaction(
-						this->_gamepad.getGamepadState(GLFW_JOYSTICK_1), this->_input_timer))
-					this->_input_timer = 0.0f;
-				else if (this->_input_timer < INPUT_REPEAT_TIMER)
-					this->_input_timer += this->_tick;
-				if (dynamic_cast<Player *>(this->_active)->isAlive())
-				{
-					dynamic_cast<Player *>(this->_active)->addAcceleration(
-							40.0f * glm::log(glm::vec3((this->_current_score * this->_current_score) / (1000 * 1000)) +
-											 glm::vec3(10.0f) * glm::vec3(this->_current_score / 1000) +
-											 glm::vec3(100.0f)) * this->_camera.getXYFront());
-					dynamic_cast<Player *>(this->_active)->forceBackSprite();
-				}
-			}
-			else
-				std::cout << "Gamepad not connected anymore" << std::endl;
-		}
-		reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_tick);
-		this->_check_collisions();
-		reinterpret_cast<Player *>(this->_active)->update(this->_tick);
-		this->_camera.update_third_person(this->_input.mouse_exclusive,
-										  glm::vec3(reinterpret_cast<Player *>(this->_active)->getPos().x,
-													CAMERA_HEIGHT,
-													reinterpret_cast<Player *>(this->_active)->getPos().z),
-										  this->_enabled_gamepad);
-		this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
-		reinterpret_cast<Player *>(this->_active)->setSpriteYaw(this->_camera.getYaw());
-		reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
-		this->_current_score = static_cast<long int>(std::trunc(
-				reinterpret_cast<Player *>(this->_active)->getTotalWalked()) / 10.0f) +
-							   this->_score_modifier;
-		this->_add_pos_for_check(reinterpret_cast<Player *>(this->_active)->getPos());
-		if (std::adjacent_find(this->_check_stuck.begin(), this->_check_stuck.end(), std::not_equal_to<float>()) ==
-			this->_check_stuck.end())
-		{
-			reinterpret_cast<Player *>(this->_active)->lowerHP(ICollidable::Damages::INSTANT_DEATH);
-			reinterpret_cast<Player *>(this->_active)->playSound("damage");
-			return;
-		}
-		reinterpret_cast<OrientableShaderSurface *>(this->_active_shadow)->setPosition(
-				glm::vec3(reinterpret_cast<Player *>(this->_active)->getPos().x,
-						  PLAYER_SHADOW_HEIGHT,
-						  reinterpret_cast<Player *>(this->_active)->getPos().z));
-		this->_active_shadow->update(0.0f);
+			std::cout << "Gamepad not connected anymore" << std::endl;
 	}
+	reinterpret_cast<Player *>(this->_active)->update_gravity(this->_gravity, this->_tick);
+	this->_check_collisions();
+	reinterpret_cast<Player *>(this->_active)->update(this->_tick);
+	this->_camera.update_third_person(this->_input.mouse_exclusive,
+									  glm::vec3(reinterpret_cast<Player *>(this->_active)->getPos().x,
+												CAMERA_HEIGHT,
+												reinterpret_cast<Player *>(this->_active)->getPos().z),
+									  this->_enabled_gamepad);
+	this->_perspec_mult_view = this->_perspective * this->_camera.getViewMatrix();
+	reinterpret_cast<Player *>(this->_active)->setSpriteYaw(this->_camera.getYaw());
+	reinterpret_cast<Player *>(this->_active)->update_model(0.0f);
+	this->_current_score = static_cast<long int>(std::trunc(
+			reinterpret_cast<Player *>(this->_active)->getTotalWalked()) / 10.0f) +
+						   this->_score_modifier;
+	this->_check_stuck[stuck_index] = std::trunc(reinterpret_cast<Player *>(this->_active)->getPos().x);
+	stuck_index = (stuck_index == MAX_STUCK_FRAME - 1) ? 0 : (stuck_index + 1);
+	if (std::adjacent_find(this->_check_stuck.begin(), this->_check_stuck.end(), std::not_equal_to<float>()) ==
+		this->_check_stuck.end())
+	{
+		reinterpret_cast<Player *>(this->_active)->lowerHP(ICollidable::Damages::INSTANT_DEATH);
+		reinterpret_cast<Player *>(this->_active)->playSound("damage");
+		return;
+	}
+	reinterpret_cast<OrientableShaderSurface *>(this->_active_shadow)->setPosition(
+			glm::vec3(reinterpret_cast<Player *>(this->_active)->getPos().x,
+					  PLAYER_SHADOW_HEIGHT,
+					  reinterpret_cast<Player *>(this->_active)->getPos().z));
+	this->_active_shadow->update(0.0f);
 	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
 		(*it)->update(this->_tick);
 }
@@ -710,21 +704,20 @@ inline void RunnerWorld::_check_collisions(void)
 	CollisionBox::SweepResolution                         nearest;
 	ICollidable const                                     *ptr                     = nullptr;
 	Room                                                  *cur_room                = nullptr;
-	Room                                                  *next_room               = nullptr;
 	static bool                                           should_trigger_regen_end = false;
 	static bool                                           init_it                  = false;
 	static std::map<std::string, CollidableBox>::iterator it;
 	static std::map<std::string, CollidableBox>::iterator it2;
 
-	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
-	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
-	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
 	if (!init_it)
 	{
 		it      = this->_list_collidable_box.find("tp_trigger");
 		it2     = this->_list_collidable_box.find("regen_end_trigger");
 		init_it = true;
 	}
+	inv_delta.x = -reinterpret_cast<Player *>(this->_active)->getDelta().x;
+	inv_delta.y = -reinterpret_cast<Player *>(this->_active)->getDelta().y;
+	inv_delta.z = -reinterpret_cast<Player *>(this->_active)->getDelta().z;
 
 /*
  * Check teleport and room generation trigger;
@@ -765,10 +758,7 @@ inline void RunnerWorld::_check_collisions(void)
 	{
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBox((*it)->getCollisionBox(), nullptr)))
-		{
-			cur_room  = *it;
-			next_room = ((it++) == this->_room_list.end()) ? nullptr : *(it++);
-		}
+			cur_room = *it;
 	}
 	if (cur_room == nullptr)
 	{
@@ -892,22 +882,14 @@ inline void RunnerWorld::_check_collidable_box(CollidableBox const &cb,
 	}
 }
 
-inline void RunnerWorld::_add_pos_for_check(glm::vec3 const &pos)
-{
-	static size_t i = 0;
-
-	this->_check_stuck[i] = std::trunc(pos.x);
-	i = (i == MAX_STUCK_FRAME - 1) ? 0 : (i + 1);
-}
-
 inline bool RunnerWorld::_should_spawn_full_obstacle(void)
 {
 	std::mt19937_64                       generator(this->_rd());
 	std::uniform_int_distribution<size_t> distri;
-	size_t                                value_for_random = INITIAL_MAX_SPAWN_CHANCE;
+	size_t                                value_for_random = (this->_laps >= INITIAL_MAX_SPAWN_CHANCE) ? 0 :
+															 INITIAL_MAX_SPAWN_CHANCE - this->_laps;
 
-	value_for_random = (this->_laps >= INITIAL_MAX_SPAWN_CHANCE) ? 0 : value_for_random - this->_laps;
-	distri           = std::uniform_int_distribution<size_t>(0, value_for_random);
+	distri = std::uniform_int_distribution<size_t>(0, value_for_random);
 	if (!distri(generator))
 		return (true);
 	return (false);

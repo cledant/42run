@@ -165,7 +165,6 @@ class RunnerWorld
 		float                                _delta_tick;
 		size_t                               _skip_loop;
 		float                                _input_timer;
-		float                                _input_mouse_timer;
 		glm::vec3                            _gravity;
 		std::string                          _str_hp;
 		std::string                          _str_score;
@@ -191,7 +190,6 @@ class RunnerWorld
 										  CollisionBox::SweepResolution *nearest,
 										  glm::vec3 const &inv_delta,
 										  ICollidable const **ptr);
-		inline void _add_pos_for_check(glm::vec3 const &pos);
 		inline bool _should_spawn_full_obstacle(void);
 
 		static size_t list_size;
