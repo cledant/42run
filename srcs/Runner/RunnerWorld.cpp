@@ -760,8 +760,9 @@ inline void RunnerWorld::_check_collisions(void)
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBox((*it)->getCollisionBox(), nullptr)))
 		{
-			cur_room  = *it;
-			next_room = (it == this->_room_list.end()) ? nullptr : *(it++);
+			cur_room = *it;
+			auto i = ++it;
+			next_room = (i == this->_room_list.end()) ? nullptr : *i;
 			break;
 		}
 	}
