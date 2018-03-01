@@ -80,8 +80,8 @@ void RunnerWorld::update(void)
 		if (dynamic_cast<Player *>(this->_active)->isAlive())
 		{
 			dynamic_cast<Player *>(this->_active)->addAcceleration(
-					40.0f * glm::log(glm::vec3(std::pow(this->_current_score, 2) * 0.0000001) +
-									 glm::vec3(10.0f) * glm::vec3(this->_current_score * 0.0001) +
+					40.0f * glm::log(glm::vec3(std::pow(this->_current_score, 2) * 0.000001) +
+									 glm::vec3(10.0f) * glm::vec3(this->_current_score * 0.001) +
 									 glm::vec3(100.0f)) * this->_camera.getXYFront());
 			dynamic_cast<Player *>(this->_active)->forceBackSprite();
 		}
@@ -99,8 +99,8 @@ void RunnerWorld::update(void)
 			if (dynamic_cast<Player *>(this->_active)->isAlive())
 			{
 				dynamic_cast<Player *>(this->_active)->addAcceleration(
-						40.0f * glm::log(glm::vec3(std::pow(this->_current_score, 2) * 0.0000001) +
-										 glm::vec3(10.0f) * glm::vec3(this->_current_score * 0.0001) +
+						40.0f * glm::log(glm::vec3(std::pow(this->_current_score, 2) * 0.000001) +
+										 glm::vec3(10.0f) * glm::vec3(this->_current_score * 0.001) +
 										 glm::vec3(100.0f)) * this->_camera.getXYFront());
 				dynamic_cast<Player *>(this->_active)->forceBackSprite();
 			}
@@ -704,6 +704,7 @@ inline void RunnerWorld::_check_collisions(void)
 	CollisionBox::SweepResolution                         nearest;
 	ICollidable const                                     *ptr                     = nullptr;
 	Room                                                  *cur_room                = nullptr;
+	Room                                                  *next_room               = nullptr;
 	static bool                                           should_trigger_regen_end = false;
 	static bool                                           init_it                  = false;
 	static std::map<std::string, CollidableBox>::iterator it;
@@ -758,7 +759,13 @@ inline void RunnerWorld::_check_collisions(void)
 	{
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBox((*it)->getCollisionBox(), nullptr)))
-			cur_room = *it;
+		{
+			cur_room      = *it;
+			next_room     = (it == this->_room_list.end()) ? nullptr : *(++it);
+			if ((++it) == this->_room_list.end())
+				next_room = nullptr;
+			break;
+		}
 	}
 	if (cur_room == nullptr)
 	{
@@ -768,22 +775,30 @@ inline void RunnerWorld::_check_collisions(void)
 /*
  * Check actual collisions
  */
-	for (auto it = this->_room_list.begin(); it != this->_room_list.end(); ++it)
+	//Current room
+	this->_check_collidable_box(cur_room->getRoof(), &nearest, inv_delta, &ptr);
+	this->_check_collidable_box(cur_room->getRightWall(), &nearest, inv_delta, &ptr);
+	this->_check_collidable_box(cur_room->getLeftWall(), &nearest, inv_delta, &ptr);
+	this->_check_collidable_box(cur_room->getFloor(), &nearest, inv_delta, &ptr);
+	if (cur_room->getFrontWall().getActive())
+		this->_check_collidable_box(cur_room->getFrontWall(), &nearest, inv_delta, &ptr);
+	if (ptr == &(cur_room->getRightWall()))
+		reinterpret_cast<Player *>(this->_active)->setDisableRight(true);
+	else if (ptr == &(cur_room->getLeftWall()))
+		reinterpret_cast<Player *>(this->_active)->setDisableLeft(true);
+	//Next room
+	if (next_room != nullptr)
 	{
-		if ((*it)->getActive())
-		{
-			this->_check_collidable_box((*it)->getRoof(), &nearest, inv_delta, &ptr);
-			this->_check_collidable_box((*it)->getRightWall(), &nearest, inv_delta, &ptr);
-			this->_check_collidable_box((*it)->getLeftWall(), &nearest, inv_delta, &ptr);
-			this->_check_collidable_box((*it)->getFloor(), &nearest, inv_delta, &ptr);
-			if ((*it)->getFrontWall().getActive())
-				this->_check_collidable_box((*it)->getFrontWall(), &nearest, inv_delta, &ptr);
-			if (ptr == &((*it)->getRightWall()))
-				reinterpret_cast<Player *>(this->_active)->setDisableRight(true);
-			else if (ptr == &((*it)->getLeftWall()))
-				reinterpret_cast<Player *>(this->_active)->setDisableLeft(true);
-
-		}
+		this->_check_collidable_box(next_room->getRoof(), &nearest, inv_delta, &ptr);
+		this->_check_collidable_box(next_room->getRightWall(), &nearest, inv_delta, &ptr);
+		this->_check_collidable_box(next_room->getLeftWall(), &nearest, inv_delta, &ptr);
+		this->_check_collidable_box(next_room->getFloor(), &nearest, inv_delta, &ptr);
+		if (next_room->getFrontWall().getActive())
+			this->_check_collidable_box(next_room->getFrontWall(), &nearest, inv_delta, &ptr);
+		if (ptr == &(next_room->getRightWall()))
+			reinterpret_cast<Player *>(this->_active)->setDisableRight(true);
+		else if (ptr == &(next_room->getLeftWall()))
+			reinterpret_cast<Player *>(this->_active)->setDisableLeft(true);
 	}
 	for (auto it = cur_room->getCollidablePropList().begin(); it != cur_room->getCollidablePropList()
 																			.end(); ++it)
