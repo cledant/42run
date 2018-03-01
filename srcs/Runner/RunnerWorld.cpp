@@ -760,10 +760,8 @@ inline void RunnerWorld::_check_collisions(void)
 		if ((reinterpret_cast<Player *>(this->_active)->getCollisionBox().
 				IsBoxInBox((*it)->getCollisionBox(), nullptr)))
 		{
-			cur_room      = *it;
-			next_room     = (it == this->_room_list.end()) ? nullptr : *(++it);
-			if ((++it) == this->_room_list.end())
-				next_room = nullptr;
+			cur_room  = *it;
+			next_room = (it == this->_room_list.end()) ? nullptr : *(it++);
 			break;
 		}
 	}
@@ -775,7 +773,7 @@ inline void RunnerWorld::_check_collisions(void)
 /*
  * Check actual collisions
  */
-	//Current room
+	//Check current room walls
 	this->_check_collidable_box(cur_room->getRoof(), &nearest, inv_delta, &ptr);
 	this->_check_collidable_box(cur_room->getRightWall(), &nearest, inv_delta, &ptr);
 	this->_check_collidable_box(cur_room->getLeftWall(), &nearest, inv_delta, &ptr);
@@ -786,7 +784,7 @@ inline void RunnerWorld::_check_collisions(void)
 		reinterpret_cast<Player *>(this->_active)->setDisableRight(true);
 	else if (ptr == &(cur_room->getLeftWall()))
 		reinterpret_cast<Player *>(this->_active)->setDisableLeft(true);
-	//Next room
+	//Check next room walls
 	if (next_room != nullptr)
 	{
 		this->_check_collidable_box(next_room->getRoof(), &nearest, inv_delta, &ptr);
