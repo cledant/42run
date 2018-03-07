@@ -35,9 +35,9 @@ void initObstacleParams(CollidableProp::Params &obstacle_params, oGL_module &oGL
 {
 	obstacle_params.prop_params.shader      = &(oGL.getShader("prop"));
 	obstacle_params.prop_params.model       = &(oGL.getModel("cola_machine"));
-	obstacle_params.prop_params.scale       = glm::vec3(0.006f);
-	obstacle_params.prop_params.offset      = glm::vec3(0.0f, 0.2f, 0.0f);
-	obstacle_params.prop_params.orientation = glm::vec3(-90.0f, -90.0f, 0.0f);
+	obstacle_params.prop_params.scale       = glm::vec3(0.39f);
+	obstacle_params.prop_params.offset      = glm::vec3(0.2f, 0.1f, -0.01f);
+	obstacle_params.prop_params.orientation = glm::vec3(-90.0f, 0.0f, 0.0f);
 	obstacle_params.dmg                     = ICollidable::Damages::HALF;
 	obstacle_params.active                  = false;
 }

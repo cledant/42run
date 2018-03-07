@@ -76,7 +76,7 @@ static void init_oGL(oGL_module &oGL)
 	add_cubemap_models(oGL);
 	oGL.add_framebuffer("render", MAX_WIN_H, MAX_WIN_W);
 	oGL.add_model("cola", "./models/cola/cola.obj");
-	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.3ds");
+	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.obj");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
