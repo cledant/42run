@@ -52,8 +52,8 @@ CollidableBox::~CollidableBox(void)
 {
 }
 
-CollidableBox::CollidableBox(CollidableBox const &src) : _cm(src.getCubemap()),
-														 _cb(src.getCollisionBox())
+CollidableBox::CollidableBox(CollidableBox const &src) : IEntity(), ICollidable(), ITranslatable(),
+														 _cm(src.getCubemap()), _cb(src.getCollisionBox())
 {
 	this->_pos         = src.getPos();
 	this->_dmg         = src.getDamages();

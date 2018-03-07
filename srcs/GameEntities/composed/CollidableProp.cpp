@@ -40,8 +40,8 @@ CollidableProp::~CollidableProp(void)
 {
 }
 
-CollidableProp::CollidableProp(CollidableProp const &src) : _prop(src.getProp()),
-															_cb(src.getCollisionBox())
+CollidableProp::CollidableProp(CollidableProp const &src) : ICollidable(), IEntity(), ITranslatable(),
+															_prop(src.getProp()), _cb(src.getCollisionBox())
 {
 	this->_dmg            = src.getDamages();
 	this->_passthrough    = src.getPassthrough();

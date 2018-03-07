@@ -19,6 +19,7 @@
 # include <iostream>
 # include <sstream>
 # include <iomanip>
+# include <cstring>
 
 # define MAX_GAMEPAD 16
 # define MOV_DEAD_ZONE 0.25f
