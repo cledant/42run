@@ -30,6 +30,7 @@ option(SFML_BUILD_WINDOW "" FALSE)
 option(SFML_BUILD_GRAPHICS "" FALSE)
 option(SFML_BUILD_NETWORK "" FALSE)
 option(SFML_BUILD_DOC "" FALSE)
+add_definitions(-DSFML_STATIC)
 add_subdirectory(SFML ${CMAKE_BINARY_DIR}/SFML/build)
 
 #Setup cpp version and flags
@@ -109,7 +110,7 @@ target_compile_options(engine PRIVATE -Wall -Wextra)
 set(SOURCE_FILES_MAIN
 		srcs/main.cpp)
 add_executable(42run ${SOURCE_FILES_MAIN})
-target_compile_options(42run PRIVATE -Wall -Werror -Wextra)
+target_compile_options(42run PRIVATE -Wall -Wextra)
 
 #Build Order
 add_dependencies(engine glad glfw assimp freetype sfml-audio sfml-system)

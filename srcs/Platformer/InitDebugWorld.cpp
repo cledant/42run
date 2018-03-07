@@ -234,7 +234,7 @@ static void init_audio(Audio &audio)
 static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
 						 Ui **ui, Audio &audio)
 {
-	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
+	manager.create_resizable_window("42Run", 4, 1, 1280, 720);
 	manager.init_input_callback();
 	init_oGL(oGL);
 	init_audio(audio);
