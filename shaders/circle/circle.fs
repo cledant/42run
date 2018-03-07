@@ -19,9 +19,9 @@ void main(void)
     vec4 eyePos = uniform_inv_total_matrix * clipPos;
 
     //Actual Shader
-    float useless = uniform_time;
-
     vec2 center = vec2(0.5, 0.5);
+    center.x += uniform_time;
+    center.x -= uniform_time;
     vec2 uv = (eyePos.xy + vec2(1.0, 1.0)) / vec2(2.0, 2.0);
     vec3 base_color = vec3(0.4, 0.4, 0.4);
 
