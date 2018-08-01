@@ -58,7 +58,8 @@ Room::~Room(void)
 {
 }
 
-Room::Room(Room const &src) : _perspec_mult_view(src.getPerspecMultView()),
+Room::Room(Room const &src) : ICollidable(), IEntity(), ITranslatable(),
+							  _perspec_mult_view(src.getPerspecMultView()),
 							  _room_cb(src.getCollisionBox()),
 							  _floor(src.getFloor()),
 							  _roof(src.getRoof()),

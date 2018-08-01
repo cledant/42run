@@ -1,12 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(42run)
 
-#Setup cpp version and flags
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+#Specific fix
 if (APPLE)
-	set(CMAKE_C_FLAGS "-stdlib=libc++")
 	set(CMAKE_CXX_FLAGS "-stdlib=libc++")
 endif ()
 
@@ -34,14 +30,16 @@ option(SFML_BUILD_WINDOW "" FALSE)
 option(SFML_BUILD_GRAPHICS "" FALSE)
 option(SFML_BUILD_NETWORK "" FALSE)
 option(SFML_BUILD_DOC "" FALSE)
+add_definitions(-DSFML_STATIC)
 add_subdirectory(SFML ${CMAKE_BINARY_DIR}/SFML/build)
 
-#Setup 42Run
-if (APPLE)
-	set(CMAKE_CXX_FLAGS "-stdlib=libc++ -Wall -Werror -Wextra -O3")
-else ()
-	set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra -O3")
-endif ()
+#Setup cpp version and flags
+set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+#Setup directories
 include_directories(includes
 		glm
 		stb
@@ -57,6 +55,8 @@ link_directories(${CMAKE_BINARY_DIR}/glad/build
 		${CMAKE_BINARY_DIR}/assimp/build/code
 		${CMAKE_BINARY_DIR}/freetype/build
 		${CMAKE_BINARY_DIR}/SFML/build/lib)
+
+#Setup Main Lib with all compilations flag
 set(SOURCE_FILES
 		srcs/Cameras/Camera.cpp
 		srcs/GameEntities/basic/Cubemap.cpp
@@ -66,7 +66,6 @@ set(SOURCE_FILES
 		srcs/Interfaces/IInteractive.cpp
 		srcs/Interfaces/ICollidable.cpp
 		srcs/WindowManager/Input.cpp
-		srcs/main.cpp
 		srcs/OpenGL/oGL_module.cpp
 		srcs/OpenGL/Shader.cpp
 		srcs/GameEntities/basic/Simple_box.cpp
@@ -103,18 +102,22 @@ set(SOURCE_FILES
 		srcs/UI/ShaderSurface/OrientableShaderSurface.cpp
 		srcs/OpenGL/Framebuffer.cpp
 		srcs/UI/ShaderSurface/TextureShaderBuffer.cpp)
+add_library(engine STATIC ${SOURCE_FILES})
+target_link_libraries(engine glad glfw assimp freetype sfml-audio sfml-system)
+target_compile_options(engine PRIVATE -Wall -Wextra)
 
-#OS specific libs
-if (APPLE)
-	find_library(OPEN_GL OpenGL REQUIRED)
-	find_library(COCOA COCOA REQUIRED)
-	find_library(IOKIT IOkit REQUIRED)
-	find_library(COREVIDEO CoreVideo REQUIRED)
-	set(EXTRA_LIBS ${OPEN_GL} ${COCOA} ${IOKIT} ${COREVIDEO})
-endif ()
+#Creating executable
+set(SOURCE_FILES_MAIN
+		srcs/main.cpp)
+add_executable(42run ${SOURCE_FILES_MAIN})
+target_compile_options(42run PRIVATE -Wall -Wextra)
 
-add_executable(42run ${SOURCE_FILES})
-target_link_libraries(42run glad glfw assimp freetype sfml-audio sfml-system ${EXTRA_LIBS})
+#Build Order
+add_dependencies(engine glad glfw assimp freetype sfml-audio sfml-system)
+add_dependencies(42run engine)
+target_link_libraries(42run glad glfw assimp freetype sfml-audio sfml-system engine)
+
+#Copy assets
 file(COPY shaders DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY textures DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY models DESTINATION ${CMAKE_BINARY_DIR})

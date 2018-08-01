@@ -24,7 +24,7 @@ Cubemap::~Cubemap(void)
 {
 }
 
-Cubemap::Cubemap(Cubemap const &src)
+Cubemap::Cubemap(Cubemap const &src) : IEntity(), ITranslatable()
 {
 	*this = src;
 }

@@ -77,7 +77,7 @@ static void init_oGL(oGL_module &oGL)
 	oGL.add_model("Alice", "./models/Alice/Alice.obj");
 	oGL.add_model("Sakuya", "./models/Sakuya/Sakuya_Izayoi.obj");
 	oGL.add_model("cola", "./models/cola/cola.obj");
-	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.3ds");
+	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.obj");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
@@ -196,9 +196,9 @@ static void load_debug_level(Glfw_manager &manager, oGL_module &oGL,
 	cola_machine.prop_params.shader      = &(oGL.getShader("prop"));
 	cola_machine.prop_params.model       = &(oGL.getModel("cola_machine"));
 	cola_machine.prop_params.pos         = glm::vec3(10.0f, 0.5f, 0.0f);
-	cola_machine.prop_params.scale       = glm::vec3(0.006f);
-	cola_machine.prop_params.offset      = glm::vec3(0.0f, 0.0f, 0.2f);
-	cola_machine.prop_params.orientation = glm::vec3(0.0f, -90.0f, 0.0f);
+	cola_machine.prop_params.scale       = glm::vec3(0.39f);
+	cola_machine.prop_params.offset      = glm::vec3(-0.01f, 0.0f, 0.2f);
+	cola_machine.prop_params.orientation = glm::vec3(0.0f, 0.0f, 0.0f);
 	cola_machine.cb                      = CollisionBox(cola_machine.prop_params.pos,
 														glm::vec3(0.1f, 0.7f, 0.1f));
 	cola_machine.dmg                     = ICollidable::Damages::NONE;
@@ -234,7 +234,7 @@ static void init_audio(Audio &audio)
 static void init_program(World **world, oGL_module &oGL, Glfw_manager &manager,
 						 Ui **ui, Audio &audio)
 {
-	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
+	manager.create_resizable_window("42Run", 4, 1, 1280, 720);
 	manager.init_input_callback();
 	init_oGL(oGL);
 	init_audio(audio);

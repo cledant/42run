@@ -40,7 +40,7 @@ Prop::~Prop(void)
 {
 }
 
-Prop::Prop(Prop const &src)
+Prop::Prop(Prop const &src) : IEntity(), ITranslatable()
 {
 	*this = src;
 }

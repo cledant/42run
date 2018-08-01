@@ -143,7 +143,7 @@ void Model::_calculate_center(void)
 
 Model::FileOpenException::FileOpenException(std::string const &path)
 {
-	this->_msg = "Model : Failed to find to open file : ";
+	this->_msg = "Model : Failed to open file : ";
 	this->_msg += path.c_str();
 }
 

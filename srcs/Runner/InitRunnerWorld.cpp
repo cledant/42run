@@ -76,7 +76,7 @@ static void init_oGL(oGL_module &oGL)
 	add_cubemap_models(oGL);
 	oGL.add_framebuffer("render", MAX_WIN_H, MAX_WIN_W);
 	oGL.add_model("cola", "./models/cola/cola.obj");
-	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.3ds");
+	oGL.add_model("cola_machine", "./models/cola_machine/cola_machine.obj");
 	oGL.add_texture("sprite_reimu",
 					{"./textures/sprites/reimu.png"},
 					Texture::TEX_FLAT, Texture::TEX_DIFFUSE);
@@ -138,7 +138,7 @@ static void init_audio(Audio &audio)
 static void init_program(RunnerWorld **world, oGL_module &oGL, Glfw_manager &manager,
 						 Ui **ui, Audio &audio)
 {
-	manager.create_resizable_window("42Run", 4, 1, 1000, 1000);
+	manager.create_resizable_window("42Run", 4, 1, 1280, 720);
 	manager.init_input_callback();
 	init_oGL(oGL);
 	init_audio(audio);
