@@ -1,10 +1,13 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.6)
 project(42run)
 
 #Specific fix
 if (APPLE)
 	set(CMAKE_CXX_FLAGS "-stdlib=libc++")
 endif ()
+
+#Global build type
+set(CMAKE_BUILD_TYPE Release)
 
 #Setup Glad
 set(GLAD_API "gl=4.1")
@@ -17,8 +20,10 @@ option(GLFW_INSTALL "" OFF)
 add_subdirectory(glfw ${CMAKE_BINARY_DIR}/glfw/build)
 
 #Setup Assimp
-set(BUILD_SHARED_LIBS OFF)
-set(ASSIMP_NO_EXPORT ON)
+option(BUILD_SHARED_LIBS OFF)
+option(ASSIMP_NO_EXPORT ON)
+option(ASSIMP_BUILD_TESTS OFF)
+option(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
 add_subdirectory(assimp ${CMAKE_BINARY_DIR}/assimp/build)
 
 #Setup FreeType
@@ -34,7 +39,6 @@ add_definitions(-DSFML_STATIC)
 add_subdirectory(SFML ${CMAKE_BINARY_DIR}/SFML/build)
 
 #Setup cpp version and flags
-set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
