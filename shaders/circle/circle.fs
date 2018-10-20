@@ -20,13 +20,14 @@ void main(void)
 
     //Actual Shader
     vec2 center = vec2(0.5, 0.5);
-    center.x += uniform_time;
-    center.x -= uniform_time;
     vec2 uv = (eyePos.xy + vec2(1.0, 1.0)) / vec2(2.0, 2.0);
     vec3 base_color = vec3(0.4, 0.4, 0.4);
 
     if ((pow(uv.x - center.x, 2) + pow(uv.y - center.x, 2)) > 0.25)
         discard;
 
-	color = vec4(base_color, 1.0);
+	//fix for unused uniform
+	vec3 tmp = vec3(min(0.0, uniform_time));
+ 
+	color = vec4(base_color + tmp, 1.0);
 }
